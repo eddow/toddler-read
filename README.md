@@ -13,9 +13,9 @@ There are many minismartphone, for 40/60$, you can get:
 My setup is:
 - Android
 - QR Scanner: Binary Eye: Settings > Automated actions > (add)
-  - regex: .*
+  - regex: `.*`
   - Action type: Open URL
-  - URL template: link to index.html globally accessible
+  - URL template: `https://toddler-read.netlify.app#{RESULT}`
 - Browser: Fully Kiosk
 
 ## Limitations
