@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Toddler Player</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #fff8e7; }
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    .btn {
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      display: flex;               /* shrink-wrap the sprite */
+      justify-content: center;
+      align-items: center;
+      width: fit-content;          /* only as wide as the sprite */
+      height: fit-content;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-sprite {
+      display: block;
+      width: 70vw;
+      max-width: 260px;
+      height: auto;
+      aspect-ratio: 273 / 267;
+      background-image: url('Pause-Play-Stop-Button-Transparent.png');
+      background-size: 300% 100%;
+      background-repeat: no-repeat;
+    }
+
+    /* Play – middle portion */
+    #playBtn .btn-sprite {
+      background-position: 50% 0%;
+    }
+
+    /* Stop – right portion */
+    #stopBtn .btn-sprite {
+      background-position: 100% 0%;
+      width: 50vw;                 /* stop button a bit smaller */
+      max-width: 180px;
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Manual mode: Play and Stop visible from start -->
+    <button class="btn" id="playBtn">
+      <span class="btn-sprite"></span>
+    </button>
+    <button class="btn" id="stopBtn">
+      <span class="btn-sprite"></span>
+    </button>
+  </div>
+
+  <audio id="audio" preload="auto"></audio>
+
+  <script>
+    (function() {
+      const audio = document.getElementById('audio');
+      const playBtn = document.getElementById('playBtn');
+      const stopBtn = document.getElementById('stopBtn');
+
+      function closePage() {
+        if (!audio.paused) { audio.pause(); audio.currentTime = 0; }
+        window.close();
+        setTimeout(() => { if (!window.closed) window.history.back(); }, 100);
+      }
+
+      function loadAndTryPlay(src) {
+        audio.src = src;
+        audio.load();
+        // Try to play (may be blocked, but it's manual mode so user will tap play)
+        audio.play().catch(() => {});
+      }
+
+      // --- Get source from hash ---
+      const hash = window.location.hash.substring(1);
+      const src = hash || null;
+
+      if (src) {
+        loadAndTryPlay(src);
+      } else {
+        // No hash – play fallback then close
+        loadAndTryPlay('./no.mp3');
+      }
+
+      // --- Error fallback to no.mp3 ---
+      audio.addEventListener('error', function onError() {
+        audio.removeEventListener('error', onError);
+        audio.src = './no.mp3';
+        audio.load();
+        audio.play().catch(() => {});
+        // Close after fallback ends
+        audio.addEventListener('ended', function onFallbackEnd() {
+          audio.removeEventListener('ended', onFallbackEnd);
+          closePage();
+        });
+      });
+
+      // --- Play button: restart sound ---
+      playBtn.addEventListener('click', () => {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      });
+
+      // --- Stop button: close page ---
+      stopBtn.addEventListener('click', closePage);
+    })();
+  </script>
+</body>
+</html>
