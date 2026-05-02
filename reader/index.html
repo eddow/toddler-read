@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Toddler Reader</title>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		html, body { width: 100%; height: 100%; overflow: hidden; background: #fff8e7; font-family: sans-serif; }
+
+		/* ===== Screens ===== */
+		.screen {
+			display: none;
+			width: 100%;
+			height: 100%;
+		}
+		.screen.active { display: flex; }
+
+		/* ===== Scanner screen ===== */
+		#scannerScreen {
+			position: relative;
+			background: #000;
+			overflow: hidden;
+		}
+		#preview {
+			width: 100vw;
+			height: 100dvh;
+			min-height: 100vh;
+			overflow: hidden;
+			background: #000;
+			position: relative;
+		}
+		#preview video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+		#preview canvas {
+			display: none;
+		}
+		#scanOverlay {
+			position: absolute;
+			inset: 0;
+			border: 0;
+			background: radial-gradient(circle at center, transparent 0 33%, rgba(0,0,0,0.18) 58%, rgba(0,0,0,0.36) 100%);
+			pointer-events: none;
+		}
+		#scanOverlay::after {
+			content: '';
+			position: absolute;
+			top: 50%; left: 50%;
+			translate: -50% -50%;
+			width: 60%;
+			height: 60%;
+			border: 3px solid #4caf50;
+			border-radius: 18px;
+			box-shadow: 0 0 28px rgba(76,175,80,0.45);
+		}
+		#scanStatus {
+			position: absolute;
+			left: 1rem;
+			right: 1rem;
+			bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+			z-index: 2;
+			font-size: 0.95rem;
+			color: #fff;
+			min-height: 1.4em;
+			text-align: center;
+			text-shadow: 0 2px 8px rgba(0,0,0,0.75);
+			opacity: 0;
+			pointer-events: none;
+		}
+		#scanStatus.has-message {
+			opacity: 1;
+		}
+
+		/* ===== Player screen ===== */
+		#playerScreen {
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			gap: 1rem;
+			padding: 1rem;
+		}
+
+		.btn {
+			border: none;
+			background: transparent;
+			padding: 0;
+			margin: 0;
+			outline: none;
+			cursor: pointer;
+			-webkit-appearance: none;
+			appearance: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: fit-content;
+			height: fit-content;
+			-webkit-tap-highlight-color: transparent;
+		}
+
+		.btn-sprite {
+			display: block;
+			width: 70vw;
+			max-width: 260px;
+			height: auto;
+			aspect-ratio: 273 / 267;
+			background-image: url('Pause-Play-Stop-Button-Transparent.png');
+			background-size: 300% 100%;
+			background-repeat: no-repeat;
+		}
+
+		/* Play – middle portion */
+		#playBtn .btn-sprite {
+			background-position: 50% 0%;
+		}
+
+		/* Pause – left portion */
+		#pauseBtn .btn-sprite {
+			background-position: 0% 0%;
+			width: 76vw;
+			max-width: 300px;
+		}
+
+		/* Stop – right portion */
+		#stopBtn .btn-sprite {
+			background-position: 100% 0%;
+			width: 50vw;
+			max-width: 180px;
+		}
+
+		#soundLabel {
+			font-size: 0.85rem;
+			color: #8a7a6a;
+			text-align: center;
+			word-break: break-all;
+			max-width: 90vw;
+			padding: 0 1rem;
+		}
+
+		#controlButtons {
+			display: none;
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+		}
+		#playerScreen.control-mode #pauseBtn {
+			display: none;
+		}
+		#playerScreen.control-mode #controlButtons {
+			display: flex;
+		}
+		#playerScreen:not(.control-mode) #soundLabel {
+			display: none;
+		}
+
+		.hidden { display: none; }
+	</style>
+</head>
+<body>
+	<!-- ===== SCANNER SCREEN ===== -->
+	<div class="screen active" id="scannerScreen">
+		<div id="preview">
+			<video id="video" autoplay playsinline muted></video>
+			<canvas id="canvas"></canvas>
+			<div id="scanOverlay"></div>
+		</div>
+		<div id="scanStatus" aria-live="polite"></div>
+	</div>
+
+	<!-- ===== PLAYER SCREEN ===== -->
+	<div class="screen" id="playerScreen">
+		<button class="btn" id="pauseBtn" aria-label="Show controls">
+			<span class="btn-sprite"></span>
+		</button>
+		<div id="controlButtons">
+			<button class="btn" id="playBtn" aria-label="Play sound">
+				<span class="btn-sprite"></span>
+			</button>
+			<button class="btn" id="stopBtn" aria-label="Stop and scan again">
+				<span class="btn-sprite"></span>
+			</button>
+		</div>
+		<div id="soundLabel"></div>
+	</div>
+
+	<audio id="audio" preload="auto"></audio>
+
+	<script src="jsQR.js"></script>
+	<script>
+		(function() {
+			'use strict';
+
+			// ---- DOM refs ----
+			const scannerScreen = document.getElementById('scannerScreen');
+			const playerScreen  = document.getElementById('playerScreen');
+			const video         = document.getElementById('video');
+			const canvas        = document.getElementById('canvas');
+			const scanStatus    = document.getElementById('scanStatus');
+			const audio         = document.getElementById('audio');
+			const pauseBtn      = document.getElementById('pauseBtn');
+			const playBtn       = document.getElementById('playBtn');
+			const stopBtn       = document.getElementById('stopBtn');
+			const soundLabel    = document.getElementById('soundLabel');
+
+			let stream = null;
+			let scanTimer = null;
+			let scanning = false;
+			let currentSoundSrc = '';
+
+			// ---- Screen switching ----
+			function showScanner() {
+				scannerScreen.classList.add('active');
+				playerScreen.classList.remove('active');
+			}
+			function showPlayer() {
+				scannerScreen.classList.remove('active');
+				playerScreen.classList.add('active');
+			}
+			function showSimplePlayer() {
+				playerScreen.classList.remove('control-mode');
+				showPlayer();
+			}
+			function showControlPlayer() {
+				playerScreen.classList.add('control-mode');
+				showPlayer();
+			}
+			function returnToScanner() {
+				stopAudio();
+				showScanner();
+				setScanMessage('');
+				startScanning();
+			}
+
+			function setScanMessage(message) {
+				scanStatus.textContent = message;
+				scanStatus.classList.toggle('has-message', Boolean(message));
+			}
+
+			// ---- Audio helpers ----
+			audio.addEventListener('error', () => {
+				soundLabel.textContent = '⚠️ Could not play - scan again';
+				setTimeout(() => {
+					returnToScanner();
+				}, 2000);
+			});
+			audio.addEventListener('ended', () => {
+				returnToScanner();
+			});
+
+			function loadAndPlay(src) {
+				currentSoundSrc = src;
+				audio.src = src;
+				audio.load();
+				audio.play().catch(() => {
+					soundLabel.textContent = 'Tap play to hear the sound';
+					showControlPlayer();
+				});
+			}
+
+			function stopAudio() {
+				audio.pause();
+				if (audio.src) audio.currentTime = 0;
+			}
+
+			async function playCurrentSound() {
+				if (!currentSoundSrc) return;
+				audio.currentTime = 0;
+				try {
+					await audio.play();
+				} catch (err) {
+					soundLabel.textContent = 'Tap play to hear the sound';
+				}
+			}
+
+			// ---- Handle scanned content ----
+			function handleScannedContent(content) {
+				stopScanning();
+				stopAudio();
+
+				let src = null;
+				let label = content;
+
+				// Case 1: It's a URL → treat as sound URL
+				if (content.startsWith('http://') || content.startsWith('https://')) {
+					src = content;
+				}
+				// Case 2: It's a data URI (base64-encoded audio embedded in QR)
+				else if (content.startsWith('data:')) {
+					src = content;
+				}
+				// Case 3: It looks like a base64-encoded audio (raw data in QR)
+				// QR can store raw bytes. We check if it's a plausible base64 audio.
+				// We'll try to construct a data URI from it.
+				else {
+					// Try to detect if it's base64-encoded audio data
+					// Common audio MIME types: audio/mpeg, audio/wav, audio/ogg, audio/mp4
+					// We'll try to decode and wrap as data URI
+					const base64Regex = /^[A-Za-z0-9+/=]+$/;
+					if (base64Regex.test(content) && content.length > 100) {
+						// Could be raw base64 audio – try common formats
+						// We'll attempt to play it as data URI with audio/mpeg
+						src = 'data:audio/mpeg;base64,' + content;
+					} else {
+						// Fallback: treat as URL (maybe a short URL or relative path)
+						src = content;
+					}
+				}
+
+				soundLabel.textContent = label.length > 60 ? label.substring(0, 60) + '…' : label;
+				showSimplePlayer();
+				loadAndPlay(src);
+			}
+
+			// ---- Scanning logic ----
+			function getUserMediaCompat(constraints) {
+				if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+					return navigator.mediaDevices.getUserMedia(constraints);
+				}
+
+				const legacyGetUserMedia =
+					navigator.getUserMedia ||
+					navigator.webkitGetUserMedia ||
+					navigator.mozGetUserMedia ||
+					navigator.msGetUserMedia;
+
+				if (legacyGetUserMedia) {
+					return new Promise((resolve, reject) => {
+						legacyGetUserMedia.call(navigator, constraints, resolve, reject);
+					});
+				}
+
+				return Promise.reject(new Error(
+					window.isSecureContext
+						? 'Camera API is not available in this browser'
+						: 'Camera requires HTTPS or localhost'
+				));
+			}
+
+			async function getQrScanner() {
+				if ('BarcodeDetector' in window) {
+					if (BarcodeDetector.getSupportedFormats) {
+						try {
+							const formats = await BarcodeDetector.getSupportedFormats();
+							if (!formats.includes('qr_code')) {
+								return getJsQrScanner();
+							}
+						} catch (err) {
+							return getJsQrScanner();
+						}
+					}
+
+					const detector = new BarcodeDetector({ formats: ['qr_code'] });
+					return async function scanWithBarcodeDetector() {
+						const barcodes = await detector.detect(video);
+						return barcodes.length > 0 ? barcodes[0].rawValue : null;
+					};
+				}
+
+				return getJsQrScanner();
+			}
+
+			function getJsQrScanner() {
+				if (!window.jsQR) {
+					return null;
+				}
+
+				const context = canvas.getContext('2d', { willReadFrequently: true });
+				return function scanWithJsQr() {
+					if (!video.videoWidth || !video.videoHeight) return null;
+
+					canvas.width = video.videoWidth;
+					canvas.height = video.videoHeight;
+					context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+					const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+					const code = window.jsQR(imageData.data, imageData.width, imageData.height, {
+						inversionAttempts: 'dontInvert',
+					});
+
+					return code ? code.data : null;
+				};
+			}
+
+			async function startScanning() {
+				if (scanning) return;
+
+				scanning = true;
+				scannerScreen.classList.add('is-scanning');
+				setScanMessage('');
+
+				try {
+					stream = await getUserMediaCompat({
+						video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 640 } }
+					});
+					video.srcObject = stream;
+					await video.play();
+
+					const scanQrCode = await getQrScanner();
+					if (!scanQrCode) {
+						throw new Error('QR scanner library is not available');
+					}
+
+					setScanMessage('');
+					let scanInFlight = false;
+
+					// Poll for QR codes
+					scanTimer = setInterval(async () => {
+						if (scanInFlight) return;
+						scanInFlight = true;
+
+						try {
+							const content = await scanQrCode();
+							if (content) {
+								setScanMessage('');
+								// Brief delay so user sees the success
+								setTimeout(() => handleScannedContent(content), 300);
+								clearInterval(scanTimer);
+								scanTimer = null;
+							}
+						} catch (err) {
+							// detect() can throw if video isn't ready
+						} finally {
+							scanInFlight = false;
+						}
+					}, 500);
+
+				} catch (err) {
+					setScanMessage('Camera error: ' + err.message);
+					stopScanning();
+				}
+			}
+
+			function stopScanning() {
+				scanning = false;
+				scannerScreen.classList.remove('is-scanning');
+				if (scanTimer) { clearInterval(scanTimer); scanTimer = null; }
+				if (stream) {
+					stream.getTracks().forEach(t => t.stop());
+					stream = null;
+				}
+				video.srcObject = null;
+			}
+
+			// ---- Button handlers ----
+			playBtn.addEventListener('click', () => {
+				playCurrentSound();
+			});
+
+			pauseBtn.addEventListener('click', () => {
+				showControlPlayer();
+			});
+
+			stopBtn.addEventListener('click', () => {
+				returnToScanner();
+			});
+
+			// ---- Cleanup on page unload ----
+			window.addEventListener('beforeunload', () => {
+				stopScanning();
+				stopAudio();
+			});
+
+			// ---- Initial state ----
+			showScanner();
+			startScanning();
+		})();
+	</script>
+</body>
+</html>

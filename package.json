@@ -1,0 +1,38 @@
+{
+  "name": "toddler-read",
+  "version": "1.0.0",
+  "description": "A single‑page, tap‑friendly audio player for 2‑3 year olds.",
+  "main": "index.js",
+  "scripts": {
+    "reader:deps": "cp node_modules/jsqr/dist/jsQR.js reader/jsQR.js",
+    "android:sync": "npm run reader:deps && cap sync android",
+    "android:open": "cap open android",
+    "android:build": "npm run android:sync && cd android && ./gradlew assembleDebug",
+    "android:install": "npm run android:sync && cd android && ./gradlew installDebug",
+    "android:run": "cap run android",
+    "android:apk": "ls -lh android/app/build/outputs/apk/debug/app-debug.apk",
+    "adb:devices": "$ANDROID_HOME/platform-tools/adb devices",
+    "adb:install": "$ANDROID_HOME/platform-tools/adb install -r android/app/build/outputs/apk/debug/app-debug.apk",
+    "adb:logs": "$ANDROID_HOME/platform-tools/adb logcat -c && $ANDROID_HOME/platform-tools/adb logcat AndroidRuntime:E Capacitor:D chromium:E ToddlerReader:D '*:S'",
+    "adb:launch": "$ANDROID_HOME/platform-tools/adb shell monkey -p com.emw.toddlerreader 1",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddow/toddler-read.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eddow/toddler-read/issues"
+  },
+  "homepage": "https://github.com/eddow/toddler-read#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/cli": "^8.3.1",
+    "@capacitor/core": "^8.3.1",
+    "jsqr": "^1.4.0"
+  }
+}
