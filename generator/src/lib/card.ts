@@ -17,15 +17,23 @@ export type RenderableEntry = {
 
 export type CardRenderInput = {
   imageDataUrl?: string;
+  imageTransform?: ImageTransform;
   entries: LanguageEntry[];
   gridSize?: CardGridSize;
   reserveQrMargin?: boolean;
   showQrText?: boolean;
 };
 
+export type ImageTransform = {
+  zoom: number;
+  offsetX: number;
+  offsetY: number;
+};
+
 export type LayoutRenderableCard = {
   id: string;
   imageDataUrl?: string;
+  imageTransform?: ImageTransform;
   entries: LanguageEntry[];
 };
 
@@ -41,6 +49,7 @@ export type CardGridSize = 1 | 2 | 3 | 4;
 
 const A4_WIDTH = 2480;
 const A4_HEIGHT = 3508;
+const imageCache = new Map<string, Promise<HTMLImageElement>>();
 
 const FLAG_BY_LANGUAGE: Record<string, string> = {
   bg: '🇧🇬',
@@ -127,14 +136,14 @@ export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCan
   if (!ctx) throw new Error('Canvas rendering is unavailable.');
 
   const size = getCardSize(input.gridSize ?? DEFAULT_CARD_GRID_SIZE);
-  target.width = size.width;
-  target.height = size.height;
+  if (target.width !== size.width) target.width = size.width;
+  if (target.height !== size.height) target.height = size.height;
 
   const renderableEntries = toRenderableEntriesByPosition(input.entries);
   const image = input.imageDataUrl ? await loadImage(input.imageDataUrl) : null;
 
   drawCardBackground(ctx, size);
-  drawImageArea(ctx, image, size, renderableEntries, Boolean(input.reserveQrMargin), Boolean(input.showQrText));
+  drawImageArea(ctx, image, size, renderableEntries, Boolean(input.reserveQrMargin), Boolean(input.showQrText), input.imageTransform);
   await drawQrCorners(ctx, renderableEntries, size, Boolean(input.showQrText));
 }
 
@@ -165,6 +174,7 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
     await renderCardToCanvas(
       {
         imageDataUrl: card.imageDataUrl,
+        imageTransform: card.imageTransform,
         entries: card.entries,
         gridSize,
         reserveQrMargin: input.reserveQrMargin,
@@ -228,7 +238,8 @@ function drawImageArea(
   size: ReturnType<typeof getCardSize>,
   entries: Array<RenderableEntry | undefined>,
   reserveQrMargin: boolean,
-  showQrText: boolean
+  showQrText: boolean,
+  transform: ImageTransform | undefined
 ): void {
   const qrSize = getQrSize(size);
   const gap = getGap(size);
@@ -255,7 +266,7 @@ function drawImageArea(
 
   if (!image) return;
 
-  const fit = coverFit(image.width, image.height, area.width, area.height);
+  const fit = transformedFit(image.width, image.height, area.width, area.height, transform);
   ctx.save();
   roundedRect(ctx, area.x, area.y, area.width, area.height, radius);
   ctx.clip();
@@ -477,11 +488,45 @@ function coverFit(sourceWidth: number, sourceHeight: number, targetWidth: number
   };
 }
 
+function transformedFit(
+  sourceWidth: number,
+  sourceHeight: number,
+  targetWidth: number,
+  targetHeight: number,
+  transform: ImageTransform | undefined
+) {
+  const fit = coverFit(sourceWidth, sourceHeight, targetWidth, targetHeight);
+  const zoom = clampFinite(transform?.zoom, 0.5, 3, 1);
+  const width = fit.width * zoom;
+  const height = fit.height * zoom;
+  const maxOffsetX = Math.max(0, (width - targetWidth) / 2);
+  const maxOffsetY = Math.max(0, (height - targetHeight) / 2);
+  const offsetX = clampFinite(transform?.offsetX, -1, 1, 0) * maxOffsetX;
+  const offsetY = clampFinite(transform?.offsetY, -1, 1, 0) * maxOffsetY;
+
+  return {
+    x: (targetWidth - width) / 2 + offsetX,
+    y: (targetHeight - height) / 2 + offsetY,
+    width,
+    height
+  };
+}
+
+function clampFinite(value: number | undefined, min: number, max: number, fallback: number): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return fallback;
+  return Math.min(max, Math.max(min, value));
+}
+
 function loadImage(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
+  const cached = imageCache.get(src);
+  if (cached) return cached;
+
+  const promise = new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(image);
     image.onerror = () => reject(new Error('Could not load image.'));
     image.src = src;
   });
+  imageCache.set(src, promise);
+  return promise;
 }

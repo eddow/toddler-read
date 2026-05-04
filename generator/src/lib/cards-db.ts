@@ -1,6 +1,9 @@
+import type { ImageTransform } from './card';
+
 export type StoredCard = {
   id: string;
   imageDataUrl?: string;
+  imageTransform?: ImageTransform;
   texts: Record<string, string>;
   versoCardId?: string;
 };
@@ -56,6 +59,7 @@ export async function addCards(cards: Array<Omit<StoredCard, 'id'> & { id?: stri
     normalizeCard({
       id: card.id || createCardId(),
       imageDataUrl: card.imageDataUrl,
+      imageTransform: card.imageTransform,
       texts: card.texts,
       versoCardId: card.versoCardId
     })
@@ -111,13 +115,30 @@ function normalizeCard(card: unknown): StoredCard {
   const id = typeof candidate.id === 'string' && candidate.id.trim() ? candidate.id : createCardId();
   const imageDataUrl =
     typeof candidate.imageDataUrl === 'string' && candidate.imageDataUrl.trim() ? candidate.imageDataUrl : undefined;
+  const imageTransform = imageDataUrl ? normalizeImageTransform(candidate.imageTransform) : undefined;
   const texts = normalizeTexts(candidate.texts);
   const versoCardId =
     typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim() && candidate.versoCardId !== id
       ? candidate.versoCardId
       : undefined;
 
-  return { id, imageDataUrl, texts, versoCardId };
+  return { id, imageDataUrl, imageTransform, texts, versoCardId };
+}
+
+function normalizeImageTransform(transform: unknown): ImageTransform | undefined {
+  if (!transform || typeof transform !== 'object') return undefined;
+  const candidate = transform as Partial<ImageTransform>;
+  const zoom = clampFinite(candidate.zoom, 0.5, 3, 1);
+  const offsetX = clampFinite(candidate.offsetX, -1, 1, 0);
+  const offsetY = clampFinite(candidate.offsetY, -1, 1, 0);
+  if (zoom === 1 && offsetX === 0 && offsetY === 0) return undefined;
+
+  return { zoom, offsetX, offsetY };
+}
+
+function clampFinite(value: unknown, min: number, max: number, fallback: number): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return fallback;
+  return Math.min(max, Math.max(min, value));
 }
 
 function normalizeTexts(texts: unknown): Record<string, string> {

@@ -14,9 +14,12 @@
 		Link2,
 		Link2Off,
 		List,
+		Maximize2,
 		Pencil,
 		Plus,
 		Printer,
+		RotateCcw,
+		Search,
 		Settings,
 		Trash2,
 		Upload,
@@ -34,6 +37,7 @@
 		renderLayoutPageToCanvas,
 		toRenderableEntries,
 		type CardGridSize,
+		type ImageTransform,
 		type LanguageEntry,
 		type LayoutRenderableCard
 	} from './lib/card'
@@ -45,6 +49,17 @@
 		putCard,
 		type StoredCard
 	} from './lib/cards-db'
+	import {
+		IMAGE_SEARCH_PROVIDERS,
+		defaultImageSearchProviderConfigs,
+		getImageSearchProvider,
+		isImageSearchProvider,
+		normalizeStoredImageSearchProviderConfigs,
+		type ImageSearchProviderConfig,
+		type ImageSearchProviderConfigs,
+		type ImageSearchProviderId,
+		type ImageSearchResult
+	} from './lib/image-search'
 	import {
 		buildPrintLayout,
 		dedupeSelectedRectoIds,
@@ -64,6 +79,7 @@
 	const LIBRARY_VIEW_STORAGE_KEY = 'toddler-read-generator-library-view'
 	const VISIBLE_MANAGER_LANGUAGES_STORAGE_KEY = 'toddler-read-generator-visible-manager-languages'
 	const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash'
+	const IMAGE_SEARCH_RESULTS_PER_PAGE = 12
 	const TRANSLATION_PROVIDERS = [
 		{ value: 'gemini', label: 'Gemini', model: DEFAULT_GEMINI_MODEL, baseUrl: '' },
 		{ value: 'openai', label: 'OpenAI', model: 'gpt-5-mini', baseUrl: 'https://api.openai.com/v1' },
@@ -103,7 +119,7 @@
 	type LegacyTranslationMode = 'nothing' | 'use' | 'produce'
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
 	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
-	type ImagePresenceFilter = 'all' | 'missing' | 'present'
+	type PresenceFilter = 'all' | 'missing' | 'present'
 
 	type TranslationOptions = {
 		use: boolean
@@ -153,7 +169,8 @@
 	let visibleManagerLanguages: string[] = []
 	let mainLanguage = 'en'
 	let languageFilters: Record<string, string> = {}
-	let imagePresenceFilter: ImagePresenceFilter = 'all'
+	let imagePresenceFilter: PresenceFilter = 'all'
+	let versoPresenceFilter: PresenceFilter = 'all'
 	let selectedPrintCardIds: string[] = []
 	let pairingCardId = ''
 	let duplicateFocus = ''
@@ -162,12 +179,29 @@
 	let translationProvider: TranslationProvider = 'gemini'
 	let translationProviderConfigs = defaultTranslationProviderConfigs()
 	let translationPromptTemplate = DEFAULT_TRANSLATION_PROMPT_TEMPLATE
+	let imageSearchProvider: ImageSearchProviderId = 'pexels'
+	let imageSearchProviderConfigs: ImageSearchProviderConfigs = defaultImageSearchProviderConfigs()
+	let showImageSearchPanel = false
+	let imageSearchQuery = ''
+	let imageSearchResults: ImageSearchResult[] = []
+	let imageSearchPage = 1
+	let imageSearchTotalResults = 0
+	let imageSearchHasNextPage = false
+	let imageSearchStatus = ''
+	let imageSearchError = ''
+	let imageSearchCardKey = ''
+	let imageSearchRequestToken = 0
+	let isSearchingImages = false
+	let importingImageResultId = ''
 	let isTranslating = false
 	let gridSize: CardGridSize = DEFAULT_CARD_GRID_SIZE
 	let reserveQrMargin = false
 	let showQrText = false
 	let showSettingsPanel = false
 	let imageDataUrl: string | undefined
+	let imageTransform: ImageTransform | undefined
+	let previewImageTransform: ImageTransform | undefined
+	let imageTransformDraft: ImageTransform | undefined
 	let previewCanvas: HTMLCanvasElement
 	let exportCanvas: HTMLCanvasElement
 	let fileInput: HTMLInputElement
@@ -193,10 +227,23 @@
 	let rectoPreviewCanvases: HTMLCanvasElement[] = []
 	let versoPreviewCanvases: HTMLCanvasElement[] = []
 	let pdfCanvas: HTMLCanvasElement
+	let panDrag:
+		| {
+				pointerId: number
+				startClientX: number
+				startClientY: number
+				startOffsetX: number
+				startOffsetY: number
+		  }
+		| undefined
+	let panFrame = 0
+	let queuedPanTransform: ImageTransform | undefined
 
 	$: selectedCard = cards.find((card) => card.id === selectedCardId)
 	$: cardTexts = buildCardTexts(languageSetups, selectedCard)
 	$: imageDataUrl = selectedCard?.imageDataUrl
+	$: imageTransform = selectedCard?.imageTransform
+	$: previewImageTransform = imageTransformDraft ?? imageTransform
 	$: managerLanguages = buildManagerLanguages(cards, languageSetups)
 	$: if (libraryReady)
 		visibleManagerLanguages = normalizeVisibleManagerLanguages(
@@ -217,7 +264,8 @@
 		duplicateFocus,
 		visibleManagerLanguages,
 		languageFilters,
-		imagePresenceFilter
+		imagePresenceFilter,
+		versoPresenceFilter
 	)
 	$: entries = buildEntries(languageSetups, cardTexts)
 	$: layoutCards = buildLayoutRenderableCards(cards, languageSetups)
@@ -231,6 +279,10 @@
 	$: translationSources = buildTranslationSources(entries, translationOptions)
 	$: translationTargets = buildTranslationTargets(entries, translationOptions)
 	$: currentTranslationProviderConfig = translationProviderConfigs[translationProvider]
+	$: currentImageSearchProviderConfig = imageSearchProviderConfigs[imageSearchProvider]
+	$: availableImageSearchProviders = IMAGE_SEARCH_PROVIDERS.filter((provider) =>
+		imageSearchProviderConfigs[provider.id].apiKey.trim()
+	)
 	$: translationDisabledReasons = getTranslationDisabledReasons(
 		translationProvider,
 		currentTranslationProviderConfig,
@@ -239,7 +291,24 @@
 	)
 	$: canTranslate = translationDisabledReasons.length === 0 && !isTranslating
 	$: translateButtonTitle = isTranslating ? 'Translating...' : translationDisabledReasons.join(', ')
-	$: void schedulePreviewRender(imageDataUrl, entries, gridSize, reserveQrMargin, showQrText)
+	$: imageSearchProviderInstance = getImageSearchProvider(imageSearchProvider)
+	$: imageSearchTotalPages = Math.max(
+		1,
+		Math.ceil(imageSearchTotalResults / IMAGE_SEARCH_RESULTS_PER_PAGE)
+	)
+	$: if (
+		availableImageSearchProviders.length > 0 &&
+		!availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)
+	) {
+		imageSearchProvider = availableImageSearchProviders[0].id
+		resetImageSearchResults()
+	}
+	$: currentImageSearchCardKey = selectedCard ? buildImageSearchCardKey(selectedCard) : ''
+	$: if (libraryReady && currentImageSearchCardKey !== imageSearchCardKey) {
+		imageSearchCardKey = currentImageSearchCardKey
+		resetImageSearchForCard(selectedCard)
+	}
+	$: void schedulePreviewRender(imageDataUrl, previewImageTransform, entries, gridSize, reserveQrMargin, showQrText)
 	$: void schedulePressPreviewRender(
 		printLayout,
 		layoutCards,
@@ -267,7 +336,9 @@
 				translationOptions,
 				translationProvider,
 				translationProviderConfigs,
-				translationPromptTemplate
+				translationPromptTemplate,
+				imageSearchProvider,
+				imageSearchProviderConfigs
 			})
 		)
 	}
@@ -292,7 +363,10 @@
 
 		const onPaste = (event: ClipboardEvent) => handleImagePaste(event)
 		const onKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') showSettingsPanel = false
+			if (event.key === 'Escape') {
+				showSettingsPanel = false
+				showImageSearchPanel = false
+			}
 		}
 
 		window.addEventListener('paste', onPaste)
@@ -305,6 +379,7 @@
 
 	async function schedulePreviewRender(
 		nextImageDataUrl: string | undefined,
+		nextImageTransform: ImageTransform | undefined,
 		nextEntries: LanguageEntry[],
 		nextGridSize: CardGridSize,
 		nextReserveQrMargin: boolean,
@@ -321,6 +396,7 @@
 			await renderCardToCanvas(
 				{
 					imageDataUrl: nextImageDataUrl,
+					imageTransform: nextImageTransform,
 					entries: nextEntries,
 					gridSize: nextGridSize,
 					reserveQrMargin: nextReserveQrMargin,
@@ -452,6 +528,7 @@
 		return nextCards.map((card) => ({
 			id: card.id,
 			imageDataUrl: card.imageDataUrl,
+			imageTransform: card.imageTransform,
 			entries: buildCardEntries(setups, card)
 		}))
 	}
@@ -640,6 +717,14 @@
 					parsed.translationProviderConfigs
 				)
 			}
+			if (isImageSearchProvider(parsed.imageSearchProvider)) {
+				imageSearchProvider = parsed.imageSearchProvider
+			}
+			if (parsed.imageSearchProviderConfigs && typeof parsed.imageSearchProviderConfigs === 'object') {
+				imageSearchProviderConfigs = normalizeStoredImageSearchProviderConfigs(
+					parsed.imageSearchProviderConfigs
+				)
+			}
 			if (typeof parsed.geminiApiKey === 'string' || typeof parsed.geminiModel === 'string') {
 				translationProviderConfigs = migrateLegacyGeminiConfig(
 					translationProviderConfigs,
@@ -820,6 +905,37 @@
 		editorDeleteArmed = false
 	}
 
+	function updateImageTransform(patch: Partial<ImageTransform>) {
+		imageTransformDraft = undefined
+		const nextTransform = normalizeImageTransform({
+			zoom: imageTransform?.zoom ?? 1,
+			offsetX: imageTransform?.offsetX ?? 0,
+			offsetY: imageTransform?.offsetY ?? 0,
+			...patch
+		})
+		updateSelectedCard({ imageTransform: nextTransform })
+		pngStatus = ''
+	}
+
+	function resetImageTransform() {
+		imageTransformDraft = undefined
+		updateSelectedCard({ imageTransform: undefined })
+		pngStatus = ''
+	}
+
+	function normalizeImageTransform(transform: Partial<ImageTransform>): ImageTransform | undefined {
+		const zoom = clampNumber(transform.zoom, 0.5, 3, 1)
+		const offsetX = clampNumber(transform.offsetX, -1, 1, 0)
+		const offsetY = clampNumber(transform.offsetY, -1, 1, 0)
+		if (zoom === 1 && offsetX === 0 && offsetY === 0) return undefined
+		return { zoom, offsetX, offsetY }
+	}
+
+	function clampNumber(value: unknown, min: number, max: number, fallback: number): number {
+		if (typeof value !== 'number' || !Number.isFinite(value)) return fallback
+		return Math.min(max, Math.max(min, value))
+	}
+
 	function updateTranslationOption(index: number, key: keyof TranslationOptions, checked: boolean) {
 		const nextOptions = normalizeTranslationOptionCount(translationOptions)
 		nextOptions[index] = { ...nextOptions[index], [key]: checked }
@@ -845,6 +961,32 @@
 		}
 		translationStatus = ''
 		translationError = ''
+	}
+
+	function updateImageSearchProvider(value: string) {
+		if (!isImageSearchProvider(value)) return
+		imageSearchProvider = value
+		resetImageSearchResults()
+	}
+
+	function updateImageSearchProviderConfig(
+		provider: ImageSearchProviderId,
+		key: keyof ImageSearchProviderConfig,
+		value: string
+	) {
+		const nextConfig = {
+			...imageSearchProviderConfigs[provider],
+			[key]: value
+		}
+		if (key === 'apiKey') {
+			nextConfig.accessToken = undefined
+			nextConfig.accessTokenExpiresAt = undefined
+		}
+		imageSearchProviderConfigs = {
+			...imageSearchProviderConfigs,
+			[provider]: nextConfig
+		}
+		resetImageSearchResults()
 	}
 
 	function buildTranslationSources(
@@ -1085,7 +1227,8 @@
 		focus: string,
 		languages: string[],
 		filters: Record<string, string>,
-		imageFilter: ImagePresenceFilter
+		imageFilter: PresenceFilter,
+		versoFilter: PresenceFilter
 	): StoredCard[] {
 		let duplicateFilteredCards = nextCards
 		if (focus) {
@@ -1110,14 +1253,19 @@
 			if (imageFilter === 'present') return Boolean(card.imageDataUrl)
 			return true
 		})
+		const presenceFilteredCards = imageFilteredCards.filter((card) => {
+			if (versoFilter === 'missing') return !card.versoCardId
+			if (versoFilter === 'present') return Boolean(card.versoCardId)
+			return true
+		})
 
 		const activeFilters = Object.entries(filters)
 			.map(([language, filter]) => [language, filter.trim().toLocaleLowerCase()] as const)
 			.filter(([, filter]) => filter.length > 0)
 
-		if (activeFilters.length === 0) return imageFilteredCards
+		if (activeFilters.length === 0) return presenceFilteredCards
 
-		return imageFilteredCards.filter((card) =>
+		return presenceFilteredCards.filter((card) =>
 			activeFilters.every(([language, filter]) =>
 				(card.texts[language] ?? '').toLocaleLowerCase().includes(filter)
 			)
@@ -1210,8 +1358,142 @@
 		fileInput.click()
 	}
 
+	function openImageSearch() {
+		if (
+			availableImageSearchProviders.length > 0 &&
+			!availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)
+		) {
+			imageSearchProvider = availableImageSearchProviders[0].id
+		}
+		imageSearchQuery = imageSearchQuery.trim() || defaultImageSearchQuery()
+		showImageSearchPanel = true
+		imageSearchStatus = ''
+		imageSearchError = availableImageSearchProviders.length > 0
+			? ''
+			: 'Add a Pexels or Flaticon API key in Settings.'
+		if (imageSearchError) imageSearchResults = []
+		if (imageSearchQuery && availableImageSearchProviders.length > 0) {
+			void searchImages(1)
+		}
+	}
+
+	function closeImageSearch() {
+		showImageSearchPanel = false
+		importingImageResultId = ''
+	}
+
+	function buildImageSearchCardKey(card: StoredCard): string {
+		return `${card.id}:${JSON.stringify(card.texts)}`
+	}
+
+	function resetImageSearchForCard(card: StoredCard | undefined) {
+		imageSearchQuery = defaultImageSearchQueryForCard(card)
+		resetImageSearchResults()
+	}
+
+	function resetImageSearchResults() {
+		imageSearchRequestToken += 1
+		imageSearchResults = []
+		imageSearchPage = 1
+		imageSearchTotalResults = 0
+		imageSearchHasNextPage = false
+		imageSearchStatus = ''
+		imageSearchError = ''
+		isSearchingImages = false
+		importingImageResultId = ''
+	}
+
+	function defaultImageSearchQuery(): string {
+		return defaultImageSearchQueryForCard(selectedCard)
+	}
+
+	function defaultImageSearchQueryForCard(card: StoredCard | undefined): string {
+		const englishText = card?.texts.en?.trim()
+		if (englishText) return englishText
+
+		return normalizeLanguageSetupCount(languageSetups)
+			.map((setup) => setup.lang.trim())
+			.map((language) => (language ? card?.texts[language]?.trim() : ''))
+			.find((text) => text && text.length > 0) ?? ''
+	}
+
+	function imageSearchProviderSourceUrl(provider: ImageSearchProviderId): string {
+		if (provider === 'flaticon') return 'https://www.flaticon.com'
+		return 'https://www.pexels.com'
+	}
+
+	async function searchImages(page = 1) {
+		if (isSearchingImages) return
+
+		const query = imageSearchQuery.trim()
+		if (!currentImageSearchProviderConfig.apiKey.trim()) {
+			imageSearchError = `Add a ${imageSearchProviderInstance.label} API key in Settings.`
+			imageSearchStatus = ''
+			imageSearchResults = []
+			return
+		}
+		if (!query) {
+			imageSearchError = 'Enter a search term.'
+			imageSearchStatus = ''
+			imageSearchResults = []
+			return
+		}
+
+		const token = ++imageSearchRequestToken
+		isSearchingImages = true
+		imageSearchStatus = ''
+		imageSearchError = ''
+		try {
+			const response = await imageSearchProviderInstance.search(
+				query,
+				{ page, perPage: IMAGE_SEARCH_RESULTS_PER_PAGE },
+				currentImageSearchProviderConfig
+			)
+			if (token !== imageSearchRequestToken) return
+
+			imageSearchResults = response.results
+			imageSearchPage = response.page
+			imageSearchTotalResults = response.totalResults
+			imageSearchHasNextPage = response.hasNextPage
+			const visibleTotal = response.totalResults || response.results.length
+			imageSearchStatus =
+				response.results.length === 0
+					? 'No images found.'
+					: `${visibleTotal.toLocaleString()} image${visibleTotal === 1 ? '' : 's'} found.`
+		} catch (error) {
+			if (token !== imageSearchRequestToken) return
+
+			imageSearchResults = []
+			imageSearchHasNextPage = false
+			imageSearchStatus = ''
+			imageSearchError = error instanceof Error ? error.message : 'Could not search images.'
+		} finally {
+			if (token === imageSearchRequestToken) isSearchingImages = false
+		}
+	}
+
+	async function importImageSearchResult(result: ImageSearchResult) {
+		if (importingImageResultId) return
+
+		importingImageResultId = result.id
+		imageSearchStatus = ''
+		imageSearchError = ''
+		try {
+			const nextImageDataUrl = await imageSearchProviderInstance.importResult(result)
+			updateSelectedCard({ imageDataUrl: nextImageDataUrl, imageTransform: undefined })
+			pngStatus = ''
+			imageSearchStatus = 'Image added.'
+			closeImageSearch()
+		} catch (error) {
+			imageSearchError = error instanceof Error ? error.message : 'Could not import image.'
+		} finally {
+			importingImageResultId = ''
+		}
+	}
+
 	function clearImage() {
-		updateSelectedCard({ imageDataUrl: undefined })
+		imageTransformDraft = undefined
+		updateSelectedCard({ imageDataUrl: undefined, imageTransform: undefined })
 		pngStatus = ''
 	}
 
@@ -1262,8 +1544,56 @@
 			reader.onerror = () => reject(new Error('Could not read image.'))
 			reader.readAsDataURL(file)
 		})
-		updateSelectedCard({ imageDataUrl: nextImageDataUrl })
+		imageTransformDraft = undefined
+		updateSelectedCard({ imageDataUrl: nextImageDataUrl, imageTransform: undefined })
 		pngStatus = ''
+	}
+
+	function startImagePan(event: PointerEvent) {
+		if (!imageDataUrl || !previewCanvas) return
+		const target = event.currentTarget as HTMLCanvasElement
+		target.setPointerCapture(event.pointerId)
+		panDrag = {
+			pointerId: event.pointerId,
+			startClientX: event.clientX,
+			startClientY: event.clientY,
+			startOffsetX: previewImageTransform?.offsetX ?? 0,
+			startOffsetY: previewImageTransform?.offsetY ?? 0
+		}
+	}
+
+	function moveImagePan(event: PointerEvent) {
+		if (!panDrag || panDrag.pointerId !== event.pointerId || !previewCanvas) return
+		const rect = previewCanvas.getBoundingClientRect()
+		if (rect.width <= 0 || rect.height <= 0) return
+		queueImagePanDraft({
+			zoom: previewImageTransform?.zoom ?? 1,
+			offsetX: panDrag.startOffsetX + ((event.clientX - panDrag.startClientX) / rect.width) * 2,
+			offsetY: panDrag.startOffsetY + ((event.clientY - panDrag.startClientY) / rect.height) * 2
+		})
+	}
+
+	function stopImagePan(event: PointerEvent) {
+		if (!panDrag || panDrag.pointerId !== event.pointerId) return
+		panDrag = undefined
+		const nextTransform = queuedPanTransform ?? imageTransformDraft ?? imageTransform
+		queuedPanTransform = undefined
+		if (panFrame) {
+			cancelAnimationFrame(panFrame)
+			panFrame = 0
+		}
+		updateSelectedCard({ imageTransform: nextTransform })
+		imageTransformDraft = undefined
+		pngStatus = ''
+	}
+
+	function queueImagePanDraft(transform: Partial<ImageTransform>) {
+		queuedPanTransform = normalizeImageTransform(transform)
+		if (panFrame) return
+		panFrame = requestAnimationFrame(() => {
+			panFrame = 0
+			imageTransformDraft = queuedPanTransform
+		})
 	}
 
 	function selectCard(id: string) {
@@ -1307,11 +1637,16 @@
 	}
 
 	function updateImagePresenceFilter(value: string) {
-		if (value === 'missing' || value === 'present') {
-			imagePresenceFilter = value
-			return
-		}
-		imagePresenceFilter = 'all'
+		imagePresenceFilter = normalizePresenceFilter(value)
+	}
+
+	function updateVersoPresenceFilter(value: string) {
+		versoPresenceFilter = normalizePresenceFilter(value)
+	}
+
+	function normalizePresenceFilter(value: string): PresenceFilter {
+		if (value === 'missing' || value === 'present') return value
+		return 'all'
 	}
 
 	function setIndeterminate(node: HTMLInputElement, value: boolean) {
@@ -1360,7 +1695,11 @@
 
 	function candidateCardsFor(card: StoredCard): StoredCard[] {
 		return cards
-			.filter((candidate) => candidate.id !== card.id)
+			.filter(
+				(candidate) =>
+					candidate.id !== card.id &&
+					(!candidate.versoCardId || candidate.id === card.versoCardId)
+			)
 			.sort((left, right) => cardLabel(left).localeCompare(cardLabel(right)))
 	}
 
@@ -1494,12 +1833,15 @@
 					normalizeCardImage(candidate.imageDataUrl).length > 0
 						? normalizeCardImage(candidate.imageDataUrl)
 						: undefined
+				const imageTransform = imageDataUrl
+					? normalizeImageTransformForImport(candidate.imageTransform)
+					: undefined
 				const versoCardId =
 					typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim()
 						? candidate.versoCardId.trim()
 						: undefined
 				if (!imageDataUrl && Object.keys(texts).length === 0) return undefined
-				return { id, imageDataUrl, texts, versoCardId }
+				return { id, imageDataUrl, imageTransform, texts, versoCardId }
 			})
 			.filter((card): card is ImportCardInput => Boolean(card))
 	}
@@ -1635,18 +1977,22 @@
 	}
 
 	function normalizeStoredCardForImport(card: StoredCard): StoredCard {
+		const imageDataUrl = normalizeCardImage(card.imageDataUrl) || undefined
 		return {
 			id: card.id,
-			imageDataUrl: normalizeCardImage(card.imageDataUrl) || undefined,
+			imageDataUrl,
+			imageTransform: imageDataUrl ? normalizeImageTransformForImport(card.imageTransform) : undefined,
 			texts: normalizeTextRecord(card.texts),
 			versoCardId: normalizeImportCardId(card.versoCardId)
 		}
 	}
 
 	function normalizeImportCardInput(card: ImportCardInput): ImportCardInput {
+		const imageDataUrl = normalizeCardImage(card.imageDataUrl) || undefined
 		return {
 			id: normalizeImportCardId(card.id),
-			imageDataUrl: normalizeCardImage(card.imageDataUrl) || undefined,
+			imageDataUrl,
+			imageTransform: imageDataUrl ? normalizeImageTransformForImport(card.imageTransform) : undefined,
 			texts: normalizeTextRecord(card.texts),
 			versoCardId: normalizeImportCardId(card.versoCardId)
 		}
@@ -1664,6 +2010,11 @@
 		return typeof imageDataUrl === 'string' ? imageDataUrl.trim() : ''
 	}
 
+	function normalizeImageTransformForImport(transform: unknown): ImageTransform | undefined {
+		if (!transform || typeof transform !== 'object') return undefined
+		return normalizeImageTransform(transform as Partial<ImageTransform>)
+	}
+
 	function normalizeTextRecord(texts: unknown): Record<string, string> {
 		if (!texts || typeof texts !== 'object' || Array.isArray(texts)) return {}
 
@@ -1678,6 +2029,7 @@
 	function cardFingerprint(card: ImportCardInput | StoredCard): string {
 		return JSON.stringify({
 			imageDataUrl: normalizeCardImage(card.imageDataUrl),
+			imageTransform: normalizeImageTransformForImport(card.imageTransform),
 			texts: normalizeTextRecord(card.texts)
 		})
 	}
@@ -1719,6 +2071,7 @@
 			cards: cards.map((card) => ({
 				id: card.id,
 				imageDataUrl: card.imageDataUrl,
+				imageTransform: card.imageTransform,
 				texts: card.texts,
 				versoCardId: card.versoCardId
 			}))
@@ -1755,7 +2108,7 @@
 		pngStatus = ''
 		try {
 			await renderCardToCanvas(
-				{ imageDataUrl, entries, gridSize, reserveQrMargin, showQrText },
+				{ imageDataUrl, imageTransform, entries, gridSize, reserveQrMargin, showQrText },
 				exportCanvas
 			)
 			const blob = await canvasToBlob(exportCanvas)
@@ -2070,7 +2423,21 @@
 										</div>
 									</th>
 								{/each}
-								<th>Verso</th>
+								<th>
+									<div class="verso-column-header">
+										<span class="column-title">Verso</span>
+										<select
+											class="presence-filter"
+											value={versoPresenceFilter}
+											aria-label="Filter verso links"
+											on:change={(event) => updateVersoPresenceFilter(event.currentTarget.value)}
+										>
+											<option value="all">All</option>
+											<option value="missing">Missing</option>
+											<option value="present">Present</option>
+										</select>
+									</div>
+								</th>
 									<th aria-label="Delete"></th>
 							</tr>
 						</thead>
@@ -2111,9 +2478,7 @@
 												<option value="">No verso</option>
 												{#each candidateCardsFor(card) as candidate}
 													<option value={candidate.id}>
-														{cardLabel(candidate)}{candidate.versoCardId
-															? ` - linked to ${cardLabel(cards.find((entry) => entry.id === candidate.versoCardId))}`
-															: ''}
+														{cardLabel(candidate)}
 													</option>
 												{/each}
 											</select>
@@ -2343,6 +2708,99 @@
 						{/each}
 					</div>
 
+					<div class="image-panel">
+						<div class="image-panel-header">
+							<p class="eyebrow">Image</p>
+							{#if imageDataUrl}
+								<button
+									type="button"
+									class="secondary icon-button"
+									aria-label="Clear image"
+									title="Clear image"
+									on:click={clearImage}
+								>
+									<X size={18} aria-hidden="true" />
+								</button>
+							{/if}
+						</div>
+						<div class="image-actions">
+							<input
+								class="paste-target"
+								readonly
+								aria-label="Paste image here"
+								placeholder="Click here, then paste"
+								on:paste={handleImagePaste}
+								on:keydown={(event) => {
+									if (event.ctrlKey || event.metaKey) return
+									if (
+										event.key.length === 1 ||
+										event.key === 'Backspace' ||
+										event.key === 'Delete'
+									) {
+										event.preventDefault()
+									}
+								}}
+							/>
+							<button type="button" class="secondary" on:click={chooseImage}>
+								<ImagePlus size={18} aria-hidden="true" />
+								Choose
+							</button>
+							<button type="button" class="secondary" on:click={openImageSearch}>
+								<Search size={18} aria-hidden="true" />
+								Search
+							</button>
+						</div>
+						{#if imageDataUrl}
+							<div class="image-adjustments">
+								<label>
+									<span><Maximize2 size={16} aria-hidden="true" /> Size</span>
+									<input
+										type="range"
+										min="0.5"
+										max="3"
+										step="0.01"
+										value={imageTransform?.zoom ?? 1}
+										on:input={(event) =>
+											updateImageTransform({ zoom: Number(event.currentTarget.value) })}
+									/>
+								</label>
+								<label>
+									<span>Pan X</span>
+									<input
+										type="range"
+										min="-1"
+										max="1"
+										step="0.01"
+										value={imageTransform?.offsetX ?? 0}
+										on:input={(event) =>
+											updateImageTransform({ offsetX: Number(event.currentTarget.value) })}
+									/>
+								</label>
+								<label>
+									<span>Pan Y</span>
+									<input
+										type="range"
+										min="-1"
+										max="1"
+										step="0.01"
+										value={imageTransform?.offsetY ?? 0}
+										on:input={(event) =>
+											updateImageTransform({ offsetY: Number(event.currentTarget.value) })}
+									/>
+								</label>
+								<button
+									type="button"
+									class="secondary"
+									disabled={!imageTransform}
+									on:click={resetImageTransform}
+								>
+									<RotateCcw size={16} aria-hidden="true" />
+									Reset
+								</button>
+							</div>
+						{/if}
+					</div>
+
 					{#if translationError}
 						<p class="status error">{translationError}</p>
 					{:else if translationStatus}
@@ -2382,39 +2840,15 @@
 						on:dragleave={() => (isDragging = false)}
 						on:drop={onDrop}
 					>
-						<canvas bind:this={previewCanvas} aria-label="Generated card preview"></canvas>
-						<div class:image-prompt-empty={!imageDataUrl} class="image-prompt">
-							<ImagePlus size={34} aria-hidden="true" />
-							<input
-								class="paste-target"
-								readonly
-								aria-label="Paste image here"
-								placeholder="Click here, then paste"
-								on:paste={handleImagePaste}
-								on:keydown={(event) => {
-									if (event.ctrlKey || event.metaKey) return
-									if (
-										event.key.length === 1 ||
-										event.key === 'Backspace' ||
-										event.key === 'Delete'
-									) {
-										event.preventDefault()
-									}
-								}}
-							/>
-							<button type="button" class="secondary" on:click={chooseImage}>Choose image</button>
-							{#if imageDataUrl}
-								<button
-									type="button"
-									class="secondary icon-button"
-									aria-label="Clear image"
-									title="Clear image"
-									on:click={clearImage}
-								>
-									<X size={18} aria-hidden="true" />
-								</button>
-							{/if}
-						</div>
+						<canvas
+							bind:this={previewCanvas}
+							class:can-pan={Boolean(imageDataUrl)}
+							aria-label="Generated card preview"
+							on:pointerdown={startImagePan}
+							on:pointermove={moveImagePan}
+							on:pointerup={stopImagePan}
+							on:pointercancel={stopImagePan}
+						></canvas>
 					</div>
 
 					{#if renderError}
@@ -2429,6 +2863,120 @@
 
 	<canvas bind:this={exportCanvas} class="export-canvas" aria-hidden="true"></canvas>
 	<canvas bind:this={pdfCanvas} class="export-canvas" aria-hidden="true"></canvas>
+
+	{#if showImageSearchPanel}
+		<div class="modal-backdrop">
+			<button
+				type="button"
+				class="modal-scrim"
+				aria-label="Close image search"
+				on:click={closeImageSearch}
+			></button>
+			<div
+				class="image-search-modal"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="image-search-title"
+				tabindex="-1"
+			>
+				<div class="settings-header">
+					<div>
+						<p class="eyebrow">Image source</p>
+						<h2 id="image-search-title">Search image</h2>
+					</div>
+					<button
+						type="button"
+						class="secondary icon-button"
+						aria-label="Close image search"
+						title="Close image search"
+						on:click={closeImageSearch}
+					>
+						<X size={18} aria-hidden="true" />
+					</button>
+				</div>
+
+				{#if availableImageSearchProviders.length > 0}
+					<div class="image-provider-tabs" aria-label="Image source">
+						{#each availableImageSearchProviders as provider}
+							<button
+								type="button"
+								class:active={provider.id === imageSearchProvider}
+								class="secondary"
+								on:click={() => updateImageSearchProvider(provider.id)}
+							>
+								{provider.label}
+							</button>
+						{/each}
+					</div>
+				{/if}
+
+				<form
+					class="image-search-form"
+					on:submit|preventDefault={() => searchImages(1)}
+				>
+					<input
+						value={imageSearchQuery}
+						placeholder="apple"
+						aria-label="Image search query"
+						spellcheck="false"
+						on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
+					/>
+					<button type="submit" disabled={isSearchingImages || availableImageSearchProviders.length === 0}>
+						<Search size={18} aria-hidden="true" />
+						{isSearchingImages ? 'Searching...' : 'Search'}
+					</button>
+				</form>
+
+				{#if imageSearchError}
+					<p class="status error">{imageSearchError}</p>
+				{:else if imageSearchStatus}
+					<p class="status">{imageSearchStatus}</p>
+				{/if}
+
+				{#if imageSearchResults.length > 0}
+					<div class="image-search-results">
+						{#each imageSearchResults as result}
+							<button
+								type="button"
+								class="image-result-button"
+								disabled={Boolean(importingImageResultId)}
+								aria-label={`Use ${result.alt}`}
+								title={result.alt}
+								on:click={() => importImageSearchResult(result)}
+							>
+								<img src={result.thumbUrl} alt="" />
+							</button>
+						{/each}
+					</div>
+				{/if}
+
+				<div class="image-search-footer">
+					<a href={imageSearchProviderSourceUrl(imageSearchProvider)} target="_blank" rel="noreferrer">
+						Results from {imageSearchProviderInstance.label}
+					</a>
+					<div class="image-search-pages">
+						<button
+							type="button"
+							class="secondary"
+							disabled={imageSearchPage <= 1 || isSearchingImages}
+							on:click={() => searchImages(imageSearchPage - 1)}
+						>
+							Previous
+						</button>
+						<span>Page {imageSearchPage} of {imageSearchTotalPages}</span>
+						<button
+							type="button"
+							class="secondary"
+							disabled={!imageSearchHasNextPage || isSearchingImages}
+							on:click={() => searchImages(imageSearchPage + 1)}
+						>
+							Next
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
 
 	{#if showSettingsPanel}
 		<div class="modal-backdrop">
@@ -2488,62 +3036,82 @@
 						</article>
 					{/each}
 				</div>
-				<label class="api-key-field">
-					Translation provider
-					<select
-						value={translationProvider}
-						on:change={(event) => updateTranslationProvider(event.currentTarget.value)}
-					>
-						{#each TRANSLATION_PROVIDERS as provider}
-							<option value={provider.value}>{provider.label}</option>
-						{/each}
-					</select>
-				</label>
-				<label class="api-key-field">
-					{providerLabel(translationProvider)} API key
-					<input
-						type="password"
-						value={currentTranslationProviderConfig.apiKey}
-						placeholder="Stored locally"
-						spellcheck="false"
-						autocomplete="off"
-						on:input={(event) =>
-							updateTranslationProviderConfig('apiKey', event.currentTarget.value)}
-					/>
-				</label>
-				<label class="api-key-field">
-					{providerLabel(translationProvider)} model
-					<input
-						value={currentTranslationProviderConfig.model}
-						placeholder={translationProviderConfigs[translationProvider].model}
-						spellcheck="false"
-						autocomplete="off"
-						on:input={(event) =>
-							updateTranslationProviderConfig('model', event.currentTarget.value)}
-					/>
-				</label>
-				{#if isOpenAiCompatibleProvider(translationProvider)}
+				<div class="settings-section">
+					<p class="eyebrow">Image sources</p>
+					{#each IMAGE_SEARCH_PROVIDERS as provider}
+						<label class="api-key-field">
+							{provider.label} API key
+							<input
+								type="password"
+								value={imageSearchProviderConfigs[provider.id].apiKey}
+								placeholder="Stored locally"
+								spellcheck="false"
+								autocomplete="off"
+								on:input={(event) =>
+									updateImageSearchProviderConfig(provider.id, 'apiKey', event.currentTarget.value)}
+							/>
+						</label>
+					{/each}
+				</div>
+				<div class="settings-section">
+					<p class="eyebrow">Translation</p>
 					<label class="api-key-field">
-						Base URL
+						Translation provider
+						<select
+							value={translationProvider}
+							on:change={(event) => updateTranslationProvider(event.currentTarget.value)}
+						>
+							{#each TRANSLATION_PROVIDERS as provider}
+								<option value={provider.value}>{provider.label}</option>
+							{/each}
+						</select>
+					</label>
+					<label class="api-key-field">
+						{providerLabel(translationProvider)} API key
 						<input
-							value={currentTranslationProviderConfig.baseUrl ?? ''}
-							placeholder="https://api.example.com/v1"
+							type="password"
+							value={currentTranslationProviderConfig.apiKey}
+							placeholder="Stored locally"
 							spellcheck="false"
 							autocomplete="off"
 							on:input={(event) =>
-								updateTranslationProviderConfig('baseUrl', event.currentTarget.value)}
+								updateTranslationProviderConfig('apiKey', event.currentTarget.value)}
 						/>
 					</label>
-				{/if}
-				<label class="api-key-field">
-					Translation prompt template
-					<textarea
-						value={translationPromptTemplate}
-						rows="9"
-						spellcheck="false"
-						on:input={(event) => (translationPromptTemplate = event.currentTarget.value)}
-					></textarea>
-				</label>
+					<label class="api-key-field">
+						{providerLabel(translationProvider)} model
+						<input
+							value={currentTranslationProviderConfig.model}
+							placeholder={translationProviderConfigs[translationProvider].model}
+							spellcheck="false"
+							autocomplete="off"
+							on:input={(event) =>
+								updateTranslationProviderConfig('model', event.currentTarget.value)}
+						/>
+					</label>
+					{#if isOpenAiCompatibleProvider(translationProvider)}
+						<label class="api-key-field">
+							Base URL
+							<input
+								value={currentTranslationProviderConfig.baseUrl ?? ''}
+								placeholder="https://api.example.com/v1"
+								spellcheck="false"
+								autocomplete="off"
+								on:input={(event) =>
+									updateTranslationProviderConfig('baseUrl', event.currentTarget.value)}
+							/>
+						</label>
+					{/if}
+					<label class="api-key-field">
+						Translation prompt template
+						<textarea
+							value={translationPromptTemplate}
+							rows="9"
+							spellcheck="false"
+							on:input={(event) => (translationPromptTemplate = event.currentTarget.value)}
+						></textarea>
+					</label>
+				</div>
 			</div>
 		</div>
 	{/if}

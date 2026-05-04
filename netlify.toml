@@ -1,0 +1,13 @@
+# netlify.toml
+[build]
+  command = "npm --prefix generator ci && npm --prefix generator run build"
+  publish = "generator/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  JAVA_VERSION = "17"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
