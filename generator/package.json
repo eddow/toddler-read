@@ -10,6 +10,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@google/genai": "^1.51.0",
     "@picocss/pico": "^2.1.1",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "lucide-svelte": "^0.468.0",

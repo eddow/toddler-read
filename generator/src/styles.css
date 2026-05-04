@@ -186,6 +186,16 @@ input::placeholder {
   gap: 12px;
 }
 
+.language-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-actions > span {
+  display: inline-flex;
+}
+
 .app-header {
   align-items: flex-start;
 }
@@ -241,7 +251,7 @@ input::placeholder {
 
 .language-row {
   display: grid;
-  grid-template-columns: 34px 48px 1fr;
+  grid-template-columns: 52px 1fr;
   align-items: end;
   gap: 10px;
   margin: 0;
@@ -254,7 +264,7 @@ input::placeholder {
 
 .settings-language-row {
   display: grid;
-  grid-template-columns: 34px 1fr 58px;
+  grid-template-columns: 1fr 58px;
   align-items: end;
   gap: 10px;
   margin: 0;
@@ -271,13 +281,26 @@ input::placeholder {
 
 .language-row input,
 .settings-language-row input,
-.api-key-field input {
+.api-key-field input,
+.api-key-field textarea {
   margin-top: 4px;
-  height: 42px;
   font-size: 0.95rem;
 }
 
-.language-index,
+.language-row input,
+.settings-language-row input,
+.api-key-field input {
+  height: 42px;
+}
+
+.api-key-field textarea {
+  min-height: 150px;
+  resize: vertical;
+  color: var(--field-ink);
+  background-color: var(--field-bg);
+  border-color: var(--line);
+}
+
 .readonly-marker,
 .marker-field input {
   display: grid;
@@ -288,17 +311,58 @@ input::placeholder {
   font-weight: 800;
 }
 
-.language-index {
-  font-size: 1.2rem;
-  line-height: 1;
-}
-
 .readonly-marker {
   color: var(--ink);
   font-size: 1.4rem;
   background: var(--field-bg);
   border: 1px solid var(--line);
   border-radius: 8px;
+}
+
+.language-tools {
+  display: grid;
+  gap: 5px;
+  width: 52px;
+}
+
+.language-tools .readonly-marker {
+  width: 52px;
+}
+
+.translation-option-control {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.translation-option-control label {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--accent-strong);
+  background: var(--field-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.translation-option-control label.active {
+  color: var(--accent-on);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.translation-option-control input {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .modal-backdrop {
