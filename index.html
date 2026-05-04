@@ -77,25 +77,66 @@
 			const audio = document.getElementById('audio');
 			const playBtn = document.getElementById('playBtn');
 			const stopBtn = document.getElementById('stopBtn');
+			let currentTts = null;
 
 			function closePage() {
 				if (!audio.paused) { audio.pause(); audio.currentTime = 0; }
+				const synth = getSpeechSynthesis();
+				if (synth) synth.cancel();
 				window.close();
 				setTimeout(() => { if (!window.closed) window.history.back(); }, 100);
 			}
 
 			function loadAndTryPlay(src) {
+				currentTts = null;
 				audio.src = src;
 				audio.load();
 				// Try to play (may be blocked, but it's manual mode so user will tap play)
 				audio.play().catch(() => {});
 			}
 
+			function getSpeechSynthesis() {
+				return window.speechSynthesis || null;
+			}
+
+			function parseTtsContent(content) {
+				const match = content.match(/^tts:([a-z]{2,3}(?:-[a-z0-9]{2,8})*):([\s\S]+)$/i);
+				if (!match) return null;
+
+				return {
+					lang: match[1],
+					text: match[2].trim(),
+				};
+			}
+
+			function speakCurrentTts() {
+				if (!currentTts) return;
+
+				const synth = getSpeechSynthesis();
+				if (!synth || !window.SpeechSynthesisUtterance) return;
+
+				synth.cancel();
+				const utterance = new SpeechSynthesisUtterance(currentTts.text);
+				utterance.lang = currentTts.lang;
+				synth.speak(utterance);
+			}
+
+			function loadAndTrySpeak(tts) {
+				currentTts = tts;
+				audio.pause();
+				audio.removeAttribute('src');
+				audio.load();
+				speakCurrentTts();
+			}
+
 			// --- Get source from hash ---
 			const hash = decodeURIComponent(window.location.hash.substring(1));
+			const tts = hash ? parseTtsContent(hash) : null;
 			const src = hash || null;
 
-			if (src) {
+			if (tts && tts.text) {
+				loadAndTrySpeak(tts);
+			} else if (src) {
 				loadAndTryPlay(src);
 			} else {
 				// No hash – play fallback then close
@@ -117,6 +158,11 @@
 
 			// --- Play button: restart sound ---
 			playBtn.addEventListener('click', () => {
+				if (currentTts) {
+					speakCurrentTts();
+					return;
+				}
+
 				audio.currentTime = 0;
 				audio.play().catch(() => {});
 			});

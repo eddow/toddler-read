@@ -208,6 +208,8 @@
 			let scanTimer = null;
 			let scanning = false;
 			let currentSoundSrc = '';
+			let currentTts = null;
+			let currentSpeechUtterance = null;
 
 			// ---- Screen switching ----
 			function showScanner() {
@@ -227,7 +229,7 @@
 				showPlayer();
 			}
 			function returnToScanner() {
-				stopAudio();
+				stopPlayback();
 				showScanner();
 				setScanMessage('');
 				startScanning();
@@ -250,6 +252,7 @@
 			});
 
 			function loadAndPlay(src) {
+				currentTts = null;
 				currentSoundSrc = src;
 				audio.src = src;
 				audio.load();
@@ -259,12 +262,77 @@
 				});
 			}
 
+			function getSpeechSynthesis() {
+				return window.speechSynthesis || null;
+			}
+
+			function parseTtsContent(content) {
+				const match = content.match(/^tts:([a-z]{2,3}(?:-[a-z0-9]{2,8})*):([\s\S]+)$/i);
+				if (!match) return null;
+
+				return {
+					lang: match[1],
+					text: match[2].trim(),
+				};
+			}
+
+			function speakCurrentTts() {
+				if (!currentTts) return;
+
+				const synth = getSpeechSynthesis();
+				if (!synth || !window.SpeechSynthesisUtterance) {
+					soundLabel.textContent = 'Text-to-speech is not available';
+					showControlPlayer();
+					return;
+				}
+
+				currentSpeechUtterance = null;
+				synth.cancel();
+				const utterance = new SpeechSynthesisUtterance(currentTts.text);
+				currentSpeechUtterance = utterance;
+				utterance.lang = currentTts.lang;
+				utterance.onend = () => {
+					if (utterance !== currentSpeechUtterance) return;
+					returnToScanner();
+				};
+				utterance.onerror = () => {
+					if (utterance !== currentSpeechUtterance) return;
+					soundLabel.textContent = 'Could not speak - scan again';
+					showControlPlayer();
+				};
+				synth.speak(utterance);
+			}
+
+			function loadAndSpeak(tts) {
+				currentSoundSrc = '';
+				currentTts = tts;
+				audio.removeAttribute('src');
+				audio.load();
+				speakCurrentTts();
+			}
+
 			function stopAudio() {
 				audio.pause();
 				if (audio.src) audio.currentTime = 0;
 			}
 
+			function stopSpeech() {
+				const synth = getSpeechSynthesis();
+				currentSpeechUtterance = null;
+				if (synth) synth.cancel();
+			}
+
+			function stopPlayback() {
+				stopAudio();
+				stopSpeech();
+			}
+
 			async function playCurrentSound() {
+				if (currentTts) {
+					speakCurrentTts();
+					return;
+				}
+
 				if (!currentSoundSrc) return;
 				audio.currentTime = 0;
 				try {
@@ -277,20 +345,25 @@
 			// ---- Handle scanned content ----
 			function handleScannedContent(content) {
 				stopScanning();
-				stopAudio();
+				stopPlayback();
 
 				let src = null;
 				let label = content;
+				const tts = parseTtsContent(content);
 
-				// Case 1: It's a URL → treat as sound URL
-				if (content.startsWith('http://') || content.startsWith('https://')) {
+				// Case 1: TTS content in the form tts:en:Hello
+				if (tts && tts.text) {
+					label = tts.text;
+				}
+				// Case 2: It's a URL → treat as sound URL
+				else if (content.startsWith('http://') || content.startsWith('https://')) {
 					src = content;
 				}
-				// Case 2: It's a data URI (base64-encoded audio embedded in QR)
+				// Case 3: It's a data URI (base64-encoded audio embedded in QR)
 				else if (content.startsWith('data:')) {
 					src = content;
 				}
-				// Case 3: It looks like a base64-encoded audio (raw data in QR)
+				// Case 4: It looks like a base64-encoded audio (raw data in QR)
 				// QR can store raw bytes. We check if it's a plausible base64 audio.
 				// We'll try to construct a data URI from it.
 				else {
@@ -310,7 +383,11 @@
 
 				soundLabel.textContent = label.length > 60 ? label.substring(0, 60) + '…' : label;
 				showSimplePlayer();
-				loadAndPlay(src);
+				if (tts && tts.text) {
+					loadAndSpeak(tts);
+				} else {
+					loadAndPlay(src);
+				}
 			}
 
 			// ---- Scanning logic ----
@@ -459,7 +536,7 @@
 			// ---- Cleanup on page unload ----
 			window.addEventListener('beforeunload', () => {
 				stopScanning();
-				stopAudio();
+				stopPlayback();
 			});
 
 			// ---- Initial state ----
