@@ -1,6 +1,6 @@
 # netlify.toml
 [build]
-  command = "npm --prefix generator ci && npm --prefix generator run build"
+  command = "npm run build:all"
   publish = "generator/dist"
 
 [build.environment]
