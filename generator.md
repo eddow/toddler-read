@@ -1,0 +1,181 @@
+# Toddler Read Generator
+
+The generator is a Svelte/Vite app in `generator/`. It creates printable QR
+cards for the Toddler Read client. Each card can contain an image plus up to
+four language-specific QR codes placed in the corners.
+
+## What It Generates
+
+Each QR code contains a text-to-speech payload:
+
+```text
+tts:<language-code>:<text>
+```
+
+For example:
+
+```text
+tts:en:Hello
+tts:ro:Buna ziua
+```
+
+The reader client scans those payloads and speaks the text using Android native
+TTS or browser speech synthesis.
+
+## Running Locally
+
+Install dependencies:
+
+```sh
+npm --prefix generator install
+```
+
+Start the dev server:
+
+```sh
+npm --prefix generator run dev
+```
+
+Run Svelte checks:
+
+```sh
+npm --prefix generator run check
+```
+
+Build the generator:
+
+```sh
+npm --prefix generator run build
+```
+
+The generator `build` script first runs the root Android build, then runs Vite.
+From the repo root, this equivalent combined command is also available:
+
+```sh
+npm run buld:all
+```
+
+## Android APK Link
+
+The generator displays a QR/link for the Android APK.
+
+During development, `/tr.apk` is served from:
+
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+During production build, `generator/vite.config.ts` copies the APK to:
+
+```text
+generator/dist/tr.apk
+```
+
+If the Android APK has not been built yet, the generator build fails with a
+message telling you to run `npm run android:build`.
+
+## Card Workflow
+
+Use the generator to:
+
+- Create new cards.
+- Attach or paste an image for the card.
+- Enter text for each configured language.
+- Translate missing texts from selected source languages.
+- Preview the printable PNG.
+- Open the generated PNG in a new tab.
+- Manage multiple cards in a table.
+- Import and export the card library as JSON.
+
+Cards are stored locally in the browser with IndexedDB under the
+`toddler-read-generator` database. UI settings such as language setup, grid
+size, view mode, translation options, and provider configuration are stored in
+local storage.
+
+## Card Layout
+
+The generator supports A4 grid sizes:
+
+```text
+1x1, 2x2, 3x3, 4x4
+```
+
+The selected grid size determines the exported card dimensions. The default is
+`3x3`.
+
+Options:
+
+- `QR margin` reserves extra image space around QR corners.
+- `QR text` prints a short text label near each QR code.
+- Language flags/markers are shown over QR codes and can be customized in
+  Settings.
+
+## Languages
+
+Language setup lives in Settings. Each configured corner has:
+
+- `Code`: the language code used in the generated `tts:` payload.
+- `Flag`: the marker shown on the QR code.
+
+The generator auto-picks common flag markers for language or region codes when
+possible. Custom markers can be entered manually.
+
+## Translation
+
+Translation is optional. The generator supports:
+
+- Gemini.
+- OpenAI-compatible providers.
+- Custom OpenAI-compatible endpoints.
+
+Settings store the provider, API key, model, base URL when needed, and prompt
+template locally in the browser.
+
+In the editor, each language row has translation controls:
+
+- Source: use this row's text as source context.
+- Produce: generate text for this row.
+
+The Translate button is enabled when there is an API key, model, at least one
+source text, and at least one target language.
+
+## Import And Export
+
+Export downloads:
+
+```text
+toddler-read-cards.json
+```
+
+The JSON contains:
+
+```json
+{
+  "version": 1,
+  "cards": [
+    {
+      "imageDataUrl": "data:image/...",
+      "texts": {
+        "en": "Hello",
+        "ro": "Buna ziua"
+      }
+    }
+  ]
+}
+```
+
+Import merges cards when possible:
+
+- Exact duplicates are skipped.
+- Cards with the same image and missing language texts are merged.
+- Cards with the same image but conflicting text are imported separately.
+
+## Build Outputs
+
+After a successful generator build:
+
+```text
+generator/dist/index.html
+generator/dist/assets/
+generator/dist/tr.apk
+```

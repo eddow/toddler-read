@@ -1,27 +1,48 @@
 # Toddler Read Client
 
-This app turns QR codes into a very simple audio player for young children. The
-client scans one QR code, stops scanning, plays or speaks the content, then
-returns to the scanner when playback finishes or when Stop is pressed.
+The client is the playback side of Toddler Read. It turns QR payloads into a
+simple full-screen audio or text-to-speech experience, using very large controls
+for young children.
 
-## Client Entry Points
+## Entry Points
 
-- `reader/index.html` is the main scanner used by the Android/Capacitor app.
-- `index.html` is a direct player that reads the content from the URL hash.
+- `reader/index.html` is the QR scanner used by the Android/Capacitor app.
+- `index.html` is a direct browser player that reads a payload from the URL
+  hash.
 
-The direct player can be opened with URLs like:
+Direct player examples:
 
 ```text
 index.html#tts:en:Hello
+index.html#tts:ro:Buna%20ziua
 index.html#https%3A%2F%2Fexample.com%2Fsound.mp3
 ```
 
-## QR Code Payloads
+If the direct player has no hash, it tries to play `no.mp3`.
 
-Each QR code contains plain text. The client decides what to do from the
+## Scanner Flow
+
+`reader/index.html` starts on the camera scanner. It uses the browser
+`BarcodeDetector` API when QR support is available, and falls back to `jsQR`
+from `reader/jsQR.js`.
+
+The flow is:
+
+1. Start the environment-facing camera.
+2. Poll for QR codes.
+3. Stop scanning when a QR code is found.
+4. Play audio or speak text from the QR payload.
+5. Return to the scanner when playback ends or Stop is pressed.
+
+Camera access requires HTTPS or localhost in a browser. In the packaged Android
+app, Capacitor provides the app shell and permissions.
+
+## QR Payloads
+
+Each QR code contains plain text. The client chooses playback behavior from the
 payload format.
 
-### Text-to-Speech
+## Text-To-Speech
 
 Use this format:
 
@@ -41,18 +62,18 @@ tts:en-US:Hello there
 Behavior:
 
 - The client detects the `tts:` prefix.
-- In the Android app, the language code is passed to the native Android TTS
-  engine. In a regular browser, it is passed to `SpeechSynthesisUtterance.lang`.
+- The language code is passed to Android native TTS in the Android app.
+- In a regular browser, the language code is passed to
+  `SpeechSynthesisUtterance.lang`.
 - The text after the second colon is spoken.
-- Pressing Play while TTS is already speaking restarts it from the beginning.
-- Pressing Stop cancels speech and returns to scanning.
-- When speech ends, the app returns to scanning.
+- Play restarts the current utterance from the beginning.
+- Stop cancels speech and returns to scanning.
+- When speech ends, the scanner starts again.
 
-The Android app uses native Android text-to-speech through Capacitor, with the
-browser `speechSynthesis` API as a fallback for regular browser use. It does
-not use cloud TTS or API keys.
+Language codes should be normal BCP 47-style tags, such as `en`, `fr`, `ro`,
+`de`, `en-US`, or `fr-FR`. Voice selection depends on the device or browser.
 
-### Audio URL
+## Audio URL
 
 Use a full URL:
 
@@ -62,13 +83,13 @@ https://example.com/sounds/cow.mp3
 
 Behavior:
 
-- The client treats `http://` and `https://` payloads as audio URLs.
+- `http://` and `https://` payloads are treated as audio URLs.
 - The audio element loads and plays the URL.
-- Pressing Play while audio is already playing restarts from the beginning.
-- Pressing Stop stops playback and returns to scanning.
-- When audio ends, the app returns to scanning.
+- Play restarts from the beginning.
+- Stop cancels playback and returns to scanning.
+- When audio ends, the scanner starts again.
 
-### Data URI Audio
+## Data URI Audio
 
 Use a data URI:
 
@@ -76,29 +97,23 @@ Use a data URI:
 data:audio/mpeg;base64,...
 ```
 
-Behavior:
+The client plays the embedded audio through the same audio element flow.
 
-- The client treats `data:` payloads as directly embedded audio.
-- Playback behavior is the same as for audio URLs.
+## Raw Base64 Audio
 
-### Raw Base64 Audio
-
-If a payload is long base64-looking text, the client tries to play it as MP3:
+If the payload is long base64-looking text, the scanner wraps it as MP3 data:
 
 ```text
-<base64 mp3 bytes>
+data:audio/mpeg;base64,<payload>
 ```
 
-Behavior:
+This is mainly a fallback for compact audio experiments. Large audio payloads
+make QR codes dense and hard to scan, so hosted audio URLs or TTS payloads are
+usually easier.
 
-- The client checks that the payload only contains base64 characters and is
-  longer than 100 characters.
-- It wraps the payload as `data:audio/mpeg;base64,<payload>`.
-- Playback behavior is the same as for audio URLs.
+## Other Text
 
-### Other Text
-
-Any other payload is treated as a possible audio path or relative URL.
+Any other payload is treated as a possible path or relative URL.
 
 Example:
 
@@ -106,19 +121,25 @@ Example:
 sounds/cow.mp3
 ```
 
-## Playback Controls
+## Controls
 
-The player has toddler-sized Play and Stop controls.
+The scanner reader starts with a single large pause-style button while playback
+is active. Tapping it reveals Play and Stop.
 
-- Play restarts the current audio or TTS from the beginning.
-- Stop cancels the current audio or TTS and returns to scanning.
-- For the scanner flow, finishing audio or TTS also returns to scanning.
+- Play restarts the current audio or TTS.
+- Stop cancels playback and returns to scanning.
+- Playback end also returns to scanning.
 
-## TTS Notes
+The direct player shows Play and Stop immediately because it does not manage a
+camera scanner.
 
-Language codes should be normal BCP 47-style tags, such as `en`, `fr`, `ro`,
-`de`, `en-US`, or `fr-FR`.
+## Dependencies
 
-Actual voice choice depends on the Android/browser speech engine and installed
-voices. If the requested language is unavailable, the system may use a fallback
-voice or report that the language is unavailable.
+`reader/jsQR.js` is copied from the root `jsqr` dependency:
+
+```sh
+npm run reader:deps
+```
+
+`android:sync`, `android:build`, and related Android commands run this copy step
+before syncing Capacitor.
