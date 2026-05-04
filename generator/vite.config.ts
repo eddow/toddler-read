@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 
 const androidApk = resolve(__dirname, '../android/app/build/outputs/apk/debug/app-debug.apk');
 const distApk = resolve(__dirname, 'dist/tr.apk');
+const skipAndroidApk = process.env.TODDLER_READ_SKIP_APK === '1';
 
 export default defineConfig({
   plugins: [
@@ -27,6 +28,11 @@ export default defineConfig({
       },
       closeBundle() {
         if (!existsSync(androidApk)) {
+          if (skipAndroidApk) {
+            console.warn(`Skipping Android APK copy because TODDLER_READ_SKIP_APK=1.`);
+            return;
+          }
+
           throw new Error(`Android APK not found at ${androidApk}. Run npm run android:build first.`);
         }
 

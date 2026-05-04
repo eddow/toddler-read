@@ -9,6 +9,8 @@
     "android:open": "cap open android",
     "android:build": "npm run android:sync && cd android && ./gradlew assembleDebug",
     "build:all": "npm --prefix generator ci && npm --prefix generator run build",
+    "build:netlify": "npm --prefix generator ci && npm --prefix generator run build:web",
+    "buld:all": "npm run build:all",
     "android:install": "npm run android:sync && cd android && ./gradlew installDebug",
     "android:run": "cap run android",
     "android:apk": "ls -lh android/app/build/outputs/apk/debug/app-debug.apk",
