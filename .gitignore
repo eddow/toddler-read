@@ -1,3 +1,10 @@
 node_modules
-android
 *.js
+tr.apk
+
+android/.gradle/
+android/.idea/
+android/**/build/
+android/local.properties
+android/app/src/androidTest/
+android/app/src/test/

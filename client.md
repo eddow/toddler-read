@@ -41,15 +41,16 @@ tts:en-US:Hello there
 Behavior:
 
 - The client detects the `tts:` prefix.
-- The language code is passed to the device/browser TTS engine as
-  `SpeechSynthesisUtterance.lang`.
+- In the Android app, the language code is passed to the native Android TTS
+  engine. In a regular browser, it is passed to `SpeechSynthesisUtterance.lang`.
 - The text after the second colon is spoken.
 - Pressing Play while TTS is already speaking restarts it from the beginning.
 - Pressing Stop cancels speech and returns to scanning.
 - When speech ends, the app returns to scanning.
 
-The current implementation uses the browser/device `speechSynthesis` API. It
-does not use cloud TTS or API keys.
+The Android app uses native Android text-to-speech through Capacitor, with the
+browser `speechSynthesis` API as a fallback for regular browser use. It does
+not use cloud TTS or API keys.
 
 ### Audio URL
 
@@ -118,6 +119,6 @@ The player has toddler-sized Play and Stop controls.
 Language codes should be normal BCP 47-style tags, such as `en`, `fr`, `ro`,
 `de`, `en-US`, or `fr-FR`.
 
-Actual voice choice depends on the Android/WebView/browser speech engine and
-installed voices. If the requested language is unavailable, the system may use a
-fallback voice.
+Actual voice choice depends on the Android/browser speech engine and installed
+voices. If the requested language is unavailable, the system may use a fallback
+voice or report that the language is unavailable.

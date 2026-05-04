@@ -266,6 +266,10 @@
 				return window.speechSynthesis || null;
 			}
 
+			function getNativeTts() {
+				return window.Capacitor?.Plugins?.ToddlerTts || null;
+			}
+
 			function parseTtsContent(content) {
 				const match = content.match(/^tts:([a-z]{2,3}(?:-[a-z0-9]{2,8})*):([\s\S]+)$/i);
 				if (!match) return null;
@@ -278,6 +282,23 @@
 
 			function speakCurrentTts() {
 				if (!currentTts) return;
+
+				const nativeTts = getNativeTts();
+				if (nativeTts) {
+					const activeTts = currentTts;
+					nativeTts.speak({
+						lang: activeTts.lang,
+						text: activeTts.text,
+					}).then(() => {
+						if (currentTts !== activeTts) return;
+						returnToScanner();
+					}).catch((error) => {
+						if (currentTts !== activeTts) return;
+						soundLabel.textContent = error?.message || 'Could not speak - scan again';
+						showControlPlayer();
+					});
+					return;
+				}
 
 				const synth = getSpeechSynthesis();
 				if (!synth || !window.SpeechSynthesisUtterance) {
@@ -317,6 +338,8 @@
 			}
 
 			function stopSpeech() {
+				const nativeTts = getNativeTts();
+				if (nativeTts) nativeTts.stop().catch(() => {});
 				const synth = getSpeechSynthesis();
 				currentSpeechUtterance = null;
 				if (synth) synth.cancel();
