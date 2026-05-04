@@ -8,7 +8,7 @@
     "android:sync": "npm run reader:deps && cap sync android",
     "android:open": "cap open android",
     "android:build": "npm run android:sync && cd android && ./gradlew assembleDebug",
-    "buld:all": "npm run android:build && npm --prefix generator exec -- vite build",
+    "build:all": "npm --prefix generator ci && npm --prefix generator run build",
     "android:install": "npm run android:sync && cd android && ./gradlew installDebug",
     "android:run": "cap run android",
     "android:apk": "ls -lh android/app/build/outputs/apk/debug/app-debug.apk",
