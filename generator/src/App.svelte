@@ -3,6 +3,7 @@
 	import {
 		BookOpenText,
 		Columns2,
+		Copy,
 		Download,
 		ExternalLink,
 		Grid3X3,
@@ -116,11 +117,21 @@
 		lang: string
 	}
 
+	type ImportCardInput = Omit<StoredCard, 'id'>
+
+	type ImportPlan = {
+		cardsToAdd: StoredCard[]
+		cardsToMerge: StoredCard[]
+		skippedCount: number
+		conflictSeparateCount: number
+	}
+
 	let languageSetups: CornerLanguageSetup[] = defaultLanguageSetups()
 	let cards: StoredCard[] = []
 	let selectedCardId = ''
 	let workspaceView: WorkspaceView = 'split'
 	let visibleManagerLanguages: string[] = []
+	let duplicateFocus = ''
 	let cardTexts = defaultCardTexts()
 	let translationOptions = defaultTranslationOptions()
 	let translationProvider: TranslationProvider = 'gemini'
@@ -161,6 +172,13 @@
 			visibleManagerLanguages,
 			managerLanguages
 		)
+	$: duplicateColumnKeys = buildDuplicateColumnKeys(cards, visibleManagerLanguages)
+	$: if (duplicateFocus && !duplicateColumnKeys.has(duplicateFocus)) duplicateFocus = ''
+	$: displayedManagerCards = buildDisplayedManagerCards(
+		cards,
+		duplicateFocus,
+		visibleManagerLanguages
+	)
 	$: entries = buildEntries(languageSetups, cardTexts)
 	$: renderableEntries = toRenderableEntries(entries)
 	$: canExport = renderableEntries.length > 0
@@ -911,6 +929,88 @@
 		return markerForLanguage(language).marker
 	}
 
+	function duplicateColumnKeyForLanguage(language: string): string {
+		return `language:${language}`
+	}
+
+	function buildDuplicateColumnKeys(nextCards: StoredCard[], languages: string[]): Set<string> {
+		const keys = new Set<string>()
+		if (hasDuplicateValues(nextCards, 'image')) keys.add('image')
+
+		for (const language of languages) {
+			const key = duplicateColumnKeyForLanguage(language)
+			if (hasDuplicateValues(nextCards, key)) keys.add(key)
+		}
+
+		return keys
+	}
+
+	function hasDuplicateValues(nextCards: StoredCard[], focus: string): boolean {
+		for (const count of buildDuplicateValueCounts(nextCards, focus).values()) {
+			if (count > 1) return true
+		}
+
+		return false
+	}
+
+	function buildDisplayedManagerCards(
+		nextCards: StoredCard[],
+		focus: string,
+		languages: string[]
+	): StoredCard[] {
+		if (!focus) return nextCards
+
+		const duplicateCounts = buildDuplicateValueCounts(nextCards, focus)
+		return nextCards
+			.filter((card) => {
+				const value = duplicateValueForCard(card, focus)
+				return value.length > 0 && (duplicateCounts.get(value) ?? 0) > 1
+			})
+			.sort((left, right) => {
+				const valueComparison = duplicateValueForCard(left, focus).localeCompare(
+					duplicateValueForCard(right, focus)
+				)
+				if (valueComparison !== 0) return valueComparison
+
+				return managerSortLabel(left, languages).localeCompare(managerSortLabel(right, languages))
+			})
+	}
+
+	function buildDuplicateValueCounts(nextCards: StoredCard[], focus: string): Map<string, number> {
+		const counts = new Map<string, number>()
+		for (const card of nextCards) {
+			const value = duplicateValueForCard(card, focus)
+			if (!value) continue
+			counts.set(value, (counts.get(value) ?? 0) + 1)
+		}
+
+		return counts
+	}
+
+	function duplicateValueForCard(card: StoredCard, focus: string): string {
+		if (focus === 'image') return normalizeCardImage(card.imageDataUrl)
+		if (focus.startsWith('language:')) {
+			const language = focus.slice('language:'.length)
+			return card.texts[language]?.trim() ?? ''
+		}
+
+		return ''
+	}
+
+	function managerSortLabel(card: StoredCard, languages: string[]): string {
+		for (const language of languages) {
+			const text = card.texts[language]?.trim()
+			if (text) return text
+		}
+
+		return card.id
+	}
+
+	function toggleDuplicateFocus(focus: string) {
+		duplicateFocus = duplicateFocus === focus ? '' : focus
+		deletingCardId = ''
+	}
+
 	function buildTranslationPrompt(
 		template: string,
 		sources: TranslationSource[],
@@ -1094,37 +1194,50 @@
 			const importCards = parseImportCards(payload)
 			if (importCards.length === 0) throw new Error('Import file has no cards.')
 
-			const addedCards = await addCards(importCards)
-			cards = [...cards, ...addedCards]
-			selectedCardId = addedCards[0].id
+			const importPlan = planCardImport(cards, importCards)
+			const addedCards = importPlan.cardsToAdd.length > 0 ? await addCards(importPlan.cardsToAdd) : []
+			for (const card of importPlan.cardsToMerge) {
+				await putCard(card)
+			}
+
+			cards = cards
+				.map((card) => importPlan.cardsToMerge.find((mergedCard) => mergedCard.id === card.id) ?? card)
+				.concat(addedCards)
+			if (addedCards[0]) selectedCardId = addedCards[0].id
+			else if (importPlan.cardsToMerge[0]) selectedCardId = importPlan.cardsToMerge[0].id
 			visibleManagerLanguages = normalizeVisibleManagerLanguages(
 				visibleManagerLanguages,
 				buildManagerLanguages([...cards], languageSetups)
 			)
-			libraryStatus = `Imported ${addedCards.length} ${addedCards.length === 1 ? 'card' : 'cards'}.`
+			libraryStatus = buildImportSummary({
+				importedCount: addedCards.length,
+				mergedCount: importPlan.cardsToMerge.length,
+				skippedCount: importPlan.skippedCount,
+				conflictSeparateCount: importPlan.conflictSeparateCount
+			})
 		} catch (error) {
 			libraryError = error instanceof Error ? error.message : 'Could not import cards.'
 		}
 	}
 
-	function parseImportCards(payload: unknown): Array<Omit<StoredCard, 'id'>> {
+	function parseImportCards(payload: unknown): ImportCardInput[] {
 		if (!payload || typeof payload !== 'object') return []
 		const cardsPayload = (payload as { cards?: unknown }).cards
 		if (!Array.isArray(cardsPayload)) return []
 
 		return cardsPayload
-			.map((card): Omit<StoredCard, 'id'> | undefined => {
+			.map((card): ImportCardInput | undefined => {
 				if (!card || typeof card !== 'object') return undefined
 				const candidate = card as Partial<StoredCard>
 				const texts = normalizeImportTexts(candidate.texts)
 				const imageDataUrl =
-					typeof candidate.imageDataUrl === 'string' && candidate.imageDataUrl.trim()
-						? candidate.imageDataUrl
+					normalizeCardImage(candidate.imageDataUrl).length > 0
+						? normalizeCardImage(candidate.imageDataUrl)
 						: undefined
 				if (!imageDataUrl && Object.keys(texts).length === 0) return undefined
 				return { imageDataUrl, texts }
 			})
-			.filter((card): card is Omit<StoredCard, 'id'> => Boolean(card))
+			.filter((card): card is ImportCardInput => Boolean(card))
 	}
 
 	function normalizeImportTexts(texts: unknown): Record<string, string> {
@@ -1132,9 +1245,151 @@
 
 		return Object.fromEntries(
 			Object.entries(texts)
-				.map(([language, text]) => [language.trim(), typeof text === 'string' ? text : ''])
-				.filter(([language]) => language.length > 0)
+				.map(([language, text]) => [language.trim(), typeof text === 'string' ? text.trim() : ''])
+				.filter(([language, text]) => language.length > 0 && text.length > 0)
 		)
+	}
+
+	function planCardImport(existingCards: StoredCard[], importCards: ImportCardInput[]): ImportPlan {
+		const existingCardIds = new Set(existingCards.map((card) => card.id))
+		const workingCards = existingCards.map((card) => normalizeStoredCardForImport(card))
+		const cardsToAdd: StoredCard[] = []
+		const cardsToMerge = new Map<string, StoredCard>()
+		let skippedCount = 0
+		let conflictSeparateCount = 0
+
+		for (const importCard of importCards) {
+			const normalizedImportCard = normalizeImportCardInput(importCard)
+			const exactDuplicate = workingCards.some(
+				(card) => cardFingerprint(card) === cardFingerprint(normalizedImportCard)
+			)
+
+			if (exactDuplicate) {
+				skippedCount += 1
+				continue
+			}
+
+			const sameImageCard = workingCards.find(
+				(card) => normalizeCardImage(card.imageDataUrl) === normalizeCardImage(normalizedImportCard.imageDataUrl)
+			)
+
+			if (!sameImageCard) {
+				const cardToAdd = { ...normalizedImportCard, id: createCardId() }
+				cardsToAdd.push(cardToAdd)
+				workingCards.push(cardToAdd)
+				continue
+			}
+
+			const importedEntries = Object.entries(normalizedImportCard.texts)
+			const hasConflict = importedEntries.some(
+				([language, text]) => sameImageCard.texts[language] !== undefined && sameImageCard.texts[language] !== text
+			)
+
+			if (hasConflict) {
+				const cardToAdd = { ...normalizedImportCard, id: createCardId() }
+				cardsToAdd.push(cardToAdd)
+				workingCards.push(cardToAdd)
+				conflictSeparateCount += 1
+				continue
+			}
+
+			const missingEntries = importedEntries.filter(([language]) => sameImageCard.texts[language] === undefined)
+			if (missingEntries.length === 0) {
+				skippedCount += 1
+				continue
+			}
+
+			const mergedCard = {
+				...sameImageCard,
+				texts: normalizeTextRecord({
+					...sameImageCard.texts,
+					...Object.fromEntries(missingEntries)
+				})
+			}
+			const workingIndex = workingCards.findIndex((card) => card.id === sameImageCard.id)
+			if (workingIndex >= 0) workingCards[workingIndex] = mergedCard
+			if (existingCardIds.has(mergedCard.id)) {
+				cardsToMerge.set(mergedCard.id, mergedCard)
+			} else {
+				const addIndex = cardsToAdd.findIndex((card) => card.id === mergedCard.id)
+				if (addIndex >= 0) cardsToAdd[addIndex] = mergedCard
+			}
+		}
+
+		return {
+			cardsToAdd,
+			cardsToMerge: [...cardsToMerge.values()],
+			skippedCount,
+			conflictSeparateCount
+		}
+	}
+
+	function normalizeStoredCardForImport(card: StoredCard): StoredCard {
+		return {
+			id: card.id,
+			imageDataUrl: normalizeCardImage(card.imageDataUrl) || undefined,
+			texts: normalizeTextRecord(card.texts)
+		}
+	}
+
+	function normalizeImportCardInput(card: ImportCardInput): ImportCardInput {
+		return {
+			imageDataUrl: normalizeCardImage(card.imageDataUrl) || undefined,
+			texts: normalizeTextRecord(card.texts)
+		}
+	}
+
+	function normalizeCardImage(imageDataUrl: unknown): string {
+		return typeof imageDataUrl === 'string' ? imageDataUrl.trim() : ''
+	}
+
+	function normalizeTextRecord(texts: unknown): Record<string, string> {
+		if (!texts || typeof texts !== 'object' || Array.isArray(texts)) return {}
+
+		return Object.fromEntries(
+			Object.entries(texts)
+				.map(([language, text]) => [language.trim(), typeof text === 'string' ? text.trim() : ''])
+				.filter(([language, text]) => language.length > 0 && text.length > 0)
+				.sort(([left], [right]) => left.localeCompare(right))
+		)
+	}
+
+	function cardFingerprint(card: ImportCardInput | StoredCard): string {
+		return JSON.stringify({
+			imageDataUrl: normalizeCardImage(card.imageDataUrl),
+			texts: normalizeTextRecord(card.texts)
+		})
+	}
+
+	function buildImportSummary(result: {
+		importedCount: number
+		mergedCount: number
+		skippedCount: number
+		conflictSeparateCount: number
+	}): string {
+		const parts: string[] = []
+		if (result.importedCount > 0) {
+			parts.push(
+				`Imported ${result.importedCount} ${result.importedCount === 1 ? 'card' : 'cards'}`
+			)
+		}
+		if (result.mergedCount > 0) {
+			parts.push(`Merged ${result.mergedCount}`)
+		}
+		if (result.skippedCount > 0) {
+			parts.push(
+				`Skipped ${result.skippedCount} ${result.skippedCount === 1 ? 'duplicate' : 'duplicates'}`
+			)
+		}
+		if (result.conflictSeparateCount > 0) {
+			parts.push(
+				`Kept ${result.conflictSeparateCount} ${
+					result.conflictSeparateCount === 1 ? 'conflict' : 'conflicts'
+				} separate`
+			)
+		}
+
+		return parts.length > 0 ? `${parts.join('. ')}.` : 'Nothing to import.'
 	}
 
 	function exportCards() {
@@ -1246,17 +1501,26 @@
 					<Pencil size={18} aria-hidden="true" />
 				</button>
 			</div>
-			<label class="grid-size-control toolbar-grid-control" title="A4 grid">
-				<Grid3X3 size={18} aria-hidden="true" />
-				<select value={gridSize} aria-label="A4 grid" on:change={updateGridSize}>
-					{#each GRID_SIZE_OPTIONS as option}
-						<option value={option}>{option}x{option}</option>
-					{/each}
-				</select>
-			</label>
-			<button type="button" on:click={createNewCard}>
-				<Plus size={18} aria-hidden="true" />
-				New card
+				<label class="grid-size-control toolbar-grid-control" title="A4 grid">
+					<Grid3X3 size={18} aria-hidden="true" />
+					<select value={gridSize} aria-label="A4 grid" on:change={updateGridSize}>
+						{#each GRID_SIZE_OPTIONS as option}
+							<option value={option}>{option}x{option}</option>
+						{/each}
+					</select>
+				</label>
+				<button
+					type="button"
+					class="secondary icon-button"
+					aria-label="Settings"
+					title="Settings"
+					on:click={() => (showSettingsPanel = !showSettingsPanel)}
+				>
+					<Settings size={18} aria-hidden="true" />
+				</button>
+				<button type="button" on:click={createNewCard}>
+					<Plus size={18} aria-hidden="true" />
+					New card
 			</button>
 			<button type="button" class="secondary" on:click={chooseImportFile}>
 				<Upload size={18} aria-hidden="true" />
@@ -1320,7 +1584,10 @@
 				<div class="pane-header">
 					<div>
 						<p class="eyebrow">Cards manager</p>
-						<h2>{cards.length} {cards.length === 1 ? 'card' : 'cards'}</h2>
+						<h2>
+							{duplicateFocus ? displayedManagerCards.length : cards.length}
+							{(duplicateFocus ? displayedManagerCards.length : cards.length) === 1 ? 'card' : 'cards'}
+						</h2>
 					</div>
 					<div class="language-filter" aria-label="Visible language columns">
 						{#each managerLanguages as language}
@@ -1340,15 +1607,47 @@
 					<table class="card-table">
 						<thead>
 							<tr>
-								<th title="Image"><ImageIcon size={17} aria-hidden="true" /></th>
+								<th title="Image">
+									<span class="column-title">
+										<ImageIcon size={17} aria-hidden="true" />
+										{#if duplicateColumnKeys.has('image')}
+											<button
+												type="button"
+												class:active={duplicateFocus === 'image'}
+												class="duplicate-focus-button"
+												aria-label="Show duplicate images"
+												title="Show duplicate images"
+												on:click={() => toggleDuplicateFocus('image')}
+											>
+												<Copy size={13} aria-hidden="true" />
+											</button>
+										{/if}
+									</span>
+								</th>
 								{#each visibleManagerLanguages as language}
-									<th title={language}>{markerLabelForLanguage(language)}</th>
+									<th title={language}>
+										<span class="column-title">
+											<span>{markerLabelForLanguage(language)}</span>
+											{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(language))}
+												<button
+													type="button"
+													class:active={duplicateFocus === duplicateColumnKeyForLanguage(language)}
+													class="duplicate-focus-button"
+													aria-label={`Show duplicate ${language} values`}
+													title={`Show duplicate ${language} values`}
+													on:click={() => toggleDuplicateFocus(duplicateColumnKeyForLanguage(language))}
+												>
+													<Copy size={13} aria-hidden="true" />
+												</button>
+											{/if}
+										</span>
+									</th>
 								{/each}
 									<th aria-label="Delete"></th>
 							</tr>
 						</thead>
 						<tbody>
-							{#each cards as card (card.id)}
+							{#each displayedManagerCards as card (card.id)}
 								<tr
 									class:selected={card.id === selectedCardId}
 									on:click={() => selectCard(card.id)}
@@ -1438,17 +1737,8 @@
 									<Trash2 size={18} aria-hidden="true" />
 								</button>
 							{/if}
-							<button
-								type="button"
-								class="secondary icon-button"
-								aria-label="Settings"
-								title="Settings"
-								on:click={() => (showSettingsPanel = !showSettingsPanel)}
-							>
-								<Settings size={18} aria-hidden="true" />
-							</button>
+							</div>
 						</div>
-					</div>
 
 					<div class="language-list">
 						{#each entries as entry, index (entry.id)}

@@ -53,7 +53,7 @@ export async function addCards(cards: Array<Omit<StoredCard, 'id'> & { id?: stri
   const db = await openCardsDb();
   const nextCards = cards.map((card) =>
     normalizeCard({
-      id: createCardId(),
+      id: card.id || createCardId(),
       imageDataUrl: card.imageDataUrl,
       texts: card.texts
     })
