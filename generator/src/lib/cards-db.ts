@@ -2,6 +2,7 @@ export type StoredCard = {
   id: string;
   imageDataUrl?: string;
   texts: Record<string, string>;
+  versoCardId?: string;
 };
 
 const DB_NAME = 'toddler-read-generator';
@@ -55,7 +56,8 @@ export async function addCards(cards: Array<Omit<StoredCard, 'id'> & { id?: stri
     normalizeCard({
       id: card.id || createCardId(),
       imageDataUrl: card.imageDataUrl,
-      texts: card.texts
+      texts: card.texts,
+      versoCardId: card.versoCardId
     })
   );
 
@@ -110,8 +112,12 @@ function normalizeCard(card: unknown): StoredCard {
   const imageDataUrl =
     typeof candidate.imageDataUrl === 'string' && candidate.imageDataUrl.trim() ? candidate.imageDataUrl : undefined;
   const texts = normalizeTexts(candidate.texts);
+  const versoCardId =
+    typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim() && candidate.versoCardId !== id
+      ? candidate.versoCardId
+      : undefined;
 
-  return { id, imageDataUrl, texts };
+  return { id, imageDataUrl, texts, versoCardId };
 }
 
 function normalizeTexts(texts: unknown): Record<string, string> {

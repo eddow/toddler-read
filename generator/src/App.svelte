@@ -6,28 +6,36 @@
 		Copy,
 		Download,
 		ExternalLink,
+		FileText,
 		Grid3X3,
 		Image as ImageIcon,
 		ImagePlus,
 		Languages,
+		Link2,
+		Link2Off,
 		List,
 		Pencil,
 		Plus,
+		Printer,
 		Settings,
 		Trash2,
 		Upload,
 		WandSparkles,
 		X
 	} from 'lucide-svelte'
+	import { jsPDF } from 'jspdf'
 	import QRCode from 'qrcode'
 	import { onMount, tick } from 'svelte'
 	import {
 		DEFAULT_CARD_GRID_SIZE,
+		getA4PageSize,
 		markerForLanguage,
 		renderCardToCanvas,
+		renderLayoutPageToCanvas,
 		toRenderableEntries,
 		type CardGridSize,
-		type LanguageEntry
+		type LanguageEntry,
+		type LayoutRenderableCard
 	} from './lib/card'
 	import {
 		addCards,
@@ -37,6 +45,15 @@
 		putCard,
 		type StoredCard
 	} from './lib/cards-db'
+	import {
+		buildPrintLayout,
+		dedupeSelectedRectoIds,
+		linkVersoCards,
+		normalizeVersoLinks,
+		removeCardAndVersoLinks,
+		unlinkVersoCard,
+		type PrintLayout
+	} from './lib/printing-press'
 
 	const MAX_ENTRIES = 4
 	const GRID_SIZE_OPTIONS: CardGridSize[] = [1, 2, 3, 4]
@@ -85,7 +102,8 @@
 
 	type LegacyTranslationMode = 'nothing' | 'use' | 'produce'
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
-	type WorkspaceView = 'manager' | 'editor' | 'split'
+	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
+	type ImagePresenceFilter = 'all' | 'missing' | 'present'
 
 	type TranslationOptions = {
 		use: boolean
@@ -117,11 +135,13 @@
 		lang: string
 	}
 
-	type ImportCardInput = Omit<StoredCard, 'id'>
+	type ImportCardInput = Omit<StoredCard, 'id'> & { id?: string }
 
 	type ImportPlan = {
 		cardsToAdd: StoredCard[]
 		cardsToMerge: StoredCard[]
+		importIdMap: Map<string, string>
+		versoLinks: Array<{ sourceId: string; targetId: string }>
 		skippedCount: number
 		conflictSeparateCount: number
 	}
@@ -131,6 +151,11 @@
 	let selectedCardId = ''
 	let workspaceView: WorkspaceView = 'split'
 	let visibleManagerLanguages: string[] = []
+	let mainLanguage = 'en'
+	let languageFilters: Record<string, string> = {}
+	let imagePresenceFilter: ImagePresenceFilter = 'all'
+	let selectedPrintCardIds: string[] = []
+	let pairingCardId = ''
 	let duplicateFocus = ''
 	let cardTexts = defaultCardTexts()
 	let translationOptions = defaultTranslationOptions()
@@ -152,6 +177,8 @@
 	let translationStatus = ''
 	let translationError = ''
 	let pngStatus = ''
+	let pressStatus = ''
+	let pressError = ''
 	let libraryStatus = ''
 	let libraryError = ''
 	let deletingCardId = ''
@@ -159,9 +186,13 @@
 	let apkUrl = ''
 	let apkQrDataUrl = ''
 	let renderToken = 0
+	let pressRenderToken = 0
 	let storageReady = false
 	let libraryReady = false
 	let saveToken = 0
+	let rectoPreviewCanvases: HTMLCanvasElement[] = []
+	let versoPreviewCanvases: HTMLCanvasElement[] = []
+	let pdfCanvas: HTMLCanvasElement
 
 	$: selectedCard = cards.find((card) => card.id === selectedCardId)
 	$: cardTexts = buildCardTexts(languageSetups, selectedCard)
@@ -172,18 +203,31 @@
 			visibleManagerLanguages,
 			managerLanguages
 		)
+	$: if (libraryReady && !managerLanguages.includes(mainLanguage)) mainLanguage = managerLanguages[0] ?? ''
+	$: selectedPrintCardIds = selectedPrintCardIds.filter((id) => cards.some((card) => card.id === id))
+	$: selectedRectoCardIds = dedupeSelectedRectoIds(cards, selectedPrintCardIds)
+	$: allDisplayedSelected =
+		displayedManagerCards.length > 0 &&
+		displayedManagerCards.every((card) => selectedPrintCardIds.includes(card.id))
+	$: someDisplayedSelected = displayedManagerCards.some((card) => selectedPrintCardIds.includes(card.id))
 	$: duplicateColumnKeys = buildDuplicateColumnKeys(cards, visibleManagerLanguages)
 	$: if (duplicateFocus && !duplicateColumnKeys.has(duplicateFocus)) duplicateFocus = ''
 	$: displayedManagerCards = buildDisplayedManagerCards(
 		cards,
 		duplicateFocus,
-		visibleManagerLanguages
+		visibleManagerLanguages,
+		languageFilters,
+		imagePresenceFilter
 	)
 	$: entries = buildEntries(languageSetups, cardTexts)
+	$: layoutCards = buildLayoutRenderableCards(cards, languageSetups)
+	$: printLayout = buildPrintLayout(cards, selectedRectoCardIds, gridSize)
+	$: printWarnings = buildPrintWarnings(cards, selectedRectoCardIds)
 	$: renderableEntries = toRenderableEntries(entries)
 	$: canExport = renderableEntries.length > 0
 	$: showManager = workspaceView === 'manager' || workspaceView === 'split'
 	$: showEditor = workspaceView === 'editor' || workspaceView === 'split'
+	$: showPress = workspaceView === 'press'
 	$: translationSources = buildTranslationSources(entries, translationOptions)
 	$: translationTargets = buildTranslationTargets(entries, translationOptions)
 	$: currentTranslationProviderConfig = translationProviderConfigs[translationProvider]
@@ -196,6 +240,14 @@
 	$: canTranslate = translationDisabledReasons.length === 0 && !isTranslating
 	$: translateButtonTitle = isTranslating ? 'Translating...' : translationDisabledReasons.join(', ')
 	$: void schedulePreviewRender(imageDataUrl, entries, gridSize, reserveQrMargin, showQrText)
+	$: void schedulePressPreviewRender(
+		printLayout,
+		layoutCards,
+		gridSize,
+		reserveQrMargin,
+		showQrText,
+		showPress
+	)
 	$: void scheduleSelectedCardSave(selectedCard)
 	$: if (storageReady) {
 		localStorage.setItem(LIBRARY_SELECTION_STORAGE_KEY, selectedCardId)
@@ -210,6 +262,7 @@
 				gridSize,
 				reserveQrMargin,
 				showQrText,
+				mainLanguage,
 				languageSetups,
 				translationOptions,
 				translationProvider,
@@ -280,6 +333,56 @@
 		}
 	}
 
+	async function schedulePressPreviewRender(
+		nextLayout: PrintLayout,
+		nextCards: LayoutRenderableCard[],
+		nextGridSize: CardGridSize,
+		nextReserveQrMargin: boolean,
+		nextShowQrText: boolean,
+		isVisible: boolean
+	) {
+		if (!isVisible || nextLayout.pages.length === 0) return
+
+		const token = ++pressRenderToken
+		await tick()
+		if (token !== pressRenderToken) return
+
+		try {
+			pressError = ''
+			for (let index = 0; index < nextLayout.pages.length; index += 1) {
+				const page = nextLayout.pages[index]
+				const rectoCanvas = rectoPreviewCanvases[index]
+				const versoCanvas = versoPreviewCanvases[index]
+				if (rectoCanvas) {
+					await renderLayoutPageToCanvas(
+						{
+							slots: page.rectoSlots,
+							cards: nextCards,
+							gridSize: nextGridSize,
+							reserveQrMargin: nextReserveQrMargin,
+							showQrText: nextShowQrText
+						},
+						rectoCanvas
+					)
+				}
+				if (versoCanvas) {
+					await renderLayoutPageToCanvas(
+						{
+							slots: page.versoSlots,
+							cards: nextCards,
+							gridSize: nextGridSize,
+							reserveQrMargin: nextReserveQrMargin,
+							showQrText: nextShowQrText
+						},
+						versoCanvas
+					)
+				}
+			}
+		} catch (error) {
+			pressError = error instanceof Error ? error.message : 'Could not render layout preview.'
+		}
+	}
+
 	function createEntryId() {
 		idCounter += 1
 		return `entry-${Date.now()}-${idCounter}`
@@ -335,6 +438,21 @@
 			lang: setup.lang,
 			marker: setup.marker,
 			text: texts[index] ?? ''
+		}))
+	}
+
+	function buildCardEntries(setups: CornerLanguageSetup[], card: StoredCard): LanguageEntry[] {
+		return buildEntries(setups, buildCardTexts(setups, card))
+	}
+
+	function buildLayoutRenderableCards(
+		nextCards: StoredCard[],
+		setups: CornerLanguageSetup[]
+	): LayoutRenderableCard[] {
+		return nextCards.map((card) => ({
+			id: card.id,
+			imageDataUrl: card.imageDataUrl,
+			entries: buildCardEntries(setups, card)
 		}))
 	}
 
@@ -502,6 +620,9 @@
 			if (typeof parsed.showQrText === 'boolean') {
 				showQrText = parsed.showQrText
 			}
+			if (typeof parsed.mainLanguage === 'string') {
+				mainLanguage = parsed.mainLanguage
+			}
 			if (
 				typeof parsed.translationPromptTemplate === 'string' &&
 				parsed.translationPromptTemplate.trim()
@@ -663,7 +784,7 @@
 	}
 
 	function isWorkspaceView(value: unknown): value is WorkspaceView {
-		return value === 'manager' || value === 'editor' || value === 'split'
+		return value === 'manager' || value === 'editor' || value === 'split' || value === 'press'
 	}
 
 	function updateLanguageSetup(id: string, patch: Partial<CornerLanguageSetup>) {
@@ -929,6 +1050,12 @@
 		return markerForLanguage(language).marker
 	}
 
+	function configuredMarkerForLanguage(language: string): string {
+		const normalized = language.trim()
+		const setup = languageSetups.find((entry) => entry.lang.trim() === normalized)
+		return setup?.marker?.trim() || markerLabelForLanguage(normalized)
+	}
+
 	function duplicateColumnKeyForLanguage(language: string): string {
 		return `language:${language}`
 	}
@@ -956,24 +1083,45 @@
 	function buildDisplayedManagerCards(
 		nextCards: StoredCard[],
 		focus: string,
-		languages: string[]
+		languages: string[],
+		filters: Record<string, string>,
+		imageFilter: ImagePresenceFilter
 	): StoredCard[] {
-		if (!focus) return nextCards
+		let duplicateFilteredCards = nextCards
+		if (focus) {
+			const duplicateCounts = buildDuplicateValueCounts(nextCards, focus)
+			duplicateFilteredCards = nextCards
+				.filter((card) => {
+						const value = duplicateValueForCard(card, focus)
+						return value.length > 0 && (duplicateCounts.get(value) ?? 0) > 1
+					})
+				.sort((left, right) => {
+					const valueComparison = duplicateValueForCard(left, focus).localeCompare(
+						duplicateValueForCard(right, focus)
+					)
+					if (valueComparison !== 0) return valueComparison
 
-		const duplicateCounts = buildDuplicateValueCounts(nextCards, focus)
-		return nextCards
-			.filter((card) => {
-				const value = duplicateValueForCard(card, focus)
-				return value.length > 0 && (duplicateCounts.get(value) ?? 0) > 1
-			})
-			.sort((left, right) => {
-				const valueComparison = duplicateValueForCard(left, focus).localeCompare(
-					duplicateValueForCard(right, focus)
-				)
-				if (valueComparison !== 0) return valueComparison
+					return managerSortLabel(left, languages).localeCompare(managerSortLabel(right, languages))
+				})
+		}
 
-				return managerSortLabel(left, languages).localeCompare(managerSortLabel(right, languages))
-			})
+		const imageFilteredCards = duplicateFilteredCards.filter((card) => {
+			if (imageFilter === 'missing') return !card.imageDataUrl
+			if (imageFilter === 'present') return Boolean(card.imageDataUrl)
+			return true
+		})
+
+		const activeFilters = Object.entries(filters)
+			.map(([language, filter]) => [language, filter.trim().toLocaleLowerCase()] as const)
+			.filter(([, filter]) => filter.length > 0)
+
+		if (activeFilters.length === 0) return imageFilteredCards
+
+		return imageFilteredCards.filter((card) =>
+			activeFilters.every(([language, filter]) =>
+				(card.texts[language] ?? '').toLocaleLowerCase().includes(filter)
+			)
+		)
 	}
 
 	function buildDuplicateValueCounts(nextCards: StoredCard[], focus: string): Map<string, number> {
@@ -1126,6 +1274,110 @@
 		libraryError = ''
 	}
 
+	function togglePrintCard(id: string) {
+		selectedPrintCardIds = selectedPrintCardIds.includes(id)
+			? selectedPrintCardIds.filter((cardId) => cardId !== id)
+			: [...selectedPrintCardIds, id]
+		pressStatus = ''
+		pressError = ''
+	}
+
+	function toggleDisplayedPrintSelection() {
+		const displayedIds = displayedManagerCards.map((card) => card.id)
+		if (displayedIds.length === 0) return
+		if (displayedIds.every((id) => selectedPrintCardIds.includes(id))) {
+			selectedPrintCardIds = selectedPrintCardIds.filter((id) => !displayedIds.includes(id))
+		} else {
+			selectedPrintCardIds = [...new Set([...selectedPrintCardIds, ...displayedIds])]
+		}
+		pressStatus = ''
+		pressError = ''
+	}
+
+	function updateMainLanguage(value: string) {
+		mainLanguage = value
+		pairingCardId = ''
+	}
+
+	function updateLanguageFilter(language: string, value: string) {
+		languageFilters = {
+			...languageFilters,
+			[language]: value
+		}
+	}
+
+	function updateImagePresenceFilter(value: string) {
+		if (value === 'missing' || value === 'present') {
+			imagePresenceFilter = value
+			return
+		}
+		imagePresenceFilter = 'all'
+	}
+
+	function setIndeterminate(node: HTMLInputElement, value: boolean) {
+		node.indeterminate = value
+		return {
+			update(nextValue: boolean) {
+				node.indeterminate = nextValue
+			}
+		}
+	}
+
+	async function updateVersoLink(cardId: string, versoCardId: string) {
+		const nextCards = versoCardId ? linkVersoCards(cards, cardId, versoCardId) : unlinkVersoCard(cards, cardId)
+		await persistCardsPatch(nextCards)
+		pairingCardId = ''
+	}
+
+	async function clearVersoLink(cardId: string) {
+		await persistCardsPatch(unlinkVersoCard(cards, cardId))
+		pairingCardId = ''
+	}
+
+	async function persistCardsPatch(nextCards: StoredCard[]) {
+		const changedCards = nextCards.filter((card) => {
+			const current = cards.find((entry) => entry.id === card.id)
+			return JSON.stringify(current) !== JSON.stringify(card)
+		})
+		cards = nextCards
+		libraryStatus = ''
+		libraryError = ''
+		try {
+			await Promise.all(changedCards.map((card) => putCard(card)))
+		} catch (error) {
+			libraryError = error instanceof Error ? error.message : 'Could not save card links.'
+		}
+	}
+
+	function cardLabel(card: StoredCard | undefined): string {
+		if (!card) return 'Missing card'
+		return card.texts[mainLanguage]?.trim() || managerSortLabel(card, visibleManagerLanguages) || card.id
+	}
+
+	function linkedCardLabel(card: StoredCard): string {
+		return card.versoCardId ? cardLabel(cards.find((entry) => entry.id === card.versoCardId)) : 'No verso'
+	}
+
+	function candidateCardsFor(card: StoredCard): StoredCard[] {
+		return cards
+			.filter((candidate) => candidate.id !== card.id)
+			.sort((left, right) => cardLabel(left).localeCompare(cardLabel(right)))
+	}
+
+	function buildPrintWarnings(nextCards: StoredCard[], rectoIds: string[]): string[] {
+		const warnings: string[] = []
+		const cardById = new Map(nextCards.map((card) => [card.id, card]))
+		const missingVersoCount = rectoIds.filter((id) => !cardById.get(id)?.versoCardId).length
+
+		if (missingVersoCount > 0) {
+			warnings.push(
+				`${missingVersoCount} selected ${missingVersoCount === 1 ? 'card has' : 'cards have'} blank verso slots.`
+			)
+		}
+
+		return warnings
+	}
+
 	async function createNewCard() {
 		const card: StoredCard = { id: createCardId(), texts: {} }
 		cards = [...cards, card]
@@ -1141,9 +1393,14 @@
 	}
 
 	async function confirmDeleteCard(id: string) {
-		const remainingCards = cards.filter((card) => card.id !== id)
+		const remainingCards = removeCardAndVersoLinks(cards, id)
+		const changedCards = remainingCards.filter((card) => {
+			const current = cards.find((entry) => entry.id === card.id)
+			return JSON.stringify(current) !== JSON.stringify(card)
+		})
 		const fallbackCard = remainingCards[0] ?? { id: createCardId(), texts: {} }
 		cards = remainingCards.length > 0 ? remainingCards : [fallbackCard]
+		selectedPrintCardIds = selectedPrintCardIds.filter((cardId) => cardId !== id)
 		if (selectedCardId === id) {
 			selectedCardId = fallbackCard.id
 		}
@@ -1154,6 +1411,7 @@
 
 		try {
 			await deleteCard(id)
+			await Promise.all(changedCards.map((card) => putCard(card)))
 			if (remainingCards.length === 0) await putCard(fallbackCard)
 		} catch (error) {
 			libraryError = error instanceof Error ? error.message : 'Could not delete card.'
@@ -1203,6 +1461,7 @@
 			cards = cards
 				.map((card) => importPlan.cardsToMerge.find((mergedCard) => mergedCard.id === card.id) ?? card)
 				.concat(addedCards)
+			cards = await applyImportedVersoLinks(cards, importPlan)
 			if (addedCards[0]) selectedCardId = addedCards[0].id
 			else if (importPlan.cardsToMerge[0]) selectedCardId = importPlan.cardsToMerge[0].id
 			visibleManagerLanguages = normalizeVisibleManagerLanguages(
@@ -1229,13 +1488,18 @@
 			.map((card): ImportCardInput | undefined => {
 				if (!card || typeof card !== 'object') return undefined
 				const candidate = card as Partial<StoredCard>
+				const id = typeof candidate.id === 'string' && candidate.id.trim() ? candidate.id.trim() : undefined
 				const texts = normalizeImportTexts(candidate.texts)
 				const imageDataUrl =
 					normalizeCardImage(candidate.imageDataUrl).length > 0
 						? normalizeCardImage(candidate.imageDataUrl)
 						: undefined
+				const versoCardId =
+					typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim()
+						? candidate.versoCardId.trim()
+						: undefined
 				if (!imageDataUrl && Object.keys(texts).length === 0) return undefined
-				return { imageDataUrl, texts }
+				return { id, imageDataUrl, texts, versoCardId }
 			})
 			.filter((card): card is ImportCardInput => Boolean(card))
 	}
@@ -1255,16 +1519,28 @@
 		const workingCards = existingCards.map((card) => normalizeStoredCardForImport(card))
 		const cardsToAdd: StoredCard[] = []
 		const cardsToMerge = new Map<string, StoredCard>()
+		const importIdMap = new Map<string, string>()
+		const versoLinks: Array<{ sourceId: string; targetId: string }> = []
 		let skippedCount = 0
 		let conflictSeparateCount = 0
 
 		for (const importCard of importCards) {
 			const normalizedImportCard = normalizeImportCardInput(importCard)
+			if (normalizedImportCard.id && normalizedImportCard.versoCardId) {
+				versoLinks.push({
+					sourceId: normalizedImportCard.id,
+					targetId: normalizedImportCard.versoCardId
+				})
+			}
 			const exactDuplicate = workingCards.some(
 				(card) => cardFingerprint(card) === cardFingerprint(normalizedImportCard)
 			)
 
 			if (exactDuplicate) {
+				const exactCard = workingCards.find(
+					(card) => cardFingerprint(card) === cardFingerprint(normalizedImportCard)
+				)
+				if (normalizedImportCard.id && exactCard) importIdMap.set(normalizedImportCard.id, exactCard.id)
 				skippedCount += 1
 				continue
 			}
@@ -1274,11 +1550,16 @@
 			)
 
 			if (!sameImageCard) {
-				const cardToAdd = { ...normalizedImportCard, id: createCardId() }
+				const cardToAdd = {
+					...withoutVersoLink(normalizedImportCard),
+					id: reusableImportCardId(normalizedImportCard.id, workingCards)
+				}
+				if (normalizedImportCard.id) importIdMap.set(normalizedImportCard.id, cardToAdd.id)
 				cardsToAdd.push(cardToAdd)
 				workingCards.push(cardToAdd)
 				continue
 			}
+			if (normalizedImportCard.id) importIdMap.set(normalizedImportCard.id, sameImageCard.id)
 
 			const importedEntries = Object.entries(normalizedImportCard.texts)
 			const hasConflict = importedEntries.some(
@@ -1286,7 +1567,11 @@
 			)
 
 			if (hasConflict) {
-				const cardToAdd = { ...normalizedImportCard, id: createCardId() }
+				const cardToAdd = {
+					...withoutVersoLink(normalizedImportCard),
+					id: reusableImportCardId(normalizedImportCard.id, workingCards)
+				}
+				if (normalizedImportCard.id) importIdMap.set(normalizedImportCard.id, cardToAdd.id)
 				cardsToAdd.push(cardToAdd)
 				workingCards.push(cardToAdd)
 				conflictSeparateCount += 1
@@ -1319,24 +1604,60 @@
 		return {
 			cardsToAdd,
 			cardsToMerge: [...cardsToMerge.values()],
+			importIdMap,
+			versoLinks,
 			skippedCount,
 			conflictSeparateCount
 		}
+	}
+
+	async function applyImportedVersoLinks(nextCards: StoredCard[], importPlan: ImportPlan): Promise<StoredCard[]> {
+		let linkedCards = nextCards
+		for (const link of importPlan.versoLinks) {
+			const sourceId = importPlan.importIdMap.get(link.sourceId)
+			const targetId = importPlan.importIdMap.get(link.targetId)
+			if (!sourceId || !targetId || sourceId === targetId) continue
+			linkedCards = linkVersoCards(linkedCards, sourceId, targetId)
+		}
+
+		linkedCards = normalizeVersoLinks(linkedCards)
+		const changedCards = linkedCards.filter((card) => {
+			const current = nextCards.find((entry) => entry.id === card.id)
+			return JSON.stringify(current) !== JSON.stringify(card)
+		})
+		await Promise.all(changedCards.map((card) => putCard(card)))
+		return linkedCards
+	}
+
+	function withoutVersoLink(card: ImportCardInput): Omit<ImportCardInput, 'versoCardId'> {
+		const { versoCardId: _removed, ...nextCard } = card
+		return nextCard
 	}
 
 	function normalizeStoredCardForImport(card: StoredCard): StoredCard {
 		return {
 			id: card.id,
 			imageDataUrl: normalizeCardImage(card.imageDataUrl) || undefined,
-			texts: normalizeTextRecord(card.texts)
+			texts: normalizeTextRecord(card.texts),
+			versoCardId: normalizeImportCardId(card.versoCardId)
 		}
 	}
 
 	function normalizeImportCardInput(card: ImportCardInput): ImportCardInput {
 		return {
+			id: normalizeImportCardId(card.id),
 			imageDataUrl: normalizeCardImage(card.imageDataUrl) || undefined,
-			texts: normalizeTextRecord(card.texts)
+			texts: normalizeTextRecord(card.texts),
+			versoCardId: normalizeImportCardId(card.versoCardId)
 		}
+	}
+
+	function normalizeImportCardId(id: unknown): string | undefined {
+		return typeof id === 'string' && id.trim() ? id.trim() : undefined
+	}
+
+	function reusableImportCardId(id: string | undefined, existingCards: StoredCard[]): string {
+		return id && !existingCards.some((card) => card.id === id) ? id : createCardId()
 	}
 
 	function normalizeCardImage(imageDataUrl: unknown): string {
@@ -1396,8 +1717,10 @@
 		const payload = {
 			version: 1,
 			cards: cards.map((card) => ({
+				id: card.id,
 				imageDataUrl: card.imageDataUrl,
-				texts: card.texts
+				texts: card.texts,
+				versoCardId: card.versoCardId
 			}))
 		}
 		const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
@@ -1451,6 +1774,52 @@
 		}
 	}
 
+	async function openLayoutPdf() {
+		if (printLayout.pages.length === 0 || !pdfCanvas) return
+
+		pressStatus = ''
+		pressError = ''
+		try {
+			const pageSize = getA4PageSize()
+			const pdf = new jsPDF({
+				orientation: 'portrait',
+				unit: 'px',
+				format: [pageSize.width, pageSize.height],
+				compress: true
+			})
+			let isFirstPage = true
+
+			for (const page of printLayout.pages) {
+				for (const slots of [page.rectoSlots, page.versoSlots]) {
+					await renderLayoutPageToCanvas(
+						{
+							slots,
+							cards: layoutCards,
+							gridSize,
+							reserveQrMargin,
+							showQrText
+						},
+						pdfCanvas
+					)
+					if (!isFirstPage) pdf.addPage([pageSize.width, pageSize.height], 'portrait')
+					pdf.addImage(pdfCanvas.toDataURL('image/png'), 'PNG', 0, 0, pageSize.width, pageSize.height)
+					isFirstPage = false
+				}
+			}
+
+			const url = URL.createObjectURL(pdf.output('blob'))
+			const opened = window.open(url, '_blank', 'noopener,noreferrer')
+			if (!opened) {
+				URL.revokeObjectURL(url)
+				throw new Error('Could not open PDF. Please allow pop-ups for this page.')
+			}
+			window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
+			pressStatus = `PDF opened with ${printLayout.pages.length * 2} pages.`
+		} catch (error) {
+			pressError = error instanceof Error ? error.message : 'Could not open PDF.'
+		}
+	}
+
 	function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
 		return new Promise((resolve, reject) => {
 			canvas.toBlob((blob) => {
@@ -1499,6 +1868,15 @@
 					on:click={() => (workspaceView = 'editor')}
 				>
 					<Pencil size={18} aria-hidden="true" />
+				</button>
+				<button
+					type="button"
+					class:active={workspaceView === 'press'}
+					aria-label="Printing press"
+					title="Printing press"
+					on:click={() => (workspaceView = 'press')}
+				>
+					<Printer size={18} aria-hidden="true" />
 				</button>
 			</div>
 				<label class="grid-size-control toolbar-grid-control" title="A4 grid">
@@ -1575,6 +1953,7 @@
 	<section
 		class:workspace-manager={workspaceView === 'manager'}
 		class:workspace-editor={workspaceView === 'editor'}
+		class:workspace-press={workspaceView === 'press'}
 		class:workspace-split={workspaceView === 'split'}
 		class="workspace library-workspace"
 		aria-label="Card generator"
@@ -1582,13 +1961,6 @@
 		{#if showManager}
 			<section class="manager-pane" aria-label="Cards manager">
 				<div class="pane-header">
-					<div>
-						<p class="eyebrow">Cards manager</p>
-						<h2>
-							{duplicateFocus ? displayedManagerCards.length : cards.length}
-							{(duplicateFocus ? displayedManagerCards.length : cards.length) === 1 ? 'card' : 'cards'}
-						</h2>
-					</div>
 					<div class="language-filter" aria-label="Visible language columns">
 						{#each managerLanguages as language}
 							<label class:active={visibleManagerLanguages.includes(language)}>
@@ -1601,48 +1973,104 @@
 							</label>
 						{/each}
 					</div>
+					<div class="manager-press-actions">
+						<label class="main-language-control">
+							<select
+								value={mainLanguage}
+								aria-label="Main language"
+								title={`Main language: ${mainLanguage}`}
+								on:change={(event) => updateMainLanguage(event.currentTarget.value)}
+							>
+								{#each managerLanguages as language}
+									<option value={language}>{configuredMarkerForLanguage(language)}</option>
+								{/each}
+							</select>
+						</label>
+						<button
+							type="button"
+							disabled={selectedPrintCardIds.length === 0}
+							on:click={() => (workspaceView = 'press')}
+						>
+							<Printer size={16} aria-hidden="true" />
+							Press {selectedRectoCardIds.length}
+						</button>
+					</div>
 				</div>
 
 				<div class="card-table-wrap">
 					<table class="card-table">
 						<thead>
 							<tr>
-								<th title="Image">
-									<span class="column-title">
-										<ImageIcon size={17} aria-hidden="true" />
-										{#if duplicateColumnKeys.has('image')}
-											<button
-												type="button"
-												class:active={duplicateFocus === 'image'}
-												class="duplicate-focus-button"
-												aria-label="Show duplicate images"
-												title="Show duplicate images"
-												on:click={() => toggleDuplicateFocus('image')}
-											>
-												<Copy size={13} aria-hidden="true" />
-											</button>
-										{/if}
-									</span>
+								<th aria-label="Print selection">
+									<input
+										class="header-checkbox"
+										type="checkbox"
+										checked={allDisplayedSelected}
+										disabled={displayedManagerCards.length === 0}
+										use:setIndeterminate={someDisplayedSelected && !allDisplayedSelected}
+										aria-label="Select displayed cards"
+										on:change={toggleDisplayedPrintSelection}
+									/>
 								</th>
-								{#each visibleManagerLanguages as language}
-									<th title={language}>
+								<th title="Image">
+									<div class="image-column-header">
 										<span class="column-title">
-											<span>{markerLabelForLanguage(language)}</span>
-											{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(language))}
+											<ImageIcon size={17} aria-hidden="true" />
+											{#if duplicateColumnKeys.has('image')}
 												<button
 													type="button"
-													class:active={duplicateFocus === duplicateColumnKeyForLanguage(language)}
+													class:active={duplicateFocus === 'image'}
 													class="duplicate-focus-button"
-													aria-label={`Show duplicate ${language} values`}
-													title={`Show duplicate ${language} values`}
-													on:click={() => toggleDuplicateFocus(duplicateColumnKeyForLanguage(language))}
+													aria-label="Show duplicate images"
+													title="Show duplicate images"
+													on:click={() => toggleDuplicateFocus('image')}
 												>
 													<Copy size={13} aria-hidden="true" />
 												</button>
 											{/if}
 										</span>
+										<select
+											class="image-presence-filter"
+											value={imagePresenceFilter}
+											aria-label="Filter images"
+											on:change={(event) => updateImagePresenceFilter(event.currentTarget.value)}
+										>
+											<option value="all">All</option>
+											<option value="missing">Missing</option>
+											<option value="present">Present</option>
+										</select>
+									</div>
+								</th>
+								{#each visibleManagerLanguages as language}
+									<th title={language}>
+										<div class="language-column-header">
+											<span class="column-title">
+												<span>{markerLabelForLanguage(language)}</span>
+												{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(language))}
+													<button
+														type="button"
+														class:active={duplicateFocus === duplicateColumnKeyForLanguage(language)}
+														class="duplicate-focus-button"
+														aria-label={`Show duplicate ${language} values`}
+														title={`Show duplicate ${language} values`}
+														on:click={() => toggleDuplicateFocus(duplicateColumnKeyForLanguage(language))}
+													>
+														<Copy size={13} aria-hidden="true" />
+													</button>
+												{/if}
+											</span>
+											<input
+												class="language-column-filter"
+												value={languageFilters[language] ?? ''}
+												placeholder={language}
+												aria-label={`Filter ${language}`}
+												on:click|stopPropagation
+												on:input={(event) => updateLanguageFilter(language, event.currentTarget.value)}
+											/>
+										</div>
 									</th>
 								{/each}
+								<th>Verso</th>
 									<th aria-label="Delete"></th>
 							</tr>
 						</thead>
@@ -1652,6 +2080,16 @@
 									class:selected={card.id === selectedCardId}
 									on:click={() => selectCard(card.id)}
 								>
+									<td class="select-cell">
+										<label class="row-checkbox" title="Select for press">
+											<input
+												type="checkbox"
+												checked={selectedPrintCardIds.includes(card.id)}
+												on:click|stopPropagation
+												on:change={() => togglePrintCard(card.id)}
+											/>
+										</label>
+									</td>
 									<td>
 										{#if card.imageDataUrl}
 											<img class="manager-thumb" src={card.imageDataUrl} alt="" />
@@ -1662,6 +2100,46 @@
 									{#each visibleManagerLanguages as language}
 										<td>{card.texts[language] || ''}</td>
 									{/each}
+									<td class="verso-cell">
+										{#if pairingCardId === card.id}
+											<select
+												aria-label="Choose verso card"
+												value={card.versoCardId ?? ''}
+												on:click|stopPropagation
+												on:change={(event) => updateVersoLink(card.id, event.currentTarget.value)}
+											>
+												<option value="">No verso</option>
+												{#each candidateCardsFor(card) as candidate}
+													<option value={candidate.id}>
+														{cardLabel(candidate)}{candidate.versoCardId
+															? ` - linked to ${cardLabel(cards.find((entry) => entry.id === candidate.versoCardId))}`
+															: ''}
+													</option>
+												{/each}
+											</select>
+										{:else}
+											<button
+												type="button"
+												class="secondary verso-link-button"
+												title="Choose verso"
+												on:click|stopPropagation={() => (pairingCardId = card.id)}
+											>
+												<Link2 size={15} aria-hidden="true" />
+												<span>{linkedCardLabel(card)}</span>
+											</button>
+											{#if card.versoCardId}
+												<button
+													type="button"
+													class="delete-icon-button"
+													aria-label="Unlink verso"
+													title="Unlink verso"
+													on:click|stopPropagation={() => clearVersoLink(card.id)}
+												>
+													<Link2Off size={15} aria-hidden="true" />
+												</button>
+											{/if}
+										{/if}
+									</td>
 									<td class="delete-cell">
 										{#if deletingCardId === card.id}
 											<span>Delete?</span>
@@ -1695,14 +2173,87 @@
 			</section>
 		{/if}
 
+		{#if showPress}
+			<section class="press-pane" aria-label="Printing press">
+				<div class="pane-header">
+					<div class="press-actions">
+						<label class="main-language-control">
+							<select
+								value={mainLanguage}
+								aria-label="Main language"
+								title={`Main language: ${mainLanguage}`}
+								on:change={(event) => updateMainLanguage(event.currentTarget.value)}
+							>
+								{#each managerLanguages as language}
+									<option value={language}>{configuredMarkerForLanguage(language)}</option>
+								{/each}
+							</select>
+						</label>
+						<button type="button" class="secondary" on:click={() => (workspaceView = 'manager')}>
+							<List size={18} aria-hidden="true" />
+							Manage
+						</button>
+						<button
+							type="button"
+							disabled={printLayout.pages.length === 0}
+							on:click={openLayoutPdf}
+						>
+							<FileText size={18} aria-hidden="true" />
+							Open PDF
+						</button>
+					</div>
+				</div>
+
+				{#if printWarnings.length > 0}
+					<div class="press-warnings">
+						{#each printWarnings as warning}
+							<p>{warning}</p>
+						{/each}
+					</div>
+				{/if}
+
+				{#if selectedPrintCardIds.length === 0}
+					<div class="empty-press">
+						<button type="button" on:click={() => (workspaceView = 'manager')}>
+							<List size={18} aria-hidden="true" />
+							Select cards
+						</button>
+					</div>
+				{:else}
+					<div class="press-pages">
+						{#each printLayout.pages as page, index}
+							<article class="press-page-pair">
+								<div class="press-page-header">
+									<strong>Page {index + 1}</strong>
+									<span>{gridSize}x{gridSize}</span>
+								</div>
+								<div class="press-preview-grid">
+									<div class="press-preview">
+										<span>Recto</span>
+										<canvas bind:this={rectoPreviewCanvases[index]} aria-label={`Recto page ${index + 1}`}></canvas>
+									</div>
+									<div class="press-preview">
+										<span>Verso</span>
+										<canvas bind:this={versoPreviewCanvases[index]} aria-label={`Verso page ${index + 1}`}></canvas>
+									</div>
+								</div>
+							</article>
+						{/each}
+					</div>
+				{/if}
+
+				{#if pressError}
+					<p class="status error">{pressError}</p>
+				{:else if pressStatus}
+					<p class="status">{pressStatus}</p>
+				{/if}
+			</section>
+		{/if}
+
 		{#if showEditor}
 			<section class="editor-workspace" aria-label="Card editor">
 				<div class="editor-pane">
 					<div class="language-header">
-						<div>
-							<p class="eyebrow">Card editor</p>
-							<h2>Card text</h2>
-						</div>
 						<div class="language-actions">
 							<span title={translateButtonTitle}>
 								<button
@@ -1801,9 +2352,6 @@
 
 				<div class="preview-pane">
 					<div class="preview-toolbar">
-						<div>
-							<p class="eyebrow">PNG preview</p>
-						</div>
 						<div class="preview-actions">
 							<label class="margin-control">
 								<input
@@ -1880,6 +2428,7 @@
 	</section>
 
 	<canvas bind:this={exportCanvas} class="export-canvas" aria-hidden="true"></canvas>
+	<canvas bind:this={pdfCanvas} class="export-canvas" aria-hidden="true"></canvas>
 
 	{#if showSettingsPanel}
 		<div class="modal-backdrop">

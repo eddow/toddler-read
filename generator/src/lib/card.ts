@@ -23,6 +23,20 @@ export type CardRenderInput = {
   showQrText?: boolean;
 };
 
+export type LayoutRenderableCard = {
+  id: string;
+  imageDataUrl?: string;
+  entries: LanguageEntry[];
+};
+
+export type LayoutPageRenderInput = {
+  slots: Array<string | undefined>;
+  cards: LayoutRenderableCard[];
+  gridSize?: CardGridSize;
+  reserveQrMargin?: boolean;
+  showQrText?: boolean;
+};
+
 export type CardGridSize = 1 | 2 | 3 | 4;
 
 const A4_WIDTH = 2480;
@@ -124,10 +138,58 @@ export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCan
   await drawQrCorners(ctx, renderableEntries, size, Boolean(input.showQrText));
 }
 
+export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, target: HTMLCanvasElement): Promise<void> {
+  const ctx = target.getContext('2d');
+  if (!ctx) throw new Error('Canvas rendering is unavailable.');
+
+  const gridSize = input.gridSize ?? DEFAULT_CARD_GRID_SIZE;
+  const pageSize = getA4PageSize();
+  const cellWidth = pageSize.width / gridSize;
+  const cellHeight = pageSize.height / gridSize;
+  const cardsById = new Map(input.cards.map((card) => [card.id, card]));
+  const cardCanvas = document.createElement('canvas');
+
+  target.width = pageSize.width;
+  target.height = pageSize.height;
+  ctx.clearRect(0, 0, pageSize.width, pageSize.height);
+  ctx.fillStyle = '#fffdf7';
+  ctx.fillRect(0, 0, pageSize.width, pageSize.height);
+
+  for (let index = 0; index < gridSize * gridSize; index += 1) {
+    const cardId = input.slots[index];
+    if (!cardId) continue;
+
+    const card = cardsById.get(cardId);
+    if (!card) continue;
+
+    await renderCardToCanvas(
+      {
+        imageDataUrl: card.imageDataUrl,
+        entries: card.entries,
+        gridSize,
+        reserveQrMargin: input.reserveQrMargin,
+        showQrText: input.showQrText
+      },
+      cardCanvas
+    );
+
+    const row = Math.floor(index / gridSize);
+    const col = index % gridSize;
+    ctx.drawImage(cardCanvas, col * cellWidth, row * cellHeight, cellWidth, cellHeight);
+  }
+}
+
 export function getCardSize(gridSize: CardGridSize) {
   return {
     width: Math.round(A4_WIDTH / gridSize),
     height: Math.round(A4_HEIGHT / gridSize)
+  };
+}
+
+export function getA4PageSize() {
+  return {
+    width: A4_WIDTH,
+    height: A4_HEIGHT
   };
 }
 
