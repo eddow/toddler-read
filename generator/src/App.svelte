@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { GoogleGenAI } from '@google/genai'
 	import {
+		ArrowDownLeft,
+		ArrowDownRight,
+		ArrowUpLeft,
+		ArrowUpRight,
 		Columns2,
 		Copy,
 		Download,
@@ -71,6 +75,12 @@
 	} from './lib/printing-press'
 
 	const MAX_ENTRIES = 4
+	const CORNER_SPECS = [
+		{ label: 'Top left corner', icon: ArrowUpLeft },
+		{ label: 'Top right corner', icon: ArrowUpRight },
+		{ label: 'Bottom left corner', icon: ArrowDownLeft },
+		{ label: 'Bottom right corner', icon: ArrowDownRight }
+	] as const
 	const GRID_SIZE_OPTIONS: CardGridSize[] = [1, 2, 3, 4]
 	const CARD_TEXT_STORAGE_KEY = 'toddler-read-generator-card-text'
 	const LEGACY_LANGUAGE_STORAGE_KEY = 'toddler-read-generator-languages'
@@ -121,6 +131,7 @@
 	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
 	type ImportMode = 'merge' | 'replace'
 	type PresenceFilter = 'all' | 'missing' | 'present'
+	type TagSelectionState = 'none' | 'some' | 'all'
 
 	type TranslationProviderConfig = {
 		apiKey: string
@@ -168,6 +179,8 @@
 	let languageFilters: Record<string, string> = {}
 	let imagePresenceFilter: PresenceFilter = 'all'
 	let versoPresenceFilter: PresenceFilter = 'all'
+	let managerTagInput = ''
+	let managerTagPresenceFilter: PresenceFilter = 'all'
 	let selectedPrintCardIds: string[] = []
 	let pairingCardId = ''
 	let duplicateFocus = ''
@@ -201,6 +214,8 @@
 	let imageTransform: ImageTransform | undefined
 	let previewImageTransform: ImageTransform | undefined
 	let imageTransformDraft: ImageTransform | undefined
+	let tagInput = ''
+	let tagInputCardId = ''
 	let previewCanvas: HTMLCanvasElement
 	let exportCanvas: HTMLCanvasElement
 	let fileInput: HTMLInputElement
@@ -247,6 +262,20 @@
 	$: imageDataUrl = selectedCard?.imageDataUrl
 	$: imageTransform = selectedCard?.imageTransform
 	$: previewImageTransform = imageTransformDraft ?? imageTransform
+	$: selectedCardTags = selectedCard?.tags ?? []
+	$: usedTags = buildUsedTags(cards)
+	$: tagSuggestions = usedTags.filter((tag) => !selectedCardTags.includes(tag))
+	$: managerSelectedCards = cards.filter((card) => selectedPrintCardIds.includes(card.id))
+	$: managerTag = normalizeTag(managerTagInput)
+	$: managerTagSelectionState = buildTagSelectionState(managerSelectedCards, managerTag)
+	$: canAddManagerTag =
+		Boolean(managerTag) && managerSelectedCards.length > 0 && managerTagSelectionState !== 'all'
+	$: canRemoveManagerTag =
+		Boolean(managerTag) && managerSelectedCards.length > 0 && managerTagSelectionState !== 'none'
+	$: if (selectedCardId !== tagInputCardId) {
+		tagInputCardId = selectedCardId
+		tagInput = ''
+	}
 	$: managerLanguages = buildManagerLanguages(cards, languageSetups)
 	$: if (libraryReady && !managerLanguages.includes(mainLanguage))
 		mainLanguage = managerLanguages[0] ?? ''
@@ -268,7 +297,9 @@
 		mainLanguage,
 		languageFilters,
 		imagePresenceFilter,
-		versoPresenceFilter
+		versoPresenceFilter,
+		managerTag,
+		managerTagPresenceFilter
 	)
 	$: entries = buildEntries(languageSetups, cardTexts)
 	$: layoutCards = buildLayoutRenderableCards(cards, languageSetups)
@@ -509,6 +540,10 @@
 		return setups.find((setup) => setup.lang.trim())?.lang.trim() ?? ''
 	}
 
+	function cornerSpecForIndex(index: number): (typeof CORNER_SPECS)[number] {
+		return CORNER_SPECS[index] ?? CORNER_SPECS[0]
+	}
+
 	function defaultCardTexts(): string[] {
 		return Array.from({ length: MAX_ENTRIES }, () => '')
 	}
@@ -587,6 +622,10 @@
 			if (text) nextTexts[language] = text
 		})
 		return nextTexts
+	}
+
+	function buildUsedTags(nextCards: StoredCard[]): string[] {
+		return normalizeTags(nextCards.flatMap((card) => card.tags ?? [])) ?? []
 	}
 
 	function buildManagerLanguages(nextCards: StoredCard[], setups: CornerLanguageSetup[]): string[] {
@@ -879,6 +918,63 @@
 		const nextCard = { ...selectedCard, ...patch }
 		cards = cards.map((card) => (card.id === selectedCard.id ? nextCard : card))
 		editorDeleteArmed = false
+	}
+
+	function addSelectedTag() {
+		if (!selectedCard) return
+		const nextTags = normalizeTags([...selectedCardTags, tagInput])
+		if (!nextTags || arraysEqual(nextTags, selectedCardTags)) {
+			tagInput = ''
+			return
+		}
+
+		updateSelectedCard({ tags: nextTags })
+		tagInput = ''
+	}
+
+	function removeSelectedTag(tag: string) {
+		if (!selectedCard) return
+		updateSelectedCard({ tags: normalizeTags(selectedCardTags.filter((entry) => entry !== tag)) })
+	}
+
+	function handleTagInputKeydown(event: KeyboardEvent) {
+		if (event.key !== 'Enter') return
+		event.preventDefault()
+		addSelectedTag()
+	}
+
+	function buildTagSelectionState(selectedCards: StoredCard[], tag: string): TagSelectionState {
+		if (selectedCards.length === 0 || !tag) return 'none'
+		const taggedCount = selectedCards.filter((card) => cardHasTag(card, tag)).length
+		if (taggedCount === 0) return 'none'
+		return taggedCount === selectedCards.length ? 'all' : 'some'
+	}
+
+	async function addManagerTagToSelection() {
+		if (managerSelectedCards.length === 0 || !managerTag) return
+
+		const nextCards = cards.map((card) => {
+			if (!selectedPrintCardIds.includes(card.id)) return card
+			const currentTags = card.tags ?? []
+			return { ...card, tags: normalizeTags([...currentTags, managerTag]) }
+		})
+		await persistCardsPatch(nextCards)
+		libraryStatus = `Added "${managerTag}" to selected cards.`
+	}
+
+	async function removeManagerTagFromSelection() {
+		if (managerSelectedCards.length === 0 || !managerTag) return
+
+		const nextCards = cards.map((card) => {
+			if (!selectedPrintCardIds.includes(card.id)) return card
+			return { ...card, tags: normalizeTags((card.tags ?? []).filter((tag) => tag !== managerTag)) }
+		})
+		await persistCardsPatch(nextCards)
+		libraryStatus = `Removed "${managerTag}" from selected cards.`
+	}
+
+	function updateManagerTagPresenceFilter(value: string) {
+		managerTagPresenceFilter = normalizePresenceFilter(value)
 	}
 
 	function updateImageTransform(patch: Partial<ImageTransform>) {
@@ -1185,7 +1281,9 @@
 		language: string,
 		filters: Record<string, string>,
 		imageFilter: PresenceFilter,
-		versoFilter: PresenceFilter
+		versoFilter: PresenceFilter,
+		tagFilter: string,
+		tagPresenceFilter: PresenceFilter
 	): StoredCard[] {
 		let duplicateFilteredCards = nextCards
 		if (focus) {
@@ -1215,11 +1313,18 @@
 			if (versoFilter === 'present') return Boolean(card.versoCardId)
 			return true
 		})
+		const tagFilteredCards = presenceFilteredCards.filter((card) => {
+			if (!tagFilter || tagPresenceFilter === 'all') return true
+			const hasTag = cardHasTag(card, tagFilter)
+			if (tagPresenceFilter === 'missing') return !hasTag
+			if (tagPresenceFilter === 'present') return hasTag
+			return true
+		})
 
 		const activeFilter = language ? (filters[language] ?? '').trim().toLocaleLowerCase() : ''
-		if (!activeFilter) return presenceFilteredCards
+		if (!activeFilter) return tagFilteredCards
 
-		return presenceFilteredCards.filter((card) =>
+		return tagFilteredCards.filter((card) =>
 			(card.texts[language] ?? '').toLocaleLowerCase().includes(activeFilter)
 		)
 	}
@@ -1812,8 +1917,9 @@
 					typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim()
 						? candidate.versoCardId.trim()
 						: undefined
+				const tags = normalizeTags(candidate.tags)
 				if (!imageDataUrl && Object.keys(texts).length === 0) return undefined
-				return { id, imageDataUrl, imageTransform, texts, versoCardId }
+				return { id, imageDataUrl, imageTransform, texts, tags, versoCardId }
 			})
 			.filter((card): card is ImportCardInput => Boolean(card))
 	}
@@ -1899,7 +2005,9 @@
 			const missingEntries = importedEntries.filter(
 				([language]) => sameImageCard.texts[language] === undefined
 			)
-			if (missingEntries.length === 0) {
+			const mergedTags = mergeTags(sameImageCard.tags, normalizedImportCard.tags)
+			const hasMissingTags = !arraysEqual(mergedTags ?? [], sameImageCard.tags ?? [])
+			if (missingEntries.length === 0 && !hasMissingTags) {
 				skippedCount += 1
 				continue
 			}
@@ -1909,7 +2017,8 @@
 				texts: normalizeTextRecord({
 					...sameImageCard.texts,
 					...Object.fromEntries(missingEntries)
-				})
+				}),
+				tags: mergedTags
 			}
 			const workingIndex = workingCards.findIndex((card) => card.id === sameImageCard.id)
 			if (workingIndex >= 0) workingCards[workingIndex] = mergedCard
@@ -1966,6 +2075,7 @@
 				? normalizeImageTransformForImport(card.imageTransform)
 				: undefined,
 			texts: normalizeTextRecord(card.texts),
+			tags: normalizeTags(card.tags),
 			versoCardId: normalizeImportCardId(card.versoCardId)
 		}
 	}
@@ -1979,6 +2089,7 @@
 				? normalizeImageTransformForImport(card.imageTransform)
 				: undefined,
 			texts: normalizeTextRecord(card.texts),
+			tags: normalizeTags(card.tags),
 			versoCardId: normalizeImportCardId(card.versoCardId)
 		}
 	}
@@ -2011,11 +2122,41 @@
 		)
 	}
 
+	function normalizeTags(tags: unknown): string[] | undefined {
+		if (!Array.isArray(tags)) return undefined
+
+		const normalized = [...new Set(tags.map(normalizeTag).filter((tag) => tag.length > 0))].sort(
+			(left, right) => left.localeCompare(right)
+		)
+
+		return normalized.length > 0 ? normalized : undefined
+	}
+
+	function normalizeTag(tag: unknown): string {
+		return typeof tag === 'string' ? tag.trim() : ''
+	}
+
+	function mergeTags(left: unknown, right: unknown): string[] | undefined {
+		return normalizeTags([
+			...(Array.isArray(left) ? left : []),
+			...(Array.isArray(right) ? right : [])
+		])
+	}
+
+	function arraysEqual(left: string[], right: string[]): boolean {
+		return left.length === right.length && left.every((value, index) => value === right[index])
+	}
+
+	function cardHasTag(card: StoredCard, tag: string): boolean {
+		return Boolean(tag) && (card.tags ?? []).includes(tag)
+	}
+
 	function cardFingerprint(card: ImportCardInput | StoredCard): string {
 		return JSON.stringify({
 			imageDataUrl: normalizeCardImage(card.imageDataUrl),
 			imageTransform: normalizeImageTransformForImport(card.imageTransform),
-			texts: normalizeTextRecord(card.texts)
+			texts: normalizeTextRecord(card.texts),
+			tags: normalizeTags(card.tags)
 		})
 	}
 
@@ -2058,6 +2199,7 @@
 				imageDataUrl: card.imageDataUrl,
 				imageTransform: card.imageTransform,
 				texts: card.texts,
+				tags: normalizeTags(card.tags),
 				versoCardId: card.versoCardId
 			}))
 		}
@@ -2385,6 +2527,55 @@
 	>
 		{#if showManager}
 			<section class="manager-pane" aria-label="Cards manager">
+				<div class="manager-tag-toolbar" aria-label="Manager tags">
+					<label class="tag-combobox manager-tag-picker">
+						<input
+							bind:value={managerTagInput}
+							list="manager-tag-options"
+							placeholder="Choose tag"
+							aria-label="Choose tag"
+						/>
+						<datalist id="manager-tag-options">
+							{#each usedTags as tag}
+								<option value={tag}></option>
+							{/each}
+						</datalist>
+					</label>
+					<div class="manager-tag-actions" aria-label="Selected cards tag actions">
+						<div>
+							<button
+								type="button"
+								class="secondary"
+								disabled={!canAddManagerTag}
+								on:click={addManagerTagToSelection}
+							>
+								<Plus size={16} aria-hidden="true" />
+								Add
+							</button>
+							<button
+								type="button"
+								class="secondary"
+								disabled={!canRemoveManagerTag}
+								on:click={removeManagerTagFromSelection}
+							>
+								<X size={16} aria-hidden="true" />
+								Remove
+							</button>
+						</div>
+					</div>
+					<label class="manager-tag-select">
+						<select
+							value={managerTagPresenceFilter}
+							disabled={!managerTag}
+							aria-label="Filter table by tag"
+							on:change={(event) => updateManagerTagPresenceFilter(event.currentTarget.value)}
+						>
+							<option value="all">All</option>
+							<option value="missing">Missing</option>
+							<option value="present">Present</option>
+						</select>
+					</label>
+				</div>
 				<div class="card-table-wrap">
 					<table class="card-table">
 						<thead>
@@ -2705,6 +2896,53 @@
 								</label>
 							</article>
 						{/each}
+					</div>
+
+					<div class="tag-panel">
+						<label class="tag-combobox">
+							<span>Tags</span>
+							<div class="tag-input-row">
+								<input
+									bind:value={tagInput}
+									list="card-tag-options"
+									placeholder="Add tag"
+									aria-label="Add tag"
+									on:keydown={handleTagInputKeydown}
+								/>
+								<datalist id="card-tag-options">
+									{#each tagSuggestions as tag}
+										<option value={tag}></option>
+									{/each}
+								</datalist>
+								<button
+									type="button"
+									class="secondary icon-button"
+									disabled={!tagInput.trim()}
+									aria-label="Add tag"
+									title="Add tag"
+									on:click={addSelectedTag}
+								>
+									<Plus size={18} aria-hidden="true" />
+								</button>
+							</div>
+						</label>
+						{#if selectedCardTags.length > 0}
+							<div class="tag-chip-list" aria-label="Selected tags">
+								{#each selectedCardTags as tag}
+									<span class="tag-chip">
+										<span>{tag}</span>
+										<button
+											type="button"
+											aria-label={`Remove ${tag}`}
+											title={`Remove ${tag}`}
+											on:click={() => removeSelectedTag(tag)}
+										>
+											<X size={14} aria-hidden="true" />
+										</button>
+									</span>
+								{/each}
+							</div>
+						{/if}
 					</div>
 
 					<div class="image-panel">
@@ -3248,7 +3486,18 @@
 				</div>
 				<div class="settings-language-list">
 					{#each languageSetups as setup, index (setup.id)}
+						{@const corner = cornerSpecForIndex(index)}
 						<article class="settings-language-row">
+							<div class="corner-field">
+								<div
+									class="readonly-corner-icon"
+									role="img"
+									aria-label={corner.label}
+									title={corner.label}
+								>
+									<svelte:component this={corner.icon} size={18} aria-hidden="true" />
+								</div>
+							</div>
 							<label>
 								Code
 								<input

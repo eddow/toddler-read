@@ -5,6 +5,7 @@ export type StoredCard = {
   imageDataUrl?: string;
   imageTransform?: ImageTransform;
   texts: Record<string, string>;
+  tags?: string[];
   versoCardId?: string;
 };
 
@@ -61,6 +62,7 @@ export async function addCards(cards: Array<Omit<StoredCard, 'id'> & { id?: stri
       imageDataUrl: card.imageDataUrl,
       imageTransform: card.imageTransform,
       texts: card.texts,
+      tags: card.tags,
       versoCardId: card.versoCardId
     })
   );
@@ -127,12 +129,13 @@ function normalizeCard(card: unknown): StoredCard {
     typeof candidate.imageDataUrl === 'string' && candidate.imageDataUrl.trim() ? candidate.imageDataUrl : undefined;
   const imageTransform = imageDataUrl ? normalizeImageTransform(candidate.imageTransform) : undefined;
   const texts = normalizeTexts(candidate.texts);
+  const tags = normalizeTags(candidate.tags);
   const versoCardId =
     typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim() && candidate.versoCardId !== id
       ? candidate.versoCardId
       : undefined;
 
-  return { id, imageDataUrl, imageTransform, texts, versoCardId };
+  return { id, imageDataUrl, imageTransform, texts, ...(tags ? { tags } : {}), versoCardId };
 }
 
 function normalizeImageTransform(transform: unknown): ImageTransform | undefined {
@@ -159,4 +162,18 @@ function normalizeTexts(texts: unknown): Record<string, string> {
       .map(([language, text]) => [language.trim(), typeof text === 'string' ? text : ''])
       .filter(([language]) => language.length > 0)
   );
+}
+
+function normalizeTags(tags: unknown): string[] | undefined {
+  if (!Array.isArray(tags)) return undefined;
+
+  const normalized = [
+    ...new Set(
+      tags
+        .map((tag) => (typeof tag === 'string' ? tag.trim() : ''))
+        .filter((tag) => tag.length > 0)
+    )
+  ].sort((left, right) => left.localeCompare(right));
+
+  return normalized.length > 0 ? normalized : undefined;
 }

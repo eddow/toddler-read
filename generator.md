@@ -126,6 +126,7 @@ Options:
 
 Language setup lives in Settings. Each configured corner has:
 
+- `Corner`: the read-only QR corner assigned to that row.
 - `Code`: the language code used in the generated `tts:` payload.
 - `Flag`: the marker shown on the QR code.
 
