@@ -577,9 +577,7 @@ input::placeholder {
   min-width: 104px;
 }
 
-.language-column-filter,
-.image-presence-filter,
-.presence-filter {
+.language-column-filter {
   width: 100%;
   height: 30px;
   padding: 0 8px;
@@ -732,7 +730,6 @@ input::placeholder {
 .language-row label,
 .settings-language-row label,
 .corner-field,
-.manager-tag-select,
 .manager-tag-actions,
 .api-key-field {
   margin: 0;
@@ -744,7 +741,6 @@ input::placeholder {
 .language-row input,
 .settings-language-row input,
 .tag-combobox input,
-.manager-tag-select select,
 .api-key-field input,
 .api-key-field select,
 .api-key-field textarea {
@@ -760,7 +756,6 @@ input::placeholder {
 .language-row input,
 .settings-language-row input,
 .tag-combobox input,
-.manager-tag-select select,
 .api-key-field input,
 .api-key-field select {
   height: 36px;
@@ -845,20 +840,14 @@ input::placeholder {
   border-radius: 8px 8px 0 0;
 }
 
-.manager-tag-picker input,
-.manager-tag-select select {
-  min-height: 38px;
-  margin: 0;
-}
-
-.manager-tag-select {
-  display: grid;
-  gap: 4px;
+.manager-tag-picker input {
+	min-height: 38px;
+	margin: 0;
 }
 
 .manager-tag-actions {
-  display: grid;
-  gap: 4px;
+	display: grid;
+	gap: 4px;
 }
 
 .manager-tag-actions div {
@@ -871,15 +860,6 @@ input::placeholder {
   min-height: 38px;
   margin: 0;
   padding: 0 10px;
-}
-
-.manager-tag-select select {
-  min-width: 112px;
-  padding-block: 0;
-  color: var(--field-ink);
-  font-weight: 700;
-  background-color: var(--field-bg);
-  border-color: var(--line);
 }
 
 .manager-tag-toolbar + .card-table-wrap {

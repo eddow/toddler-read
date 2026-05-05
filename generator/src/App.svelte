@@ -6,7 +6,6 @@
 		ArrowUpLeft,
 		ArrowUpRight,
 		Columns2,
-		Copy,
 		Download,
 		ExternalLink,
 		Grid3X3,
@@ -73,6 +72,16 @@
 		unlinkVersoCard,
 		type PrintLayout
 	} from './lib/printing-press'
+	import PresenceFilterGroup, {
+		type PresenceFilter
+	} from './lib/components/PresenceFilterGroup.svelte'
+	import DuplicateFocusButton from './lib/components/DuplicateFocusButton.svelte'
+	import IconButton from './lib/components/IconButton.svelte'
+	import PanelModal from './lib/components/PanelModal.svelte'
+	import QRInstallPanel from './lib/components/QRInstallPanel.svelte'
+	import TagInput from './lib/components/TagInput.svelte'
+	import CardPreviewCanvas from './lib/components/CardPreviewCanvas.svelte'
+	import ProviderConfigFields from './lib/components/ProviderConfigFields.svelte'
 
 	const MAX_ENTRIES = 4
 	const CORNER_SPECS = [
@@ -130,7 +139,6 @@
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
 	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
 	type ImportMode = 'merge' | 'replace'
-	type PresenceFilter = 'all' | 'missing' | 'present'
 	type TagSelectionState = 'none' | 'some' | 'all'
 
 	type TranslationProviderConfig = {
@@ -937,12 +945,6 @@
 		updateSelectedCard({ tags: normalizeTags(selectedCardTags.filter((entry) => entry !== tag)) })
 	}
 
-	function handleTagInputKeydown(event: KeyboardEvent) {
-		if (event.key !== 'Enter') return
-		event.preventDefault()
-		addSelectedTag()
-	}
-
 	function buildTagSelectionState(selectedCards: StoredCard[], tag: string): TagSelectionState {
 		if (selectedCards.length === 0 || !tag) return 'none'
 		const taggedCount = selectedCards.filter((card) => cardHasTag(card, tag)).length
@@ -971,10 +973,6 @@
 		})
 		await persistCardsPatch(nextCards)
 		libraryStatus = `Removed "${managerTag}" from selected cards.`
-	}
-
-	function updateManagerTagPresenceFilter(value: string) {
-		managerTagPresenceFilter = normalizePresenceFilter(value)
 	}
 
 	function updateImageTransform(patch: Partial<ImageTransform>) {
@@ -1691,19 +1689,6 @@
 		}
 	}
 
-	function updateImagePresenceFilter(value: string) {
-		imagePresenceFilter = normalizePresenceFilter(value)
-	}
-
-	function updateVersoPresenceFilter(value: string) {
-		versoPresenceFilter = normalizePresenceFilter(value)
-	}
-
-	function normalizePresenceFilter(value: string): PresenceFilter {
-		if (value === 'missing' || value === 'present') return value
-		return 'all'
-	}
-
 	function setIndeterminate(node: HTMLInputElement, value: boolean) {
 		node.indeterminate = value
 		return {
@@ -2403,15 +2388,9 @@
 					</select>
 				</label>
 			{/if}
-			<button
-				type="button"
-				class="secondary icon-button"
-				aria-label="Settings"
-				title="Settings"
-				on:click={() => (showSettingsPanel = !showSettingsPanel)}
-			>
+			<IconButton ariaLabel="Settings" on:click={() => (showSettingsPanel = !showSettingsPanel)}>
 				<Settings size={18} aria-hidden="true" />
-			</button>
+			</IconButton>
 			<button type="button" on:click={createNewCard}>
 				<Plus size={18} aria-hidden="true" />
 				New card
@@ -2563,18 +2542,12 @@
 							</button>
 						</div>
 					</div>
-					<label class="manager-tag-select">
-						<select
-							value={managerTagPresenceFilter}
-							disabled={!managerTag}
-							aria-label="Filter table by tag"
-							on:change={(event) => updateManagerTagPresenceFilter(event.currentTarget.value)}
-						>
-							<option value="all">All</option>
-							<option value="missing">Missing</option>
-							<option value="present">Present</option>
-						</select>
-					</label>
+					<PresenceFilterGroup
+						bind:value={managerTagPresenceFilter}
+						disabled={!managerTag}
+						ariaLabel="Filter table by tag"
+						name="manager-tag-presence-filter"
+					/>
 				</div>
 				<div class="card-table-wrap">
 					<table class="card-table">
@@ -2596,28 +2569,18 @@
 										<span class="column-title">
 											<ImageIcon size={17} aria-hidden="true" />
 											{#if duplicateColumnKeys.has('image')}
-												<button
-													type="button"
-													class:active={duplicateFocus === 'image'}
-													class="duplicate-focus-button"
-													aria-label="Show duplicate images"
-													title="Show duplicate images"
+												<DuplicateFocusButton
+													active={duplicateFocus === 'image'}
+													ariaLabel="Show duplicate images"
 													on:click={() => toggleDuplicateFocus('image')}
-												>
-													<Copy size={13} aria-hidden="true" />
-												</button>
+												/>
 											{/if}
 										</span>
-										<select
-											class="image-presence-filter"
-											value={imagePresenceFilter}
-											aria-label="Filter images"
-											on:change={(event) => updateImagePresenceFilter(event.currentTarget.value)}
-										>
-											<option value="all">All</option>
-											<option value="missing">Missing</option>
-											<option value="present">Present</option>
-										</select>
+										<PresenceFilterGroup
+											bind:value={imagePresenceFilter}
+											ariaLabel="Filter images"
+											name="image-presence-filter"
+										/>
 									</div>
 								</th>
 								<th title={mainLanguage}>
@@ -2625,18 +2588,12 @@
 										<span class="column-title">
 											<span>{markerLabelForLanguage(mainLanguage)}</span>
 											{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(mainLanguage))}
-												<button
-													type="button"
-													class:active={duplicateFocus ===
-														duplicateColumnKeyForLanguage(mainLanguage)}
-													class="duplicate-focus-button"
-													aria-label={`Show duplicate ${mainLanguage} values`}
-													title={`Show duplicate ${mainLanguage} values`}
+												<DuplicateFocusButton
+													active={duplicateFocus === duplicateColumnKeyForLanguage(mainLanguage)}
+													ariaLabel={`Show duplicate ${mainLanguage} values`}
 													on:click={() =>
 														toggleDuplicateFocus(duplicateColumnKeyForLanguage(mainLanguage))}
-												>
-													<Copy size={13} aria-hidden="true" />
-												</button>
+												/>
 											{/if}
 										</span>
 										<input
@@ -2653,16 +2610,11 @@
 								<th>
 									<div class="verso-column-header">
 										<span class="column-title">Verso</span>
-										<select
-											class="presence-filter"
-											value={versoPresenceFilter}
-											aria-label="Filter verso links"
-											on:change={(event) => updateVersoPresenceFilter(event.currentTarget.value)}
-										>
-											<option value="all">All</option>
-											<option value="missing">Missing</option>
-											<option value="present">Present</option>
-										</select>
+										<PresenceFilterGroup
+											bind:value={versoPresenceFilter}
+											ariaLabel="Filter verso links"
+											name="verso-presence-filter"
+										/>
 									</div>
 								</th>
 								<th aria-label="Delete"></th>
@@ -2718,15 +2670,16 @@
 												<span>{linkedCardLabel(card)}</span>
 											</button>
 											{#if card.versoCardId}
-												<button
-													type="button"
-													class="delete-icon-button"
-													aria-label="Unlink verso"
+												<IconButton
+													ariaLabel="Unlink verso"
 													title="Unlink verso"
-													on:click|stopPropagation={() => clearVersoLink(card.id)}
+													className="delete-icon-button"
+													size={15}
+													stopPropagation
+													on:click={() => clearVersoLink(card.id)}
 												>
 													<Link2Off size={15} aria-hidden="true" />
-												</button>
+												</IconButton>
 											{/if}
 										{/if}
 									</td>
@@ -2744,15 +2697,16 @@
 												on:click|stopPropagation={() => (deletingCardId = '')}>no</button
 											>
 										{:else}
-											<button
-												type="button"
-												class="delete-icon-button"
-												aria-label="Delete card"
+											<IconButton
+												ariaLabel="Delete card"
 												title="Delete card"
-												on:click|stopPropagation={() => (deletingCardId = card.id)}
+												className="delete-icon-button"
+												size={16}
+												stopPropagation
+												on:click={() => (deletingCardId = card.id)}
 											>
 												<Trash2 size={16} aria-hidden="true" />
-											</button>
+											</IconButton>
 										{/if}
 									</td>
 								</tr>
@@ -2862,15 +2816,9 @@
 									Delete
 								</button>
 							{:else}
-								<button
-									type="button"
-									class="secondary icon-button"
-									aria-label="Delete card"
-									title="Delete card"
-									on:click={() => (editorDeleteArmed = true)}
-								>
-									<Trash2 size={18} aria-hidden="true" />
-								</button>
+									<IconButton ariaLabel="Delete card" on:click={() => (editorDeleteArmed = true)}>
+										<Trash2 size={18} aria-hidden="true" />
+									</IconButton>
 							{/if}
 						</div>
 					</div>
@@ -2898,66 +2846,22 @@
 						{/each}
 					</div>
 
-					<div class="tag-panel">
-						<label class="tag-combobox">
-							<span>Tags</span>
-							<div class="tag-input-row">
-								<input
-									bind:value={tagInput}
-									list="card-tag-options"
-									placeholder="Add tag"
-									aria-label="Add tag"
-									on:keydown={handleTagInputKeydown}
-								/>
-								<datalist id="card-tag-options">
-									{#each tagSuggestions as tag}
-										<option value={tag}></option>
-									{/each}
-								</datalist>
-								<button
-									type="button"
-									class="secondary icon-button"
-									disabled={!tagInput.trim()}
-									aria-label="Add tag"
-									title="Add tag"
-									on:click={addSelectedTag}
-								>
-									<Plus size={18} aria-hidden="true" />
-								</button>
-							</div>
-						</label>
-						{#if selectedCardTags.length > 0}
-							<div class="tag-chip-list" aria-label="Selected tags">
-								{#each selectedCardTags as tag}
-									<span class="tag-chip">
-										<span>{tag}</span>
-										<button
-											type="button"
-											aria-label={`Remove ${tag}`}
-											title={`Remove ${tag}`}
-											on:click={() => removeSelectedTag(tag)}
-										>
-											<X size={14} aria-hidden="true" />
-										</button>
-									</span>
-								{/each}
-							</div>
-						{/if}
-					</div>
+					<TagInput
+						bind:value={tagInput}
+						tags={selectedCardTags}
+						suggestions={tagSuggestions}
+						listId="card-tag-options"
+						on:add={addSelectedTag}
+						on:remove={(event) => removeSelectedTag(event.detail)}
+					/>
 
 					<div class="image-panel">
 						<div class="image-panel-header">
 							<p class="eyebrow">Image</p>
 							{#if imageDataUrl}
-								<button
-									type="button"
-									class="secondary icon-button"
-									aria-label="Clear image"
-									title="Clear image"
-									on:click={clearImage}
-								>
-									<X size={18} aria-hidden="true" />
-								</button>
+									<IconButton ariaLabel="Clear image" on:click={clearImage}>
+										<X size={18} aria-hidden="true" />
+									</IconButton>
 							{/if}
 						</div>
 						<div class="image-actions">
@@ -3067,26 +2971,19 @@
 						</div>
 					</div>
 
-					<div
-						class:dragging={isDragging}
-						class="card-preview"
-						role="group"
-						aria-label="Card image manager"
-						on:dragenter|preventDefault={() => (isDragging = true)}
-						on:dragover|preventDefault={() => (isDragging = true)}
+					<CardPreviewCanvas
+						bind:canvas={previewCanvas}
+						dragging={isDragging}
+						canPan={Boolean(imageDataUrl)}
+						on:dragenter={() => (isDragging = true)}
+						on:dragover={() => (isDragging = true)}
 						on:dragleave={() => (isDragging = false)}
-						on:drop={onDrop}
-					>
-						<canvas
-							bind:this={previewCanvas}
-							class:can-pan={Boolean(imageDataUrl)}
-							aria-label="Generated card preview"
-							on:pointerdown={startImagePan}
-							on:pointermove={moveImagePan}
-							on:pointerup={stopImagePan}
-							on:pointercancel={stopImagePan}
-						></canvas>
-					</div>
+						on:drop={(event) => onDrop(event.detail)}
+						on:pointerdown={(event) => startImagePan(event.detail)}
+						on:pointermove={(event) => moveImagePan(event.detail)}
+						on:pointerup={(event) => stopImagePan(event.detail)}
+						on:pointercancel={(event) => stopImagePan(event.detail)}
+					/>
 
 					{#if renderError}
 						<p class="status error">{renderError}</p>
@@ -3102,35 +2999,14 @@
 	<canvas bind:this={pdfCanvas} class="export-canvas" aria-hidden="true"></canvas>
 
 	{#if showImageSearchPanel}
-		<div class="modal-backdrop">
-			<button
-				type="button"
-				class="modal-scrim"
-				aria-label="Close image search"
-				on:click={closeImageSearch}
-			></button>
-			<div
-				class="image-search-modal"
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="image-search-title"
-				tabindex="-1"
-			>
-				<div class="settings-header">
-					<div>
-						<p class="eyebrow">Image source</p>
-						<h2 id="image-search-title">Search image</h2>
-					</div>
-					<button
-						type="button"
-						class="secondary icon-button"
-						aria-label="Close image search"
-						title="Close image search"
-						on:click={closeImageSearch}
-					>
-						<X size={18} aria-hidden="true" />
-					</button>
-				</div>
+		<PanelModal
+			title="Search image"
+			titleId="image-search-title"
+			eyebrow="Image source"
+			closeLabel="Close image search"
+			modalClass="image-search-modal"
+			on:close={closeImageSearch}
+		>
 
 				{#if availableImageSearchProviders.length > 0}
 					<div class="image-provider-tabs" aria-label="Image source">
@@ -3215,111 +3091,50 @@
 						</button>
 					</div>
 				</div>
-			</div>
-		</div>
+		</PanelModal>
 	{/if}
 
 	{#if showReaderInstallPanel}
-		<div class="modal-backdrop qr-backdrop">
-			<button
-				type="button"
-				class="modal-scrim qr-scrim"
-				aria-label="Close reader install options"
-				on:click={() => (showReaderInstallPanel = false)}
-			></button>
-			<div
-				class="apk-modal"
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="reader-install-title"
-				tabindex="-1"
-			>
-				<div class="settings-header">
-					<div>
-						<p class="eyebrow">iPhone / Web</p>
-						<h2 id="reader-install-title">Open reader</h2>
-					</div>
-					<button
-						type="button"
-						class="secondary icon-button"
-						aria-label="Close reader install options"
-						title="Close reader install options"
-						on:click={() => (showReaderInstallPanel = false)}
-					>
-						<X size={18} aria-hidden="true" />
-					</button>
-				</div>
-
-				{#if readerQrDataUrl}
-					<img class="apk-modal-qr" src={readerQrDataUrl} alt="Reader web app QR code" />
-				{/if}
-				<a class="apk-modal-link" href={readerUrl} target="_blank" rel="noreferrer">
-					<ExternalLink size={18} aria-hidden="true" />
-					Open Reader
-				</a>
-				<p class="install-note">On iPhone, open in Safari, tap Share, then Add to Home Screen.</p>
-			</div>
-		</div>
+		<QRInstallPanel
+			title="Open reader"
+			titleId="reader-install-title"
+			eyebrow="iPhone / Web"
+			closeLabel="Close reader install options"
+			qrDataUrl={readerQrDataUrl}
+			qrAlt="Reader web app QR code"
+			href={readerUrl}
+			linkLabel="Open Reader"
+			linkTarget="_blank"
+			note="On iPhone, open in Safari, tap Share, then Add to Home Screen."
+			on:close={() => (showReaderInstallPanel = false)}
+		/>
 	{/if}
 
 	{#if showApkPanel}
-		<div class="modal-backdrop qr-backdrop">
-			<button
-				type="button"
-				class="modal-scrim qr-scrim"
-				aria-label="Close Android APK QR code"
-				on:click={() => (showApkPanel = false)}
-			></button>
-			<div
-				class="apk-modal"
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="apk-install-title"
-				tabindex="-1"
-			>
-				<div class="settings-header">
-					<div>
-						<p class="eyebrow">Android</p>
-						<h2 id="apk-install-title">Download APK</h2>
-					</div>
-					<button
-						type="button"
-						class="secondary icon-button"
-						aria-label="Close Android APK QR code"
-						title="Close Android APK QR code"
-						on:click={() => (showApkPanel = false)}
-					>
-						<X size={18} aria-hidden="true" />
-					</button>
-				</div>
-
-				{#if apkQrDataUrl}
-					<img class="apk-modal-qr" src={apkQrDataUrl} alt="Android APK QR code" />
-				{/if}
-				<a class="apk-modal-link" href={apkUrl}>
-					<Download size={18} aria-hidden="true" />
-					Download APK
-				</a>
-			</div>
-		</div>
+		<QRInstallPanel
+			title="Download APK"
+			titleId="apk-install-title"
+			eyebrow="Android"
+			closeLabel="Close Android APK QR code"
+			qrDataUrl={apkQrDataUrl}
+			qrAlt="Android APK QR code"
+			href={apkUrl}
+			linkLabel="Download APK"
+			action="download"
+			on:close={() => (showApkPanel = false)}
+		/>
 	{/if}
 
 	{#if showHelpPanel}
-		<div class="modal-backdrop">
-			<button
-				type="button"
-				class="modal-scrim"
-				aria-label="Close help"
-				on:click={() => (showHelpPanel = false)}
-			></button>
-			<div
-				class="help-modal"
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="help-title"
-				tabindex="-1"
-			>
-				<div class="settings-header">
+		<PanelModal
+			title="Help"
+			titleId="help-title"
+			closeLabel="Close help"
+			modalClass="help-modal"
+			showCloseButton={false}
+			on:close={() => (showHelpPanel = false)}
+		>
+				<div slot="header" class="settings-header">
 					<div class="help-title-row">
 						<img src="/app-icon.png" alt="" />
 						<div>
@@ -3450,40 +3265,17 @@
 				<div class="help-footer">
 					<button type="button" on:click={() => (showHelpPanel = false)}>OK</button>
 				</div>
-			</div>
-		</div>
+		</PanelModal>
 	{/if}
 
 	{#if showSettingsPanel}
-		<div class="modal-backdrop">
-			<button
-				type="button"
-				class="modal-scrim"
-				aria-label="Close settings"
-				on:click={() => (showSettingsPanel = false)}
-			></button>
-			<div
-				class="settings-modal"
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="settings-title"
-				tabindex="-1"
-			>
-				<div class="settings-header">
-					<div>
-						<p class="eyebrow">Settings</p>
-						<h2 id="settings-title">Corner languages</h2>
-					</div>
-					<button
-						type="button"
-						class="secondary icon-button"
-						aria-label="Close settings"
-						title="Close settings"
-						on:click={() => (showSettingsPanel = false)}
-					>
-						<X size={18} aria-hidden="true" />
-					</button>
-				</div>
+		<PanelModal
+			title="Corner languages"
+			titleId="settings-title"
+			eyebrow="Settings"
+			closeLabel="Close settings"
+			on:close={() => (showSettingsPanel = false)}
+		>
 				<div class="settings-language-list">
 					{#each languageSetups as setup, index (setup.id)}
 						{@const corner = cornerSpecForIndex(index)}
@@ -3523,83 +3315,26 @@
 						</article>
 					{/each}
 				</div>
-				<div class="settings-section">
-					<p class="eyebrow">Image sources</p>
-					{#each IMAGE_SEARCH_PROVIDERS as provider}
-						<label class="api-key-field">
-							{provider.label} API key
-							<input
-								type="password"
-								value={imageSearchProviderConfigs[provider.id].apiKey}
-								placeholder="Stored locally"
-								spellcheck="false"
-								autocomplete="off"
-								on:input={(event) =>
-									updateImageSearchProviderConfig(provider.id, 'apiKey', event.currentTarget.value)}
-							/>
-						</label>
-					{/each}
-				</div>
-				<div class="settings-section">
-					<p class="eyebrow">Translation</p>
-					<label class="api-key-field">
-						Translation provider
-						<select
-							value={translationProvider}
-							on:change={(event) => updateTranslationProvider(event.currentTarget.value)}
-						>
-							{#each TRANSLATION_PROVIDERS as provider}
-								<option value={provider.value}>{provider.label}</option>
-							{/each}
-						</select>
-					</label>
-					<label class="api-key-field">
-						{providerLabel(translationProvider)} API key
-						<input
-							type="password"
-							value={currentTranslationProviderConfig.apiKey}
-							placeholder="Stored locally"
-							spellcheck="false"
-							autocomplete="off"
-							on:input={(event) =>
-								updateTranslationProviderConfig('apiKey', event.currentTarget.value)}
-						/>
-					</label>
-					<label class="api-key-field">
-						{providerLabel(translationProvider)} model
-						<input
-							value={currentTranslationProviderConfig.model}
-							placeholder={translationProviderConfigs[translationProvider].model}
-							spellcheck="false"
-							autocomplete="off"
-							on:input={(event) =>
-								updateTranslationProviderConfig('model', event.currentTarget.value)}
-						/>
-					</label>
-					{#if isOpenAiCompatibleProvider(translationProvider)}
-						<label class="api-key-field">
-							Base URL
-							<input
-								value={currentTranslationProviderConfig.baseUrl ?? ''}
-								placeholder="https://api.example.com/v1"
-								spellcheck="false"
-								autocomplete="off"
-								on:input={(event) =>
-									updateTranslationProviderConfig('baseUrl', event.currentTarget.value)}
-							/>
-						</label>
-					{/if}
-					<label class="api-key-field">
-						Translation prompt template
-						<textarea
-							value={translationPromptTemplate}
-							rows="9"
-							spellcheck="false"
-							on:input={(event) => (translationPromptTemplate = event.currentTarget.value)}
-						></textarea>
-					</label>
-				</div>
-			</div>
-		</div>
+				<ProviderConfigFields
+					imageProviders={IMAGE_SEARCH_PROVIDERS}
+					imageProviderConfigs={imageSearchProviderConfigs}
+					translationProviders={TRANSLATION_PROVIDERS}
+					{translationProvider}
+					translationProviderLabel={providerLabel(translationProvider)}
+					translationConfig={currentTranslationProviderConfig}
+					showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
+					promptTemplate={translationPromptTemplate}
+					on:imageConfigChange={(event) =>
+						updateImageSearchProviderConfig(
+							event.detail.provider as ImageSearchProviderId,
+							event.detail.field,
+							event.detail.value
+						)}
+					on:translationProviderChange={(event) => updateTranslationProvider(event.detail)}
+					on:translationConfigChange={(event) =>
+						updateTranslationProviderConfig(event.detail.field, event.detail.value)}
+					on:promptTemplateChange={(event) => (translationPromptTemplate = event.detail)}
+				/>
+		</PanelModal>
 	{/if}
 </main>
