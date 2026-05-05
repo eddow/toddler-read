@@ -240,6 +240,10 @@ input::placeholder {
   border-radius: 8px;
 }
 
+.segmented-control.mobile-workspace {
+  grid-template-columns: repeat(3, 38px);
+}
+
 .segmented-control button {
   width: 34px;
   height: 34px;
@@ -573,6 +577,10 @@ input::placeholder {
   min-width: 120px;
 }
 
+.manager-tags-column {
+  min-width: 180px;
+}
+
 .image-column-header {
   min-width: 104px;
 }
@@ -623,6 +631,31 @@ input::placeholder {
 
 .card-table tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.manager-tags-cell {
+  max-width: 320px;
+}
+
+.manager-table-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+.manager-table-tags span {
+  max-width: 150px;
+  padding: 2px 7px;
+  overflow: hidden;
+  color: var(--accent-strong);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  background: var(--focus-ring);
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 68%);
+  border-radius: 999px;
 }
 
 .manager-thumb {
@@ -1630,6 +1663,11 @@ input::placeholder {
 
   .segmented-control {
     width: 100%;
+  }
+
+  .manager-tags-column,
+  .manager-tags-cell {
+    display: none;
   }
 
   .image-prompt {

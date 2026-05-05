@@ -183,6 +183,7 @@
 	let cards: StoredCard[] = []
 	let selectedCardId = ''
 	let workspaceView: WorkspaceView = 'split'
+	let isMobileWorkspace = false
 	let mainLanguage = firstConfiguredLanguage(initialLanguageSetups)
 	let languageFilters: Record<string, string> = {}
 	let imagePresenceFilter: PresenceFilter = 'all'
@@ -315,6 +316,7 @@
 	$: printWarnings = buildPrintWarnings(cards, selectedRectoCardIds)
 	$: renderableEntries = toRenderableEntries(entries)
 	$: canExport = renderableEntries.length > 0
+	$: if (isMobileWorkspace && workspaceView === 'split') workspaceView = 'manager'
 	$: showManager = workspaceView === 'manager' || workspaceView === 'split'
 	$: showEditor = workspaceView === 'editor' || workspaceView === 'split'
 	$: showPress = workspaceView === 'press'
@@ -421,11 +423,18 @@
 			}
 		}
 
+		const workspaceQuery = window.matchMedia('(max-width: 720px)')
+		const updateWorkspaceSize = () => {
+			isMobileWorkspace = workspaceQuery.matches
+		}
 		window.addEventListener('paste', onPaste)
 		window.addEventListener('keydown', onKeyDown)
+		updateWorkspaceSize()
+		workspaceQuery.addEventListener('change', updateWorkspaceSize)
 		return () => {
 			window.removeEventListener('paste', onPaste)
 			window.removeEventListener('keydown', onKeyDown)
+			workspaceQuery.removeEventListener('change', updateWorkspaceSize)
 		}
 	})
 
@@ -1657,6 +1666,11 @@
 		libraryError = ''
 	}
 
+	function openManagerCard(id: string) {
+		selectCard(id)
+		if (isMobileWorkspace) workspaceView = 'editor'
+	}
+
 	function togglePrintCard(id: string) {
 		selectedPrintCardIds = selectedPrintCardIds.includes(id)
 			? selectedPrintCardIds.filter((cardId) => cardId !== id)
@@ -2327,7 +2341,7 @@
 			</div>
 		</div>
 		<div class="library-top-actions">
-			<div class="segmented-control" aria-label="Workspace view">
+			<div class="segmented-control" class:mobile-workspace={isMobileWorkspace} aria-label="Workspace view">
 				<button
 					type="button"
 					class:active={workspaceView === 'manager'}
@@ -2337,15 +2351,17 @@
 				>
 					<List size={18} aria-hidden="true" />
 				</button>
-				<button
-					type="button"
-					class:active={workspaceView === 'split'}
-					aria-label="Split"
-					title="Split"
-					on:click={() => (workspaceView = 'split')}
-				>
-					<Columns2 size={18} aria-hidden="true" />
-				</button>
+				{#if !isMobileWorkspace}
+					<button
+						type="button"
+						class:active={workspaceView === 'split'}
+						aria-label="Split"
+						title="Split"
+						on:click={() => (workspaceView = 'split')}
+					>
+						<Columns2 size={18} aria-hidden="true" />
+					</button>
+				{/if}
 				<button
 					type="button"
 					class:active={workspaceView === 'editor'}
@@ -2617,6 +2633,9 @@
 										/>
 									</div>
 								</th>
+								{#if workspaceView === 'manager'}
+									<th class="manager-tags-column">Tags</th>
+								{/if}
 								<th aria-label="Delete"></th>
 							</tr>
 						</thead>
@@ -2624,7 +2643,7 @@
 							{#each displayedManagerCards as card (card.id)}
 								<tr
 									class:selected={card.id === selectedCardId}
-									on:click={() => selectCard(card.id)}
+									on:click={() => openManagerCard(card.id)}
 								>
 									<td class="select-cell">
 										<label class="row-checkbox" title="Select for press">
@@ -2683,6 +2702,17 @@
 											{/if}
 										{/if}
 									</td>
+									{#if workspaceView === 'manager'}
+										<td class="manager-tags-cell">
+											{#if card.tags?.length}
+												<div class="manager-table-tags" aria-label="Tags">
+													{#each card.tags as tag}
+														<span>{tag}</span>
+													{/each}
+												</div>
+											{/if}
+										</td>
+									{/if}
 									<td class="delete-cell">
 										{#if deletingCardId === card.id}
 											<span>Delete?</span>
