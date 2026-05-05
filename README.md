@@ -9,6 +9,11 @@ The Android app packages the reader client with Capacitor. The generator can
 also expose the generated APK as `tr.apk`, so a caregiver can download or scan
 the app installer from the generator page.
 
+## Links
+
+[![Open App](https://img.shields.io/badge/Open_App-toddler--read.netlify.app-00ad9f?style=for-the-badge&logo=netlify&logoColor=white)](https://toddler-read.netlify.app/)
+[![Support on Ko-fi](https://img.shields.io/badge/Support-Ko--fi-ff5e5b?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/emedware)
+
 ## Repository Layout
 
 ```text

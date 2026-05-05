@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { getA4CutLayout, getA4PageSize, type CardGridSize } from './card';
 import {
   buildPrintLayout,
   dedupeSelectedRectoIds,
@@ -69,6 +70,15 @@ describe('printing press links', () => {
 });
 
 describe('printing press layout', () => {
+  it.each([1, 2, 3, 4] as const)('uses a gutter twice the outer cut margin for %ix%i sheets', (gridSize) => {
+    const pageSize = getA4PageSize();
+    const layout = getA4CutLayout(gridSize);
+
+    expect(layout.gutter).toBe(layout.margin * 2);
+    expect(sheetSpan(layout.cardWidth, layout.margin, layout.gutter, gridSize)).toBeCloseTo(pageSize.width);
+    expect(sheetSpan(layout.cardHeight, layout.margin, layout.gutter, gridSize)).toBeCloseTo(pageSize.height);
+  });
+
   it.each([
     [1, [0]],
     [2, [1, 0, 3, 2]],
@@ -106,3 +116,7 @@ describe('printing press layout', () => {
     expect(dedupeSelectedRectoIds(linked, ['c', 'a', 'd', 'b'])).toEqual(['c', 'a', 'd']);
   });
 });
+
+function sheetSpan(cardSize: number, margin: number, gutter: number, gridSize: CardGridSize): number {
+  return margin * 2 + cardSize * gridSize + gutter * (gridSize - 1);
+}

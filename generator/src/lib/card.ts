@@ -49,6 +49,7 @@ export type CardGridSize = 1 | 2 | 3 | 4;
 
 const A4_WIDTH = 2480;
 const A4_HEIGHT = 3508;
+const SHEET_CUT_MARGIN = 12;
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
 
 const FLAG_BY_LANGUAGE: Record<string, string> = {
@@ -153,8 +154,7 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
 
   const gridSize = input.gridSize ?? DEFAULT_CARD_GRID_SIZE;
   const pageSize = getA4PageSize();
-  const cellWidth = pageSize.width / gridSize;
-  const cellHeight = pageSize.height / gridSize;
+  const layout = getA4CutLayout(gridSize);
   const cardsById = new Map(input.cards.map((card) => [card.id, card]));
   const cardCanvas = document.createElement('canvas');
 
@@ -185,7 +185,13 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
 
     const row = Math.floor(index / gridSize);
     const col = index % gridSize;
-    ctx.drawImage(cardCanvas, col * cellWidth, row * cellHeight, cellWidth, cellHeight);
+    ctx.drawImage(
+      cardCanvas,
+      layout.margin + col * (layout.cardWidth + layout.gutter),
+      layout.margin + row * (layout.cardHeight + layout.gutter),
+      layout.cardWidth,
+      layout.cardHeight
+    );
   }
 }
 
@@ -200,6 +206,17 @@ export function getA4PageSize() {
   return {
     width: A4_WIDTH,
     height: A4_HEIGHT
+  };
+}
+
+export function getA4CutLayout(gridSize: CardGridSize) {
+  const gutter = SHEET_CUT_MARGIN * 2;
+
+  return {
+    margin: SHEET_CUT_MARGIN,
+    gutter,
+    cardWidth: (A4_WIDTH - SHEET_CUT_MARGIN * 2 - gutter * (gridSize - 1)) / gridSize,
+    cardHeight: (A4_HEIGHT - SHEET_CUT_MARGIN * 2 - gutter * (gridSize - 1)) / gridSize
   };
 }
 

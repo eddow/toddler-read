@@ -88,6 +88,16 @@ export async function deleteCard(id: string): Promise<void> {
   });
 }
 
+export async function clearCards(): Promise<void> {
+  const db = await openCardsDb();
+
+  return new Promise((resolve, reject) => {
+    const request = db.transaction(CARD_STORE, 'readwrite').objectStore(CARD_STORE).clear();
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error ?? new Error('Could not clear cards.'));
+  });
+}
+
 function openCardsDb(): Promise<IDBDatabase> {
   dbPromise ??= new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);

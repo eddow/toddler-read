@@ -150,10 +150,10 @@ input::placeholder {
 .app-shell {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
   width: 100%;
   min-height: 100vh;
-  padding: 24px;
+  padding: 20px;
   overflow-x: hidden;
 }
 
@@ -171,12 +171,62 @@ input::placeholder {
   margin: 0 auto;
 }
 
+.library-top-actions button {
+  margin-bottom: 0;
+}
+
 .library-top-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.file-menu {
+  position: relative;
+  margin: 0;
+}
+
+.file-menu summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  margin: 0;
+  padding: var(--pico-form-element-spacing-vertical) var(--pico-form-element-spacing-horizontal);
+  color: var(--accent-strong);
+  font-weight: 700;
+  line-height: 1;
+  list-style: none;
+  background: var(--field-bg);
+  border: 1px solid var(--line);
+  border-radius: var(--pico-border-radius);
+  cursor: pointer;
+}
+
+.file-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.file-menu-panel {
+  position: absolute;
+  inset-block-start: calc(100% + 6px);
+  inset-inline-end: 0;
+  z-index: 5;
+  display: grid;
+  gap: 6px;
+  min-width: 150px;
+  padding: 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px var(--shadow);
+}
+
+.file-menu-panel button {
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .segmented-control {
@@ -215,6 +265,11 @@ input::placeholder {
   grid-template-columns: minmax(0, 1fr);
 }
 
+.library-workspace.workspace-manager {
+  height: calc(100vh - 154px);
+  min-height: 0;
+}
+
 .manager-pane,
 .editor-pane,
 .preview-pane,
@@ -229,11 +284,12 @@ input::placeholder {
 .press-pane {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .manager-pane {
   min-width: 0;
+  height: 100%;
   min-height: 0;
   overflow: hidden;
 }
@@ -362,55 +418,17 @@ input::placeholder {
 .settings-language-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.language-filter {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
   gap: 6px;
-  max-width: 60%;
-}
-
-.language-filter label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 34px;
-  margin: 0;
-  padding: 0 10px;
-  color: var(--accent-strong);
-  font-size: 0.82rem;
-  font-weight: 800;
-  background: var(--field-bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.language-filter label.active {
-  color: var(--accent-on);
-  background: var(--accent);
-  border-color: var(--accent);
-}
-
-.language-filter input {
-  position: fixed;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .main-language-control {
   display: inline-grid;
+  grid-template-columns: auto auto;
   align-items: center;
+  gap: 4px;
   min-height: 42px;
   margin: 0;
-  padding: 0 6px;
+  padding: 0 8px;
   color: var(--accent-strong);
   font-size: 0.78rem;
   font-weight: 800;
@@ -420,7 +438,7 @@ input::placeholder {
 }
 
 .main-language-control select {
-  width: 70px;
+  width: 66px;
   height: 34px;
   padding-block: 0;
   padding-inline: 8px 28px;
@@ -442,7 +460,8 @@ input::placeholder {
 .card-table {
   width: 100%;
   margin: 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .card-table th,
@@ -473,6 +492,9 @@ input::placeholder {
 }
 
 .card-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   color: var(--muted);
   font-size: 0.74rem;
   font-weight: 800;
@@ -639,11 +661,11 @@ input::placeholder {
 
 .language-row {
   display: grid;
-  grid-template-columns: 52px 1fr;
-  align-items: end;
-  gap: 10px;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 8px;
   margin: 0;
-  padding: 12px;
+  padding: 2px 6px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -676,11 +698,23 @@ input::placeholder {
   font-size: 0.95rem;
 }
 
+.language-row .text-field input {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .language-row input,
 .settings-language-row input,
 .api-key-field input,
 .api-key-field select {
-  height: 42px;
+  height: 36px;
+}
+
+.language-row input {
+  min-height: 34px;
+  height: 34px;
+  padding-block: 0;
+  line-height: 34px;
 }
 
 .api-key-field select {
@@ -707,14 +741,15 @@ input::placeholder {
   display: grid;
   place-items: center;
   width: 34px;
-  height: 42px;
+  height: 34px;
   color: var(--muted);
   font-weight: 800;
+  line-height: 1;
 }
 
 .readonly-marker {
   color: var(--ink);
-  font-size: 1.4rem;
+  font-size: 1.22rem;
   background: var(--field-bg);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -722,54 +757,17 @@ input::placeholder {
 
 .language-tools {
   display: grid;
-  gap: 5px;
-  width: 52px;
+  width: 34px;
 }
 
 .language-tools .readonly-marker {
-  width: 52px;
-}
-
-.translation-option-control {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.translation-option-control label {
-  display: grid;
-  place-items: center;
-  width: 24px;
-  height: 24px;
-  color: var(--accent-strong);
-  background: var(--field-bg);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.translation-option-control label.active {
-  color: var(--accent-on);
-  background: var(--accent);
-  border-color: var(--accent);
-}
-
-.translation-option-control input {
-  position: fixed;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
-  pointer-events: none;
+  width: 34px;
 }
 
 .image-panel {
   display: grid;
-  gap: 12px;
-  padding: 12px;
+  gap: 8px;
+  padding: 8px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -779,7 +777,7 @@ input::placeholder {
 .image-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .image-panel-header {
@@ -794,8 +792,12 @@ input::placeholder {
   flex: 1 1 160px;
 }
 
+.image-actions .paste-target,
 .image-actions button {
-  height: 42px;
+  height: 38px;
+  min-height: 38px;
+  padding-block: 0;
+  line-height: 38px;
 }
 
 .image-adjustments {
@@ -997,8 +999,10 @@ input::placeholder {
 
 .paste-target {
   width: 100%;
-  height: 42px;
+  height: 38px;
+  min-height: 38px;
   margin: 0;
+  padding-block: 0;
   color: var(--accent-strong);
   font-weight: 700;
   text-align: center;
@@ -1221,11 +1225,6 @@ input::placeholder {
   .manager-pane,
   .workspace-split .editor-pane {
     overflow: visible;
-  }
-
-  .language-filter {
-    max-width: 100%;
-    justify-content: flex-start;
   }
 
   .preview-toolbar,
