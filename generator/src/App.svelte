@@ -6,6 +6,7 @@
 		Download,
 		ExternalLink,
 		Grid3X3,
+		Info,
 		Image as ImageIcon,
 		ImagePlus,
 		Languages,
@@ -111,6 +112,8 @@
 		'Return only JSON matching this schema: {{responseSchemaJson}}',
 		'For each target, return a short natural translation suitable for a young child.'
 	].join('\n')
+	const REPOSITORY_URL = 'https://github.com/eddow/toddler-read'
+	const KO_FI_URL = 'https://ko-fi.com/emedware'
 	let idCounter = 0
 
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
@@ -191,6 +194,7 @@
 	let showQrText = false
 	let showSettingsPanel = false
 	let showFileMenu = false
+	let showHelpPanel = false
 	let imageDataUrl: string | undefined
 	let imageTransform: ImageTransform | undefined
 	let previewImageTransform: ImageTransform | undefined
@@ -363,6 +367,7 @@
 				showSettingsPanel = false
 				showImageSearchPanel = false
 				showFileMenu = false
+				showHelpPanel = false
 			}
 		}
 
@@ -526,7 +531,9 @@
 		}))
 	}
 
-	function editorEntries(nextEntries: LanguageEntry[]): Array<{ entry: LanguageEntry; index: number }> {
+	function editorEntries(
+		nextEntries: LanguageEntry[]
+	): Array<{ entry: LanguageEntry; index: number }> {
 		return nextEntries
 			.map((entry, index) => ({ entry, index }))
 			.filter(({ entry }) => entry.lang.trim().length > 0)
@@ -2159,13 +2166,27 @@
 
 <svelte:head>
 	<title>Toddler QR Card Generator</title>
+	<link rel="icon" type="image/png" href="/favicon.png" />
+	<link rel="apple-touch-icon" href="/app-icon.png" />
 </svelte:head>
 
 <main class="app-shell">
 	<header class="app-header library-header">
-		<div class="title-block">
-			<p class="eyebrow">Toddler Read</p>
-			<h1>Toddler Read QR Card Generator</h1>
+		<div class="brand-block">
+			<button
+				type="button"
+				class="app-logo-button"
+				aria-label="Open help"
+				title="Help"
+				on:click={() => (showHelpPanel = true)}
+			>
+				<img src="/app-icon.png" alt="" />
+				<Info size={15} aria-hidden="true" />
+			</button>
+			<div class="title-block">
+				<p class="eyebrow">Toddler Read</p>
+				<h1>Toddler Read QR Card Generator</h1>
+			</div>
 		</div>
 		<div class="library-top-actions">
 			<div class="segmented-control" aria-label="Workspace view">
@@ -2924,6 +2945,156 @@
 							Next
 						</button>
 					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	{#if showHelpPanel}
+		<div class="modal-backdrop">
+			<button
+				type="button"
+				class="modal-scrim"
+				aria-label="Close help"
+				on:click={() => (showHelpPanel = false)}
+			></button>
+			<div
+				class="help-modal"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="help-title"
+				tabindex="-1"
+			>
+				<div class="settings-header">
+					<div class="help-title-row">
+						<img src="/app-icon.png" alt="" />
+						<div>
+							<p class="eyebrow">Toddler Read</p>
+							<h2 id="help-title">Help</h2>
+						</div>
+					</div>
+				</div>
+
+				<div class="help-content">
+					<section>
+						<h3>Editing Cards</h3>
+						<p>
+							Use <strong>New card</strong> to create a card, then fill the text fields for the configured
+							corner languages. Each filled text becomes a QR payload that the reader can speak.
+						</p>
+						<ul>
+							<li>Choose or paste an image, or drag an image onto the preview.</li>
+							<li>Use image search when a provider API key is configured.</li>
+							<li>Adjust pan and size until the card preview looks right.</li>
+							<li>
+								Enable <strong>QR margin</strong> when images need extra room around QR codes.
+							</li>
+							<li>
+								Enable <strong>QR text</strong> when you want the QR payload printed under each code.
+							</li>
+							<li>Use the manager table to select, delete, filter, and link verso cards.</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Settings</h3>
+						<p>
+							Open settings with the gear button. Settings are stored locally in this browser,
+							including API keys, language setup, grid size, QR margin, QR text, and provider
+							choices.
+						</p>
+						<ul>
+							<li>
+								<strong>Corner languages:</strong> set up to four language codes, such as
+								<code>en</code>, <code>fr</code>, or <code>ro</code>, and adjust the displayed
+								marker.
+							</li>
+							<li>
+								<strong>Image sources:</strong> add Pexels or Flaticon API keys to enable in-app image
+								search.
+							</li>
+							<li>
+								<strong>Translation:</strong> choose Gemini, OpenAI, DeepSeek, Z.AI, Groq, or a custom
+								OpenAI-compatible provider.
+							</li>
+							<li>
+								<strong>Model and base URL:</strong> keep the defaults unless your provider or account
+								requires a different model or endpoint.
+							</li>
+							<li>
+								<strong>Prompt template:</strong> controls how card texts are translated. The placeholders
+								are filled by the app before the request is sent.
+							</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>API Keys</h3>
+						<p>
+							API keys are only needed for optional helpers. Translation keys let the app fill
+							missing language text from existing text on the card. Image search keys let the app
+							search image providers from the editor. Keys stay in local browser storage and are
+							sent directly to the selected provider when you use that feature.
+						</p>
+					</section>
+
+					<section>
+						<h3>Local Data</h3>
+						<p>
+							Card data is stored in this browser. Nothing is sent to Toddler Read servers, and
+							there is no account or cloud sync. Export your library from the file menu before
+							clearing browser data, switching browsers, or moving to another device.
+						</p>
+						<p>
+							The only network transmissions are the requests you trigger for translation or image
+							search, which go directly to the configured provider APIs.
+						</p>
+					</section>
+
+					<section>
+						<h3>File Menu</h3>
+						<ul>
+							<li>
+								<strong>Import:</strong> adds cards from a JSON export and merges with your current library.
+							</li>
+							<li>
+								<strong>Replace:</strong> imports a JSON export after clearing the current library.
+							</li>
+							<li>
+								<strong>Export:</strong> downloads the full card library as JSON for backup or sharing.
+							</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Manager And Printing Press</h3>
+						<p>
+							The manager is the card library. Select cards with the checkboxes, use filters to find
+							missing images or text, and link a card to its verso when you need two-sided printing.
+						</p>
+						<p>
+							Open the printer view to preview selected cards as A4 recto and verso pages. Choose
+							the grid size in the toolbar, review any warnings, then download the PDF and print it.
+						</p>
+					</section>
+
+					<section>
+						<h3>Links</h3>
+						<div class="help-links">
+							<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
+								<ExternalLink size={16} aria-hidden="true" />
+								Repository
+							</a>
+							<a href={KO_FI_URL} target="_blank" rel="noreferrer">
+								<ExternalLink size={16} aria-hidden="true" />
+								Ko-fi
+							</a>
+						</div>
+					</section>
+				</div>
+
+				<div class="help-footer">
+					<button type="button" on:click={() => (showHelpPanel = false)}>OK</button>
 				</div>
 			</div>
 		</div>

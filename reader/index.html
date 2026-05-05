@@ -155,6 +155,78 @@
 			display: none;
 		}
 
+		.help-backdrop {
+			position: fixed;
+			inset: 0;
+			z-index: 10;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 1rem;
+			background: rgba(23, 33, 27, 0.56);
+		}
+
+		.help-dialog {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			width: min(92vw, 34rem);
+			max-height: calc(100dvh - 2rem);
+			padding: 1.25rem;
+			overflow: auto;
+			color: #17211b;
+			background: #fffdf7;
+			border: 1px solid #d9d0bf;
+			border-radius: 18px;
+			box-shadow: 0 18px 48px rgba(38, 32, 21, 0.28);
+		}
+
+		.help-dialog h1 {
+			font-size: 1.35rem;
+			line-height: 1.15;
+		}
+
+		.help-dialog h2 {
+			font-size: 1rem;
+			line-height: 1.2;
+		}
+
+		.help-dialog p,
+		.help-dialog li {
+			color: #5f5a51;
+			font-size: 0.96rem;
+			line-height: 1.45;
+		}
+
+		.help-dialog ul {
+			display: grid;
+			gap: 0.45rem;
+			padding-left: 1.15rem;
+		}
+
+		.help-dialog a {
+			color: #144c3d;
+			font-weight: 700;
+		}
+
+		.help-section {
+			display: grid;
+			gap: 0.45rem;
+		}
+
+		.help-ok {
+			align-self: end;
+			min-width: 7rem;
+			min-height: 3rem;
+			padding: 0 1.25rem;
+			color: #ffffff;
+			font-size: 1rem;
+			font-weight: 700;
+			background: #23765d;
+			border: 0;
+			border-radius: 12px;
+		}
+
 		.hidden { display: none; }
 	</style>
 </head>
@@ -187,6 +259,43 @@
 
 	<audio id="audio" preload="auto"></audio>
 
+	<div class="help-backdrop" id="helpBackdrop" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+		<div class="help-dialog">
+			<h1 id="helpTitle">Toddler Reader</h1>
+
+			<section class="help-section">
+				<h2>Privacy</h2>
+				<p>
+					Nothing is transmitted to Toddler Read servers. This app scans QR codes and plays the
+					audio or text that the code contains. Network access is only used when a scanned QR code
+					points to an online audio URL.
+				</p>
+			</section>
+
+			<section class="help-section">
+				<h2>Pin The App</h2>
+				<p>
+					Android can pin this app so a child stays in the reader until you unlock it.
+				</p>
+				<ul>
+					<li>Enable app pinning in Android Settings, usually under Security or Privacy.</li>
+					<li>Open Toddler Reader.</li>
+					<li>Open the recent apps screen.</li>
+					<li>Tap the app icon above Toddler Reader, then choose Pin.</li>
+					<li>To unpin, follow the Android hint shown on your device.</li>
+				</ul>
+			</section>
+
+			<section class="help-section">
+				<h2>Links</h2>
+				<p><a href="https://toddler-read.netlify.app/">https://toddler-read.netlify.app/</a></p>
+				<p><a href="https://ko-fi.com/emedware">https://ko-fi.com/emedware</a></p>
+			</section>
+
+			<button class="help-ok" id="helpOkBtn" type="button">OK</button>
+		</div>
+	</div>
+
 	<script src="jsQR.js"></script>
 	<script>
 		(function() {
@@ -203,6 +312,8 @@
 			const playBtn       = document.getElementById('playBtn');
 			const stopBtn       = document.getElementById('stopBtn');
 			const soundLabel    = document.getElementById('soundLabel');
+			const helpBackdrop  = document.getElementById('helpBackdrop');
+			const helpOkBtn     = document.getElementById('helpOkBtn');
 
 			let stream = null;
 			let scanTimer = null;
@@ -556,6 +667,11 @@
 				returnToScanner();
 			});
 
+			helpOkBtn.addEventListener('click', () => {
+				helpBackdrop.classList.add('hidden');
+				startScanning();
+			});
+
 			// ---- Cleanup on page unload ----
 			window.addEventListener('beforeunload', () => {
 				stopScanning();
@@ -564,7 +680,6 @@
 
 			// ---- Initial state ----
 			showScanner();
-			startScanning();
 		})();
 	</script>
 </body>
