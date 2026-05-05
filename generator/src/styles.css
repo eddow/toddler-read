@@ -422,6 +422,10 @@ input::placeholder {
   border-radius: 8px;
 }
 
+.apk-qr:hover {
+  border-color: var(--accent);
+}
+
 .apk-qr img {
   width: 58px;
   height: 58px;
@@ -891,6 +895,11 @@ input::placeholder {
   border-radius: 0;
 }
 
+.qr-scrim {
+  background: rgba(23, 33, 27, 0.52);
+  backdrop-filter: blur(9px);
+}
+
 .settings-modal {
   position: relative;
   z-index: 1;
@@ -1072,6 +1081,51 @@ input::placeholder {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: 0 18px 50px var(--shadow);
+}
+
+.apk-modal {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: min(440px, 100%);
+  max-height: calc(100vh - 48px);
+  padding: 18px;
+  overflow: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 50px var(--shadow);
+}
+
+.apk-modal .settings-header {
+  width: 100%;
+}
+
+.apk-modal-qr {
+  width: min(320px, 76vw);
+  height: min(320px, 76vw);
+  padding: 12px;
+  image-rendering: pixelated;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.apk-modal-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+  color: var(--accent-strong);
+  font-weight: 800;
+  text-decoration: none;
+  background: var(--field-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
 }
 
 .help-modal {

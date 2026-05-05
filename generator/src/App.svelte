@@ -195,6 +195,7 @@
 	let showSettingsPanel = false
 	let showFileMenu = false
 	let showHelpPanel = false
+	let showApkPanel = false
 	let imageDataUrl: string | undefined
 	let imageTransform: ImageTransform | undefined
 	let previewImageTransform: ImageTransform | undefined
@@ -368,6 +369,7 @@
 				showImageSearchPanel = false
 				showFileMenu = false
 				showHelpPanel = false
+				showApkPanel = false
 			}
 		}
 
@@ -2303,7 +2305,13 @@
 				</div>
 			</details>
 			{#if apkQrDataUrl}
-				<a class="apk-qr" href={apkUrl} aria-label="Download Android APK">
+				<button
+					type="button"
+					class="apk-qr"
+					aria-label="Show Android APK QR code"
+					title="Show Android APK QR code"
+					on:click={() => (showApkPanel = true)}
+				>
 					<span class="apk-qr-icon" aria-hidden="true">
 						<svg viewBox="0 0 24 24" role="img">
 							<path
@@ -2318,7 +2326,7 @@
 						</svg>
 					</span>
 					<img src={apkQrDataUrl} alt="" />
-				</a>
+				</button>
 			{/if}
 		</div>
 	</header>
@@ -2946,6 +2954,46 @@
 						</button>
 					</div>
 				</div>
+			</div>
+		</div>
+	{/if}
+
+	{#if showApkPanel}
+		<div class="modal-backdrop qr-backdrop">
+			<button
+				type="button"
+				class="modal-scrim qr-scrim"
+				aria-label="Close Android APK QR code"
+				on:click={() => (showApkPanel = false)}
+			></button>
+			<div
+				class="apk-modal"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="apk-title"
+				tabindex="-1"
+			>
+				<div class="settings-header">
+					<div>
+						<p class="eyebrow">Android</p>
+						<h2 id="apk-title">Install app</h2>
+					</div>
+					<button
+						type="button"
+						class="secondary icon-button"
+						aria-label="Close Android APK QR code"
+						title="Close Android APK QR code"
+						on:click={() => (showApkPanel = false)}
+					>
+						<X size={18} aria-hidden="true" />
+					</button>
+				</div>
+
+				<img class="apk-modal-qr" src={apkQrDataUrl} alt="Android APK QR code" />
+				<a class="apk-modal-link" href={apkUrl}>
+					<ExternalLink size={18} aria-hidden="true" />
+					Download Android APK
+				</a>
 			</div>
 		</div>
 	{/if}
