@@ -38,7 +38,14 @@ jobs:
       - name: Rename APK
         run: cp android/app/build/outputs/apk/debug/app-debug.apk toddler-read.apk
 
+      - name: Create manual release tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git tag --force manual-android-release "$GITHUB_SHA"
+          git push --force origin manual-android-release
+
       - name: Publish GitHub release asset
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && 'manual-android-release' || github.ref_name }}
           files: toddler-read.apk
