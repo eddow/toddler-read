@@ -344,7 +344,7 @@
 		loadLibraryPreferences()
 		storageReady = true
 		void initializeCardLibrary()
-		apkUrl = new URL('tr.apk', document.baseURI).href
+		apkUrl = import.meta.env.VITE_ANDROID_APK_URL || new URL('tr.apk', document.baseURI).href
 		void QRCode.toDataURL(apkUrl, {
 			errorCorrectionLevel: 'H',
 			margin: 1,

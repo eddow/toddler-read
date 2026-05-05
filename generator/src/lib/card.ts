@@ -50,6 +50,7 @@ export type CardGridSize = 1 | 2 | 3 | 4;
 const A4_WIDTH = 2480;
 const A4_HEIGHT = 3508;
 const SHEET_CUT_MARGIN = 12;
+const CARD_BACKGROUND = '#ffffff';
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
 
 const FLAG_BY_LANGUAGE: Record<string, string> = {
@@ -161,7 +162,7 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
   target.width = pageSize.width;
   target.height = pageSize.height;
   ctx.clearRect(0, 0, pageSize.width, pageSize.height);
-  ctx.fillStyle = '#fffdf7';
+  ctx.fillStyle = CARD_BACKGROUND;
   ctx.fillRect(0, 0, pageSize.width, pageSize.height);
 
   for (let index = 0; index < gridSize * gridSize; index += 1) {
@@ -242,7 +243,7 @@ function drawCardBackground(ctx: CanvasRenderingContext2D, size: ReturnType<type
   const lineWidth = Math.max(3, Math.round(size.width * 0.0045));
 
   ctx.clearRect(0, 0, size.width, size.height);
-  ctx.fillStyle = '#fffdf7';
+  ctx.fillStyle = CARD_BACKGROUND;
   ctx.fillRect(0, 0, size.width, size.height);
   ctx.strokeStyle = '#d8d0bf';
   ctx.lineWidth = lineWidth;
@@ -277,7 +278,7 @@ function drawImageArea(
   };
   const radius = Math.max(10, Math.round(size.width * 0.016));
 
-  ctx.fillStyle = '#f7f3e8';
+  ctx.fillStyle = CARD_BACKGROUND;
   roundedRect(ctx, area.x, area.y, area.width, area.height, radius);
   ctx.fill();
 
