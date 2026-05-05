@@ -2336,7 +2336,17 @@
 					on:click={() => (showApkPanel = true)}
 				>
 					<span class="apk-qr-icon apk-qr-icon-android" aria-hidden="true">
-						<Download size={15} aria-hidden="true" />
+						<svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+							<path
+								d="M7.1 4.3 5.5 2.7 4.6 3.6 6.2 5.2a6.9 6.9 0 0 0-2.1 5h15.8a6.9 6.9 0 0 0-2.1-5l1.6-1.6-.9-.9-1.6 1.6A7.6 7.6 0 0 0 12 2.6a7.6 7.6 0 0 0-4.9 1.7Z"
+							/>
+							<path d="M4.1 11.6h15.8v6.2c0 1.2-1 2.2-2.2 2.2H6.3c-1.2 0-2.2-1-2.2-2.2v-6.2Z" />
+							<path
+								d="M1.8 12.1h1.4v6.4H1.8c-.8 0-1.4-.6-1.4-1.4v-3.6c0-.8.6-1.4 1.4-1.4ZM20.8 12.1h1.4c.8 0 1.4.6 1.4 1.4v3.6c0 .8-.6 1.4-1.4 1.4h-1.4v-6.4ZM7.1 20.9h2.1v2.4H7.1v-2.4ZM14.8 20.9h2.1v2.4h-2.1v-2.4Z"
+							/>
+							<circle cx="8.8" cy="7.8" r="0.8" fill="#ffffff" />
+							<circle cx="15.2" cy="7.8" r="0.8" fill="#ffffff" />
+						</svg>
 					</span>
 					<img src={apkQrDataUrl} alt="" />
 				</button>
