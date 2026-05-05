@@ -5,9 +5,9 @@ Toddler Read is a QR-code audio reader for young children. It has two parts:
 - A tiny reader client that scans QR codes and plays audio or speaks text.
 - A Svelte QR card generator that creates printable cards for the reader.
 
-The Android app packages the reader client with Capacitor. The generator can
-also expose the generated APK as `tr.apk`, so a caregiver can download or scan
-the app installer from the generator page.
+The Android app packages the reader client with Capacitor. The generator also
+publishes the reader as a PWA at `/reader/` and can expose the generated APK as
+`tr.apk`, so a caregiver can open either install path from the generator page.
 
 ## Links
 
@@ -21,7 +21,6 @@ the app installer from the generator page.
 |-- reader/       # QR scanner client used by the Android app
 |-- generator/    # Svelte card generator
 |-- android/      # Capacitor Android project
-|-- index.html    # Direct browser player for URL-hash payloads
 |-- client.md     # Reader/client behavior and QR payload reference
 `-- generator.md  # Generator workflow, storage, import/export, and builds
 ```
@@ -106,6 +105,16 @@ APK if it exists.
 The reader scans QR codes from the camera, then plays a QR payload as audio or
 text-to-speech. It returns to the scanner after playback finishes or when Stop
 is pressed.
+
+The same reader source is published as a PWA:
+
+```text
+generator/dist/reader/
+```
+
+During generator development, `/reader/` is served directly from the root
+`reader/` folder. On iPhone, open that URL in Safari and use Share, then Add to
+Home Screen.
 
 See [client.md](client.md) for supported QR payloads and reader behavior.
 

@@ -20,6 +20,7 @@
 		RotateCcw,
 		Search,
 		Settings,
+		Smartphone,
 		Trash2,
 		Upload,
 		X
@@ -218,6 +219,9 @@
 	let importMode: ImportMode = 'merge'
 	let apkUrl = ''
 	let apkQrDataUrl = ''
+	let readerUrl = ''
+	let readerQrDataUrl = ''
+	let showReaderInstallPanel = false
 	let renderToken = 0
 	let pressRenderToken = 0
 	let storageReady = false
@@ -350,7 +354,8 @@
 		storageReady = true
 		void initializeCardLibrary()
 		apkUrl = import.meta.env.VITE_ANDROID_APK_URL || new URL('tr.apk', document.baseURI).href
-		void QRCode.toDataURL(apkUrl, {
+		readerUrl = import.meta.env.VITE_READER_URL || new URL('reader/', document.baseURI).href
+		const qrOptions = {
 			errorCorrectionLevel: 'H',
 			margin: 1,
 			scale: 5,
@@ -358,8 +363,12 @@
 				dark: '#17211b',
 				light: '#ffffff'
 			}
-		}).then((url) => {
+		} as const
+		void QRCode.toDataURL(apkUrl, qrOptions).then((url) => {
 			apkQrDataUrl = url
+		})
+		void QRCode.toDataURL(readerUrl, qrOptions).then((url) => {
+			readerQrDataUrl = url
 		})
 
 		const onPaste = (event: ClipboardEvent) => handleImagePaste(event)
@@ -2304,6 +2313,20 @@
 					</button>
 				</div>
 			</details>
+			{#if readerQrDataUrl}
+				<button
+					type="button"
+					class="apk-qr"
+					aria-label="Show PWA reader QR code"
+					title="Show PWA reader QR code"
+					on:click={() => (showReaderInstallPanel = true)}
+				>
+					<span class="apk-qr-icon" aria-hidden="true">
+						<Smartphone size={15} aria-hidden="true" />
+					</span>
+					<img src={readerQrDataUrl} alt="" />
+				</button>
+			{/if}
 			{#if apkQrDataUrl}
 				<button
 					type="button"
@@ -2312,18 +2335,8 @@
 					title="Show Android APK QR code"
 					on:click={() => (showApkPanel = true)}
 				>
-					<span class="apk-qr-icon" aria-hidden="true">
-						<svg viewBox="0 0 24 24" role="img">
-							<path
-								d="M7.1 4.3 5.5 2.7 4.6 3.6 6.2 5.2a6.9 6.9 0 0 0-2.1 5h15.8a6.9 6.9 0 0 0-2.1-5l1.6-1.6-.9-.9-1.6 1.6A7.6 7.6 0 0 0 12 2.6a7.6 7.6 0 0 0-4.9 1.7Z"
-							/>
-							<path d="M4.1 11.6h15.8v6.2c0 1.2-1 2.2-2.2 2.2H6.3c-1.2 0-2.2-1-2.2-2.2v-6.2Z" />
-							<path
-								d="M1.8 12.1h1.4v6.4H1.8c-.8 0-1.4-.6-1.4-1.4v-3.6c0-.8.6-1.4 1.4-1.4ZM20.8 12.1h1.4c.8 0 1.4.6 1.4 1.4v3.6c0 .8-.6 1.4-1.4 1.4h-1.4v-6.4ZM7.1 20.9h2.1v2.4H7.1v-2.4ZM14.8 20.9h2.1v2.4h-2.1v-2.4Z"
-							/>
-							<circle cx="8.8" cy="7.8" r="0.8" fill="#ffffff" />
-							<circle cx="15.2" cy="7.8" r="0.8" fill="#ffffff" />
-						</svg>
+					<span class="apk-qr-icon apk-qr-icon-android" aria-hidden="true">
+						<Download size={15} aria-hidden="true" />
 					</span>
 					<img src={apkQrDataUrl} alt="" />
 				</button>
@@ -2958,6 +2971,49 @@
 		</div>
 	{/if}
 
+	{#if showReaderInstallPanel}
+		<div class="modal-backdrop qr-backdrop">
+			<button
+				type="button"
+				class="modal-scrim qr-scrim"
+				aria-label="Close reader install options"
+				on:click={() => (showReaderInstallPanel = false)}
+			></button>
+			<div
+				class="apk-modal"
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="reader-install-title"
+				tabindex="-1"
+			>
+				<div class="settings-header">
+					<div>
+						<p class="eyebrow">iPhone / Web</p>
+						<h2 id="reader-install-title">Open reader</h2>
+					</div>
+					<button
+						type="button"
+						class="secondary icon-button"
+						aria-label="Close reader install options"
+						title="Close reader install options"
+						on:click={() => (showReaderInstallPanel = false)}
+					>
+						<X size={18} aria-hidden="true" />
+					</button>
+				</div>
+
+				{#if readerQrDataUrl}
+					<img class="apk-modal-qr" src={readerQrDataUrl} alt="Reader web app QR code" />
+				{/if}
+				<a class="apk-modal-link" href={readerUrl} target="_blank" rel="noreferrer">
+					<ExternalLink size={18} aria-hidden="true" />
+					Open Reader
+				</a>
+				<p class="install-note">On iPhone, open in Safari, tap Share, then Add to Home Screen.</p>
+			</div>
+		</div>
+	{/if}
+
 	{#if showApkPanel}
 		<div class="modal-backdrop qr-backdrop">
 			<button
@@ -2970,13 +3026,13 @@
 				class="apk-modal"
 				role="dialog"
 				aria-modal="true"
-				aria-labelledby="apk-title"
+				aria-labelledby="apk-install-title"
 				tabindex="-1"
 			>
 				<div class="settings-header">
 					<div>
 						<p class="eyebrow">Android</p>
-						<h2 id="apk-title">Install app</h2>
+						<h2 id="apk-install-title">Download APK</h2>
 					</div>
 					<button
 						type="button"
@@ -2989,10 +3045,12 @@
 					</button>
 				</div>
 
-				<img class="apk-modal-qr" src={apkQrDataUrl} alt="Android APK QR code" />
+				{#if apkQrDataUrl}
+					<img class="apk-modal-qr" src={apkQrDataUrl} alt="Android APK QR code" />
+				{/if}
 				<a class="apk-modal-link" href={apkUrl}>
-					<ExternalLink size={18} aria-hidden="true" />
-					Download Android APK
+					<Download size={18} aria-hidden="true" />
+					Download APK
 				</a>
 			</div>
 		</div>

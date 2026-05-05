@@ -6,25 +6,15 @@ for young children.
 
 ## Entry Points
 
-- `reader/index.html` is the QR scanner used by the Android/Capacitor app.
-- `index.html` is a direct browser player that reads a payload from the URL
-  hash.
-
-Direct player examples:
-
-```text
-index.html#tts:en:Hello
-index.html#tts:ro:Buna%20ziua
-index.html#https%3A%2F%2Fexample.com%2Fsound.mp3
-```
-
-If the direct player has no hash, it tries to play `no.mp3`.
+- `reader/index.html` is the QR scanner used by the Android/Capacitor app and
+  the browser PWA.
+- In generator dev and web builds, the same reader is available at `/reader/`.
 
 ## Scanner Flow
 
 `reader/index.html` starts on the camera scanner. It uses the browser
 `BarcodeDetector` API when QR support is available, and falls back to `jsQR`
-from `reader/jsQR.js`.
+from `reader/vendor/jsQR.js`.
 
 The flow is:
 
@@ -35,7 +25,8 @@ The flow is:
 5. Return to the scanner when playback ends or Stop is pressed.
 
 Camera access requires HTTPS or localhost in a browser. In the packaged Android
-app, Capacitor provides the app shell and permissions.
+app, Capacitor provides the app shell and permissions. On iPhone, open `/reader/`
+in Safari and use Share, then Add to Home Screen to install the PWA.
 
 ## QR Payloads
 
@@ -130,12 +121,9 @@ is active. Tapping it reveals Play and Stop.
 - Stop cancels playback and returns to scanning.
 - Playback end also returns to scanning.
 
-The direct player shows Play and Stop immediately because it does not manage a
-camera scanner.
-
 ## Dependencies
 
-`reader/jsQR.js` is copied from the root `jsqr` dependency:
+`reader/vendor/jsQR.js` is copied from the root `jsqr` dependency:
 
 ```sh
 npm run reader:deps

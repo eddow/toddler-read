@@ -9,6 +9,7 @@ declare module '*.css';
 
 interface ImportMetaEnv {
   readonly VITE_ANDROID_APK_URL?: string;
+  readonly VITE_READER_URL?: string;
 }
 
 interface ImportMeta {

@@ -3,6 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="theme-color" content="#fff8e7">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-title" content="Toddler Reader">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<link rel="manifest" href="manifest.webmanifest">
+	<link rel="apple-touch-icon" href="assets/app-icon.png">
 	<title>Toddler Reader</title>
 	<style>
 		* { margin: 0; padding: 0; box-sizing: border-box; }
@@ -106,7 +112,7 @@
 			max-width: 260px;
 			height: auto;
 			aspect-ratio: 273 / 267;
-			background-image: url('Pause-Play-Stop-Button-Transparent.png');
+			background-image: url('assets/player-controls.png');
 			background-size: 300% 100%;
 			background-repeat: no-repeat;
 		}
@@ -273,16 +279,28 @@
 			</section>
 
 			<section class="help-section">
-				<h2>Pin The App</h2>
+				<h2>Reading Voices</h2>
 				<p>
-					Android can pin this app so a child stays in the reader until you unlock it.
+					Text cards use the device text-to-speech voices. Configure the voices and languages
+					before reading multilingual cards.
 				</p>
 				<ul>
+					<li>On Android, open Settings, then Accessibility, then Text-to-speech output.</li>
+					<li>On iPhone, open Settings, then Accessibility, then Spoken Content, then Voices.</li>
+					<li>Install the languages you need and test the selected voice.</li>
+				</ul>
+			</section>
+
+			<section class="help-section">
+				<h2>Keep It Handy</h2>
+				<p>
+					The reader works as a web app on iPhone and Android. Add it to the home screen for
+					a full-screen launcher.
+				</p>
+				<ul>
+					<li>On iPhone, open this reader in Safari, tap Share, then Add to Home Screen.</li>
+					<li>On Android, open the browser menu, then Install app or Add to Home screen.</li>
 					<li>Enable app pinning in Android Settings, usually under Security or Privacy.</li>
-					<li>Open Toddler Reader.</li>
-					<li>Open the recent apps screen.</li>
-					<li>Tap the app icon above Toddler Reader, then choose Pin.</li>
-					<li>To unpin, follow the Android hint shown on your device.</li>
 				</ul>
 			</section>
 
@@ -296,7 +314,7 @@
 		</div>
 	</div>
 
-	<script src="jsQR.js"></script>
+	<script src="vendor/jsQR.js"></script>
 	<script>
 		(function() {
 			'use strict';
@@ -671,6 +689,12 @@
 				helpBackdrop.classList.add('hidden');
 				startScanning();
 			});
+
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('sw.js').catch(() => {});
+				});
+			}
 
 			// ---- Cleanup on page unload ----
 			window.addEventListener('beforeunload', () => {

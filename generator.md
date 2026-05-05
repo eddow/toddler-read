@@ -57,7 +57,10 @@ npm run buld:all
 
 ## Android APK Link
 
-The generator displays a QR/link for the Android APK.
+The generator displays install options for the reader:
+
+- `/reader/` for the iPhone/web PWA.
+- `/tr.apk` for the Android APK, when available.
 
 During development, `/tr.apk` is served from:
 
@@ -73,6 +76,15 @@ generator/dist/tr.apk
 
 If the Android APK has not been built yet, the generator build fails with a
 message telling you to run `npm run android:build`.
+
+For Netlify/web builds, `TODDLER_READ_SKIP_APK=1` skips the APK copy but still
+publishes the reader PWA to:
+
+```text
+generator/dist/reader/
+```
+
+During development, `/reader/` is served from the root `reader/` folder.
 
 ## Card Workflow
 
@@ -177,5 +189,6 @@ After a successful generator build:
 ```text
 generator/dist/index.html
 generator/dist/assets/
+generator/dist/reader/
 generator/dist/tr.apk
 ```

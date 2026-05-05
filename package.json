@@ -4,7 +4,7 @@
   "description": "A single‑page, tap‑friendly audio player for 2‑3 year olds.",
   "main": "index.js",
   "scripts": {
-    "reader:deps": "cp node_modules/jsqr/dist/jsQR.js reader/jsQR.js",
+    "reader:deps": "mkdir -p reader/vendor && cp node_modules/jsqr/dist/jsQR.js reader/vendor/jsQR.js",
     "android:sync": "npm run reader:deps && cap sync android",
     "android:open": "cap open android",
     "android:build": "npm run android:sync && cd android && ./gradlew assembleDebug",
