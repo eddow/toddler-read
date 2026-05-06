@@ -337,11 +337,13 @@
 			let currentSoundSrc = '';
 			let currentTts = null;
 			let currentSpeechUtterance = null;
+			let playingFallbackSound = false;
 
 			// ---- Screen switching ----
 			function showScanner() {
 				scannerScreen.classList.add('active');
 				playerScreen.classList.remove('active');
+				playerScreen.classList.remove('control-mode');
 			}
 			function showPlayer() {
 				scannerScreen.classList.remove('active');
@@ -376,9 +378,33 @@
 				returnToScanner();
 			}
 
+			function playFallbackSound() {
+				currentTts = null;
+				currentSoundSrc = 'assets/no.mp3';
+				playingFallbackSound = true;
+				audio.src = currentSoundSrc;
+				audio.load();
+				audio.play().catch(() => {
+					showControlPlayer();
+				});
+			}
+
+			function handleAudioPlayFailure(error) {
+				if (error?.name === 'NotAllowedError') {
+					showControlPlayer();
+					return;
+				}
+
+				playFallbackSound();
+			}
+
 			// ---- Audio helpers ----
 			audio.addEventListener('error', () => {
-				soundLabel.textContent = '⚠️ Could not play - scan again';
+				if (!playingFallbackSound) {
+					playFallbackSound();
+					return;
+				}
+
 				setTimeout(() => {
 					returnToScanner();
 				}, 2000);
@@ -390,12 +416,10 @@
 			function loadAndPlay(src) {
 				currentTts = null;
 				currentSoundSrc = src;
+				playingFallbackSound = false;
 				audio.src = src;
 				audio.load();
-				audio.play().catch(() => {
-					soundLabel.textContent = 'Tap play to hear the sound';
-					showControlPlayer();
-				});
+				audio.play().catch(handleAudioPlayFailure);
 			}
 
 			function getSpeechSynthesis() {
@@ -430,16 +454,14 @@
 						handlePlaybackEnded();
 					}).catch((error) => {
 						if (currentTts !== activeTts) return;
-						soundLabel.textContent = error?.message || 'Could not speak - scan again';
-						showControlPlayer();
+						playFallbackSound();
 					});
 					return;
 				}
 
 				const synth = getSpeechSynthesis();
 				if (!synth || !window.SpeechSynthesisUtterance) {
-					soundLabel.textContent = 'Text-to-speech is not available';
-					showControlPlayer();
+					playFallbackSound();
 					return;
 				}
 
@@ -454,8 +476,7 @@
 				};
 				utterance.onerror = () => {
 					if (utterance !== currentSpeechUtterance) return;
-					soundLabel.textContent = 'Could not speak - scan again';
-					showControlPlayer();
+					playFallbackSound();
 				};
 				synth.speak(utterance);
 			}
@@ -463,6 +484,7 @@
 			function loadAndSpeak(tts) {
 				currentSoundSrc = '';
 				currentTts = tts;
+				playingFallbackSound = false;
 				audio.removeAttribute('src');
 				audio.load();
 				speakCurrentTts();
@@ -497,7 +519,7 @@
 				try {
 					await audio.play();
 				} catch (err) {
-					soundLabel.textContent = 'Tap play to hear the sound';
+					handleAudioPlayFailure(err);
 				}
 			}
 
@@ -505,6 +527,7 @@
 			function handleScannedContent(content) {
 				stopScanning();
 				stopPlayback();
+				showSimplePlayer();
 
 				let src = null;
 				let label = content;
@@ -541,7 +564,6 @@
 				}
 
 				soundLabel.textContent = label.length > 60 ? label.substring(0, 60) + '…' : label;
-				showSimplePlayer();
 				if (tts && tts.text) {
 					loadAndSpeak(tts);
 				} else {
