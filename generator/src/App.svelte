@@ -53,6 +53,18 @@
 		type StoredCard
 	} from './lib/cards-db'
 	import {
+		arraysEqual,
+		compressCardsExportPayload,
+		createCardsExportPayload,
+		normalizeCardImage,
+		normalizeTag,
+		normalizeTags,
+		parseImportCards,
+		planCardImport,
+		readCardsImportPayload,
+		type ImportPlan
+	} from './lib/cards-transfer'
+	import {
 		IMAGE_SEARCH_PROVIDERS,
 		defaultImageSearchProviderConfigs,
 		getImageSearchProvider,
@@ -178,17 +190,6 @@
 		index: number
 		lang: string
 		text: string
-	}
-
-	type ImportCardInput = Omit<StoredCard, 'id'> & { id?: string }
-
-	type ImportPlan = {
-		cardsToAdd: StoredCard[]
-		cardsToMerge: StoredCard[]
-		importIdMap: Map<string, string>
-		versoLinks: Array<{ sourceId: string; targetId: string }>
-		skippedCount: number
-		conflictSeparateCount: number
 	}
 
 	const initialLanguageSetups = defaultLanguageSetups()
@@ -1919,7 +1920,7 @@
 		libraryError = ''
 
 		try {
-			const payload = JSON.parse(await file.text())
+			const payload = await readCardsImportPayload(file)
 			const importCards = parseImportCards(payload)
 			if (importCards.length === 0) throw new Error('Import file has no cards.')
 
@@ -1969,152 +1970,6 @@
 		}
 	}
 
-	function parseImportCards(payload: unknown): ImportCardInput[] {
-		if (!payload || typeof payload !== 'object') return []
-		const cardsPayload = (payload as { cards?: unknown }).cards
-		if (!Array.isArray(cardsPayload)) return []
-
-		return cardsPayload
-			.map((card): ImportCardInput | undefined => {
-				if (!card || typeof card !== 'object') return undefined
-				const candidate = card as Partial<StoredCard>
-				const id =
-					typeof candidate.id === 'string' && candidate.id.trim() ? candidate.id.trim() : undefined
-				const texts = normalizeImportTexts(candidate.texts)
-				const imageDataUrl =
-					normalizeCardImage(candidate.imageDataUrl).length > 0
-						? normalizeCardImage(candidate.imageDataUrl)
-						: undefined
-				const imageTransform = imageDataUrl
-					? normalizeImageTransformForImport(candidate.imageTransform)
-					: undefined
-				const versoCardId =
-					typeof candidate.versoCardId === 'string' && candidate.versoCardId.trim()
-						? candidate.versoCardId.trim()
-						: undefined
-				const tags = normalizeTags(candidate.tags)
-				if (!imageDataUrl && Object.keys(texts).length === 0) return undefined
-				return { id, imageDataUrl, imageTransform, texts, tags, versoCardId }
-			})
-			.filter((card): card is ImportCardInput => Boolean(card))
-	}
-
-	function normalizeImportTexts(texts: unknown): Record<string, string> {
-		if (!texts || typeof texts !== 'object' || Array.isArray(texts)) return {}
-
-		return Object.fromEntries(
-			Object.entries(texts)
-				.map(([language, text]) => [language.trim(), typeof text === 'string' ? text.trim() : ''])
-				.filter(([language, text]) => language.length > 0 && text.length > 0)
-		)
-	}
-
-	function planCardImport(existingCards: StoredCard[], importCards: ImportCardInput[]): ImportPlan {
-		const existingCardIds = new Set(existingCards.map((card) => card.id))
-		const workingCards = existingCards.map((card) => normalizeStoredCardForImport(card))
-		const cardsToAdd: StoredCard[] = []
-		const cardsToMerge = new Map<string, StoredCard>()
-		const importIdMap = new Map<string, string>()
-		const versoLinks: Array<{ sourceId: string; targetId: string }> = []
-		let skippedCount = 0
-		let conflictSeparateCount = 0
-
-		for (const importCard of importCards) {
-			const normalizedImportCard = normalizeImportCardInput(importCard)
-			if (normalizedImportCard.id && normalizedImportCard.versoCardId) {
-				versoLinks.push({
-					sourceId: normalizedImportCard.id,
-					targetId: normalizedImportCard.versoCardId
-				})
-			}
-			const exactDuplicate = workingCards.some(
-				(card) => cardFingerprint(card) === cardFingerprint(normalizedImportCard)
-			)
-
-			if (exactDuplicate) {
-				const exactCard = workingCards.find(
-					(card) => cardFingerprint(card) === cardFingerprint(normalizedImportCard)
-				)
-				if (normalizedImportCard.id && exactCard)
-					importIdMap.set(normalizedImportCard.id, exactCard.id)
-				skippedCount += 1
-				continue
-			}
-
-			const sameImageCard = workingCards.find(
-				(card) =>
-					normalizeCardImage(card.imageDataUrl) ===
-					normalizeCardImage(normalizedImportCard.imageDataUrl)
-			)
-
-			if (!sameImageCard) {
-				const cardToAdd = {
-					...withoutVersoLink(normalizedImportCard),
-					id: reusableImportCardId(normalizedImportCard.id, workingCards)
-				}
-				if (normalizedImportCard.id) importIdMap.set(normalizedImportCard.id, cardToAdd.id)
-				cardsToAdd.push(cardToAdd)
-				workingCards.push(cardToAdd)
-				continue
-			}
-			if (normalizedImportCard.id) importIdMap.set(normalizedImportCard.id, sameImageCard.id)
-
-			const importedEntries = Object.entries(normalizedImportCard.texts)
-			const hasConflict = importedEntries.some(
-				([language, text]) =>
-					sameImageCard.texts[language] !== undefined && sameImageCard.texts[language] !== text
-			)
-
-			if (hasConflict) {
-				const cardToAdd = {
-					...withoutVersoLink(normalizedImportCard),
-					id: reusableImportCardId(normalizedImportCard.id, workingCards)
-				}
-				if (normalizedImportCard.id) importIdMap.set(normalizedImportCard.id, cardToAdd.id)
-				cardsToAdd.push(cardToAdd)
-				workingCards.push(cardToAdd)
-				conflictSeparateCount += 1
-				continue
-			}
-
-			const missingEntries = importedEntries.filter(
-				([language]) => sameImageCard.texts[language] === undefined
-			)
-			const mergedTags = mergeTags(sameImageCard.tags, normalizedImportCard.tags)
-			const hasMissingTags = !arraysEqual(mergedTags ?? [], sameImageCard.tags ?? [])
-			if (missingEntries.length === 0 && !hasMissingTags) {
-				skippedCount += 1
-				continue
-			}
-
-			const mergedCard = {
-				...sameImageCard,
-				texts: normalizeTextRecord({
-					...sameImageCard.texts,
-					...Object.fromEntries(missingEntries)
-				}),
-				tags: mergedTags
-			}
-			const workingIndex = workingCards.findIndex((card) => card.id === sameImageCard.id)
-			if (workingIndex >= 0) workingCards[workingIndex] = mergedCard
-			if (existingCardIds.has(mergedCard.id)) {
-				cardsToMerge.set(mergedCard.id, mergedCard)
-			} else {
-				const addIndex = cardsToAdd.findIndex((card) => card.id === mergedCard.id)
-				if (addIndex >= 0) cardsToAdd[addIndex] = mergedCard
-			}
-		}
-
-		return {
-			cardsToAdd,
-			cardsToMerge: [...cardsToMerge.values()],
-			importIdMap,
-			versoLinks,
-			skippedCount,
-			conflictSeparateCount
-		}
-	}
-
 	async function applyImportedVersoLinks(
 		nextCards: StoredCard[],
 		importPlan: ImportPlan
@@ -2136,103 +1991,8 @@
 		return linkedCards
 	}
 
-	function withoutVersoLink(card: ImportCardInput): Omit<ImportCardInput, 'versoCardId'> {
-		const { versoCardId: _removed, ...nextCard } = card
-		return nextCard
-	}
-
-	function normalizeStoredCardForImport(card: StoredCard): StoredCard {
-		const imageDataUrl = normalizeCardImage(card.imageDataUrl) || undefined
-		return {
-			id: card.id,
-			imageDataUrl,
-			imageTransform: imageDataUrl
-				? normalizeImageTransformForImport(card.imageTransform)
-				: undefined,
-			texts: normalizeTextRecord(card.texts),
-			tags: normalizeTags(card.tags),
-			versoCardId: normalizeImportCardId(card.versoCardId)
-		}
-	}
-
-	function normalizeImportCardInput(card: ImportCardInput): ImportCardInput {
-		const imageDataUrl = normalizeCardImage(card.imageDataUrl) || undefined
-		return {
-			id: normalizeImportCardId(card.id),
-			imageDataUrl,
-			imageTransform: imageDataUrl
-				? normalizeImageTransformForImport(card.imageTransform)
-				: undefined,
-			texts: normalizeTextRecord(card.texts),
-			tags: normalizeTags(card.tags),
-			versoCardId: normalizeImportCardId(card.versoCardId)
-		}
-	}
-
-	function normalizeImportCardId(id: unknown): string | undefined {
-		return typeof id === 'string' && id.trim() ? id.trim() : undefined
-	}
-
-	function reusableImportCardId(id: string | undefined, existingCards: StoredCard[]): string {
-		return id && !existingCards.some((card) => card.id === id) ? id : createCardId()
-	}
-
-	function normalizeCardImage(imageDataUrl: unknown): string {
-		return typeof imageDataUrl === 'string' ? imageDataUrl.trim() : ''
-	}
-
-	function normalizeImageTransformForImport(transform: unknown): ImageTransform | undefined {
-		if (!transform || typeof transform !== 'object') return undefined
-		return normalizeImageTransform(transform as Partial<ImageTransform>)
-	}
-
-	function normalizeTextRecord(texts: unknown): Record<string, string> {
-		if (!texts || typeof texts !== 'object' || Array.isArray(texts)) return {}
-
-		return Object.fromEntries(
-			Object.entries(texts)
-				.map(([language, text]) => [language.trim(), typeof text === 'string' ? text.trim() : ''])
-				.filter(([language, text]) => language.length > 0 && text.length > 0)
-				.sort(([left], [right]) => left.localeCompare(right))
-		)
-	}
-
-	function normalizeTags(tags: unknown): string[] | undefined {
-		if (!Array.isArray(tags)) return undefined
-
-		const normalized = [...new Set(tags.map(normalizeTag).filter((tag) => tag.length > 0))].sort(
-			(left, right) => left.localeCompare(right)
-		)
-
-		return normalized.length > 0 ? normalized : undefined
-	}
-
-	function normalizeTag(tag: unknown): string {
-		return typeof tag === 'string' ? tag.trim() : ''
-	}
-
-	function mergeTags(left: unknown, right: unknown): string[] | undefined {
-		return normalizeTags([
-			...(Array.isArray(left) ? left : []),
-			...(Array.isArray(right) ? right : [])
-		])
-	}
-
-	function arraysEqual(left: string[], right: string[]): boolean {
-		return left.length === right.length && left.every((value, index) => value === right[index])
-	}
-
 	function cardHasTag(card: StoredCard, tag: string): boolean {
 		return Boolean(tag) && (card.tags ?? []).includes(tag)
-	}
-
-	function cardFingerprint(card: ImportCardInput | StoredCard): string {
-		return JSON.stringify({
-			imageDataUrl: normalizeCardImage(card.imageDataUrl),
-			imageTransform: normalizeImageTransformForImport(card.imageTransform),
-			texts: normalizeTextRecord(card.texts),
-			tags: normalizeTags(card.tags)
-		})
 	}
 
 	function buildImportSummary(result: {
@@ -2266,27 +2026,39 @@
 		return parts.length > 0 ? `${parts.join('. ')}.` : 'Nothing to import.'
 	}
 
-	function exportCards() {
-		const payload = {
-			version: 1,
-			cards: cards.map((card) => ({
-				id: card.id,
-				imageDataUrl: card.imageDataUrl,
-				imageTransform: card.imageTransform,
-				texts: card.texts,
-				tags: normalizeTags(card.tags),
-				versoCardId: card.versoCardId
-			}))
+	async function exportCompressedCards() {
+		libraryStatus = ''
+		libraryError = ''
+
+		try {
+			const payload = createCardsExportPayload(cards, { includeImages: true })
+			const blob = await compressCardsExportPayload(payload)
+			downloadBlob(blob, 'toddler-read-cards.json.gz')
+			libraryStatus = `Exported compressed backup with ${cards.length} ${
+				cards.length === 1 ? 'card' : 'cards'
+			}.`
+		} catch (error) {
+			libraryError = error instanceof Error ? error.message : 'Could not export compressed backup.'
 		}
+	}
+
+	function exportImageLessCards() {
+		const payload = createCardsExportPayload(cards, { includeImages: false })
 		const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+		downloadBlob(blob, 'toddler-read-cards-image-less.json')
+		libraryStatus = `Exported image-less JSON with ${cards.length} ${
+			cards.length === 1 ? 'card' : 'cards'
+		}.`
+		libraryError = ''
+	}
+
+	function downloadBlob(blob: Blob, filename: string) {
 		const url = URL.createObjectURL(blob)
 		const anchor = document.createElement('a')
 		anchor.href = url
-		anchor.download = 'toddler-read-cards.json'
+		anchor.download = filename
 		anchor.click()
 		URL.revokeObjectURL(url)
-		libraryStatus = `Exported ${cards.length} ${cards.length === 1 ? 'card' : 'cards'}.`
-		libraryError = ''
 	}
 
 	function updateGridSize(event: Event) {
@@ -2520,13 +2292,25 @@
 						type="button"
 						class="secondary"
 						disabled={cards.length === 0}
-						on:click={() => {
+						on:click={async () => {
 							showFileMenu = false
-							exportCards()
+							await exportCompressedCards()
 						}}
 					>
 						<Download size={18} aria-hidden="true" />
-						Export
+						Export compressed
+					</button>
+					<button
+						type="button"
+						class="secondary"
+						disabled={cards.length === 0}
+						on:click={() => {
+							showFileMenu = false
+							exportImageLessCards()
+						}}
+					>
+						<Download size={18} aria-hidden="true" />
+						Export image-less JSON
 					</button>
 				</div>
 			</details>
@@ -2582,7 +2366,7 @@
 		bind:this={importInput}
 		class="visually-hidden"
 		type="file"
-		accept="application/json,.json"
+		accept="application/json,.json,.json.gz,application/gzip"
 		on:change={onImportFileSelected}
 	/>
 
@@ -3350,13 +3134,20 @@
 					<h3>File Menu</h3>
 					<ul>
 						<li>
-							<strong>Import:</strong> adds cards from a JSON export and merges with your current library.
+							<strong>Import:</strong> adds cards from a JSON or compressed JSON export and merges
+							with your current library.
 						</li>
 						<li>
-							<strong>Replace:</strong> imports a JSON export after clearing the current library.
+							<strong>Replace:</strong> imports a JSON or compressed JSON export after clearing the
+							current library.
 						</li>
 						<li>
-							<strong>Export:</strong> downloads the full card library as JSON for backup or sharing.
+							<strong>Export compressed:</strong> downloads the full card library, including images,
+							as a compressed backup.
+						</li>
+						<li>
+							<strong>Export image-less JSON:</strong> downloads readable JSON without images for
+							hand editing.
 						</li>
 					</ul>
 				</section>
