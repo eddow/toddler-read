@@ -79,10 +79,11 @@ export function buildPrintLayout<T extends VersoLinkCard>(
 ): PrintLayout {
   const slotsPerPage = gridSize * gridSize;
   const cardById = new Map(cards.map((card) => [card.id, card]));
+  const orderedRectoCardIds = orderRectoIdsForPrint(rectoCardIds, cardById);
   const pages: PrintPage[] = [];
 
-  for (let start = 0; start < rectoCardIds.length; start += slotsPerPage) {
-    const rectoSlots: Array<string | undefined> = rectoCardIds.slice(start, start + slotsPerPage);
+  for (let start = 0; start < orderedRectoCardIds.length; start += slotsPerPage) {
+    const rectoSlots: Array<string | undefined> = orderedRectoCardIds.slice(start, start + slotsPerPage);
     while (rectoSlots.length < slotsPerPage) rectoSlots.push(undefined);
 
     const versoSlots = Array<string | undefined>(slotsPerPage).fill(undefined);
@@ -98,7 +99,7 @@ export function buildPrintLayout<T extends VersoLinkCard>(
 
   return {
     gridSize,
-    rectoCardIds,
+    rectoCardIds: orderedRectoCardIds,
     pages
   };
 }
@@ -134,4 +135,17 @@ function clearVersoLinks<T extends VersoLinkCard>(cards: T[], blockedIds: Set<st
     const { versoCardId: _removed, ...nextCard } = card;
     return nextCard as T;
   });
+}
+
+function orderRectoIdsForPrint<T extends VersoLinkCard>(ids: string[], cardById: Map<string, T>): string[] {
+  const withVerso: string[] = [];
+  const withoutVerso: string[] = [];
+
+  for (const id of ids) {
+    const versoCardId = cardById.get(id)?.versoCardId;
+    if (versoCardId && cardById.has(versoCardId)) withVerso.push(id);
+    else withoutVerso.push(id);
+  }
+
+  return [...withVerso, ...withoutVerso];
 }

@@ -96,6 +96,14 @@ describe('printing press layout', () => {
     expect(layout.pages[1].rectoSlots).toEqual(['e', undefined, undefined, undefined]);
   });
 
+  it('prints selected cards with verso links before cards without verso links', () => {
+    const linked = linkVersoCards(linkVersoCards(cards(['a', 'b', 'c', 'd', 'e']), 'b', 'c'), 'd', 'e');
+    const layout = buildPrintLayout(linked, ['a', 'b', 'd'], 2);
+
+    expect(layout.rectoCardIds).toEqual(['b', 'd', 'a']);
+    expect(layout.pages[0].rectoSlots).toEqual(['b', 'd', 'a', undefined]);
+  });
+
   it('uses blank mirrored slots when verso links are missing', () => {
     const linked = linkVersoCards(cards(['a', 'b', 'c']), 'a', 'b');
     const layout = buildPrintLayout(linked, ['a', 'c'], 2);

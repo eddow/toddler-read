@@ -122,15 +122,26 @@
 		{ value: 'custom', label: 'Custom', model: '', baseUrl: '' }
 	] as const
 	const TRANSLATION_RESPONSE_SCHEMA = {
-		translations: [{ index: 2, text: 'translated text' }]
+		translations: [{ index: 2, text: 'corrected or translated text' }]
 	}
-	const DEFAULT_TRANSLATION_PROMPT_TEMPLATE = [
+	// TODO: Should die in June
+	const LEGACY_TRANSLATION_PROMPT_TEMPLATE = [
 		'Translate these toddler reading card texts.',
 		'Use every source text as context for ambiguity and meaning.',
 		'Sources JSON: {{sourcesJson}}',
 		'Targets JSON: {{targetsJson}}',
 		'Return only JSON matching this schema: {{responseSchemaJson}}',
 		'For each target, return a short natural translation suitable for a young child.'
+	].join('\n')
+	const DEFAULT_TRANSLATION_PROMPT_TEMPLATE = [
+		'Translate and proofread these toddler reading card texts.',
+		'Use every source text as context for ambiguity and meaning.',
+		'Sources JSON: {{sourcesJson}}',
+		'Targets JSON: {{targetsJson}}',
+		'Return only JSON matching this schema: {{responseSchemaJson}}',
+		'For each target with existing text, return corrected text only if spelling, accents, diacritics, or capitalization need fixing in the target language.',
+		'For each target with empty text, return a short natural translation suitable for a young child.',
+		'Do not return unchanged existing text.'
 	].join('\n')
 	const REPOSITORY_URL = 'https://github.com/eddow/toddler-read'
 	const KO_FI_URL = 'https://ko-fi.com/emedware'
@@ -164,6 +175,7 @@
 	type TranslationTarget = {
 		index: number
 		lang: string
+		text: string
 	}
 
 	type ImportCardInput = Omit<StoredCard, 'id'> & { id?: string }
@@ -765,7 +777,10 @@
 				typeof parsed.translationPromptTemplate === 'string' &&
 				parsed.translationPromptTemplate.trim()
 			) {
-				translationPromptTemplate = parsed.translationPromptTemplate
+				translationPromptTemplate =
+					parsed.translationPromptTemplate === LEGACY_TRANSLATION_PROMPT_TEMPLATE
+						? DEFAULT_TRANSLATION_PROMPT_TEMPLATE
+						: parsed.translationPromptTemplate
 			}
 			if (isTranslationProvider(parsed.translationProvider)) {
 				translationProvider = parsed.translationProvider
@@ -1078,8 +1093,8 @@
 				lang: entry.lang.trim(),
 				text: entry.text.trim()
 			}))
-			.filter((entry) => entry.lang.length > 0 && entry.text.length === 0)
-			.map(({ index, lang }) => ({ index, lang }))
+			.filter((entry) => entry.lang.length > 0)
+			.map(({ index, lang, text }) => ({ index, lang, text }))
 	}
 
 	function getTranslationDisabledReasons(
@@ -1117,7 +1132,11 @@
 
 			const translations = parseTranslationResponse(responseText)
 			const nextTexts = normalizeCardTextCount(cardTexts)
+			const requiredTargetIndexes = translationTargets
+				.filter((target) => target.text.length === 0)
+				.map((target) => target.index)
 			let appliedCount = 0
+			let changedCount = 0
 
 			for (const translation of translations) {
 				if (!Number.isInteger(translation.index)) continue
@@ -1125,16 +1144,24 @@
 				if (!translationTargets.some((target) => target.index === translation.index)) continue
 				if (typeof translation.text !== 'string' || !translation.text.trim()) continue
 
-				nextTexts[translation.index] = translation.text.trim()
+				const nextText = translation.text.trim()
+				if (nextTexts[translation.index] !== nextText) changedCount += 1
+				nextTexts[translation.index] = nextText
 				appliedCount += 1
 			}
 
-			if (appliedCount === 0) {
-				throw new Error('Gemini returned no usable translations.')
+			const missingRequiredTranslation = requiredTargetIndexes.some(
+				(index) => !nextTexts[index].trim()
+			)
+			if (missingRequiredTranslation) {
+				throw new Error(`${providerLabel(translationProvider)} returned no usable translations.`)
 			}
 
 			updateSelectedCard({ texts: buildTextsByLanguage(languageSetups, nextTexts) })
-			translationStatus = `Translated ${appliedCount} ${appliedCount === 1 ? 'text' : 'texts'}.`
+			translationStatus =
+				changedCount === 0
+					? `Checked ${translationTargets.length} ${translationTargets.length === 1 ? 'text' : 'texts'}; no changes.`
+					: `Updated ${changedCount} ${changedCount === 1 ? 'text' : 'texts'}.`
 		} catch (error) {
 			translationError = error instanceof Error ? error.message : 'Could not translate.'
 		} finally {
@@ -2341,7 +2368,11 @@
 			</div>
 		</div>
 		<div class="library-top-actions">
-			<div class="segmented-control" class:mobile-workspace={isMobileWorkspace} aria-label="Workspace view">
+			<div
+				class="segmented-control"
+				class:mobile-workspace={isMobileWorkspace}
+				aria-label="Workspace view"
+			>
 				<button
 					type="button"
 					class:active={workspaceView === 'manager'}
@@ -2846,9 +2877,9 @@
 									Delete
 								</button>
 							{:else}
-									<IconButton ariaLabel="Delete card" on:click={() => (editorDeleteArmed = true)}>
-										<Trash2 size={18} aria-hidden="true" />
-									</IconButton>
+								<IconButton ariaLabel="Delete card" on:click={() => (editorDeleteArmed = true)}>
+									<Trash2 size={18} aria-hidden="true" />
+								</IconButton>
 							{/if}
 						</div>
 					</div>
@@ -2889,9 +2920,9 @@
 						<div class="image-panel-header">
 							<p class="eyebrow">Image</p>
 							{#if imageDataUrl}
-									<IconButton ariaLabel="Clear image" on:click={clearImage}>
-										<X size={18} aria-hidden="true" />
-									</IconButton>
+								<IconButton ariaLabel="Clear image" on:click={clearImage}>
+									<X size={18} aria-hidden="true" />
+								</IconButton>
 							{/if}
 						</div>
 						<div class="image-actions">
@@ -3037,90 +3068,89 @@
 			modalClass="image-search-modal"
 			on:close={closeImageSearch}
 		>
-
-				{#if availableImageSearchProviders.length > 0}
-					<div class="image-provider-tabs" aria-label="Image source">
-						{#each availableImageSearchProviders as provider}
-							<button
-								type="button"
-								class:active={provider.id === imageSearchProvider}
-								class="secondary"
-								on:click={() => updateImageSearchProvider(provider.id)}
-							>
-								{provider.label}
-							</button>
-						{/each}
-					</div>
-				{/if}
-
-				<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
-					<input
-						value={imageSearchQuery}
-						placeholder="apple"
-						aria-label="Image search query"
-						spellcheck="false"
-						on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
-					/>
-					<button
-						type="submit"
-						disabled={isSearchingImages || availableImageSearchProviders.length === 0}
-					>
-						<Search size={18} aria-hidden="true" />
-						{isSearchingImages ? 'Searching...' : 'Search'}
-					</button>
-				</form>
-
-				{#if imageSearchError}
-					<p class="status error">{imageSearchError}</p>
-				{:else if imageSearchStatus}
-					<p class="status">{imageSearchStatus}</p>
-				{/if}
-
-				{#if imageSearchResults.length > 0}
-					<div class="image-search-results">
-						{#each imageSearchResults as result}
-							<button
-								type="button"
-								class="image-result-button"
-								disabled={Boolean(importingImageResultId)}
-								aria-label={`Use ${result.alt}`}
-								title={result.alt}
-								on:click={() => importImageSearchResult(result)}
-							>
-								<img src={result.thumbUrl} alt="" />
-							</button>
-						{/each}
-					</div>
-				{/if}
-
-				<div class="image-search-footer">
-					<a
-						href={imageSearchProviderSourceUrl(imageSearchProvider)}
-						target="_blank"
-						rel="noreferrer"
-					>
-						Results from {imageSearchProviderInstance.label}
-					</a>
-					<div class="image-search-pages">
+			{#if availableImageSearchProviders.length > 0}
+				<div class="image-provider-tabs" aria-label="Image source">
+					{#each availableImageSearchProviders as provider}
 						<button
 							type="button"
+							class:active={provider.id === imageSearchProvider}
 							class="secondary"
-							disabled={imageSearchPage <= 1 || isSearchingImages}
-							on:click={() => searchImages(imageSearchPage - 1)}
+							on:click={() => updateImageSearchProvider(provider.id)}
 						>
-							Previous
+							{provider.label}
 						</button>
-						<span>Page {imageSearchPage} of {imageSearchTotalPages}</span>
-						<button
-							type="button"
-							class="secondary"
-							disabled={!imageSearchHasNextPage || isSearchingImages}
-							on:click={() => searchImages(imageSearchPage + 1)}
-						>
-							Next
-						</button>
-					</div>
+					{/each}
 				</div>
+			{/if}
+
+			<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
+				<input
+					value={imageSearchQuery}
+					placeholder="apple"
+					aria-label="Image search query"
+					spellcheck="false"
+					on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
+				/>
+				<button
+					type="submit"
+					disabled={isSearchingImages || availableImageSearchProviders.length === 0}
+				>
+					<Search size={18} aria-hidden="true" />
+					{isSearchingImages ? 'Searching...' : 'Search'}
+				</button>
+			</form>
+
+			{#if imageSearchError}
+				<p class="status error">{imageSearchError}</p>
+			{:else if imageSearchStatus}
+				<p class="status">{imageSearchStatus}</p>
+			{/if}
+
+			{#if imageSearchResults.length > 0}
+				<div class="image-search-results">
+					{#each imageSearchResults as result}
+						<button
+							type="button"
+							class="image-result-button"
+							disabled={Boolean(importingImageResultId)}
+							aria-label={`Use ${result.alt}`}
+							title={result.alt}
+							on:click={() => importImageSearchResult(result)}
+						>
+							<img src={result.thumbUrl} alt="" />
+						</button>
+					{/each}
+				</div>
+			{/if}
+
+			<div class="image-search-footer">
+				<a
+					href={imageSearchProviderSourceUrl(imageSearchProvider)}
+					target="_blank"
+					rel="noreferrer"
+				>
+					Results from {imageSearchProviderInstance.label}
+				</a>
+				<div class="image-search-pages">
+					<button
+						type="button"
+						class="secondary"
+						disabled={imageSearchPage <= 1 || isSearchingImages}
+						on:click={() => searchImages(imageSearchPage - 1)}
+					>
+						Previous
+					</button>
+					<span>Page {imageSearchPage} of {imageSearchTotalPages}</span>
+					<button
+						type="button"
+						class="secondary"
+						disabled={!imageSearchHasNextPage || isSearchingImages}
+						on:click={() => searchImages(imageSearchPage + 1)}
+					>
+						Next
+					</button>
+				</div>
+			</div>
 		</PanelModal>
 	{/if}
 
@@ -3164,137 +3194,135 @@
 			showCloseButton={false}
 			on:close={() => (showHelpPanel = false)}
 		>
-				<div slot="header" class="settings-header">
-					<div class="help-title-row">
-						<img src="/app-icon.png" alt="" />
-						<div>
-							<p class="eyebrow">Toddler Read</p>
-							<h2 id="help-title">Help</h2>
-						</div>
+			<div slot="header" class="settings-header">
+				<div class="help-title-row">
+					<img src="/app-icon.png" alt="" />
+					<div>
+						<p class="eyebrow">Toddler Read</p>
+						<h2 id="help-title">Help</h2>
 					</div>
 				</div>
+			</div>
 
-				<div class="help-content">
-					<section>
-						<h3>Editing Cards</h3>
-						<p>
-							Use <strong>New card</strong> to create a card, then fill the text fields for the configured
-							corner languages. Each filled text becomes a QR payload that the reader can speak.
-						</p>
-						<ul>
-							<li>Choose or paste an image, or drag an image onto the preview.</li>
-							<li>Use image search when a provider API key is configured.</li>
-							<li>Adjust pan and size until the card preview looks right.</li>
-							<li>
-								Enable <strong>QR margin</strong> when images need extra room around QR codes.
-							</li>
-							<li>
-								Enable <strong>QR text</strong> when you want the QR payload printed under each code.
-							</li>
-							<li>Use the manager table to select, delete, filter, and link verso cards.</li>
-						</ul>
-					</section>
+			<div class="help-content">
+				<section>
+					<h3>Editing Cards</h3>
+					<p>
+						Use <strong>New card</strong> to create a card, then fill the text fields for the configured
+						corner languages. Each filled text becomes a QR payload that the reader can speak.
+					</p>
+					<ul>
+						<li>Choose or paste an image, or drag an image onto the preview.</li>
+						<li>Use image search when a provider API key is configured.</li>
+						<li>Adjust pan and size until the card preview looks right.</li>
+						<li>
+							Enable <strong>QR margin</strong> when images need extra room around QR codes.
+						</li>
+						<li>
+							Enable <strong>QR text</strong> when you want the QR payload printed under each code.
+						</li>
+						<li>Use the manager table to select, delete, filter, and link verso cards.</li>
+					</ul>
+				</section>
 
-					<section>
-						<h3>Settings</h3>
-						<p>
-							Open settings with the gear button. Settings are stored locally in this browser,
-							including API keys, language setup, grid size, QR margin, QR text, and provider
-							choices.
-						</p>
-						<ul>
-							<li>
-								<strong>Corner languages:</strong> set up to four language codes, such as
-								<code>en</code>, <code>fr</code>, or <code>ro</code>, and adjust the displayed
-								marker.
-							</li>
-							<li>
-								<strong>Image sources:</strong> add Pexels or Flaticon API keys to enable in-app image
-								search.
-							</li>
-							<li>
-								<strong>Translation:</strong> choose Gemini, OpenAI, DeepSeek, Z.AI, Groq, or a custom
-								OpenAI-compatible provider.
-							</li>
-							<li>
-								<strong>Model and base URL:</strong> keep the defaults unless your provider or account
-								requires a different model or endpoint.
-							</li>
-							<li>
-								<strong>Prompt template:</strong> controls how card texts are translated. The placeholders
-								are filled by the app before the request is sent.
-							</li>
-						</ul>
-					</section>
+				<section>
+					<h3>Settings</h3>
+					<p>
+						Open settings with the gear button. Settings are stored locally in this browser,
+						including API keys, language setup, grid size, QR margin, QR text, and provider choices.
+					</p>
+					<ul>
+						<li>
+							<strong>Corner languages:</strong> set up to four language codes, such as
+							<code>en</code>, <code>fr</code>, or <code>ro</code>, and adjust the displayed marker.
+						</li>
+						<li>
+							<strong>Image sources:</strong> add Pexels or Flaticon API keys to enable in-app image
+							search.
+						</li>
+						<li>
+							<strong>Translation:</strong> choose Gemini, OpenAI, DeepSeek, Z.AI, Groq, or a custom
+							OpenAI-compatible provider.
+						</li>
+						<li>
+							<strong>Model and base URL:</strong> keep the defaults unless your provider or account
+							requires a different model or endpoint.
+						</li>
+						<li>
+							<strong>Prompt template:</strong> controls how card texts are translated. The placeholders
+							are filled by the app before the request is sent.
+						</li>
+					</ul>
+				</section>
 
-					<section>
-						<h3>API Keys</h3>
-						<p>
-							API keys are only needed for optional helpers. Translation keys let the app fill
-							missing language text from existing text on the card. Image search keys let the app
-							search image providers from the editor. Keys stay in local browser storage and are
-							sent directly to the selected provider when you use that feature.
-						</p>
-					</section>
+				<section>
+					<h3>API Keys</h3>
+					<p>
+						API keys are only needed for optional helpers. Translation keys let the app fill missing
+						language text from existing text on the card. Image search keys let the app search image
+						providers from the editor. Keys stay in local browser storage and are sent directly to
+						the selected provider when you use that feature.
+					</p>
+				</section>
 
-					<section>
-						<h3>Local Data</h3>
-						<p>
-							Card data is stored in this browser. Nothing is sent to Toddler Read servers, and
-							there is no account or cloud sync. Export your library from the file menu before
-							clearing browser data, switching browsers, or moving to another device.
-						</p>
-						<p>
-							The only network transmissions are the requests you trigger for translation or image
-							search, which go directly to the configured provider APIs.
-						</p>
-					</section>
+				<section>
+					<h3>Local Data</h3>
+					<p>
+						Card data is stored in this browser. Nothing is sent to Toddler Read servers, and there
+						is no account or cloud sync. Export your library from the file menu before clearing
+						browser data, switching browsers, or moving to another device.
+					</p>
+					<p>
+						The only network transmissions are the requests you trigger for translation or image
+						search, which go directly to the configured provider APIs.
+					</p>
+				</section>
 
-					<section>
-						<h3>File Menu</h3>
-						<ul>
-							<li>
-								<strong>Import:</strong> adds cards from a JSON export and merges with your current library.
-							</li>
-							<li>
-								<strong>Replace:</strong> imports a JSON export after clearing the current library.
-							</li>
-							<li>
-								<strong>Export:</strong> downloads the full card library as JSON for backup or sharing.
-							</li>
-						</ul>
-					</section>
+				<section>
+					<h3>File Menu</h3>
+					<ul>
+						<li>
+							<strong>Import:</strong> adds cards from a JSON export and merges with your current library.
+						</li>
+						<li>
+							<strong>Replace:</strong> imports a JSON export after clearing the current library.
+						</li>
+						<li>
+							<strong>Export:</strong> downloads the full card library as JSON for backup or sharing.
+						</li>
+					</ul>
+				</section>
 
-					<section>
-						<h3>Manager And Printing Press</h3>
-						<p>
-							The manager is the card library. Select cards with the checkboxes, use filters to find
-							missing images or text, and link a card to its verso when you need two-sided printing.
-						</p>
-						<p>
-							Open the printer view to preview selected cards as A4 recto and verso pages. Choose
-							the grid size in the toolbar, review any warnings, then download the PDF and print it.
-						</p>
-					</section>
+				<section>
+					<h3>Manager And Printing Press</h3>
+					<p>
+						The manager is the card library. Select cards with the checkboxes, use filters to find
+						missing images or text, and link a card to its verso when you need two-sided printing.
+					</p>
+					<p>
+						Open the printer view to preview selected cards as A4 recto and verso pages. Choose the
+						grid size in the toolbar, review any warnings, then download the PDF and print it.
+					</p>
+				</section>
 
-					<section>
-						<h3>Links</h3>
-						<div class="help-links">
-							<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
-								<ExternalLink size={16} aria-hidden="true" />
-								Repository
-							</a>
-							<a href={KO_FI_URL} target="_blank" rel="noreferrer">
-								<ExternalLink size={16} aria-hidden="true" />
-								Ko-fi
-							</a>
-						</div>
-					</section>
-				</div>
+				<section>
+					<h3>Links</h3>
+					<div class="help-links">
+						<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
+							<ExternalLink size={16} aria-hidden="true" />
+							Repository
+						</a>
+						<a href={KO_FI_URL} target="_blank" rel="noreferrer">
+							<ExternalLink size={16} aria-hidden="true" />
+							Ko-fi
+						</a>
+					</div>
+				</section>
+			</div>
 
-				<div class="help-footer">
-					<button type="button" on:click={() => (showHelpPanel = false)}>OK</button>
-				</div>
+			<div class="help-footer">
+				<button type="button" on:click={() => (showHelpPanel = false)}>OK</button>
+			</div>
 		</PanelModal>
 	{/if}
 
@@ -3306,65 +3334,65 @@
 			closeLabel="Close settings"
 			on:close={() => (showSettingsPanel = false)}
 		>
-				<div class="settings-language-list">
-					{#each languageSetups as setup, index (setup.id)}
-						{@const corner = cornerSpecForIndex(index)}
-						<article class="settings-language-row">
-							<div class="corner-field">
-								<div
-									class="readonly-corner-icon"
-									role="img"
-									aria-label={corner.label}
-									title={corner.label}
-								>
-									<svelte:component this={corner.icon} size={18} aria-hidden="true" />
-								</div>
+			<div class="settings-language-list">
+				{#each languageSetups as setup, index (setup.id)}
+					{@const corner = cornerSpecForIndex(index)}
+					<article class="settings-language-row">
+						<div class="corner-field">
+							<div
+								class="readonly-corner-icon"
+								role="img"
+								aria-label={corner.label}
+								title={corner.label}
+							>
+								<svelte:component this={corner.icon} size={18} aria-hidden="true" />
 							</div>
-							<label>
-								Code
-								<input
-									value={setup.lang}
-									maxlength="16"
-									placeholder="en"
-									spellcheck="false"
-									on:input={(event) =>
-										updateLanguageSetup(setup.id, { lang: event.currentTarget.value })}
-								/>
-							</label>
-							<label class="marker-field">
-								Flag
-								<input
-									value={setup.marker}
-									maxlength="4"
-									placeholder="🇬🇧"
-									spellcheck="false"
-									on:input={(event) =>
-										updateLanguageSetup(setup.id, { marker: event.currentTarget.value })}
-								/>
-							</label>
-						</article>
-					{/each}
-				</div>
-				<ProviderConfigFields
-					imageProviders={IMAGE_SEARCH_PROVIDERS}
-					imageProviderConfigs={imageSearchProviderConfigs}
-					translationProviders={TRANSLATION_PROVIDERS}
-					{translationProvider}
-					translationProviderLabel={providerLabel(translationProvider)}
-					translationConfig={currentTranslationProviderConfig}
-					showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
-					promptTemplate={translationPromptTemplate}
-					on:imageConfigChange={(event) =>
-						updateImageSearchProviderConfig(
-							event.detail.provider as ImageSearchProviderId,
-							event.detail.field,
-							event.detail.value
-						)}
-					on:translationProviderChange={(event) => updateTranslationProvider(event.detail)}
-					on:translationConfigChange={(event) =>
-						updateTranslationProviderConfig(event.detail.field, event.detail.value)}
-					on:promptTemplateChange={(event) => (translationPromptTemplate = event.detail)}
-				/>
+						</div>
+						<label>
+							Code
+							<input
+								value={setup.lang}
+								maxlength="16"
+								placeholder="en"
+								spellcheck="false"
+								on:input={(event) =>
+									updateLanguageSetup(setup.id, { lang: event.currentTarget.value })}
+							/>
+						</label>
+						<label class="marker-field">
+							Flag
+							<input
+								value={setup.marker}
+								maxlength="4"
+								placeholder="🇬🇧"
+								spellcheck="false"
+								on:input={(event) =>
+									updateLanguageSetup(setup.id, { marker: event.currentTarget.value })}
+							/>
+						</label>
+					</article>
+				{/each}
+			</div>
+			<ProviderConfigFields
+				imageProviders={IMAGE_SEARCH_PROVIDERS}
+				imageProviderConfigs={imageSearchProviderConfigs}
+				translationProviders={TRANSLATION_PROVIDERS}
+				{translationProvider}
+				translationProviderLabel={providerLabel(translationProvider)}
+				translationConfig={currentTranslationProviderConfig}
+				showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
+				promptTemplate={translationPromptTemplate}
+				on:imageConfigChange={(event) =>
+					updateImageSearchProviderConfig(
+						event.detail.provider as ImageSearchProviderId,
+						event.detail.field,
+						event.detail.value
+					)}
+				on:translationProviderChange={(event) => updateTranslationProvider(event.detail)}
+				on:translationConfigChange={(event) =>
+					updateTranslationProviderConfig(event.detail.field, event.detail.value)}
+				on:promptTemplateChange={(event) => (translationPromptTemplate = event.detail)}
+			/>
 		</PanelModal>
 	{/if}
 </main>
