@@ -133,7 +133,8 @@ function markerForEntry(lang: string, marker: string | undefined): Pick<Renderab
   };
 }
 
-export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCanvasElement): Promise<void> {
+export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCanvasElement | null | undefined): Promise<void> {
+  if (!target) throw new Error('Canvas rendering is unavailable.');
   const ctx = target.getContext('2d');
   if (!ctx) throw new Error('Canvas rendering is unavailable.');
 
@@ -149,7 +150,8 @@ export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCan
   await drawQrCorners(ctx, renderableEntries, size, Boolean(input.showQrText));
 }
 
-export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, target: HTMLCanvasElement): Promise<void> {
+export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, target: HTMLCanvasElement | null | undefined): Promise<void> {
+  if (!target) throw new Error('Canvas rendering is unavailable.');
   const ctx = target.getContext('2d');
   if (!ctx) throw new Error('Canvas rendering is unavailable.');
 

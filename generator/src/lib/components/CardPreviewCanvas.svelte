@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 
-	export let canvas: HTMLCanvasElement
+	export let canvas: HTMLCanvasElement | undefined
 	export let canPan = false
 	export let dragging = false
 

@@ -20,7 +20,6 @@
 		Pencil,
 		Plus,
 		Printer,
-		RotateCcw,
 		Search,
 		Settings,
 		Smartphone,
@@ -239,8 +238,8 @@
 	let imageTransformDraft: ImageTransform | undefined
 	let tagInput = ''
 	let tagInputCardId = ''
-	let previewCanvas: HTMLCanvasElement
-	let exportCanvas: HTMLCanvasElement
+	let previewCanvas: HTMLCanvasElement | undefined
+	let exportCanvas: HTMLCanvasElement | undefined
 	let fileInput: HTMLInputElement
 	let importInput: HTMLInputElement
 	let isDragging = false
@@ -268,11 +267,22 @@
 	let rectoPreviewCanvases: HTMLCanvasElement[] = []
 	let versoPreviewCanvases: HTMLCanvasElement[] = []
 	let pdfCanvas: HTMLCanvasElement
-	let panDrag:
+	let activeImagePointers = new Map<number, { clientX: number; clientY: number }>()
+	let imageGesture:
 		| {
+				mode: 'pan'
 				pointerId: number
 				startClientX: number
 				startClientY: number
+				startOffsetX: number
+				startOffsetY: number
+		  }
+		| {
+				mode: 'pinch'
+				startDistance: number
+				startCenterX: number
+				startCenterY: number
+				startZoom: number
 				startOffsetX: number
 				startOffsetY: number
 		  }
@@ -325,6 +335,7 @@
 	$: renderableEntries = toRenderableEntries(entries)
 	$: canExport = renderableEntries.length > 0
 	$: if (isMobileWorkspace && workspaceView === 'split') workspaceView = 'manager'
+	$: if (isMobileWorkspace && versoPresenceFilter !== 'all') versoPresenceFilter = 'all'
 	$: showManager = workspaceView === 'manager' || workspaceView === 'split'
 	$: showEditor = workspaceView === 'editor' || workspaceView === 'split'
 	$: showPress = workspaceView === 'press'
@@ -456,12 +467,13 @@
 		nextShowQrText: boolean,
 		isVisible: boolean
 	) {
+		const token = ++renderToken
 		if (!isVisible) return
 
-		const token = ++renderToken
 		await tick()
 		if (token !== renderToken) return
-		if (!previewCanvas) return
+		const target = previewCanvas
+		if (!target) return
 
 		try {
 			renderError = ''
@@ -474,7 +486,7 @@
 					reserveQrMargin: nextReserveQrMargin,
 					showQrText: nextShowQrText
 				},
-				previewCanvas
+				target
 			)
 		} catch (error) {
 			renderError = error instanceof Error ? error.message : 'Could not render card.'
@@ -1065,12 +1077,6 @@
 			...patch
 		})
 		updateSelectedCard({ imageTransform: nextTransform })
-		pngStatus = ''
-	}
-
-	function resetImageTransform() {
-		imageTransformDraft = undefined
-		updateSelectedCard({ imageTransform: undefined })
 		pngStatus = ''
 	}
 
@@ -1691,33 +1697,58 @@
 		pngStatus = ''
 	}
 
-	function startImagePan(event: PointerEvent) {
+	function startImageGesture(event: PointerEvent) {
 		if (!imageDataUrl || !previewCanvas) return
 		const target = event.currentTarget as HTMLCanvasElement
+		event.preventDefault()
 		target.setPointerCapture(event.pointerId)
-		panDrag = {
-			pointerId: event.pointerId,
-			startClientX: event.clientX,
-			startClientY: event.clientY,
-			startOffsetX: previewImageTransform?.offsetX ?? 0,
-			startOffsetY: previewImageTransform?.offsetY ?? 0
-		}
+		activeImagePointers.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY })
+		startCurrentImageGesture()
 	}
 
-	function moveImagePan(event: PointerEvent) {
-		if (!panDrag || panDrag.pointerId !== event.pointerId || !previewCanvas) return
+	function moveImageGesture(event: PointerEvent) {
+		if (!imageGesture || !activeImagePointers.has(event.pointerId) || !previewCanvas) return
+		event.preventDefault()
+		activeImagePointers.set(event.pointerId, { clientX: event.clientX, clientY: event.clientY })
 		const rect = previewCanvas.getBoundingClientRect()
 		if (rect.width <= 0 || rect.height <= 0) return
+
+		if (imageGesture.mode === 'pan') {
+			const pointer = activeImagePointers.get(imageGesture.pointerId)
+			if (!pointer) return
+			queueImagePanDraft({
+				zoom: currentPreviewTransform()?.zoom ?? 1,
+				offsetX:
+					imageGesture.startOffsetX +
+					((pointer.clientX - imageGesture.startClientX) / rect.width) * 2,
+				offsetY:
+					imageGesture.startOffsetY +
+					((pointer.clientY - imageGesture.startClientY) / rect.height) * 2
+			})
+			return
+		}
+
+		const [first, second] = [...activeImagePointers.values()]
+		if (!first || !second) return
+		const distance = distanceBetweenPointers(first, second)
+		if (distance <= 0 || imageGesture.startDistance <= 0) return
+		const center = centerBetweenPointers(first, second)
 		queueImagePanDraft({
-			zoom: previewImageTransform?.zoom ?? 1,
-			offsetX: panDrag.startOffsetX + ((event.clientX - panDrag.startClientX) / rect.width) * 2,
-			offsetY: panDrag.startOffsetY + ((event.clientY - panDrag.startClientY) / rect.height) * 2
+			zoom: imageGesture.startZoom * (distance / imageGesture.startDistance),
+			offsetX: imageGesture.startOffsetX + ((center.clientX - imageGesture.startCenterX) / rect.width) * 2,
+			offsetY: imageGesture.startOffsetY + ((center.clientY - imageGesture.startCenterY) / rect.height) * 2
 		})
 	}
 
-	function stopImagePan(event: PointerEvent) {
-		if (!panDrag || panDrag.pointerId !== event.pointerId) return
-		panDrag = undefined
+	function stopImageGesture(event: PointerEvent) {
+		if (!activeImagePointers.has(event.pointerId)) return
+		activeImagePointers.delete(event.pointerId)
+		if (activeImagePointers.size > 0) {
+			startCurrentImageGesture()
+			return
+		}
+
+		imageGesture = undefined
 		const nextTransform = queuedPanTransform ?? imageTransformDraft ?? imageTransform
 		queuedPanTransform = undefined
 		if (panFrame) {
@@ -1727,6 +1758,62 @@
 		updateSelectedCard({ imageTransform: nextTransform })
 		imageTransformDraft = undefined
 		pngStatus = ''
+	}
+
+	function startCurrentImageGesture() {
+		const transform = currentPreviewTransform()
+		const pointers = [...activeImagePointers.entries()]
+		if (pointers.length >= 2) {
+			const first = pointers[0][1]
+			const second = pointers[1][1]
+			const center = centerBetweenPointers(first, second)
+			imageGesture = {
+				mode: 'pinch',
+				startDistance: distanceBetweenPointers(first, second),
+				startCenterX: center.clientX,
+				startCenterY: center.clientY,
+				startZoom: transform?.zoom ?? 1,
+				startOffsetX: transform?.offsetX ?? 0,
+				startOffsetY: transform?.offsetY ?? 0
+			}
+			return
+		}
+
+		const [pointerId, pointer] = pointers[0] ?? []
+		if (pointerId === undefined || !pointer) {
+			imageGesture = undefined
+			return
+		}
+
+		imageGesture = {
+			mode: 'pan',
+			pointerId,
+			startClientX: pointer.clientX,
+			startClientY: pointer.clientY,
+			startOffsetX: transform?.offsetX ?? 0,
+			startOffsetY: transform?.offsetY ?? 0
+		}
+	}
+
+	function currentPreviewTransform(): ImageTransform | undefined {
+		return queuedPanTransform ?? imageTransformDraft ?? imageTransform
+	}
+
+	function distanceBetweenPointers(
+		first: { clientX: number; clientY: number },
+		second: { clientX: number; clientY: number }
+	) {
+		return Math.hypot(second.clientX - first.clientX, second.clientY - first.clientY)
+	}
+
+	function centerBetweenPointers(
+		first: { clientX: number; clientY: number },
+		second: { clientX: number; clientY: number }
+	) {
+		return {
+			clientX: (first.clientX + second.clientX) / 2,
+			clientY: (first.clientY + second.clientY) / 2
+		}
 	}
 
 	function queueImagePanDraft(transform: Partial<ImageTransform>) {
@@ -2080,7 +2167,7 @@
 	}
 
 	async function openPngPreview() {
-		if (!canExport) return
+		if (!canExport || !exportCanvas) return
 
 		pngStatus = ''
 		try {
@@ -2508,18 +2595,20 @@
 										/>
 									</div>
 								</th>
-								<th>
-									<div class="verso-column-header">
-										<span class="column-title" title="Verso">
-											<Link2 size={17} aria-hidden="true" />
-										</span>
-										<PresenceFilterGroup
-											bind:value={versoPresenceFilter}
-											ariaLabel="Filter verso links"
-											name="verso-presence-filter"
-										/>
-									</div>
-								</th>
+								{#if !isMobileWorkspace}
+									<th>
+										<div class="verso-column-header">
+											<span class="column-title" title="Verso">
+												<Link2 size={17} aria-hidden="true" />
+											</span>
+											<PresenceFilterGroup
+												bind:value={versoPresenceFilter}
+												ariaLabel="Filter verso links"
+												name="verso-presence-filter"
+											/>
+										</div>
+									</th>
+								{/if}
 								{#if workspaceView === 'manager'}
 									<th class="manager-tags-column">Tags</th>
 								{/if}
@@ -2550,45 +2639,47 @@
 										{/if}
 									</td>
 									<td>{card.texts[mainLanguage] || ''}</td>
-									<td class="verso-cell">
-										{#if pairingCardId === card.id}
-											<select
-												aria-label="Choose verso card"
-												value={card.versoCardId ?? ''}
-												on:click|stopPropagation
-												on:change={(event) => updateVersoLink(card.id, event.currentTarget.value)}
-											>
-												<option value="">No verso</option>
-												{#each candidateCardsFor(card) as candidate}
-													<option value={candidate.id}>
-														{cardLabel(candidate)}
-													</option>
-												{/each}
-											</select>
-										{:else}
-											<button
-												type="button"
-												class="secondary verso-link-button"
-												title="Choose verso"
-												on:click|stopPropagation={() => (pairingCardId = card.id)}
-											>
-												<Link2 size={15} aria-hidden="true" />
-												<span>{linkedCardLabel(card)}</span>
-											</button>
-											{#if card.versoCardId}
-												<IconButton
-													ariaLabel="Unlink verso"
-													title="Unlink verso"
-													className="delete-icon-button"
-													size={15}
-													stopPropagation
-													on:click={() => clearVersoLink(card.id)}
+									{#if !isMobileWorkspace}
+										<td class="verso-cell">
+											{#if pairingCardId === card.id}
+												<select
+													aria-label="Choose verso card"
+													value={card.versoCardId ?? ''}
+													on:click|stopPropagation
+													on:change={(event) => updateVersoLink(card.id, event.currentTarget.value)}
 												>
-													<Link2Off size={15} aria-hidden="true" />
-												</IconButton>
+													<option value="">No verso</option>
+													{#each candidateCardsFor(card) as candidate}
+														<option value={candidate.id}>
+															{cardLabel(candidate)}
+														</option>
+													{/each}
+												</select>
+											{:else}
+												<button
+													type="button"
+													class="secondary verso-link-button"
+													title="Choose verso"
+													on:click|stopPropagation={() => (pairingCardId = card.id)}
+												>
+													<Link2 size={15} aria-hidden="true" />
+													<span>{linkedCardLabel(card)}</span>
+												</button>
+												{#if card.versoCardId}
+													<IconButton
+														ariaLabel="Unlink verso"
+														title="Unlink verso"
+														className="delete-icon-button"
+														size={15}
+														stopPropagation
+														on:click={() => clearVersoLink(card.id)}
+													>
+														<Link2Off size={15} aria-hidden="true" />
+													</IconButton>
+												{/if}
 											{/if}
-										{/if}
-									</td>
+										</td>
+									{/if}
 									{#if workspaceView === 'manager'}
 										<td class="manager-tags-cell">
 											{#if card.tags?.length}
@@ -2763,15 +2854,6 @@
 						{/each}
 					</div>
 
-					<TagInput
-						bind:value={tagInput}
-						tags={selectedCardTags}
-						suggestions={tagSuggestions}
-						listId="card-tag-options"
-						on:add={addSelectedTag}
-						on:remove={(event) => removeSelectedTag(event.detail)}
-					/>
-
 					<div class="image-panel">
 						<div class="image-panel-header">
 							<p class="eyebrow">Image</p>
@@ -2808,32 +2890,8 @@
 								Search
 							</button>
 						</div>
-						{#if imageDataUrl}
+						{#if imageDataUrl && !isMobileWorkspace}
 							<div class="image-adjustments">
-								<label>
-									<span>Pan X</span>
-									<input
-										type="range"
-										min="-1"
-										max="1"
-										step="0.01"
-										value={imageTransform?.offsetX ?? 0}
-										on:input={(event) =>
-											updateImageTransform({ offsetX: Number(event.currentTarget.value) })}
-									/>
-								</label>
-								<label>
-									<span>Pan Y</span>
-									<input
-										type="range"
-										min="-1"
-										max="1"
-										step="0.01"
-										value={imageTransform?.offsetY ?? 0}
-										on:input={(event) =>
-											updateImageTransform({ offsetY: Number(event.currentTarget.value) })}
-									/>
-								</label>
 								<label>
 									<span><Maximize2 size={16} aria-hidden="true" /> Size</span>
 									<input
@@ -2846,18 +2904,48 @@
 											updateImageTransform({ zoom: Number(event.currentTarget.value) })}
 									/>
 								</label>
-								<button
-									type="button"
-									class="secondary"
-									disabled={!imageTransform}
-									on:click={resetImageTransform}
-								>
-									<RotateCcw size={16} aria-hidden="true" />
-									Reset
-								</button>
 							</div>
 						{/if}
 					</div>
+
+					{#if selectedCard}
+						<div class="verso-panel">
+							<div class="verso-panel-header">
+								<p class="eyebrow">Verso</p>
+								{#if selectedCard.versoCardId}
+									<IconButton
+										ariaLabel="Unlink verso"
+										title="Unlink verso"
+										on:click={() => clearVersoLink(selectedCard.id)}
+									>
+										<Link2Off size={18} aria-hidden="true" />
+									</IconButton>
+								{/if}
+							</div>
+							<label class="verso-select-field">
+								<Link2 size={18} aria-hidden="true" />
+								<select
+									aria-label="Choose verso card"
+									value={selectedCard.versoCardId ?? ''}
+									on:change={(event) => updateVersoLink(selectedCard.id, event.currentTarget.value)}
+								>
+									<option value="">No verso</option>
+									{#each candidateCardsFor(selectedCard) as candidate}
+										<option value={candidate.id}>{cardLabel(candidate)}</option>
+									{/each}
+								</select>
+							</label>
+						</div>
+					{/if}
+
+					<TagInput
+						bind:value={tagInput}
+						tags={selectedCardTags}
+						suggestions={tagSuggestions}
+						listId="card-tag-options"
+						on:add={addSelectedTag}
+						on:remove={(event) => removeSelectedTag(event.detail)}
+					/>
 
 					{#if translationError}
 						<p class="status error">{translationError}</p>
@@ -2869,18 +2957,6 @@
 				<div class="preview-pane">
 					<div class="preview-toolbar">
 						<div class="preview-actions">
-							<label class="margin-control">
-								<input
-									type="checkbox"
-									checked={reserveQrMargin}
-									on:change={updateReserveQrMargin}
-								/>
-								QR margin
-							</label>
-							<label class="margin-control">
-								<input type="checkbox" checked={showQrText} on:change={updateShowQrText} />
-								QR text
-							</label>
 							<button type="button" disabled={!canExport} on:click={openPngPreview}>
 								<ExternalLink size={18} aria-hidden="true" />
 								Open PNG
@@ -2896,10 +2972,10 @@
 						on:dragover={() => (isDragging = true)}
 						on:dragleave={() => (isDragging = false)}
 						on:drop={(event) => onDrop(event.detail)}
-						on:pointerdown={(event) => startImagePan(event.detail)}
-						on:pointermove={(event) => moveImagePan(event.detail)}
-						on:pointerup={(event) => stopImagePan(event.detail)}
-						on:pointercancel={(event) => stopImagePan(event.detail)}
+						on:pointerdown={(event) => startImageGesture(event.detail)}
+						on:pointermove={(event) => moveImageGesture(event.detail)}
+						on:pointerup={(event) => stopImageGesture(event.detail)}
+						on:pointercancel={(event) => stopImageGesture(event.detail)}
 					/>
 
 					{#if renderError}
@@ -3077,7 +3153,7 @@
 						<li>
 							Enable <strong>QR text</strong> when you want the QR payload printed under each code.
 						</li>
-						<li>Use the manager table to select, delete, filter, and link verso cards.</li>
+						<li>Use the editor verso field to link cards for two-sided printing.</li>
 					</ul>
 				</section>
 
@@ -3159,8 +3235,8 @@
 				<section>
 					<h3>Manager And Printing Press</h3>
 					<p>
-						The manager is the card library. Select cards with the checkboxes, use filters to find
-						missing images or text, and link a card to its verso when you need two-sided printing.
+						The manager is the card library. Select cards with the checkboxes and use filters to find
+						missing images, text, or verso links.
 					</p>
 					<p>
 						Open the printer view to preview selected cards as A4 recto and verso pages. Choose the
@@ -3236,6 +3312,23 @@
 					</article>
 				{/each}
 			</div>
+			<section class="settings-section">
+				<h3>Rendering</h3>
+				<div class="settings-toggle-list">
+					<label class="settings-toggle">
+						<input
+							type="checkbox"
+							checked={reserveQrMargin}
+							on:change={updateReserveQrMargin}
+						/>
+						<span>QR margin</span>
+					</label>
+					<label class="settings-toggle">
+						<input type="checkbox" checked={showQrText} on:change={updateShowQrText} />
+						<span>QR text</span>
+					</label>
+				</div>
+			</section>
 			<ProviderConfigFields
 				imageProviders={IMAGE_SEARCH_PROVIDERS}
 				imageProviderConfigs={imageSearchProviderConfigs}
