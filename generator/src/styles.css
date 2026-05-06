@@ -1198,34 +1198,77 @@ input:not([type=checkbox],[type=radio],[type=range],[type=file]).language-column
   border-radius: 8px;
 }
 
-.grid-size-control {
-  display: grid;
-  gap: 4px;
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
-.toolbar-grid-control {
-  grid-template-columns: auto auto;
+.pdf-config-control {
+  display: inline-grid;
+  grid-template-columns: minmax(0, auto) auto;
   align-items: center;
+  gap: 8px;
   min-height: 42px;
   padding: 0 10px;
   color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
   background: var(--field-bg);
   border: 1px solid var(--line);
   border-radius: 8px;
 }
 
-.grid-size-control select {
+.pdf-config-control > span {
+  white-space: nowrap;
+}
+
+.pdf-config-control button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.pdf-config-summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  color: var(--accent-strong);
+  font-size: 0.96rem;
+  font-weight: 800;
+  background: var(--field-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.pdf-config-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pdf-config-fields label {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.pdf-config-fields select {
   height: 42px;
-  min-width: 92px;
   padding-block: 0;
   color: var(--field-ink);
   font-weight: 700;
   background-color: var(--field-bg);
   border-color: var(--line);
+}
+
+.pdf-config-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
 .card-preview {
@@ -1741,6 +1784,10 @@ input:not([type=checkbox],[type=radio],[type=range],[type=file]).language-column
 
   .apk-qr img {
     display: none;
+  }
+
+  .pdf-config-fields {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .manager-tags-column,

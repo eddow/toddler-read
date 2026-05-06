@@ -19,6 +19,7 @@ export type CardRenderInput = {
   imageDataUrl?: string;
   imageTransform?: ImageTransform;
   entries: LanguageEntry[];
+  pdfConfig?: PdfLayoutConfig;
   gridSize?: CardGridSize;
   reserveQrMargin?: boolean;
   showQrText?: boolean;
@@ -40,18 +41,33 @@ export type LayoutRenderableCard = {
 export type LayoutPageRenderInput = {
   slots: Array<string | undefined>;
   cards: LayoutRenderableCard[];
+  pdfConfig?: PdfLayoutConfig;
   gridSize?: CardGridSize;
   reserveQrMargin?: boolean;
   showQrText?: boolean;
 };
 
 export type CardGridSize = 1 | 2 | 3 | 4;
+export type PdfPageFormat = 'A3' | 'A4' | 'A5' | 'A6';
+export type PdfPageOrientation = 'portrait' | 'landscape';
 
-const A4_WIDTH = 2480;
-const A4_HEIGHT = 3508;
+export type PdfLayoutConfig = {
+  pageFormat: PdfPageFormat;
+  pageOrientation: PdfPageOrientation;
+  gridSize: CardGridSize;
+};
+
+const PDF_RENDER_DPI = 300;
+const MM_PER_INCH = 25.4;
 const SHEET_CUT_MARGIN = 12;
 const CARD_BACKGROUND = '#ffffff';
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
+const PDF_PAGE_FORMATS: Record<PdfPageFormat, { widthMm: number; heightMm: number }> = {
+  A3: { widthMm: 297, heightMm: 420 },
+  A4: { widthMm: 210, heightMm: 297 },
+  A5: { widthMm: 148, heightMm: 210 },
+  A6: { widthMm: 105, heightMm: 148 }
+};
 
 const DEFAULT_REGION_BY_LANGUAGE: Record<string, string> = {
   bg: 'BG',
@@ -71,7 +87,14 @@ const DEFAULT_REGION_BY_LANGUAGE: Record<string, string> = {
   uk: 'UA'
 };
 
-export const DEFAULT_CARD_GRID_SIZE: CardGridSize = 3;
+export const DEFAULT_CARD_GRID_SIZE: CardGridSize = 1;
+export const PDF_PAGE_FORMAT_OPTIONS: PdfPageFormat[] = ['A3', 'A4', 'A5', 'A6'];
+export const PDF_PAGE_ORIENTATION_OPTIONS: PdfPageOrientation[] = ['portrait', 'landscape'];
+export const DEFAULT_PDF_LAYOUT_CONFIG: PdfLayoutConfig = {
+  pageFormat: 'A5',
+  pageOrientation: 'portrait',
+  gridSize: DEFAULT_CARD_GRID_SIZE
+};
 
 export function toRenderableEntries(entries: LanguageEntry[]): RenderableEntry[] {
   return entries
@@ -148,7 +171,7 @@ export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCan
   const ctx = target.getContext('2d');
   if (!ctx) throw new Error('Canvas rendering is unavailable.');
 
-  const size = getCardSize(input.gridSize ?? DEFAULT_CARD_GRID_SIZE);
+  const size = getCardSize(input.pdfConfig ?? legacyPdfConfig(input.gridSize));
   if (target.width !== size.width) target.width = size.width;
   if (target.height !== size.height) target.height = size.height;
 
@@ -165,9 +188,10 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
   const ctx = target.getContext('2d');
   if (!ctx) throw new Error('Canvas rendering is unavailable.');
 
-  const gridSize = input.gridSize ?? DEFAULT_CARD_GRID_SIZE;
-  const pageSize = getA4PageSize();
-  const layout = getA4CutLayout(gridSize);
+  const pdfConfig = input.pdfConfig ?? legacyPdfConfig(input.gridSize);
+  const grid = getPdfGrid(pdfConfig);
+  const pageSize = getPdfCanvasPageSize(pdfConfig);
+  const layout = getPdfCutLayout(pdfConfig);
   const cardsById = new Map(input.cards.map((card) => [card.id, card]));
   const cardCanvas = document.createElement('canvas');
 
@@ -177,7 +201,7 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
   ctx.fillStyle = CARD_BACKGROUND;
   ctx.fillRect(0, 0, pageSize.width, pageSize.height);
 
-  for (let index = 0; index < gridSize * gridSize; index += 1) {
+  for (let index = 0; index < grid.columns * grid.rows; index += 1) {
     const cardId = input.slots[index];
     if (!cardId) continue;
 
@@ -189,15 +213,15 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
         imageDataUrl: card.imageDataUrl,
         imageTransform: card.imageTransform,
         entries: card.entries,
-        gridSize,
+        pdfConfig,
         reserveQrMargin: input.reserveQrMargin,
         showQrText: input.showQrText
       },
       cardCanvas
     );
 
-    const row = Math.floor(index / gridSize);
-    const col = index % gridSize;
+    const row = Math.floor(index / grid.columns);
+    const col = index % grid.columns;
     ctx.drawImage(
       cardCanvas,
       layout.margin + col * (layout.cardWidth + layout.gutter),
@@ -208,29 +232,71 @@ export async function renderLayoutPageToCanvas(input: LayoutPageRenderInput, tar
   }
 }
 
-export function getCardSize(gridSize: CardGridSize) {
+export function getCardSize(pdfConfig: PdfLayoutConfig = DEFAULT_PDF_LAYOUT_CONFIG) {
+  const layout = getPdfCutLayout(pdfConfig);
+
   return {
-    width: Math.round(A4_WIDTH / gridSize),
-    height: Math.round(A4_HEIGHT / gridSize)
+    width: Math.round(layout.cardWidth),
+    height: Math.round(layout.cardHeight)
   };
 }
 
-export function getA4PageSize() {
+export function getPdfPageSize(pdfConfig: PdfLayoutConfig = DEFAULT_PDF_LAYOUT_CONFIG) {
+  const format = PDF_PAGE_FORMATS[pdfConfig.pageFormat];
+  const isLandscape = pdfConfig.pageOrientation === 'landscape';
+
   return {
-    width: A4_WIDTH,
-    height: A4_HEIGHT
+    width: isLandscape ? format.heightMm : format.widthMm,
+    height: isLandscape ? format.widthMm : format.heightMm
   };
 }
 
-export function getA4CutLayout(gridSize: CardGridSize) {
+export function getPdfCanvasPageSize(pdfConfig: PdfLayoutConfig = DEFAULT_PDF_LAYOUT_CONFIG) {
+  const pageSize = getPdfPageSize(pdfConfig);
+
+  return {
+    width: mmToPixels(pageSize.width),
+    height: mmToPixels(pageSize.height)
+  };
+}
+
+export function getPdfGrid(pdfConfig: PdfLayoutConfig = DEFAULT_PDF_LAYOUT_CONFIG) {
+  const widthMultiplier = pdfConfig.pageOrientation === 'landscape' ? 2 : 1;
+
+  return {
+    columns: pdfConfig.gridSize * widthMultiplier,
+    rows: pdfConfig.gridSize
+  };
+}
+
+export function getPdfLayoutLabel(pdfConfig: PdfLayoutConfig = DEFAULT_PDF_LAYOUT_CONFIG): string {
+  const grid = getPdfGrid(pdfConfig);
+
+  return `${pdfConfig.pageFormat}: ${grid.columns}x${grid.rows} ${pdfConfig.pageOrientation}`;
+}
+
+export function getPdfCutLayout(pdfConfig: PdfLayoutConfig = DEFAULT_PDF_LAYOUT_CONFIG) {
+  const pageSize = getPdfCanvasPageSize(pdfConfig);
+  const grid = getPdfGrid(pdfConfig);
   const gutter = SHEET_CUT_MARGIN * 2;
 
   return {
     margin: SHEET_CUT_MARGIN,
     gutter,
-    cardWidth: (A4_WIDTH - SHEET_CUT_MARGIN * 2 - gutter * (gridSize - 1)) / gridSize,
-    cardHeight: (A4_HEIGHT - SHEET_CUT_MARGIN * 2 - gutter * (gridSize - 1)) / gridSize
+    cardWidth: (pageSize.width - SHEET_CUT_MARGIN * 2 - gutter * (grid.columns - 1)) / grid.columns,
+    cardHeight: (pageSize.height - SHEET_CUT_MARGIN * 2 - gutter * (grid.rows - 1)) / grid.rows
   };
+}
+
+function legacyPdfConfig(gridSize: CardGridSize = DEFAULT_CARD_GRID_SIZE): PdfLayoutConfig {
+  return {
+    ...DEFAULT_PDF_LAYOUT_CONFIG,
+    gridSize
+  };
+}
+
+function mmToPixels(value: number): number {
+  return Math.round((value / MM_PER_INCH) * PDF_RENDER_DPI);
 }
 
 function toRenderableEntriesByPosition(entries: LanguageEntry[]): Array<RenderableEntry | undefined> {

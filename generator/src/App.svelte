@@ -8,7 +8,6 @@
 		Columns2,
 		Download,
 		ExternalLink,
-		Grid3X3,
 		Info,
 		Image as ImageIcon,
 		ImagePlus,
@@ -32,7 +31,11 @@
 	import { onMount, tick } from 'svelte'
 	import {
 		DEFAULT_CARD_GRID_SIZE,
-		getA4PageSize,
+		DEFAULT_PDF_LAYOUT_CONFIG,
+		PDF_PAGE_FORMAT_OPTIONS,
+		PDF_PAGE_ORIENTATION_OPTIONS,
+		getPdfLayoutLabel,
+		getPdfPageSize,
 		markerForLanguage,
 		renderCardToCanvas,
 		renderLayoutPageToCanvas,
@@ -40,7 +43,10 @@
 		type CardGridSize,
 		type ImageTransform,
 		type LanguageEntry,
-		type LayoutRenderableCard
+		type LayoutRenderableCard,
+		type PdfLayoutConfig,
+		type PdfPageFormat,
+		type PdfPageOrientation
 	} from './lib/card'
 	import {
 		addCards,
@@ -226,8 +232,11 @@
 	let importingImageResultId = ''
 	let isTranslating = false
 	let gridSize: CardGridSize = DEFAULT_CARD_GRID_SIZE
+	let pageFormat: PdfPageFormat = DEFAULT_PDF_LAYOUT_CONFIG.pageFormat
+	let pageOrientation: PdfPageOrientation = DEFAULT_PDF_LAYOUT_CONFIG.pageOrientation
 	let reserveQrMargin = false
 	let showQrText = false
+	let showPdfConfigPanel = false
 	let showSettingsPanel = false
 	let showFileMenu = false
 	let showHelpPanel = false
@@ -330,7 +339,10 @@
 	)
 	$: entries = buildEntries(languageSetups, cardTexts)
 	$: layoutCards = buildLayoutRenderableCards(cards, languageSetups)
-	$: printLayout = buildPrintLayout(cards, selectedRectoCardIds, gridSize)
+	$: pdfConfig = buildPdfConfig(pageFormat, pageOrientation, gridSize)
+	$: pdfPageSize = getPdfPageSize(pdfConfig)
+	$: pdfLayoutLabel = getPdfLayoutLabel(pdfConfig)
+	$: printLayout = buildPrintLayout(cards, selectedRectoCardIds, pdfConfig)
 	$: printWarnings = buildPrintWarnings(cards, selectedRectoCardIds)
 	$: renderableEntries = toRenderableEntries(entries)
 	$: canExport = renderableEntries.length > 0
@@ -375,7 +387,7 @@
 		imageDataUrl,
 		previewImageTransform,
 		entries,
-		gridSize,
+		pdfConfig,
 		reserveQrMargin,
 		showQrText,
 		showEditor
@@ -383,7 +395,7 @@
 	$: void schedulePressPreviewRender(
 		printLayout,
 		layoutCards,
-		gridSize,
+		pdfConfig,
 		reserveQrMargin,
 		showQrText,
 		showPress
@@ -396,6 +408,8 @@
 			SETTINGS_STORAGE_KEY,
 			JSON.stringify({
 				gridSize,
+				pageFormat,
+				pageOrientation,
 				reserveQrMargin,
 				showQrText,
 				mainLanguage,
@@ -462,7 +476,7 @@
 		nextImageDataUrl: string | undefined,
 		nextImageTransform: ImageTransform | undefined,
 		nextEntries: LanguageEntry[],
-		nextGridSize: CardGridSize,
+		nextPdfConfig: PdfLayoutConfig,
 		nextReserveQrMargin: boolean,
 		nextShowQrText: boolean,
 		isVisible: boolean
@@ -482,7 +496,7 @@
 					imageDataUrl: nextImageDataUrl,
 					imageTransform: nextImageTransform,
 					entries: nextEntries,
-					gridSize: nextGridSize,
+					pdfConfig: nextPdfConfig,
 					reserveQrMargin: nextReserveQrMargin,
 					showQrText: nextShowQrText
 				},
@@ -496,7 +510,7 @@
 	async function schedulePressPreviewRender(
 		nextLayout: PrintLayout,
 		nextCards: LayoutRenderableCard[],
-		nextGridSize: CardGridSize,
+		nextPdfConfig: PdfLayoutConfig,
 		nextReserveQrMargin: boolean,
 		nextShowQrText: boolean,
 		isVisible: boolean
@@ -518,7 +532,7 @@
 						{
 							slots: page.rectoSlots,
 							cards: nextCards,
-							gridSize: nextGridSize,
+							pdfConfig: nextPdfConfig,
 							reserveQrMargin: nextReserveQrMargin,
 							showQrText: nextShowQrText
 						},
@@ -530,7 +544,7 @@
 						{
 							slots: page.versoSlots,
 							cards: nextCards,
-							gridSize: nextGridSize,
+							pdfConfig: nextPdfConfig,
 							reserveQrMargin: nextReserveQrMargin,
 							showQrText: nextShowQrText
 						},
@@ -775,6 +789,12 @@
 			if (isCardGridSize(parsed.gridSize)) {
 				gridSize = parsed.gridSize
 			}
+			if (isPdfPageFormat(parsed.pageFormat)) {
+				pageFormat = parsed.pageFormat
+			}
+			if (isPdfPageOrientation(parsed.pageOrientation)) {
+				pageOrientation = parsed.pageOrientation
+			}
 			if (typeof parsed.reserveQrMargin === 'boolean') {
 				reserveQrMargin = parsed.reserveQrMargin
 			}
@@ -917,6 +937,31 @@
 
 	function isCardGridSize(value: unknown): value is CardGridSize {
 		return typeof value === 'number' && GRID_SIZE_OPTIONS.includes(value as CardGridSize)
+	}
+
+	function isPdfPageFormat(value: unknown): value is PdfPageFormat {
+		return (
+			typeof value === 'string' && PDF_PAGE_FORMAT_OPTIONS.includes(value as PdfPageFormat)
+		)
+	}
+
+	function isPdfPageOrientation(value: unknown): value is PdfPageOrientation {
+		return (
+			typeof value === 'string' &&
+			PDF_PAGE_ORIENTATION_OPTIONS.includes(value as PdfPageOrientation)
+		)
+	}
+
+	function buildPdfConfig(
+		nextPageFormat: PdfPageFormat,
+		nextPageOrientation: PdfPageOrientation,
+		nextGridSize: CardGridSize
+	): PdfLayoutConfig {
+		return {
+			pageFormat: nextPageFormat,
+			pageOrientation: nextPageOrientation,
+			gridSize: nextGridSize
+		}
 	}
 
 	function isTranslationProvider(value: unknown): value is TranslationProvider {
@@ -2156,6 +2201,20 @@
 		pngStatus = ''
 	}
 
+	function updatePageFormat(event: Event) {
+		const value = (event.currentTarget as HTMLSelectElement).value
+		if (isPdfPageFormat(value)) pageFormat = value
+		pngStatus = ''
+		pressStatus = ''
+	}
+
+	function updatePageOrientation(event: Event) {
+		const value = (event.currentTarget as HTMLSelectElement).value
+		if (isPdfPageOrientation(value)) pageOrientation = value
+		pngStatus = ''
+		pressStatus = ''
+	}
+
 	function updateReserveQrMargin(event: Event) {
 		reserveQrMargin = (event.currentTarget as HTMLInputElement).checked
 		pngStatus = ''
@@ -2172,7 +2231,7 @@
 		pngStatus = ''
 		try {
 			await renderCardToCanvas(
-				{ imageDataUrl, imageTransform, entries, gridSize, reserveQrMargin, showQrText },
+				{ imageDataUrl, imageTransform, entries, pdfConfig, reserveQrMargin, showQrText },
 				exportCanvas
 			)
 			const blob = await canvasToBlob(exportCanvas)
@@ -2198,41 +2257,41 @@
 		pressStatus = ''
 		pressError = ''
 		try {
-			const pageSize = getA4PageSize()
+			const pageSize = getPdfPageSize(pdfConfig)
 			const pdf = new jsPDF({
-				orientation: 'portrait',
-				unit: 'px',
+				orientation: pageOrientation,
+				unit: 'mm',
 				format: [pageSize.width, pageSize.height],
 				compress: true
-			})
-			let isFirstPage = true
+				})
+				let isFirstPage = true
 
-			for (const page of printLayout.pages) {
-				for (const slots of [page.rectoSlots, page.versoSlots]) {
-					await renderLayoutPageToCanvas(
-						{
-							slots,
-							cards: layoutCards,
-							gridSize,
-							reserveQrMargin,
-							showQrText
-						},
-						pdfCanvas
-					)
-					if (!isFirstPage) pdf.addPage([pageSize.width, pageSize.height], 'portrait')
-					pdf.addImage(
-						pdfCanvas.toDataURL('image/png'),
-						'PNG',
-						0,
-						0,
-						pageSize.width,
-						pageSize.height
-					)
-					isFirstPage = false
+				for (const page of printLayout.pages) {
+					for (const slots of [page.rectoSlots, page.versoSlots]) {
+						await renderLayoutPageToCanvas(
+							{
+								slots,
+								cards: layoutCards,
+								pdfConfig,
+								reserveQrMargin,
+								showQrText
+							},
+							pdfCanvas
+						)
+						if (!isFirstPage) pdf.addPage([pageSize.width, pageSize.height], pageOrientation)
+						pdf.addImage(
+							pdfCanvas.toDataURL('image/png'),
+							'PNG',
+							0,
+							0,
+							pageSize.width,
+							pageSize.height
+						)
+						isFirstPage = false
+					}
 				}
-			}
 
-			const pdfBlob = pdf.output('blob')
+				const pdfBlob = pdf.output('blob')
 			const anchor = document.createElement('a')
 			const url = URL.createObjectURL(pdfBlob)
 			anchor.href = url
@@ -2324,14 +2383,17 @@
 					<Printer size={18} aria-hidden="true" />
 				</button>
 			</div>
-			<label class="grid-size-control toolbar-grid-control" title="A4 grid">
-				<Grid3X3 size={18} aria-hidden="true" />
-				<select value={gridSize} aria-label="A4 grid" on:change={updateGridSize}>
-					{#each GRID_SIZE_OPTIONS as option}
-						<option value={option}>{option}x{option}</option>
-					{/each}
-				</select>
-			</label>
+			<div class="pdf-config-control" title={`PDF layout: ${pdfLayoutLabel}`}>
+				<span>{pdfLayoutLabel}</span>
+				<button
+					type="button"
+					aria-label="PDF configuration"
+					title="PDF configuration"
+					on:click={() => (showPdfConfigPanel = true)}
+				>
+					<span aria-hidden="true">📄</span>
+				</button>
+			</div>
 			{#if managerLanguages.length > 0}
 				<label class="main-language-control toolbar-language-control">
 					<Languages size={18} aria-hidden="true" />
@@ -2760,32 +2822,34 @@
 						</button>
 					</div>
 				{:else}
-					<div class="press-pages">
-						{#each printLayout.pages as page, index}
-							<article class="press-page-pair">
-								<div class="press-page-header">
-									<strong>Page {index + 1}</strong>
-									<span>{gridSize}x{gridSize}</span>
-								</div>
-								<div class="press-preview-grid">
-									<div class="press-preview">
-										<span>Recto</span>
-										<canvas
-											bind:this={rectoPreviewCanvases[index]}
-											aria-label={`Recto page ${index + 1}`}
-										></canvas>
+						<div class="press-pages">
+							{#each printLayout.pages as page, index}
+								<article class="press-page-pair">
+									<div class="press-page-header">
+										<strong>Page {index + 1}</strong>
+										<span>{pdfLayoutLabel}</span>
 									</div>
-									<div class="press-preview">
-										<span>Verso</span>
-										<canvas
-											bind:this={versoPreviewCanvases[index]}
-											aria-label={`Verso page ${index + 1}`}
-										></canvas>
+									<div class="press-preview-grid">
+										<div class="press-preview">
+											<span>Recto</span>
+											<canvas
+												bind:this={rectoPreviewCanvases[index]}
+												style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+												aria-label={`Recto page ${index + 1}`}
+											></canvas>
+										</div>
+										<div class="press-preview">
+											<span>Verso</span>
+											<canvas
+												bind:this={versoPreviewCanvases[index]}
+												style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+												aria-label={`Verso page ${index + 1}`}
+											></canvas>
+										</div>
 									</div>
-								</div>
-							</article>
-						{/each}
-					</div>
+								</article>
+							{/each}
+						</div>
 				{/if}
 
 				{#if pressError}
@@ -3157,14 +3221,15 @@
 					</ul>
 				</section>
 
-				<section>
-					<h3>Settings</h3>
-					<p>
-						Open settings with the gear button. Settings are stored locally in this browser,
-						including API keys, language setup, grid size, QR margin, QR text, and provider choices.
-					</p>
-					<ul>
-						<li>
+					<section>
+						<h3>Settings</h3>
+						<p>
+							Open settings with the gear button. Settings are stored locally in this browser,
+							including API keys, language setup, PDF layout, QR margin, QR text, and provider
+							choices.
+						</p>
+						<ul>
+							<li>
 							<strong>Corner languages:</strong> set up to four language codes, such as
 							<code>en</code>, <code>fr</code>, or <code>ro</code>, and adjust the displayed marker.
 						</li>
@@ -3239,8 +3304,8 @@
 						missing images, text, or verso links.
 					</p>
 					<p>
-						Open the printer view to preview selected cards as A4 recto and verso pages. Choose the
-						grid size in the toolbar, review any warnings, then download the PDF and print it.
+						Open the printer view to preview selected cards as recto and verso pages. Choose the
+						PDF layout in the toolbar, review any warnings, then download the PDF and print it.
 					</p>
 				</section>
 
@@ -3262,6 +3327,53 @@
 			<div class="help-footer">
 				<button type="button" on:click={() => (showHelpPanel = false)}>OK</button>
 			</div>
+		</PanelModal>
+	{/if}
+
+	{#if showPdfConfigPanel}
+		<PanelModal
+			title="PDF layout"
+			titleId="pdf-config-title"
+			eyebrow="Print"
+			closeLabel="Close PDF configuration"
+			on:close={() => (showPdfConfigPanel = false)}
+		>
+			<div class="pdf-config-summary">
+				<span>{pdfLayoutLabel}</span>
+			</div>
+			<div class="pdf-config-fields">
+				<label>
+					Format
+					<select value={pageFormat} aria-label="PDF page format" on:change={updatePageFormat}>
+						{#each PDF_PAGE_FORMAT_OPTIONS as option}
+							<option value={option}>{option}</option>
+						{/each}
+					</select>
+				</label>
+				<label>
+					Orientation
+					<select
+						value={pageOrientation}
+						aria-label="PDF page orientation"
+						on:change={updatePageOrientation}
+					>
+						{#each PDF_PAGE_ORIENTATION_OPTIONS as option}
+							<option value={option}>{option}</option>
+						{/each}
+					</select>
+				</label>
+				<label>
+					Size
+					<select value={gridSize} aria-label="PDF grid size" on:change={updateGridSize}>
+						{#each GRID_SIZE_OPTIONS as option}
+							<option value={option}>{option}</option>
+						{/each}
+					</select>
+				</label>
+			</div>
+			<p class="pdf-config-note">
+				Cards stay portrait. Landscape pages double the slot count across the width.
+			</p>
 		</PanelModal>
 	{/if}
 

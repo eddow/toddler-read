@@ -104,16 +104,22 @@ Cards are stored locally in the browser with IndexedDB under the
 size, view mode, translation options, and provider configuration are stored in
 local storage.
 
-## Card Layout
+## PDF Layout
 
-The generator supports A4 grid sizes:
+The generator supports A-series PDF formats:
 
 ```text
-1x1, 2x2, 3x3, 4x4
+A3, A4, A5, A6
 ```
 
-The selected grid size determines the exported card dimensions. The default is
-`3x3`.
+The PDF layout size controls the printed card grid:
+
+```text
+1, 2, 3, 4
+```
+
+Portrait pages use an `N x N` grid. Landscape pages keep cards portrait-oriented
+and use a `2N x N` grid. The default is `A5: 1x1 portrait`.
 
 Options:
 

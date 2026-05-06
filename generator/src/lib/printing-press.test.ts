@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { getA4CutLayout, getA4PageSize, type CardGridSize } from './card';
+import {
+  getPdfCanvasPageSize,
+  getPdfCutLayout,
+  getPdfGrid,
+  type CardGridSize,
+  type PdfLayoutConfig,
+  type PdfPageFormat,
+  type PdfPageOrientation
+} from './card';
 import {
   buildPrintLayout,
   dedupeSelectedRectoIds,
@@ -12,6 +20,11 @@ import {
 import type { VersoLinkCard } from './printing-press';
 
 const cards = (ids: string[]): VersoLinkCard[] => ids.map((id) => ({ id }));
+const pdfConfig = (
+  pageFormat: PdfPageFormat = 'A5',
+  pageOrientation: PdfPageOrientation = 'portrait',
+  gridSize: CardGridSize = 1
+): PdfLayoutConfig => ({ pageFormat, pageOrientation, gridSize });
 
 describe('printing press links', () => {
   it('creates reversible one-to-one verso links', () => {
@@ -70,35 +83,62 @@ describe('printing press links', () => {
 });
 
 describe('printing press layout', () => {
-  it.each([1, 2, 3, 4] as const)('uses a gutter twice the outer cut margin for %ix%i sheets', (gridSize) => {
-    const pageSize = getA4PageSize();
-    const layout = getA4CutLayout(gridSize);
+  it.each([
+    [pdfConfig('A5', 'portrait', 1), { columns: 1, rows: 1 }],
+    [pdfConfig('A5', 'landscape', 1), { columns: 2, rows: 1 }],
+    [pdfConfig('A4', 'portrait', 2), { columns: 2, rows: 2 }],
+    [pdfConfig('A4', 'landscape', 2), { columns: 4, rows: 2 }]
+  ] as const)('computes PDF grids from page orientation and size', (config, expected) => {
+    expect(getPdfGrid(config)).toEqual(expected);
+  });
+
+  it.each([
+    pdfConfig('A3', 'portrait', 1),
+    pdfConfig('A4', 'portrait', 2),
+    pdfConfig('A5', 'landscape', 3),
+    pdfConfig('A6', 'landscape', 4)
+  ] as const)('uses a gutter twice the outer cut margin for PDF sheets', (config) => {
+    const pageSize = getPdfCanvasPageSize(config);
+    const layout = getPdfCutLayout(config);
+    const grid = getPdfGrid(config);
 
     expect(layout.gutter).toBe(layout.margin * 2);
-    expect(sheetSpan(layout.cardWidth, layout.margin, layout.gutter, gridSize)).toBeCloseTo(pageSize.width);
-    expect(sheetSpan(layout.cardHeight, layout.margin, layout.gutter, gridSize)).toBeCloseTo(pageSize.height);
+    expect(sheetSpan(layout.cardWidth, layout.margin, layout.gutter, grid.columns)).toBeCloseTo(pageSize.width);
+    expect(sheetSpan(layout.cardHeight, layout.margin, layout.gutter, grid.rows)).toBeCloseTo(pageSize.height);
   });
 
   it.each([
     [1, [0]],
     [2, [1, 0, 3, 2]],
-    [3, [2, 1, 0, 5, 4, 3, 8, 7, 6]],
-    [4, [3, 2, 1, 0, 7, 6, 5, 4, 11, 10, 9, 8, 15, 14, 13, 12]]
-  ] as const)('mirrors %ix%i slots horizontally', (gridSize, expected) => {
-    expect(expected.map((_, index) => mirrorSlotIndex(index, gridSize))).toEqual(expected);
+    [3, [2, 1, 0, 5, 4, 3]],
+    [4, [3, 2, 1, 0, 7, 6, 5, 4]]
+  ] as const)('mirrors slots horizontally across %i columns', (columns, expected) => {
+    expect(expected.map((_, index) => mirrorSlotIndex(index, columns))).toEqual(expected);
   });
 
   it('chunks selected recto cards into pages', () => {
-    const layout = buildPrintLayout(cards(['a', 'b', 'c', 'd', 'e']), ['a', 'b', 'c', 'd', 'e'], 2);
+    const layout = buildPrintLayout(cards(['a', 'b', 'c', 'd', 'e']), ['a', 'b', 'c', 'd', 'e'], pdfConfig('A4', 'portrait', 2));
 
     expect(layout.pages).toHaveLength(2);
     expect(layout.pages[0].rectoSlots).toEqual(['a', 'b', 'c', 'd']);
     expect(layout.pages[1].rectoSlots).toEqual(['e', undefined, undefined, undefined]);
   });
 
+  it('chunks selected recto cards into landscape pages', () => {
+    const layout = buildPrintLayout(
+      cards(['a', 'b', 'c', 'd', 'e']),
+      ['a', 'b', 'c', 'd', 'e'],
+      pdfConfig('A4', 'landscape', 1)
+    );
+
+    expect(layout.pages).toHaveLength(3);
+    expect(layout.pages[0].rectoSlots).toEqual(['a', 'b']);
+    expect(layout.pages[2].rectoSlots).toEqual(['e', undefined]);
+  });
+
   it('prints selected cards with verso links before cards without verso links', () => {
     const linked = linkVersoCards(linkVersoCards(cards(['a', 'b', 'c', 'd', 'e']), 'b', 'c'), 'd', 'e');
-    const layout = buildPrintLayout(linked, ['a', 'b', 'd'], 2);
+    const layout = buildPrintLayout(linked, ['a', 'b', 'd'], pdfConfig('A4', 'portrait', 2));
 
     expect(layout.rectoCardIds).toEqual(['b', 'd', 'a']);
     expect(layout.pages[0].rectoSlots).toEqual(['b', 'd', 'a', undefined]);
@@ -106,9 +146,16 @@ describe('printing press layout', () => {
 
   it('uses blank mirrored slots when verso links are missing', () => {
     const linked = linkVersoCards(cards(['a', 'b', 'c']), 'a', 'b');
-    const layout = buildPrintLayout(linked, ['a', 'c'], 2);
+    const layout = buildPrintLayout(linked, ['a', 'c'], pdfConfig('A4', 'portrait', 2));
 
     expect(layout.pages[0].versoSlots).toEqual([undefined, 'b', undefined, undefined]);
+  });
+
+  it('mirrors landscape verso slots across the page width', () => {
+    const linked = linkVersoCards(cards(['a', 'b', 'c']), 'a', 'b');
+    const layout = buildPrintLayout(linked, ['a', 'c'], pdfConfig('A5', 'landscape', 1));
+
+    expect(layout.pages[0].versoSlots).toEqual([undefined, 'b']);
   });
 
   it('deduplicates selected linked pairs with first selected as recto', () => {
@@ -125,6 +172,6 @@ describe('printing press layout', () => {
   });
 });
 
-function sheetSpan(cardSize: number, margin: number, gutter: number, gridSize: CardGridSize): number {
+function sheetSpan(cardSize: number, margin: number, gutter: number, gridSize: number): number {
   return margin * 2 + cardSize * gridSize + gutter * (gridSize - 1);
 }

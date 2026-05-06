@@ -1,4 +1,4 @@
-import type { CardGridSize } from './card';
+import { getPdfGrid, type PdfLayoutConfig } from './card';
 
 export type VersoLinkCard = {
   id: string;
@@ -11,7 +11,7 @@ export type PrintPage = {
 };
 
 export type PrintLayout = {
-  gridSize: CardGridSize;
+  pdfConfig: PdfLayoutConfig;
   rectoCardIds: string[];
   pages: PrintPage[];
 };
@@ -75,9 +75,10 @@ export function normalizeVersoLinks<T extends VersoLinkCard>(cards: T[]): T[] {
 export function buildPrintLayout<T extends VersoLinkCard>(
   cards: T[],
   rectoCardIds: string[],
-  gridSize: CardGridSize
+  pdfConfig: PdfLayoutConfig
 ): PrintLayout {
-  const slotsPerPage = gridSize * gridSize;
+  const grid = getPdfGrid(pdfConfig);
+  const slotsPerPage = grid.columns * grid.rows;
   const cardById = new Map(cards.map((card) => [card.id, card]));
   const orderedRectoCardIds = orderRectoIdsForPrint(rectoCardIds, cardById);
   const pages: PrintPage[] = [];
@@ -90,7 +91,7 @@ export function buildPrintLayout<T extends VersoLinkCard>(
     rectoSlots.forEach((cardId, index) => {
       if (!cardId) return;
       const versoCardId = cardById.get(cardId)?.versoCardId;
-      const mirroredIndex = mirrorSlotIndex(index, gridSize);
+      const mirroredIndex = mirrorSlotIndex(index, grid.columns);
       versoSlots[mirroredIndex] = versoCardId && cardById.has(versoCardId) ? versoCardId : undefined;
     });
 
@@ -98,7 +99,7 @@ export function buildPrintLayout<T extends VersoLinkCard>(
   }
 
   return {
-    gridSize,
+    pdfConfig,
     rectoCardIds: orderedRectoCardIds,
     pages
   };
@@ -123,10 +124,10 @@ export function dedupeSelectedRectoIds<T extends VersoLinkCard>(cards: T[], sele
   return result;
 }
 
-export function mirrorSlotIndex(index: number, gridSize: CardGridSize): number {
-  const row = Math.floor(index / gridSize);
-  const col = index % gridSize;
-  return row * gridSize + (gridSize - 1 - col);
+export function mirrorSlotIndex(index: number, columns: number): number {
+  const row = Math.floor(index / columns);
+  const col = index % columns;
+  return row * columns + (columns - 1 - col);
 }
 
 function clearVersoLinks<T extends VersoLinkCard>(cards: T[], blockedIds: Set<string>): T[] {
