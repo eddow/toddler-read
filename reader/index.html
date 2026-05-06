@@ -137,6 +137,7 @@
 		}
 
 		#soundLabel {
+			display: none;
 			font-size: 0.85rem;
 			color: #8a7a6a;
 			text-align: center;
@@ -156,9 +157,6 @@
 		}
 		#playerScreen.control-mode #controlButtons {
 			display: flex;
-		}
-		#playerScreen:not(.control-mode) #soundLabel {
-			display: none;
 		}
 
 		.help-backdrop {
@@ -369,6 +367,15 @@
 				scanStatus.classList.toggle('has-message', Boolean(message));
 			}
 
+			function isControlMode() {
+				return playerScreen.classList.contains('control-mode');
+			}
+
+			function handlePlaybackEnded() {
+				if (isControlMode()) return;
+				returnToScanner();
+			}
+
 			// ---- Audio helpers ----
 			audio.addEventListener('error', () => {
 				soundLabel.textContent = '⚠️ Could not play - scan again';
@@ -377,7 +384,7 @@
 				}, 2000);
 			});
 			audio.addEventListener('ended', () => {
-				returnToScanner();
+				handlePlaybackEnded();
 			});
 
 			function loadAndPlay(src) {
@@ -420,7 +427,7 @@
 						text: activeTts.text,
 					}).then(() => {
 						if (currentTts !== activeTts) return;
-						returnToScanner();
+						handlePlaybackEnded();
 					}).catch((error) => {
 						if (currentTts !== activeTts) return;
 						soundLabel.textContent = error?.message || 'Could not speak - scan again';
@@ -443,7 +450,7 @@
 				utterance.lang = currentTts.lang;
 				utterance.onend = () => {
 					if (utterance !== currentSpeechUtterance) return;
-					returnToScanner();
+					handlePlaybackEnded();
 				};
 				utterance.onerror = () => {
 					if (utterance !== currentSpeechUtterance) return;

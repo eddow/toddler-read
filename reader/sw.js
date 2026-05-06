@@ -1,4 +1,4 @@
-const CACHE_NAME = 'toddler-reader-v1';
+const CACHE_NAME = 'toddler-reader-v2';
 const APP_SHELL = [
   './',
   'index.html',

@@ -59,7 +59,7 @@ Behavior:
 - The text after the second colon is spoken.
 - Play restarts the current utterance from the beginning.
 - Stop cancels speech and returns to scanning.
-- When speech ends, the scanner starts again.
+- When speech ends, the scanner starts again unless the manual controls are open.
 
 Language codes should be normal BCP 47-style tags, such as `en`, `fr`, `ro`,
 `de`, `en-US`, or `fr-FR`. Voice selection depends on the device or browser.
@@ -78,7 +78,7 @@ Behavior:
 - The audio element loads and plays the URL.
 - Play restarts from the beginning.
 - Stop cancels playback and returns to scanning.
-- When audio ends, the scanner starts again.
+- When audio ends, the scanner starts again unless the manual controls are open.
 
 ## Data URI Audio
 
@@ -119,7 +119,7 @@ is active. Tapping it reveals Play and Stop.
 
 - Play restarts the current audio or TTS.
 - Stop cancels playback and returns to scanning.
-- Playback end also returns to scanning.
+- Playback end returns to scanning only while the single-button player is shown.
 
 ## Dependencies
 

@@ -103,8 +103,8 @@ APK if it exists.
 ## Reader Client
 
 The reader scans QR codes from the camera, then plays a QR payload as audio or
-text-to-speech. It returns to the scanner after playback finishes or when Stop
-is pressed.
+text-to-speech. It returns to the scanner after playback finishes unless the
+manual controls are open; in that mode, only Stop returns to scanning.
 
 The same reader source is published as a PWA:
 
