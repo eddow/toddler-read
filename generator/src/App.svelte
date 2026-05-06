@@ -366,7 +366,8 @@
 		entries,
 		gridSize,
 		reserveQrMargin,
-		showQrText
+		showQrText,
+		showEditor
 	)
 	$: void schedulePressPreviewRender(
 		printLayout,
@@ -452,13 +453,15 @@
 		nextEntries: LanguageEntry[],
 		nextGridSize: CardGridSize,
 		nextReserveQrMargin: boolean,
-		nextShowQrText: boolean
+		nextShowQrText: boolean,
+		isVisible: boolean
 	) {
-		if (!previewCanvas) return
+		if (!isVisible) return
 
 		const token = ++renderToken
 		await tick()
 		if (token !== renderToken) return
+		if (!previewCanvas) return
 
 		try {
 			renderError = ''
@@ -2087,13 +2090,14 @@
 			)
 			const blob = await canvasToBlob(exportCanvas)
 			const url = URL.createObjectURL(blob)
-			const opened = window.open(url, '_blank', 'noopener,noreferrer')
+			const opened = window.open(url, '_blank')
 
 			if (!opened) {
 				URL.revokeObjectURL(url)
 				throw new Error('Could not open PNG preview. Please allow pop-ups for this page.')
 			}
 
+			opened.opener = null
 			window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
 			pngStatus = 'PNG opened in a new tab.'
 		} catch (error) {
