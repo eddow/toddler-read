@@ -95,13 +95,26 @@ export function toRenderableEntries(entries: LanguageEntry[]): RenderableEntry[]
     .slice(0, 4)
     .map((entry) => ({
       ...entry,
-      payload: buildTtsPayload(entry.lang, entry.text),
+      payload: buildQrPayload(entry.lang, entry.text),
       ...markerForEntry(entry.lang, entry.marker)
     }));
 }
 
+export function buildQrPayload(lang: string, text: string): string {
+  const normalizedText = text.trim();
+  if (isDirectPayload(normalizedText)) return normalizedText;
+
+  return buildTtsPayload(lang, normalizedText);
+}
+
 export function buildTtsPayload(lang: string, text: string): string {
   return `tts:${lang.trim()}:${text.trim()}`;
+}
+
+function isDirectPayload(text: string): boolean {
+  if (/^(https?:\/\/|data:)/i.test(text)) return true;
+
+  return /^(?:\.{0,2}\/)?[\w.-]+(?:\/[\w./-]+)*\.(?:aac|flac|m4a|mp3|mp4|oga|ogg|opus|wav|webm)(?:[?#].*)?$/i.test(text);
 }
 
 export function markerForLanguage(lang: string): Pick<RenderableEntry, 'marker' | 'markerKind'> {
@@ -234,7 +247,7 @@ function toRenderableEntriesByPosition(entries: LanguageEntry[]): Array<Renderab
     return {
       lang,
       text,
-      payload: buildTtsPayload(lang, text),
+      payload: buildQrPayload(lang, text),
       ...markerForEntry(lang, marker)
     };
   });

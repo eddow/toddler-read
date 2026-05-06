@@ -382,6 +382,7 @@
 				currentTts = null;
 				currentSoundSrc = 'assets/no.mp3';
 				playingFallbackSound = true;
+				showSimplePlayer();
 				audio.src = currentSoundSrc;
 				audio.load();
 				audio.play().catch(() => {
