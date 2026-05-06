@@ -4,19 +4,19 @@
 
 <script lang="ts">
 	import { CircleCheckBig, CircleSlash, ListFilter } from 'lucide-svelte'
-	import type { ComponentType } from 'svelte'
 
 	type PresenceFilterOption = {
 		value: PresenceFilter
 		label: string
 		title: string
-		icon: ComponentType
+		icon: typeof ListFilter
 	}
 
 	export let value: PresenceFilter = 'all'
 	export let disabled = false
 	export let ariaLabel = 'Filter by presence'
 	export let name = `presence-filter-${Math.random().toString(36).slice(2)}`
+	export let onValueChange: (value: PresenceFilter) => void = () => {}
 
 	const options: PresenceFilterOption[] = [
 		{ value: 'all', label: 'All', title: 'Show all', icon: ListFilter },
@@ -35,6 +35,7 @@
 				value={option.value}
 				disabled={disabled}
 				aria-label={option.label}
+				on:change={() => onValueChange(option.value)}
 			/>
 			<span class="presence-option-face" title={option.title}>
 				<svelte:component this={option.icon} size={15} aria-hidden="true" />

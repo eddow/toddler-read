@@ -151,6 +151,8 @@
 	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
 	type ImportMode = 'merge' | 'replace'
 	type TagSelectionState = 'none' | 'some' | 'all'
+	type ManagerTagFilter = { tag: string; presenceFilter: PresenceFilter }
+	type ManagerTagFilterRow = { id: string; tagInput: string; presenceFilter: PresenceFilter }
 
 	type TranslationProviderConfig = {
 		apiKey: string
@@ -200,8 +202,7 @@
 	let languageFilters: Record<string, string> = {}
 	let imagePresenceFilter: PresenceFilter = 'all'
 	let versoPresenceFilter: PresenceFilter = 'all'
-	let managerTagInput = ''
-	let managerTagPresenceFilter: PresenceFilter = 'all'
+	let managerTagRows: ManagerTagFilterRow[] = [createManagerTagFilterRow()]
 	let selectedPrintCardIds: string[] = []
 	let pairingCardId = ''
 	let duplicateFocus = ''
@@ -287,12 +288,7 @@
 	$: usedTags = buildUsedTags(cards)
 	$: tagSuggestions = usedTags.filter((tag) => !selectedCardTags.includes(tag))
 	$: managerSelectedCards = cards.filter((card) => selectedPrintCardIds.includes(card.id))
-	$: managerTag = normalizeTag(managerTagInput)
-	$: managerTagSelectionState = buildTagSelectionState(managerSelectedCards, managerTag)
-	$: canAddManagerTag =
-		Boolean(managerTag) && managerSelectedCards.length > 0 && managerTagSelectionState !== 'all'
-	$: canRemoveManagerTag =
-		Boolean(managerTag) && managerSelectedCards.length > 0 && managerTagSelectionState !== 'none'
+	$: managerTagFilters = buildManagerTagFilters(managerTagRows)
 	$: if (selectedCardId !== tagInputCardId) {
 		tagInputCardId = selectedCardId
 		tagInput = ''
@@ -319,8 +315,7 @@
 		languageFilters,
 		imagePresenceFilter,
 		versoPresenceFilter,
-		managerTag,
-		managerTagPresenceFilter
+		managerTagFilters
 	)
 	$: entries = buildEntries(languageSetups, cardTexts)
 	$: layoutCards = buildLayoutRenderableCards(cards, languageSetups)
@@ -969,6 +964,44 @@
 		updateSelectedCard({ tags: normalizeTags(selectedCardTags.filter((entry) => entry !== tag)) })
 	}
 
+	function createManagerTagFilterRow(
+		patch: Partial<Omit<ManagerTagFilterRow, 'id'>> = {}
+	): ManagerTagFilterRow {
+		return {
+			id: createEntryId(),
+			tagInput: '',
+			presenceFilter: 'all',
+			...patch
+		}
+	}
+
+	function buildManagerTagFilters(rows: ManagerTagFilterRow[]): ManagerTagFilter[] {
+		return rows
+			.map((row) => ({
+				tag: normalizeTag(row.tagInput),
+				presenceFilter: row.presenceFilter
+			}))
+			.filter((row) => row.tag.length > 0 && row.presenceFilter !== 'all')
+	}
+
+	function updateManagerTagRowInput(id: string, tagInput: string) {
+		managerTagRows = managerTagRows.map((row) => (row.id === id ? { ...row, tagInput } : row))
+	}
+
+	function updateManagerTagRowPresence(id: string, presenceFilter: PresenceFilter) {
+		managerTagRows = managerTagRows.map((row) =>
+			row.id === id ? { ...row, presenceFilter } : row
+		)
+	}
+
+	function normalizeManagerTagRows() {
+		const filledRows = managerTagRows
+			.map((row) => ({ ...row, tagInput: normalizeTag(row.tagInput) }))
+			.filter((row) => row.tagInput.length > 0)
+
+		managerTagRows = [...filledRows, createManagerTagFilterRow()]
+	}
+
 	function buildTagSelectionState(selectedCards: StoredCard[], tag: string): TagSelectionState {
 		if (selectedCards.length === 0 || !tag) return 'none'
 		const taggedCount = selectedCards.filter((card) => cardHasTag(card, tag)).length
@@ -976,27 +1009,47 @@
 		return taggedCount === selectedCards.length ? 'all' : 'some'
 	}
 
-	async function addManagerTagToSelection() {
-		if (managerSelectedCards.length === 0 || !managerTag) return
+	function canAddManagerTag(row: ManagerTagFilterRow, selectedCards: StoredCard[]): boolean {
+		const tag = normalizeTag(row.tagInput)
+		return (
+			Boolean(tag) &&
+			selectedCards.length > 0 &&
+			buildTagSelectionState(selectedCards, tag) !== 'all'
+		)
+	}
+
+	function canRemoveManagerTag(row: ManagerTagFilterRow, selectedCards: StoredCard[]): boolean {
+		const tag = normalizeTag(row.tagInput)
+		return (
+			Boolean(tag) &&
+			selectedCards.length > 0 &&
+			buildTagSelectionState(selectedCards, tag) !== 'none'
+		)
+	}
+
+	async function addManagerTagToSelection(row: ManagerTagFilterRow) {
+		const tag = normalizeTag(row.tagInput)
+		if (managerSelectedCards.length === 0 || !tag) return
 
 		const nextCards = cards.map((card) => {
 			if (!selectedPrintCardIds.includes(card.id)) return card
 			const currentTags = card.tags ?? []
-			return { ...card, tags: normalizeTags([...currentTags, managerTag]) }
+			return { ...card, tags: normalizeTags([...currentTags, tag]) }
 		})
 		await persistCardsPatch(nextCards)
-		libraryStatus = `Added "${managerTag}" to selected cards.`
+		libraryStatus = `Added "${tag}" to selected cards.`
 	}
 
-	async function removeManagerTagFromSelection() {
-		if (managerSelectedCards.length === 0 || !managerTag) return
+	async function removeManagerTagFromSelection(row: ManagerTagFilterRow) {
+		const tag = normalizeTag(row.tagInput)
+		if (managerSelectedCards.length === 0 || !tag) return
 
 		const nextCards = cards.map((card) => {
 			if (!selectedPrintCardIds.includes(card.id)) return card
-			return { ...card, tags: normalizeTags((card.tags ?? []).filter((tag) => tag !== managerTag)) }
+			return { ...card, tags: normalizeTags((card.tags ?? []).filter((entry) => entry !== tag)) }
 		})
 		await persistCardsPatch(nextCards)
-		libraryStatus = `Removed "${managerTag}" from selected cards.`
+		libraryStatus = `Removed "${tag}" from selected cards.`
 	}
 
 	function updateImageTransform(patch: Partial<ImageTransform>) {
@@ -1275,14 +1328,10 @@
 		return TRANSLATION_PROVIDERS.find((entry) => entry.value === provider)?.label ?? provider
 	}
 
-	function markerLabelForLanguage(language: string): string {
-		return markerForLanguage(language).marker
-	}
-
 	function configuredMarkerForLanguage(language: string): string {
 		const normalized = language.trim()
 		const setup = languageSetups.find((entry) => entry.lang.trim() === normalized)
-		return setup?.marker?.trim() || markerLabelForLanguage(normalized)
+		return setup?.marker?.trim() || normalized
 	}
 
 	function duplicateColumnKeyForLanguage(language: string): string {
@@ -1316,8 +1365,7 @@
 		filters: Record<string, string>,
 		imageFilter: PresenceFilter,
 		versoFilter: PresenceFilter,
-		tagFilter: string,
-		tagPresenceFilter: PresenceFilter
+		tagFilters: ManagerTagFilter[]
 	): StoredCard[] {
 		let duplicateFilteredCards = nextCards
 		if (focus) {
@@ -1347,13 +1395,14 @@
 			if (versoFilter === 'present') return Boolean(card.versoCardId)
 			return true
 		})
-		const tagFilteredCards = presenceFilteredCards.filter((card) => {
-			if (!tagFilter || tagPresenceFilter === 'all') return true
-			const hasTag = cardHasTag(card, tagFilter)
-			if (tagPresenceFilter === 'missing') return !hasTag
-			if (tagPresenceFilter === 'present') return hasTag
-			return true
-		})
+		const tagFilteredCards = presenceFilteredCards.filter((card) =>
+			tagFilters.every((filter) => {
+				const hasTag = cardHasTag(card, filter.tag)
+				if (filter.presenceFilter === 'missing') return !hasTag
+				if (filter.presenceFilter === 'present') return hasTag
+				return true
+			})
+		)
 
 		const activeFilter = language ? (filters[language] ?? '').trim().toLocaleLowerCase() : ''
 		if (!activeFilter) return tagFilteredCards
@@ -2554,47 +2603,64 @@
 		{#if showManager}
 			<section class="manager-pane" aria-label="Cards manager">
 				<div class="manager-tag-toolbar" aria-label="Manager tags">
-					<label class="tag-combobox manager-tag-picker">
-						<input
-							bind:value={managerTagInput}
-							list="manager-tag-options"
-							placeholder="Choose tag"
-							aria-label="Choose tag"
-						/>
-						<datalist id="manager-tag-options">
-							{#each usedTags as tag}
-								<option value={tag}></option>
+					<table class="manager-tag-table">
+						<tbody>
+							{#each managerTagRows as row (row.id)}
+								{@const rowTag = normalizeTag(row.tagInput)}
+								<tr>
+									<td>
+										<label class="tag-combobox manager-tag-picker">
+											<input
+												value={row.tagInput}
+												list="manager-tag-options"
+												placeholder="Choose tag"
+												aria-label="Choose tag"
+												on:input={(event) =>
+													updateManagerTagRowInput(row.id, event.currentTarget.value)}
+												on:blur={normalizeManagerTagRows}
+											/>
+										</label>
+									</td>
+									<td>
+										<div class="manager-tag-actions" aria-label="Selected cards tag actions">
+											<button
+												type="button"
+												class="secondary"
+												disabled={!canAddManagerTag(row, managerSelectedCards)}
+												on:click={() => addManagerTagToSelection(row)}
+											>
+												<Plus size={16} aria-hidden="true" />
+												Add
+											</button>
+											<button
+												type="button"
+												class="secondary"
+												disabled={!canRemoveManagerTag(row, managerSelectedCards)}
+												on:click={() => removeManagerTagFromSelection(row)}
+											>
+												<X size={16} aria-hidden="true" />
+												Remove
+											</button>
+										</div>
+									</td>
+									<td>
+										<PresenceFilterGroup
+											value={row.presenceFilter}
+											disabled={!rowTag}
+											ariaLabel={`Filter table by ${rowTag || 'tag'}`}
+											name={`manager-tag-presence-filter-${row.id}`}
+											onValueChange={(value) => updateManagerTagRowPresence(row.id, value)}
+										/>
+									</td>
+								</tr>
 							{/each}
-						</datalist>
-					</label>
-					<div class="manager-tag-actions" aria-label="Selected cards tag actions">
-						<div>
-							<button
-								type="button"
-								class="secondary"
-								disabled={!canAddManagerTag}
-								on:click={addManagerTagToSelection}
-							>
-								<Plus size={16} aria-hidden="true" />
-								Add
-							</button>
-							<button
-								type="button"
-								class="secondary"
-								disabled={!canRemoveManagerTag}
-								on:click={removeManagerTagFromSelection}
-							>
-								<X size={16} aria-hidden="true" />
-								Remove
-							</button>
-						</div>
-					</div>
-					<PresenceFilterGroup
-						bind:value={managerTagPresenceFilter}
-						disabled={!managerTag}
-						ariaLabel="Filter table by tag"
-						name="manager-tag-presence-filter"
-					/>
+						</tbody>
+					</table>
+					<datalist id="manager-tag-options">
+						{#each usedTags as tag}
+							<option value={tag}></option>
+						{/each}
+					</datalist>
 				</div>
 				<div class="card-table-wrap">
 					<table class="card-table">
@@ -2633,7 +2699,7 @@
 								<th title={mainLanguage}>
 									<div class="language-column-header">
 										<span class="column-title">
-											<span>{markerLabelForLanguage(mainLanguage)}</span>
+											<span>{configuredMarkerForLanguage(mainLanguage)}</span>
 											{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(mainLanguage))}
 												<DuplicateFocusButton
 													active={duplicateFocus === duplicateColumnKeyForLanguage(mainLanguage)}
@@ -2656,7 +2722,9 @@
 								</th>
 								<th>
 									<div class="verso-column-header">
-										<span class="column-title">Verso</span>
+										<span class="column-title" title="Verso">
+											<Link2 size={17} aria-hidden="true" />
+										</span>
 										<PresenceFilterGroup
 											bind:value={versoPresenceFilter}
 											ariaLabel="Filter verso links"
@@ -2892,7 +2960,7 @@
 										class="readonly-marker"
 										aria-label={entry.lang ? `${entry.lang} flag` : 'No language flag'}
 									>
-										{entry.marker || markerForLanguage(entry.lang).marker}
+										{entry.marker}
 									</div>
 								</div>
 								<label class="text-field" aria-label={`${entry.lang} text`}>

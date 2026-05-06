@@ -125,7 +125,7 @@ export function markerForLanguage(lang: string): Pick<RenderableEntry, 'marker' 
 }
 
 function markerForEntry(lang: string, marker: string | undefined): Pick<RenderableEntry, 'marker' | 'markerKind'> {
-  if (!marker) return markerForLanguage(lang);
+  if (!marker) return { marker: '', markerKind: 'code' };
 
   return {
     marker,

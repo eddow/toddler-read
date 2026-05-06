@@ -572,7 +572,9 @@ input::placeholder {
 .language-column-header,
 .image-column-header,
 .verso-column-header {
-  display: grid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
   min-width: 120px;
 }
@@ -596,6 +598,12 @@ input::placeholder {
   background: var(--field-bg);
   border: 1px solid var(--line);
   border-radius: 6px;
+}
+
+input:not([type=checkbox],[type=radio],[type=range],[type=file]).language-column-filter {
+  padding: 0;
+  margin: 0;
+  height: 30px;
 }
 
 .header-checkbox {
@@ -862,15 +870,33 @@ input::placeholder {
 }
 
 .manager-tag-toolbar {
-  display: grid;
-  grid-template-columns: minmax(180px, 1fr) auto minmax(110px, auto);
-  align-items: end;
-  gap: 10px;
+  flex: 0 0 auto;
   padding: 8px;
+  overflow-x: auto;
+  overflow-y: visible;
   background: var(--panel);
   border: 1px solid var(--line);
   border-bottom: 0;
   border-radius: 8px 8px 0 0;
+}
+
+.manager-tag-table {
+  width: 100%;
+  min-width: 520px;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.manager-tag-table td {
+  padding: 4px 6px;
+  vertical-align: middle;
+  border: 0;
+}
+
+.manager-tag-table td:nth-child(2),
+.manager-tag-table td:nth-child(3) {
+  width: 1%;
+  white-space: nowrap;
 }
 
 .manager-tag-picker input {
@@ -879,13 +905,8 @@ input::placeholder {
 }
 
 .manager-tag-actions {
-	display: grid;
-	gap: 4px;
-}
-
-.manager-tag-actions div {
-  display: flex;
-  gap: 6px;
+	display: flex;
+	gap: 6px;
 }
 
 .manager-tag-actions button {

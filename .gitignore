@@ -4,6 +4,7 @@ node_modules
 !reader/vendor/
 !reader/vendor/jsQR.js
 tr.apk
+.vscode/
 
 android/.gradle/
 android/.idea/
