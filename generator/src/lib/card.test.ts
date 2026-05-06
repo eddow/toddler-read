@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildQrPayload, toRenderableEntries } from './card';
+import { buildQrPayload, markerForLanguage, toRenderableEntries } from './card';
 
 describe('card QR payloads', () => {
   it('wraps normal text as TTS', () => {
@@ -25,5 +25,25 @@ describe('card QR payloads', () => {
     expect(toRenderableEntries([{ id: '1', lang: 'en', text: 'https://example.com/cow.mp3' }])[0]?.payload).toBe(
       'https://example.com/cow.mp3'
     );
+  });
+
+  it('generates flag markers from language regions', () => {
+    expect(markerForLanguage('en-US')).toEqual({ marker: '🇺🇸', markerKind: 'flag' });
+    expect(markerForLanguage('pt-BR')).toEqual({ marker: '🇧🇷', markerKind: 'flag' });
+  });
+
+  it('uses default regions for known bare languages', () => {
+    expect(markerForLanguage('ro')).toEqual({ marker: '🇷🇴', markerKind: 'flag' });
+    expect(markerForLanguage('en')).toEqual({ marker: '🇬🇧', markerKind: 'flag' });
+  });
+
+  it('falls back to language codes for unknown languages', () => {
+    expect(markerForLanguage('zz')).toEqual({ marker: 'ZZ', markerKind: 'code' });
+  });
+
+  it('auto-generates missing entry markers but preserves explicit overrides', () => {
+    expect(toRenderableEntries([{ id: '1', lang: 'en-US', text: 'cow' }])[0]?.marker).toBe('🇺🇸');
+    expect(toRenderableEntries([{ id: '1', lang: 'en-US', text: 'cow', marker: 'US' }])[0]?.markerKind).toBe('code');
+    expect(toRenderableEntries([{ id: '1', lang: 'en-US', text: 'cow', marker: '' }])[0]?.marker).toBe('');
   });
 });

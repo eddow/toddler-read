@@ -53,33 +53,22 @@ const SHEET_CUT_MARGIN = 12;
 const CARD_BACKGROUND = '#ffffff';
 const imageCache = new Map<string, Promise<HTMLImageElement>>();
 
-const FLAG_BY_LANGUAGE: Record<string, string> = {
-  bg: '🇧🇬',
-  de: '🇩🇪',
-  el: '🇬🇷',
-  en: '🇬🇧',
-  es: '🇪🇸',
-  fr: '🇫🇷',
-  it: '🇮🇹',
-  ja: '🇯🇵',
-  nl: '🇳🇱',
-  pl: '🇵🇱',
-  pt: '🇵🇹',
-  ro: '🇷🇴',
-  ru: '🇷🇺',
-  tr: '🇹🇷',
-  uk: '🇺🇦'
-};
-
-const FLAG_BY_REGION: Record<string, string> = {
-  br: '🇧🇷',
-  ca: '🇨🇦',
-  gb: '🇬🇧',
-  ie: '🇮🇪',
-  mx: '🇲🇽',
-  pt: '🇵🇹',
-  ro: '🇷🇴',
-  us: '🇺🇸'
+const DEFAULT_REGION_BY_LANGUAGE: Record<string, string> = {
+  bg: 'BG',
+  de: 'DE',
+  el: 'GR',
+  en: 'GB',
+  es: 'ES',
+  fr: 'FR',
+  it: 'IT',
+  ja: 'JP',
+  nl: 'NL',
+  pl: 'PL',
+  pt: 'PT',
+  ro: 'RO',
+  ru: 'RU',
+  tr: 'TR',
+  uk: 'UA'
 };
 
 export const DEFAULT_CARD_GRID_SIZE: CardGridSize = 3;
@@ -120,15 +109,16 @@ function isDirectPayload(text: string): boolean {
 export function markerForLanguage(lang: string): Pick<RenderableEntry, 'marker' | 'markerKind'> {
   const normalized = lang.trim().toLowerCase();
   const parts = normalized.split('-').filter(Boolean);
-  const region = parts.find((part) => part.length === 2 && FLAG_BY_REGION[part]);
+  const region = parts.find((part, index) => index > 0 && /^[a-z]{2}$/.test(part));
 
   if (region) {
-    return { marker: FLAG_BY_REGION[region], markerKind: 'flag' };
+    return { marker: regionCodeToFlag(region), markerKind: 'flag' };
   }
 
   const language = parts[0];
-  if (language && FLAG_BY_LANGUAGE[language]) {
-    return { marker: FLAG_BY_LANGUAGE[language], markerKind: 'flag' };
+  const defaultRegion = language ? DEFAULT_REGION_BY_LANGUAGE[language] : undefined;
+  if (defaultRegion) {
+    return { marker: regionCodeToFlag(defaultRegion), markerKind: 'flag' };
   }
 
   return {
@@ -138,12 +128,19 @@ export function markerForLanguage(lang: string): Pick<RenderableEntry, 'marker' 
 }
 
 function markerForEntry(lang: string, marker: string | undefined): Pick<RenderableEntry, 'marker' | 'markerKind'> {
+  if (marker === undefined) return markerForLanguage(lang);
   if (!marker) return { marker: '', markerKind: 'code' };
 
   return {
     marker,
     markerKind: /^[A-Z0-9]{1,3}$/i.test(marker) ? 'code' : 'flag'
   };
+}
+
+function regionCodeToFlag(region: string): string {
+  return region
+    .toUpperCase()
+    .replace(/./g, (letter) => String.fromCodePoint(0x1f1e6 + letter.charCodeAt(0) - 65));
 }
 
 export async function renderCardToCanvas(input: CardRenderInput, target: HTMLCanvasElement | null | undefined): Promise<void> {
