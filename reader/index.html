@@ -335,6 +335,7 @@
 			let scanTimer = null;
 			let scanning = false;
 			let currentSoundSrc = '';
+			let currentExternalUrl = '';
 			let currentTts = null;
 			let currentSpeechUtterance = null;
 			let playingFallbackSound = false;
@@ -381,7 +382,9 @@
 			function playFallbackSound() {
 				currentTts = null;
 				currentSoundSrc = 'assets/no.mp3';
+				currentExternalUrl = '';
 				playingFallbackSound = true;
+				playBtn.setAttribute('aria-label', 'Play sound');
 				showSimplePlayer();
 				audio.src = currentSoundSrc;
 				audio.load();
@@ -417,7 +420,9 @@
 			function loadAndPlay(src) {
 				currentTts = null;
 				currentSoundSrc = src;
+				currentExternalUrl = '';
 				playingFallbackSound = false;
+				playBtn.setAttribute('aria-label', 'Play sound');
 				audio.src = src;
 				audio.load();
 				audio.play().catch(handleAudioPlayFailure);
@@ -439,6 +444,40 @@
 					lang: match[1],
 					text: match[2].trim(),
 				};
+			}
+
+			function getExternalMediaLink(content) {
+				try {
+					const url = new URL(content);
+					if (url.protocol !== 'https:') return null;
+
+					const host = url.hostname.toLowerCase();
+					const providers = [
+						{ label: 'SoundCloud', hosts: ['soundcloud.com', 'on.soundcloud.com'] },
+						{ label: 'YouTube', hosts: ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'music.youtube.com'] },
+						{ label: 'Spotify', hosts: ['spotify.com', 'open.spotify.com'] },
+						{ label: 'Apple Music', hosts: ['music.apple.com'] },
+						{ label: 'Bandcamp', hosts: ['bandcamp.com'], suffixes: ['.bandcamp.com'] },
+						{ label: 'Deezer', hosts: ['deezer.com', 'www.deezer.com', 'deezer.page.link'] },
+						{ label: 'Tidal', hosts: ['tidal.com', 'www.tidal.com', 'listen.tidal.com'] },
+						{ label: 'Audiomack', hosts: ['audiomack.com', 'www.audiomack.com'] },
+					];
+
+					for (const provider of providers) {
+						const matchesHost = provider.hosts.includes(host);
+						const matchesSuffix = provider.suffixes?.some((suffix) => host.endsWith(suffix));
+						if (matchesHost || matchesSuffix) return { url: content, label: provider.label };
+					}
+
+					return null;
+				} catch (error) {
+					return null;
+				}
+			}
+
+			function openExternalUrl(url) {
+				const opened = window.open(url, '_blank', 'noopener,noreferrer');
+				if (!opened) window.location.href = url;
 			}
 
 			function speakCurrentTts() {
@@ -484,11 +523,24 @@
 
 			function loadAndSpeak(tts) {
 				currentSoundSrc = '';
+				currentExternalUrl = '';
 				currentTts = tts;
 				playingFallbackSound = false;
+				playBtn.setAttribute('aria-label', 'Play sound');
 				audio.removeAttribute('src');
 				audio.load();
 				speakCurrentTts();
+			}
+
+			function loadExternalLink(url, label) {
+				currentSoundSrc = '';
+				currentExternalUrl = url;
+				currentTts = null;
+				playingFallbackSound = false;
+				playBtn.setAttribute('aria-label', `Open ${label}`);
+				audio.removeAttribute('src');
+				audio.load();
+				showControlPlayer();
 			}
 
 			function stopAudio() {
@@ -510,6 +562,11 @@
 			}
 
 			async function playCurrentSound() {
+				if (currentExternalUrl) {
+					openExternalUrl(currentExternalUrl);
+					return;
+				}
+
 				if (currentTts) {
 					speakCurrentTts();
 					return;
@@ -533,20 +590,25 @@
 				let src = null;
 				let label = content;
 				const tts = parseTtsContent(content);
+				const externalMediaLink = getExternalMediaLink(content);
 
 				// Case 1: TTS content in the form tts:en:Hello
 				if (tts && tts.text) {
 					label = tts.text;
 				}
-				// Case 2: It's a URL → treat as sound URL
+				// Case 2: Media platform share links are webpages, not direct audio files.
+				else if (externalMediaLink) {
+					label = `Open ${externalMediaLink.label}`;
+				}
+				// Case 3: It's a URL → treat as sound URL
 				else if (content.startsWith('http://') || content.startsWith('https://')) {
 					src = content;
 				}
-				// Case 3: It's a data URI (base64-encoded audio embedded in QR)
+				// Case 4: It's a data URI (base64-encoded audio embedded in QR)
 				else if (content.startsWith('data:')) {
 					src = content;
 				}
-				// Case 4: It looks like a base64-encoded audio (raw data in QR)
+				// Case 5: It looks like a base64-encoded audio (raw data in QR)
 				// QR can store raw bytes. We check if it's a plausible base64 audio.
 				// We'll try to construct a data URI from it.
 				else {
@@ -567,6 +629,8 @@
 				soundLabel.textContent = label.length > 60 ? label.substring(0, 60) + '…' : label;
 				if (tts && tts.text) {
 					loadAndSpeak(tts);
+				} else if (externalMediaLink) {
+					loadExternalLink(externalMediaLink.url, externalMediaLink.label);
 				} else {
 					loadAndPlay(src);
 				}

@@ -80,6 +80,12 @@ Behavior:
 - Stop cancels playback and returns to scanning.
 - When audio ends, the scanner starts again unless the manual controls are open.
 
+Media platform share links are web pages, not direct audio files. The reader
+shows the manual controls and uses Play to open these links instead of trying to
+play the page through the audio element. This includes SoundCloud, YouTube,
+YouTube Music, Spotify, Apple Music, Bandcamp, Deezer, Tidal, and Audiomack
+links.
+
 ## Data URI Audio
 
 Use a data URI:
