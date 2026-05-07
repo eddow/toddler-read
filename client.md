@@ -82,8 +82,10 @@ Behavior:
 
 Media platform share links are embedded inside the reader instead of opening a
 different site. The embedded widget is touch-inert, so Play and Stop stay under
-Toddler Reader's large controls. This includes SoundCloud, YouTube, YouTube
-Music, Spotify, Apple Music, Bandcamp, Deezer, Tidal, and Audiomack links.
+Toddler Reader's large controls. The reader attempts autoplay first when the
+provider supports it, then Play restarts or retries playback from the embedded
+widget. This includes SoundCloud, YouTube, YouTube Music, Spotify, Apple Music,
+Bandcamp, Deezer, Tidal, and Audiomack links.
 
 ## Data URI Audio
 

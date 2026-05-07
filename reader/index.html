@@ -560,10 +560,10 @@
 				}
 			}
 
-			function soundCloudWidgetSrc(url) {
+			function soundCloudWidgetSrc(url, autoplay = false) {
 				const widgetUrl = new URL('https://w.soundcloud.com/player/');
 				widgetUrl.searchParams.set('url', url);
-				widgetUrl.searchParams.set('auto_play', 'false');
+				widgetUrl.searchParams.set('auto_play', autoplay ? 'true' : 'false');
 				widgetUrl.searchParams.set('hide_related', 'true');
 				widgetUrl.searchParams.set('show_comments', 'false');
 				widgetUrl.searchParams.set('show_user', 'false');
@@ -580,9 +580,9 @@
 				return iframe?.getAttribute('src') || '';
 			}
 
-			function normalizeSoundCloudWidgetSrc(src) {
+			function normalizeSoundCloudWidgetSrc(src, autoplay = false) {
 				const widgetUrl = new URL(src, window.location.href);
-				widgetUrl.searchParams.set('auto_play', 'false');
+				widgetUrl.searchParams.set('auto_play', autoplay ? 'true' : 'false');
 				widgetUrl.searchParams.set('hide_related', 'true');
 				widgetUrl.searchParams.set('show_comments', 'false');
 				widgetUrl.searchParams.set('show_user', 'false');
@@ -592,20 +592,20 @@
 				return widgetUrl.toString();
 			}
 
-			async function resolveSoundCloudWidgetSrc(url) {
+			async function resolveSoundCloudWidgetSrc(url, autoplay = false) {
 				const oembedUrl = new URL('https://soundcloud.com/oembed');
 				oembedUrl.searchParams.set('format', 'json');
 				oembedUrl.searchParams.set('url', url);
-				oembedUrl.searchParams.set('auto_play', 'false');
+				oembedUrl.searchParams.set('auto_play', autoplay ? 'true' : 'false');
 
 				try {
 					const response = await fetch(oembedUrl.toString());
 					if (!response.ok) throw new Error('SoundCloud embed unavailable');
 					const data = await response.json();
 					const src = typeof data.html === 'string' ? soundCloudSrcFromOembedHtml(data.html) : '';
-					return src ? normalizeSoundCloudWidgetSrc(src) : soundCloudWidgetSrc(url);
+					return src ? normalizeSoundCloudWidgetSrc(src, autoplay) : soundCloudWidgetSrc(url, autoplay);
 				} catch (error) {
-					return soundCloudWidgetSrc(url);
+					return soundCloudWidgetSrc(url, autoplay);
 				}
 			}
 
@@ -665,7 +665,7 @@
 
 			async function resolveMediaEmbed(media, autoplay = false) {
 				const url = new URL(media.url);
-				if (media.type === 'soundcloud') return resolveSoundCloudWidgetSrc(media.url);
+				if (media.type === 'soundcloud') return resolveSoundCloudWidgetSrc(media.url, autoplay);
 				let src = '';
 				if (media.type === 'youtube') src = youTubeEmbedSrc(url, autoplay);
 				if (media.type === 'spotify') src = spotifyEmbedSrc(url);
@@ -750,7 +750,7 @@
 				iframe.loading = 'lazy';
 				iframe.allow = 'autoplay';
 				iframe.scrolling = 'no';
-				iframe.src = await resolveMediaEmbed(media, false);
+				iframe.src = await resolveMediaEmbed(media, true);
 				mediaEmbed.replaceChildren(iframe);
 				mediaEmbed.classList.add('active');
 				mediaEmbed.classList.toggle('youtube', media.type === 'youtube');
@@ -765,9 +765,12 @@
 					currentSoundCloudWidget.bind(window.SC.Widget.Events.FINISH, () => {
 						handlePlaybackEnded();
 					});
+					currentSoundCloudWidget.bind(window.SC.Widget.Events.READY, () => {
+						currentSoundCloudWidget.play();
+					});
 				}
 
-				showControlPlayer();
+				showSimplePlayer();
 			}
 
 			function stopAudio() {
