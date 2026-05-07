@@ -80,11 +80,10 @@ Behavior:
 - Stop cancels playback and returns to scanning.
 - When audio ends, the scanner starts again unless the manual controls are open.
 
-Media platform share links are web pages, not direct audio files. The reader
-shows the manual controls and uses Play to open these links instead of trying to
-play the page through the audio element. This includes SoundCloud, YouTube,
-YouTube Music, Spotify, Apple Music, Bandcamp, Deezer, Tidal, and Audiomack
-links.
+Media platform share links are embedded inside the reader instead of opening a
+different site. The embedded widget is touch-inert, so Play and Stop stay under
+Toddler Reader's large controls. This includes SoundCloud, YouTube, YouTube
+Music, Spotify, Apple Music, Bandcamp, Deezer, Tidal, and Audiomack links.
 
 ## Data URI Audio
 
@@ -126,6 +125,10 @@ is active. Tapping it reveals Play and Stop.
 - Play restarts the current audio or TTS.
 - Stop cancels playback and returns to scanning.
 - Playback end returns to scanning only while the single-button player is shown.
+
+On desktop browsers, the scanner screen also shows a small manual QR payload
+tester. Paste any payload and press Run to exercise the same flow as a scanned
+QR code.
 
 ## Dependencies
 

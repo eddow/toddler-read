@@ -80,6 +80,55 @@
 			opacity: 1;
 		}
 
+		#manualScanForm {
+			position: absolute;
+			left: 1rem;
+			right: 1rem;
+			top: 1rem;
+			z-index: 3;
+			display: none;
+			gap: 0.5rem;
+			max-width: 46rem;
+			margin: 0 auto;
+			padding: 0.5rem;
+			background: rgba(255, 253, 247, 0.94);
+			border: 1px solid rgba(217, 208, 191, 0.82);
+			border-radius: 8px;
+			box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+		}
+
+		#manualScanInput {
+			flex: 1 1 auto;
+			min-width: 0;
+			height: 2.75rem;
+			padding: 0 0.75rem;
+			color: #17211b;
+			font: inherit;
+			background: #ffffff;
+			border: 1px solid #cfc6b4;
+			border-radius: 6px;
+		}
+
+		#manualScanBtn {
+			flex: 0 0 auto;
+			min-width: 5rem;
+			height: 2.75rem;
+			padding: 0 1rem;
+			color: #ffffff;
+			font: inherit;
+			font-weight: 700;
+			background: #23765d;
+			border: 0;
+			border-radius: 6px;
+			cursor: pointer;
+		}
+
+		@media (hover: hover) and (pointer: fine) {
+			#manualScanForm {
+				display: flex;
+			}
+		}
+
 		/* ===== Player screen ===== */
 		#playerScreen {
 			flex-direction: column;
@@ -157,6 +206,32 @@
 		}
 		#playerScreen.control-mode #controlButtons {
 			display: flex;
+		}
+
+		#mediaEmbed {
+			display: none;
+			width: min(90vw, 32rem);
+			height: 166px;
+			overflow: hidden;
+			border: 1px solid #d9d0bf;
+			border-radius: 8px;
+			background: #fffdf7;
+			pointer-events: none;
+		}
+
+		#mediaEmbed.active {
+			display: block;
+		}
+
+		#mediaEmbed.youtube {
+			height: min(52vw, 220px);
+		}
+
+		#mediaEmbed iframe {
+			width: 100%;
+			height: 100%;
+			border: 0;
+			pointer-events: none;
 		}
 
 		.help-backdrop {
@@ -242,6 +317,10 @@
 			<canvas id="canvas"></canvas>
 			<div id="scanOverlay"></div>
 		</div>
+		<form id="manualScanForm" autocomplete="off">
+			<input id="manualScanInput" type="text" placeholder="Paste QR payload" aria-label="QR payload" />
+			<button id="manualScanBtn" type="submit">Run</button>
+		</form>
 		<div id="scanStatus" aria-live="polite"></div>
 	</div>
 
@@ -258,6 +337,7 @@
 				<span class="btn-sprite"></span>
 			</button>
 		</div>
+		<div id="mediaEmbed" aria-hidden="true"></div>
 		<div id="soundLabel"></div>
 	</div>
 
@@ -272,7 +352,7 @@
 				<p>
 					Nothing is transmitted to Toddler Read servers. This app scans QR codes and plays the
 					audio or text that the code contains. Network access is only used when a scanned QR code
-					points to an online audio URL.
+					points to an online audio URL or an embedded media widget.
 				</p>
 			</section>
 
@@ -313,6 +393,7 @@
 	</div>
 
 	<script src="vendor/jsQR.js"></script>
+	<script src="https://w.soundcloud.com/player/api.js"></script>
 	<script>
 		(function() {
 			'use strict';
@@ -328,14 +409,18 @@
 			const playBtn       = document.getElementById('playBtn');
 			const stopBtn       = document.getElementById('stopBtn');
 			const soundLabel    = document.getElementById('soundLabel');
+			const mediaEmbed = document.getElementById('mediaEmbed');
 			const helpBackdrop  = document.getElementById('helpBackdrop');
 			const helpOkBtn     = document.getElementById('helpOkBtn');
+			const manualScanForm = document.getElementById('manualScanForm');
+			const manualScanInput = document.getElementById('manualScanInput');
 
 			let stream = null;
 			let scanTimer = null;
 			let scanning = false;
 			let currentSoundSrc = '';
-			let currentExternalUrl = '';
+			let currentMediaEmbed = null;
+			let currentSoundCloudWidget = null;
 			let currentTts = null;
 			let currentSpeechUtterance = null;
 			let playingFallbackSound = false;
@@ -382,7 +467,7 @@
 			function playFallbackSound() {
 				currentTts = null;
 				currentSoundSrc = 'assets/no.mp3';
-				currentExternalUrl = '';
+				clearMediaEmbed();
 				playingFallbackSound = true;
 				playBtn.setAttribute('aria-label', 'Play sound');
 				showSimplePlayer();
@@ -420,7 +505,7 @@
 			function loadAndPlay(src) {
 				currentTts = null;
 				currentSoundSrc = src;
-				currentExternalUrl = '';
+				clearMediaEmbed();
 				playingFallbackSound = false;
 				playBtn.setAttribute('aria-label', 'Play sound');
 				audio.src = src;
@@ -446,27 +531,27 @@
 				};
 			}
 
-			function getExternalMediaLink(content) {
+			function getEmbeddedMediaLink(content) {
 				try {
 					const url = new URL(content);
 					if (url.protocol !== 'https:') return null;
 
 					const host = url.hostname.toLowerCase();
 					const providers = [
-						{ label: 'SoundCloud', hosts: ['soundcloud.com', 'on.soundcloud.com'] },
-						{ label: 'YouTube', hosts: ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'music.youtube.com'] },
-						{ label: 'Spotify', hosts: ['spotify.com', 'open.spotify.com'] },
-						{ label: 'Apple Music', hosts: ['music.apple.com'] },
-						{ label: 'Bandcamp', hosts: ['bandcamp.com'], suffixes: ['.bandcamp.com'] },
-						{ label: 'Deezer', hosts: ['deezer.com', 'www.deezer.com', 'deezer.page.link'] },
-						{ label: 'Tidal', hosts: ['tidal.com', 'www.tidal.com', 'listen.tidal.com'] },
-						{ label: 'Audiomack', hosts: ['audiomack.com', 'www.audiomack.com'] },
+						{ type: 'soundcloud', label: 'SoundCloud', hosts: ['soundcloud.com', 'on.soundcloud.com'] },
+						{ type: 'youtube', label: 'YouTube', hosts: ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'music.youtube.com'] },
+						{ type: 'spotify', label: 'Spotify', hosts: ['spotify.com', 'open.spotify.com'] },
+						{ type: 'appleMusic', label: 'Apple Music', hosts: ['music.apple.com'] },
+						{ type: 'bandcamp', label: 'Bandcamp', hosts: ['bandcamp.com'], suffixes: ['.bandcamp.com'] },
+						{ type: 'deezer', label: 'Deezer', hosts: ['deezer.com', 'www.deezer.com', 'deezer.page.link'] },
+						{ type: 'tidal', label: 'Tidal', hosts: ['tidal.com', 'www.tidal.com', 'listen.tidal.com'] },
+						{ type: 'audiomack', label: 'Audiomack', hosts: ['audiomack.com', 'www.audiomack.com'] },
 					];
 
 					for (const provider of providers) {
 						const matchesHost = provider.hosts.includes(host);
 						const matchesSuffix = provider.suffixes?.some((suffix) => host.endsWith(suffix));
-						if (matchesHost || matchesSuffix) return { url: content, label: provider.label };
+						if (matchesHost || matchesSuffix) return { url: content, label: provider.label, type: provider.type };
 					}
 
 					return null;
@@ -475,9 +560,128 @@
 				}
 			}
 
-			function openExternalUrl(url) {
-				const opened = window.open(url, '_blank', 'noopener,noreferrer');
-				if (!opened) window.location.href = url;
+			function soundCloudWidgetSrc(url) {
+				const widgetUrl = new URL('https://w.soundcloud.com/player/');
+				widgetUrl.searchParams.set('url', url);
+				widgetUrl.searchParams.set('auto_play', 'false');
+				widgetUrl.searchParams.set('hide_related', 'true');
+				widgetUrl.searchParams.set('show_comments', 'false');
+				widgetUrl.searchParams.set('show_user', 'false');
+				widgetUrl.searchParams.set('show_reposts', 'false');
+				widgetUrl.searchParams.set('show_teaser', 'false');
+				widgetUrl.searchParams.set('visual', 'false');
+				return widgetUrl.toString();
+			}
+
+			function soundCloudSrcFromOembedHtml(html) {
+				const template = document.createElement('template');
+				template.innerHTML = html.trim();
+				const iframe = template.content.querySelector('iframe');
+				return iframe?.getAttribute('src') || '';
+			}
+
+			function normalizeSoundCloudWidgetSrc(src) {
+				const widgetUrl = new URL(src, window.location.href);
+				widgetUrl.searchParams.set('auto_play', 'false');
+				widgetUrl.searchParams.set('hide_related', 'true');
+				widgetUrl.searchParams.set('show_comments', 'false');
+				widgetUrl.searchParams.set('show_user', 'false');
+				widgetUrl.searchParams.set('show_reposts', 'false');
+				widgetUrl.searchParams.set('show_teaser', 'false');
+				widgetUrl.searchParams.set('visual', 'false');
+				return widgetUrl.toString();
+			}
+
+			async function resolveSoundCloudWidgetSrc(url) {
+				const oembedUrl = new URL('https://soundcloud.com/oembed');
+				oembedUrl.searchParams.set('format', 'json');
+				oembedUrl.searchParams.set('url', url);
+				oembedUrl.searchParams.set('auto_play', 'false');
+
+				try {
+					const response = await fetch(oembedUrl.toString());
+					if (!response.ok) throw new Error('SoundCloud embed unavailable');
+					const data = await response.json();
+					const src = typeof data.html === 'string' ? soundCloudSrcFromOembedHtml(data.html) : '';
+					return src ? normalizeSoundCloudWidgetSrc(src) : soundCloudWidgetSrc(url);
+				} catch (error) {
+					return soundCloudWidgetSrc(url);
+				}
+			}
+
+			function parseYouTubeVideoId(url) {
+				const host = url.hostname.toLowerCase();
+				if (host === 'youtu.be') return url.pathname.split('/').filter(Boolean)[0] || '';
+				if (url.pathname.startsWith('/shorts/')) return url.pathname.split('/').filter(Boolean)[1] || '';
+				if (url.pathname.startsWith('/embed/')) return url.pathname.split('/').filter(Boolean)[1] || '';
+				return url.searchParams.get('v') || '';
+			}
+
+			function youTubeEmbedSrc(url, autoplay) {
+				const videoId = parseYouTubeVideoId(url);
+				if (!videoId) return '';
+				const embedUrl = new URL(`https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`);
+				embedUrl.searchParams.set('playsinline', '1');
+				embedUrl.searchParams.set('controls', '0');
+				embedUrl.searchParams.set('disablekb', '1');
+				embedUrl.searchParams.set('modestbranding', '1');
+				embedUrl.searchParams.set('rel', '0');
+				embedUrl.searchParams.set('autoplay', autoplay ? '1' : '0');
+				return embedUrl.toString();
+			}
+
+			function spotifyEmbedSrc(url) {
+				if (!/^\/(?:album|artist|episode|playlist|show|track)\//.test(url.pathname)) return '';
+				return `https://open.spotify.com/embed${url.pathname}`;
+			}
+
+			function appleMusicEmbedSrc(url) {
+				return `https://embed.music.apple.com${url.pathname}${url.search}`;
+			}
+
+			function deezerEmbedSrc(url, autoplay) {
+				const parts = url.pathname.split('/').filter(Boolean);
+				const typeIndex = parts.findIndex((part) => ['album', 'playlist', 'track'].includes(part));
+				const type = parts[typeIndex];
+				const id = parts[typeIndex + 1];
+				if (!type || !id) return '';
+				return `https://widget.deezer.com/widget/dark/${type}/${encodeURIComponent(id)}?autoplay=${autoplay ? 'true' : 'false'}`;
+			}
+
+			function tidalEmbedSrc(url, autoplay) {
+				const embedUrl = new URL(`https://embed.tidal.com${url.pathname}`);
+				embedUrl.searchParams.set('layout', 'gridify');
+				if (autoplay) embedUrl.searchParams.set('autoplay', 'true');
+				return embedUrl.toString();
+			}
+
+			function audiomackEmbedSrc(url, autoplay) {
+				const path = url.pathname.replace(/^\/+/, '');
+				if (!path) return '';
+				const embedUrl = new URL(`https://audiomack.com/embed/${path}`);
+				if (autoplay) embedUrl.searchParams.set('autoplay', '1');
+				return embedUrl.toString();
+			}
+
+			async function resolveMediaEmbed(media, autoplay = false) {
+				const url = new URL(media.url);
+				if (media.type === 'soundcloud') return resolveSoundCloudWidgetSrc(media.url);
+				let src = '';
+				if (media.type === 'youtube') src = youTubeEmbedSrc(url, autoplay);
+				if (media.type === 'spotify') src = spotifyEmbedSrc(url);
+				if (media.type === 'appleMusic') src = appleMusicEmbedSrc(url);
+				if (media.type === 'deezer') src = deezerEmbedSrc(url, autoplay);
+				if (media.type === 'tidal') src = tidalEmbedSrc(url, autoplay);
+				if (media.type === 'audiomack') src = audiomackEmbedSrc(url, autoplay);
+				return src || media.url;
+			}
+
+			function clearMediaEmbed() {
+				if (currentSoundCloudWidget?.pause) currentSoundCloudWidget.pause();
+				currentSoundCloudWidget = null;
+				currentMediaEmbed = null;
+				mediaEmbed.className = '';
+				mediaEmbed.replaceChildren();
 			}
 
 			function speakCurrentTts() {
@@ -523,7 +727,7 @@
 
 			function loadAndSpeak(tts) {
 				currentSoundSrc = '';
-				currentExternalUrl = '';
+				clearMediaEmbed();
 				currentTts = tts;
 				playingFallbackSound = false;
 				playBtn.setAttribute('aria-label', 'Play sound');
@@ -532,14 +736,37 @@
 				speakCurrentTts();
 			}
 
-			function loadExternalLink(url, label) {
+			async function loadEmbeddedMedia(media) {
 				currentSoundSrc = '';
-				currentExternalUrl = url;
 				currentTts = null;
+				clearMediaEmbed();
 				playingFallbackSound = false;
-				playBtn.setAttribute('aria-label', `Open ${label}`);
+				playBtn.setAttribute('aria-label', `Play ${media.label}`);
 				audio.removeAttribute('src');
 				audio.load();
+
+				const iframe = document.createElement('iframe');
+				iframe.title = `${media.label} player`;
+				iframe.loading = 'lazy';
+				iframe.allow = 'autoplay';
+				iframe.scrolling = 'no';
+				iframe.src = await resolveMediaEmbed(media, false);
+				mediaEmbed.replaceChildren(iframe);
+				mediaEmbed.classList.add('active');
+				mediaEmbed.classList.toggle('youtube', media.type === 'youtube');
+				currentMediaEmbed = {
+					...media,
+					iframe,
+					playSrc: await resolveMediaEmbed(media, true)
+				};
+
+				if (media.type === 'soundcloud' && window.SC?.Widget) {
+					currentSoundCloudWidget = window.SC.Widget(iframe);
+					currentSoundCloudWidget.bind(window.SC.Widget.Events.FINISH, () => {
+						handlePlaybackEnded();
+					});
+				}
+
 				showControlPlayer();
 			}
 
@@ -559,11 +786,17 @@
 			function stopPlayback() {
 				stopAudio();
 				stopSpeech();
+				clearMediaEmbed();
 			}
 
 			async function playCurrentSound() {
-				if (currentExternalUrl) {
-					openExternalUrl(currentExternalUrl);
+				if (currentSoundCloudWidget?.play) {
+					currentSoundCloudWidget.play();
+					return;
+				}
+
+				if (currentMediaEmbed?.iframe && currentMediaEmbed.playSrc) {
+					currentMediaEmbed.iframe.src = currentMediaEmbed.playSrc;
 					return;
 				}
 
@@ -582,7 +815,15 @@
 			}
 
 			// ---- Handle scanned content ----
-			function handleScannedContent(content) {
+			async function handleScannedContent(content) {
+				content = content.trim();
+				if (!content) {
+					showScanner();
+					setScanMessage('Enter a QR payload to test.');
+					startScanning();
+					return;
+				}
+
 				stopScanning();
 				stopPlayback();
 				showSimplePlayer();
@@ -590,15 +831,15 @@
 				let src = null;
 				let label = content;
 				const tts = parseTtsContent(content);
-				const externalMediaLink = getExternalMediaLink(content);
+				const embeddedMediaLink = getEmbeddedMediaLink(content);
 
 				// Case 1: TTS content in the form tts:en:Hello
 				if (tts && tts.text) {
 					label = tts.text;
 				}
-				// Case 2: Media platform share links are webpages, not direct audio files.
-				else if (externalMediaLink) {
-					label = `Open ${externalMediaLink.label}`;
+				// Case 2: Known media platform links stay embedded inside the reader.
+				else if (embeddedMediaLink) {
+					label = embeddedMediaLink.label;
 				}
 				// Case 3: It's a URL → treat as sound URL
 				else if (content.startsWith('http://') || content.startsWith('https://')) {
@@ -629,8 +870,8 @@
 				soundLabel.textContent = label.length > 60 ? label.substring(0, 60) + '…' : label;
 				if (tts && tts.text) {
 					loadAndSpeak(tts);
-				} else if (externalMediaLink) {
-					loadExternalLink(externalMediaLink.url, externalMediaLink.label);
+				} else if (embeddedMediaLink) {
+					await loadEmbeddedMedia(embeddedMediaLink);
 				} else {
 					loadAndPlay(src);
 				}
@@ -777,6 +1018,11 @@
 
 			stopBtn.addEventListener('click', () => {
 				returnToScanner();
+			});
+
+			manualScanForm.addEventListener('submit', (event) => {
+				event.preventDefault();
+				handleScannedContent(manualScanInput.value);
 			});
 
 			helpOkBtn.addEventListener('click', () => {
