@@ -127,6 +127,8 @@
 	const SHOW_HELP_AT_STARTUP_STORAGE_KEY = 'toddler-read-generator-show-help-at-startup'
 	const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash'
 	const IMAGE_SEARCH_RESULTS_PER_PAGE = 12
+	const IMAGE_SEARCH_PROVIDER_IDS: ImageSearchProviderId[] = ['pexels', 'flaticon']
+	const IMAGE_GENERATION_PROVIDER_IDS: ImageSearchProviderId[] = ['leonardo', 'pollinations']
 	const TRANSLATION_PROVIDERS = [
 		{ value: 'gemini', label: 'Gemini', model: DEFAULT_GEMINI_MODEL, baseUrl: '' },
 		{ value: 'openai', label: 'OpenAI', model: 'gpt-5-mini', baseUrl: 'https://api.openai.com/v1' },
@@ -214,6 +216,7 @@ Do not return unchanged existing text.`
 
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
 	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
+	type ImageFinderMode = 'search' | 'generate'
 	type ImportMode = 'merge' | 'replace'
 	type TagSelectionState = 'none' | 'some' | 'all'
 	type ManagerTagFilter = { tag: string; presenceFilter: PresenceFilter }
@@ -267,6 +270,8 @@ Do not return unchanged existing text.`
 	let imageGenerationPromptTemplate = DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE
 	let imageSearchProvider: ImageSearchProviderId = 'pexels'
 	let imageSearchProviderConfigs: ImageSearchProviderConfigs = defaultImageSearchProviderConfigs()
+	let imageFinderMode: ImageFinderMode = 'search'
+	let imageGenerationHints = ''
 	let showImageSearchPanel = false
 	let imageSearchQuery = ''
 	let imageSearchResults: ImageSearchResult[] = []
@@ -411,9 +416,20 @@ Do not return unchanged existing text.`
 	$: translationTargets = buildTranslationTargets(entries)
 	$: currentTranslationProviderConfig = translationProviderConfigs[translationProvider]
 	$: currentImageSearchProviderConfig = imageSearchProviderConfigs[imageSearchProvider]
-	$: availableImageSearchProviders = IMAGE_SEARCH_PROVIDERS.filter((provider) =>
+	$: imageSearchProviders = IMAGE_SEARCH_PROVIDERS.filter((provider) =>
+		IMAGE_SEARCH_PROVIDER_IDS.includes(provider.id)
+	)
+	$: imageGenerationProviders = IMAGE_SEARCH_PROVIDERS.filter((provider) =>
+		IMAGE_GENERATION_PROVIDER_IDS.includes(provider.id)
+	)
+	$: availableImageSearchProviders = imageSearchProviders.filter((provider) =>
 		imageSearchProviderConfigs[provider.id].apiKey.trim()
 	)
+	$: availableImageGenerationProviders = imageGenerationProviders.filter((provider) =>
+		imageSearchProviderConfigs[provider.id].apiKey.trim()
+	)
+	$: activeImageProviders =
+		imageFinderMode === 'generate' ? availableImageGenerationProviders : availableImageSearchProviders
 	$: translationDisabledReasons = i18nReady
 		? getTranslationDisabledReasons(
 				translationProvider,
@@ -433,11 +449,8 @@ Do not return unchanged existing text.`
 		1,
 		Math.ceil(imageSearchTotalResults / IMAGE_SEARCH_RESULTS_PER_PAGE)
 	)
-	$: if (
-		availableImageSearchProviders.length > 0 &&
-		!availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)
-	) {
-		imageSearchProvider = availableImageSearchProviders[0].id
+	$: if (activeImageProviders.length > 0 && !activeImageProviders.some((provider) => provider.id === imageSearchProvider)) {
+		imageSearchProvider = activeImageProviders[0].id
 		resetImageSearchResults()
 	}
 	$: currentImageSearchCardKey = selectedCard ? buildImageSearchCardKey(selectedCard) : ''
@@ -480,6 +493,7 @@ Do not return unchanged existing text.`
 				translationProviderConfigs,
 				translationPromptTemplate,
 				imageGenerationPromptTemplate,
+				imageGenerationHints,
 				imageSearchProvider,
 				imageSearchProviderConfigs
 			})
@@ -895,6 +909,9 @@ Do not return unchanged existing text.`
 			) {
 				imageGenerationPromptTemplate = parsed.imageGenerationPromptTemplate
 			}
+			if (typeof parsed.imageGenerationHints === 'string') {
+				imageGenerationHints = parsed.imageGenerationHints
+			}
 			if (isTranslationProvider(parsed.translationProvider)) {
 				translationProvider = parsed.translationProvider
 			}
@@ -1256,6 +1273,11 @@ Do not return unchanged existing text.`
 	function updateImageSearchProvider(value: string) {
 		if (!isImageSearchProvider(value)) return
 		imageSearchProvider = value
+		resetImageSearchResults()
+	}
+
+	function updateImageGenerationHints(value: string) {
+		imageGenerationHints = value
 		resetImageSearchResults()
 	}
 
@@ -1666,21 +1688,33 @@ Do not return unchanged existing text.`
 	}
 
 	function openImageSearch() {
-		if (
-			availableImageSearchProviders.length > 0 &&
-			!availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)
-		) {
-			imageSearchProvider = availableImageSearchProviders[0].id
+		openImageFinder('search')
+	}
+
+	function openImageGeneration() {
+		openImageFinder('generate')
+	}
+
+	function openImageFinder(mode: ImageFinderMode) {
+		imageFinderMode = mode
+		const providers = mode === 'generate' ? availableImageGenerationProviders : availableImageSearchProviders
+		if (providers.length > 0 && !providers.some((provider) => provider.id === imageSearchProvider)) {
+			imageSearchProvider = providers[0].id
 		}
 		imageSearchQuery = imageSearchQuery.trim() || defaultImageSearchQuery()
 		showImageSearchPanel = true
 		imageSearchStatus = ''
 		imageSearchError =
-			availableImageSearchProviders.length > 0
+			providers.length > 0
 				? ''
-				: format(T.templates.missingProviderKey, { provider: T.providers.imageProviderKeys })
+				: format(T.templates.missingProviderKey, {
+						provider:
+							mode === 'generate'
+								? T.providers.imageGenerationProviderKeys
+								: T.providers.imageSearchProviderKeys
+					})
 		if (imageSearchError) imageSearchResults = []
-		if (imageSearchQuery && availableImageSearchProviders.length > 0) {
+		if (mode === 'search' && imageSearchQuery && providers.length > 0) {
 			void searchImages(1)
 		}
 	}
@@ -1760,7 +1794,9 @@ Do not return unchanged existing text.`
 	async function searchImages(page = 1) {
 		if (isSearchingImages) return
 
-		const query = imageSearchQuery.trim()
+		const query = imageFinderMode === 'generate' ? imageGenerationHints.trim() : imageSearchQuery.trim()
+		const activeProviders =
+			imageFinderMode === 'generate' ? availableImageGenerationProviders : availableImageSearchProviders
 		if (!currentImageSearchProviderConfig.apiKey.trim()) {
 			imageSearchError = format(T.templates.missingProviderKey, {
 				provider: imageSearchProviderInstance.label
@@ -1769,8 +1805,19 @@ Do not return unchanged existing text.`
 			imageSearchResults = []
 			return
 		}
-		if (!query) {
+		if (imageFinderMode === 'search' && !query) {
 			imageSearchError = T.errors.enterSearchTerm
+			imageSearchStatus = ''
+			imageSearchResults = []
+			return
+		}
+		if (activeProviders.length === 0) {
+			imageSearchError = format(T.templates.missingProviderKey, {
+				provider:
+					imageFinderMode === 'generate'
+						? T.providers.imageGenerationProviderKeys
+						: T.providers.imageSearchProviderKeys
+			})
 			imageSearchStatus = ''
 			imageSearchResults = []
 			return
@@ -1826,7 +1873,7 @@ Do not return unchanged existing text.`
 		imageSearchStatus = ''
 		imageSearchError = ''
 		try {
-			const nextImageDataUrl = await imageSearchProviderInstance.importResult(result)
+			const nextImageDataUrl = await getImageSearchProvider(result.providerId).importResult(result)
 			updateSelectedCard({ imageDataUrl: nextImageDataUrl, imageTransform: undefined })
 			pngStatus = ''
 			imageSearchStatus = T.status.imageAdded
@@ -3242,9 +3289,23 @@ Do not return unchanged existing text.`
 								<ImagePlus size={18} aria-hidden="true" />
 								{T.actions.choose}
 							</button>
-							<button type="button" class="secondary" on:click={openImageSearch}>
+							<button
+								type="button"
+								class="secondary"
+								disabled={availableImageSearchProviders.length === 0}
+								on:click={openImageSearch}
+							>
 								<Search size={18} aria-hidden="true" />
 								{T.actions.search}
+							</button>
+							<button
+								type="button"
+								class="secondary"
+								disabled={availableImageGenerationProviders.length === 0}
+								on:click={openImageGeneration}
+							>
+								<ImageIcon size={18} aria-hidden="true" />
+								{T.actions.generate}
 							</button>
 						</div>
 						{#if imageDataUrl && !isMobileWorkspace}
@@ -3350,16 +3411,16 @@ Do not return unchanged existing text.`
 
 	{#if showImageSearchPanel}
 		<PanelModal
-			title={T.modal.imageSearch.title}
+			title={imageFinderMode === 'generate' ? T.modal.imageSearch.generateTitle : T.modal.imageSearch.title}
 			titleId="image-search-title"
-			eyebrow={T.labels.imageSource}
+			eyebrow={imageFinderMode === 'generate' ? T.labels.imageGeneration : T.labels.imageSearch}
 			closeLabel={T.modal.imageSearch.close}
 			modalClass="image-search-modal"
 			onClose={closeImageSearch}
 		>
-			{#if availableImageSearchProviders.length > 0}
+			{#if activeImageProviders.length > 0}
 				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
-					{#each availableImageSearchProviders as provider}
+					{#each activeImageProviders as provider}
 						<button
 							type="button"
 							class:active={provider.id === imageSearchProvider}
@@ -3373,19 +3434,34 @@ Do not return unchanged existing text.`
 			{/if}
 
 			<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
-				<input
-					value={imageSearchQuery}
-					placeholder={T.placeholders.imageSearch}
-					aria-label={T.aria.imageSearchQuery}
-					spellcheck="false"
-					on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
-				/>
+				{#if imageFinderMode === 'generate'}
+					<input
+						value={imageGenerationHints}
+						placeholder={T.placeholders.imageGenerationHints}
+						aria-label={T.aria.imageGenerationHints}
+						spellcheck="false"
+						on:input={(event) => updateImageGenerationHints(event.currentTarget.value)}
+					/>
+				{:else}
+					<input
+						value={imageSearchQuery}
+						placeholder={T.placeholders.imageSearch}
+						aria-label={T.aria.imageSearchQuery}
+						spellcheck="false"
+						on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
+					/>
+				{/if}
 				<button
 					type="submit"
-					disabled={isSearchingImages || availableImageSearchProviders.length === 0}
+					disabled={isSearchingImages || activeImageProviders.length === 0}
 				>
-					<Search size={18} aria-hidden="true" />
-					{isSearchingImages ? T.actions.searching : T.actions.search}
+					{#if imageFinderMode === 'generate'}
+						<ImageIcon size={18} aria-hidden="true" />
+						{isSearchingImages ? T.actions.generating : T.actions.generate}
+					{:else}
+						<Search size={18} aria-hidden="true" />
+						{isSearchingImages ? T.actions.searching : T.actions.search}
+					{/if}
 				</button>
 			</form>
 
@@ -3420,7 +3496,8 @@ Do not return unchanged existing text.`
 				>
 					{format(T.templates.resultsFrom, { provider: imageSearchProviderInstance.label })}
 				</a>
-				<div class="image-search-pages">
+				{#if imageFinderMode === 'search'}
+					<div class="image-search-pages">
 					<button
 						type="button"
 						class="secondary"
@@ -3438,7 +3515,8 @@ Do not return unchanged existing text.`
 					>
 						{T.actions.next}
 					</button>
-				</div>
+					</div>
+				{/if}
 			</div>
 		</PanelModal>
 	{/if}

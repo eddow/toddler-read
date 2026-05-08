@@ -326,7 +326,6 @@ const leonardoImageSearchProvider: ImageSearchProvider = {
     if (!apiKey) throw new Error('Add a Leonardo.Ai API key in Settings.');
 
     const normalizedQuery = query.trim();
-    if (!normalizedQuery) throw new Error('Enter a prompt.');
 
     const prompt = buildImageGenerationPrompt(
       config.promptTemplate,
@@ -372,7 +371,6 @@ const pollinationsImageSearchProvider: ImageSearchProvider = {
     if (!apiKey) throw new Error('Add a Pollinations.ai API key in Settings.');
 
     const normalizedQuery = query.trim();
-    if (!normalizedQuery) throw new Error('Enter a prompt.');
 
     const prompt = buildImageGenerationPrompt(
       config.promptTemplate,

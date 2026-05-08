@@ -60,6 +60,12 @@
 	let leonardoPlatformModels: LeonardoPlatformModel[] = []
 	let pollinationsImageModels: PollinationsImageModel[] = []
 
+	$: imageSearchProviders = imageProviders.filter((provider) =>
+		provider.id === 'pexels' || provider.id === 'flaticon'
+	)
+	$: imageGenerationProviders = imageProviders.filter((provider) =>
+		provider.id === 'leonardo' || provider.id === 'pollinations'
+	)
 	$: leonardoModelOptions = buildLeonardoModelOptions(
 		leonardoPlatformModels,
 		imageProviderConfigs.leonardo?.model
@@ -182,8 +188,30 @@
 </script>
 
 <div class="settings-section">
-	<p class="eyebrow">{T.labels.imageSources}</p>
-	{#each imageProviders as provider}
+	<p class="eyebrow">{T.labels.imageSearchSources}</p>
+	{#each imageSearchProviders as provider}
+		<label class="api-key-field">
+			{provider.label} {T.labels.apiKey}
+			<input
+				type="password"
+				value={imageProviderConfigs[provider.id]?.apiKey ?? ''}
+				placeholder={T.placeholders.storedLocally}
+				spellcheck="false"
+				autocomplete="off"
+				on:input={(event) =>
+					onImageConfigChange({
+						provider: provider.id,
+						field: 'apiKey',
+						value: event.currentTarget.value
+					})}
+			/>
+		</label>
+	{/each}
+</div>
+
+<div class="settings-section">
+	<p class="eyebrow">{T.labels.imageGenerationSources}</p>
+	{#each imageGenerationProviders as provider}
 		<label class="api-key-field">
 			{provider.label} {T.labels.apiKey}
 			<input

@@ -15,6 +15,8 @@
     "exportCompressed": "Export compressed",
     "exportImageLessJson": "Export image-less JSON",
     "file": "File",
+    "generate": "Generate",
+    "generating": "Generating...",
     "import": "Import",
     "manage": "Manage",
     "newCard": "New card",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filter verso links",
     "generatedCardPreview": "Generated card preview",
     "imageSearchQuery": "Image search query",
+    "imageGenerationHints": "Additional image generation hints",
     "loadingApp": "Loading Toddler Read",
     "manager": "Manager",
     "managerTags": "Manager tags",
@@ -187,7 +190,10 @@
     "help": "Help",
     "image": "Image",
     "imageGeneration": "Image generation",
+    "imageGenerationSources": "Image generation sources",
     "imageGenerationPromptTemplate": "Image generation prompt template",
+    "imageSearch": "Image search",
+    "imageSearchSources": "Image search sources",
     "imageSource": "Image source",
     "imageSources": "Image sources",
     "managerAndPress": "Manager And Printing Press",
@@ -207,6 +213,8 @@
     "verso": "Verso"
   },
   "providers": {
+    "imageGenerationProviderKeys": "Leonardo.Ai or Pollinations.ai",
+    "imageSearchProviderKeys": "Pexels or Flaticon",
     "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, or Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
@@ -219,6 +227,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hello",
     "flag": "🇬🇧",
+    "imageGenerationHints": "extra style, mood, or composition hints",
     "imageSearch": "apple",
     "languageCode": "en",
     "pasteHere": "Paste here",
@@ -237,6 +246,7 @@
     },
     "imageSearch": {
       "close": "Close image search",
+      "generateTitle": "Generate image",
       "title": "Search image"
     },
     "pdf": {
