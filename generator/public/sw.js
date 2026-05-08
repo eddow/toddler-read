@@ -1,4 +1,4 @@
-const CACHE_NAME = 'toddler-generator-v2';
+const CACHE_NAME = 'toddler-generator-v3';
 const CACHE_PREFIX = 'toddler-generator-';
 const APP_SHELL = [
   './',
@@ -36,6 +36,11 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+  if (url.origin === self.location.origin && url.pathname === '/privacy.html') {
+    return;
+  }
+
   const isHtmlRequest =
     event.request.mode === 'navigate' ||
     event.request.headers.get('accept')?.includes('text/html');
@@ -64,7 +69,6 @@ self.addEventListener('fetch', (event) => {
       if (cached) return cached;
 
       return fetch(event.request).then((response) => {
-        const url = new URL(event.request.url);
         if (url.origin !== self.location.origin || !response.ok) return response;
 
         const copy = response.clone();

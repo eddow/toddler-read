@@ -9,6 +9,11 @@
   VITE_ANDROID_APK_URL = "https://github.com/eddow/toddler-read/releases/latest/download/toddler-read.apk"
 
 [[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
