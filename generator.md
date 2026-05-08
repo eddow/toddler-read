@@ -141,22 +141,11 @@ possible. Custom markers can be entered manually.
 
 ## Translation
 
-Translation is optional. The generator supports:
-
-- Gemini.
-- OpenAI-compatible providers.
-- Custom OpenAI-compatible endpoints.
-
 Settings store the provider, API key, model, base URL when needed, and prompt
 template locally in the browser.
 
-In the editor, each language row has translation controls:
-
-- Source: use this row's text as source context.
-- Produce: generate text for this row.
-
 The Translate button is enabled when there is an API key, model, at least one
-source text, and at least one target language.
+source text.
 
 ## Provider Credits
 

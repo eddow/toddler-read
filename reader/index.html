@@ -129,6 +129,40 @@
 			}
 		}
 
+		#updatePrompt {
+			position: fixed;
+			left: 1rem;
+			right: 1rem;
+			bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+			z-index: 20;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.75rem;
+			max-width: 28rem;
+			margin: 0 auto;
+			padding: 0.75rem;
+			color: #17211b;
+			font-size: 0.95rem;
+			font-weight: 700;
+			background: rgba(255, 253, 247, 0.96);
+			border: 1px solid rgba(217, 208, 191, 0.86);
+			border-radius: 8px;
+			box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+		}
+
+		#updateRefreshBtn {
+			flex: 0 0 auto;
+			min-height: 2.4rem;
+			padding: 0 0.95rem;
+			color: #ffffff;
+			font: inherit;
+			background: #23765d;
+			border: 0;
+			border-radius: 6px;
+			cursor: pointer;
+		}
+
 		/* ===== Player screen ===== */
 		#playerScreen {
 			flex-direction: column;
@@ -343,6 +377,11 @@
 
 	<audio id="audio" preload="auto"></audio>
 
+	<div class="hidden" id="updatePrompt" role="status" aria-live="polite">
+		<span>New version available.</span>
+		<button id="updateRefreshBtn" type="button">Refresh</button>
+	</div>
+
 	<div class="help-backdrop" id="helpBackdrop" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
 		<div class="help-dialog">
 			<h1 id="helpTitle">Toddler Reader</h1>
@@ -353,6 +392,7 @@
 					Nothing is transmitted to Toddler Read servers. This app scans QR codes and plays the
 					audio or text that the code contains. Network access is only used when a scanned QR code
 					points to an online audio URL or an embedded media widget.
+					<a href="https://toddler-read.netlify.app/privacy.html">Privacy policy</a>
 				</p>
 			</section>
 
@@ -414,6 +454,8 @@
 			const helpOkBtn     = document.getElementById('helpOkBtn');
 			const manualScanForm = document.getElementById('manualScanForm');
 			const manualScanInput = document.getElementById('manualScanInput');
+			const updatePrompt = document.getElementById('updatePrompt');
+			const updateRefreshBtn = document.getElementById('updateRefreshBtn');
 
 			let stream = null;
 			let scanTimer = null;
@@ -425,6 +467,8 @@
 			let currentTts = null;
 			let currentSpeechUtterance = null;
 			let playingFallbackSound = false;
+			let waitingServiceWorker = null;
+			let reloadingForUpdate = false;
 			const CAMERA_START_TIMEOUT_MS = 12000;
 
 			// ---- Screen switching ----
@@ -1073,9 +1117,55 @@
 				startScanning();
 			});
 
+			updateRefreshBtn.addEventListener('click', () => {
+				if (!waitingServiceWorker) return;
+				reloadingForUpdate = true;
+				waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
+			});
+
+			function showUpdatePrompt(worker) {
+				waitingServiceWorker = worker;
+				updatePrompt.classList.remove('hidden');
+			}
+
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', () => {
-					navigator.serviceWorker.register('sw.js').catch(() => {});
+					navigator.serviceWorker.register('sw.js').then((registration) => {
+						const notifyWaitingWorker = () => {
+							if (registration.waiting && navigator.serviceWorker.controller) {
+								showUpdatePrompt(registration.waiting);
+							}
+						};
+						const checkForUpdate = () => {
+							registration.update().catch(() => {});
+						};
+
+						notifyWaitingWorker();
+						checkForUpdate();
+
+						registration.addEventListener('updatefound', () => {
+							const installingWorker = registration.installing;
+							if (!installingWorker) return;
+
+							installingWorker.addEventListener('statechange', () => {
+								if (
+									installingWorker.state === 'installed' &&
+									navigator.serviceWorker.controller
+								) {
+									showUpdatePrompt(installingWorker);
+								}
+							});
+						});
+
+						window.addEventListener('focus', checkForUpdate);
+						document.addEventListener('visibilitychange', () => {
+							if (document.visibilityState === 'visible') checkForUpdate();
+						});
+					}).catch(() => {});
+					navigator.serviceWorker.addEventListener('controllerchange', () => {
+						if (!reloadingForUpdate) return;
+						window.location.reload();
+					});
 				});
 			}
 

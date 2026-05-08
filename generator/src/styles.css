@@ -199,6 +199,27 @@ input::placeholder {
   gap: 10px;
 }
 
+.update-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: min(100%, 480px);
+  margin: 0 auto;
+  padding: 10px 12px;
+  color: var(--ink);
+  font-weight: 800;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 26px var(--shadow);
+}
+
+.update-banner button {
+  margin: 0;
+}
+
 .file-menu {
   position: relative;
   margin: 0;

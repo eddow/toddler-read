@@ -26,6 +26,7 @@
     "openPng": "Open PNG",
     "openReader": "Open Reader",
     "previous": "Previous",
+    "refresh": "Refresh",
     "remove": "Remove",
     "replace": "Replace",
     "search": "Search",
@@ -136,6 +137,7 @@
     "cardDeleted": "Card deleted.",
     "imageAdded": "Image added.",
     "newCardCreated": "New card created.",
+    "newVersionAvailable": "New version available.",
     "noImagesFound": "No images found.",
     "nothingToImport": "Nothing to import.",
     "pngOpened": "PNG opened in a new tab."

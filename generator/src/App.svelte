@@ -19,6 +19,7 @@
 		Pencil,
 		Plus,
 		Printer,
+		RefreshCw,
 		Search,
 		Settings,
 		Smartphone,
@@ -104,6 +105,7 @@
 	import QRInstallPanel from './lib/components/QRInstallPanel.svelte'
 	import TagInput from './lib/components/TagInput.svelte'
 	import CardPreviewCanvas from './lib/components/CardPreviewCanvas.svelte'
+	import ImageResultGrid from './lib/components/ImageResultGrid.svelte'
 	import ProviderConfigFields from './lib/components/ProviderConfigFields.svelte'
 	import {
 		T,
@@ -230,7 +232,6 @@ Do not return unchanged existing text.`
 
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
 	type WorkspaceView = 'manager' | 'editor' | 'split' | 'press'
-	type ImageFinderMode = 'search' | 'generate'
 	type ImportMode = 'merge' | 'replace'
 	type TagSelectionState = 'none' | 'some' | 'all'
 	type ManagerTagFilter = { tag: string; presenceFilter: PresenceFilter }
@@ -283,10 +284,11 @@ Do not return unchanged existing text.`
 	let translationPromptTemplate = DEFAULT_TRANSLATION_PROMPT_TEMPLATE
 	let imageGenerationPromptTemplate = DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE
 	let imageSearchProvider: ImageSearchProviderId = 'pexels'
+	let imageGenerationProvider: ImageSearchProviderId = 'leonardo'
 	let imageSearchProviderConfigs: ImageSearchProviderConfigs = defaultImageSearchProviderConfigs()
-	let imageFinderMode: ImageFinderMode = 'search'
 	let imageGenerationHints = ''
 	let showImageSearchPanel = false
+	let showImageGenerationPanel = false
 	let imageSearchQuery = ''
 	let pixabayImageType: ImageSearchFilters['pixabayImageType'] = 'all'
 	let pixabayCategory = ''
@@ -297,6 +299,11 @@ Do not return unchanged existing text.`
 	let imageSearchHasNextPage = false
 	let imageSearchStatus = ''
 	let imageSearchError = ''
+	let imageGenerationResults: ImageSearchResult[] = []
+	let imageGenerationStatus = ''
+	let imageGenerationError = ''
+	let imageGenerationRequestToken = 0
+	let isGeneratingImages = false
 	let imageSearchCardKey = ''
 	let imageSearchRequestToken = 0
 	let isSearchingImages = false
@@ -344,6 +351,9 @@ Do not return unchanged existing text.`
 	let readerUrl = ''
 	let readerQrDataUrl = ''
 	let showReaderInstallPanel = false
+	let waitingServiceWorker: ServiceWorker | undefined
+	let showUpdatePrompt = false
+	let reloadingForUpdate = false
 	let renderToken = 0
 	let pressRenderToken = 0
 	let storageReady = false
@@ -433,6 +443,7 @@ Do not return unchanged existing text.`
 	$: translationTargets = buildTranslationTargets(entries)
 	$: currentTranslationProviderConfig = translationProviderConfigs[translationProvider]
 	$: currentImageSearchProviderConfig = imageSearchProviderConfigs[imageSearchProvider]
+	$: currentImageGenerationProviderConfig = imageSearchProviderConfigs[imageGenerationProvider]
 	$: imageSearchProviders = IMAGE_SEARCH_PROVIDERS.filter((provider) =>
 		IMAGE_SEARCH_PROVIDER_IDS.includes(provider.id)
 	)
@@ -445,8 +456,6 @@ Do not return unchanged existing text.`
 	$: availableImageGenerationProviders = imageGenerationProviders.filter((provider) =>
 		imageSearchProviderConfigs[provider.id].apiKey.trim()
 	)
-	$: activeImageProviders =
-		imageFinderMode === 'generate' ? availableImageGenerationProviders : availableImageSearchProviders
 	$: translationDisabledReasons = i18nReady
 		? getTranslationDisabledReasons(
 				translationProvider,
@@ -462,13 +471,18 @@ Do not return unchanged existing text.`
 			: translationDisabledReasons.join(', ')
 		: ''
 	$: imageSearchProviderInstance = getImageSearchProvider(imageSearchProvider)
+	$: imageGenerationProviderInstance = getImageSearchProvider(imageGenerationProvider)
 	$: imageSearchTotalPages = Math.max(
 		1,
 		Math.ceil(imageSearchTotalResults / IMAGE_SEARCH_RESULTS_PER_PAGE)
 	)
-	$: if (activeImageProviders.length > 0 && !activeImageProviders.some((provider) => provider.id === imageSearchProvider)) {
-		imageSearchProvider = activeImageProviders[0].id
+	$: if (availableImageSearchProviders.length > 0 && !availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)) {
+		imageSearchProvider = availableImageSearchProviders[0].id
 		resetImageSearchResults()
+	}
+	$: if (availableImageGenerationProviders.length > 0 && !availableImageGenerationProviders.some((provider) => provider.id === imageGenerationProvider)) {
+		imageGenerationProvider = availableImageGenerationProviders[0].id
+		resetImageGenerationResults()
 	}
 	$: currentImageSearchCardKey = selectedCard ? buildImageSearchCardKey(selectedCard) : ''
 	$: if (libraryReady && currentImageSearchCardKey !== imageSearchCardKey) {
@@ -512,6 +526,7 @@ Do not return unchanged existing text.`
 				imageGenerationPromptTemplate,
 				imageGenerationHints,
 				imageSearchProvider,
+				imageGenerationProvider,
 				imageSearchProviderConfigs
 			})
 		)
@@ -546,10 +561,22 @@ Do not return unchanged existing text.`
 			if (event.key === 'Escape') {
 				showSettingsPanel = false
 				showImageSearchPanel = false
+				showImageGenerationPanel = false
 				showFileMenu = false
 				showHelpPanel = false
 				showApkPanel = false
 			}
+		}
+		const onServiceWorkerUpdateAvailable = (event: Event) => {
+			const worker = (event as CustomEvent<{ worker?: ServiceWorker }>).detail?.worker
+			if (!worker) return
+
+			waitingServiceWorker = worker
+			showUpdatePrompt = true
+		}
+		const onControllerChange = () => {
+			if (!reloadingForUpdate) return
+			window.location.reload()
 		}
 
 		const workspaceQuery = window.matchMedia('(max-width: 720px)')
@@ -558,14 +585,25 @@ Do not return unchanged existing text.`
 		}
 		window.addEventListener('paste', onPaste)
 		window.addEventListener('keydown', onKeyDown)
+		window.addEventListener('toddler-read-sw-update-available', onServiceWorkerUpdateAvailable)
+		navigator.serviceWorker?.addEventListener('controllerchange', onControllerChange)
 		updateWorkspaceSize()
 		workspaceQuery.addEventListener('change', updateWorkspaceSize)
 		return () => {
 			window.removeEventListener('paste', onPaste)
 			window.removeEventListener('keydown', onKeyDown)
+			window.removeEventListener('toddler-read-sw-update-available', onServiceWorkerUpdateAvailable)
+			navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange)
 			workspaceQuery.removeEventListener('change', updateWorkspaceSize)
 		}
 	})
+
+	function refreshForUpdate() {
+		if (!waitingServiceWorker) return
+
+		reloadingForUpdate = true
+		waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' })
+	}
 
 	async function initializeStartup() {
 		try {
@@ -943,6 +981,9 @@ Do not return unchanged existing text.`
 			if (isImageSearchProvider(parsed.imageSearchProvider)) {
 				imageSearchProvider = parsed.imageSearchProvider
 			}
+			if (isImageSearchProvider(parsed.imageGenerationProvider)) {
+				imageGenerationProvider = parsed.imageGenerationProvider
+			}
 			if (
 				parsed.imageSearchProviderConfigs &&
 				typeof parsed.imageSearchProviderConfigs === 'object'
@@ -1293,9 +1334,14 @@ Do not return unchanged existing text.`
 		void rerunImageSearchAfterOptionChange()
 	}
 
+	function updateImageGenerationProvider(value: string) {
+		if (!isImageSearchProvider(value)) return
+		imageGenerationProvider = value
+		resetImageGenerationResults()
+	}
+
 	function updateImageGenerationHints(value: string) {
 		imageGenerationHints = value
-		resetImageSearchResults()
 	}
 
 	function refreshImageSearchOptions() {
@@ -1304,10 +1350,10 @@ Do not return unchanged existing text.`
 
 	async function rerunImageSearchAfterOptionChange() {
 		resetImageSearchResults()
-		if (!showImageSearchPanel || imageFinderMode !== 'search') return
+		if (!showImageSearchPanel) return
 		imageSearchQuery = imageSearchQuery.trim() || defaultImageSearchQuery()
 		await tick()
-		if (imageSearchQuery.trim() && activeImageProviders.length > 0) {
+		if (imageSearchQuery.trim() && availableImageSearchProviders.length > 0) {
 			void searchImages(1)
 		}
 	}
@@ -1719,39 +1765,46 @@ Do not return unchanged existing text.`
 	}
 
 	function openImageSearch() {
-		openImageFinder('search')
-	}
-
-	function openImageGeneration() {
-		openImageFinder('generate')
-	}
-
-	function openImageFinder(mode: ImageFinderMode) {
-		imageFinderMode = mode
-		const providers = mode === 'generate' ? availableImageGenerationProviders : availableImageSearchProviders
-		if (providers.length > 0 && !providers.some((provider) => provider.id === imageSearchProvider)) {
-			imageSearchProvider = providers[0].id
+		if (availableImageSearchProviders.length > 0 && !availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)) {
+			imageSearchProvider = availableImageSearchProviders[0].id
 		}
 		imageSearchQuery = imageSearchQuery.trim() || defaultImageSearchQuery()
 		showImageSearchPanel = true
 		imageSearchStatus = ''
 		imageSearchError =
-			providers.length > 0
+			availableImageSearchProviders.length > 0
 				? ''
 				: format(T.templates.missingProviderKey, {
-						provider:
-							mode === 'generate'
-								? T.providers.imageGenerationProviderKeys
-								: T.providers.imageSearchProviderKeys
+						provider: T.providers.imageSearchProviderKeys
 					})
 		if (imageSearchError) imageSearchResults = []
-		if (mode === 'search' && imageSearchQuery && providers.length > 0) {
+		if (imageSearchQuery && availableImageSearchProviders.length > 0) {
 			void searchImages(1)
 		}
 	}
 
+	function openImageGeneration() {
+		if (availableImageGenerationProviders.length > 0 && !availableImageGenerationProviders.some((provider) => provider.id === imageGenerationProvider)) {
+			imageGenerationProvider = availableImageGenerationProviders[0].id
+		}
+		showImageGenerationPanel = true
+		imageGenerationStatus = ''
+		imageGenerationError =
+			availableImageGenerationProviders.length > 0
+				? ''
+				: format(T.templates.missingProviderKey, {
+						provider: T.providers.imageGenerationProviderKeys
+					})
+		if (imageGenerationError) imageGenerationResults = []
+	}
+
 	function closeImageSearch() {
 		showImageSearchPanel = false
+		importingImageResultId = ''
+	}
+
+	function closeImageGeneration() {
+		showImageGenerationPanel = false
 		importingImageResultId = ''
 	}
 
@@ -1762,6 +1815,7 @@ Do not return unchanged existing text.`
 	function resetImageSearchForCard(card: StoredCard | undefined) {
 		imageSearchQuery = defaultImageSearchQueryForCard(card)
 		resetImageSearchResults()
+		resetImageGenerationResults()
 	}
 
 	function resetImageSearchResults() {
@@ -1773,6 +1827,15 @@ Do not return unchanged existing text.`
 		imageSearchStatus = ''
 		imageSearchError = ''
 		isSearchingImages = false
+		importingImageResultId = ''
+	}
+
+	function resetImageGenerationResults() {
+		imageGenerationRequestToken += 1
+		imageGenerationResults = []
+		imageGenerationStatus = ''
+		imageGenerationError = ''
+		isGeneratingImages = false
 		importingImageResultId = ''
 	}
 
@@ -1849,9 +1912,7 @@ Do not return unchanged existing text.`
 	async function searchImages(page = 1) {
 		if (isSearchingImages) return
 
-		const query = imageFinderMode === 'generate' ? imageGenerationHints.trim() : imageSearchQuery.trim()
-		const activeProviders =
-			imageFinderMode === 'generate' ? availableImageGenerationProviders : availableImageSearchProviders
+		const query = imageSearchQuery.trim()
 		if (!currentImageSearchProviderConfig.apiKey.trim()) {
 			imageSearchError = format(T.templates.missingProviderKey, {
 				provider: imageSearchProviderInstance.label
@@ -1860,18 +1921,15 @@ Do not return unchanged existing text.`
 			imageSearchResults = []
 			return
 		}
-		if (imageFinderMode === 'search' && !query) {
+		if (!query) {
 			imageSearchError = T.errors.enterSearchTerm
 			imageSearchStatus = ''
 			imageSearchResults = []
 			return
 		}
-		if (activeProviders.length === 0) {
+		if (availableImageSearchProviders.length === 0) {
 			imageSearchError = format(T.templates.missingProviderKey, {
-				provider:
-					imageFinderMode === 'generate'
-						? T.providers.imageGenerationProviderKeys
-						: T.providers.imageSearchProviderKeys
+				provider: T.providers.imageSearchProviderKeys
 			})
 			imageSearchStatus = ''
 			imageSearchResults = []
@@ -1922,12 +1980,78 @@ Do not return unchanged existing text.`
 		}
 	}
 
+	async function generateImages() {
+		if (isGeneratingImages) return
+
+		const query = imageGenerationHints.trim()
+		if (!currentImageGenerationProviderConfig.apiKey.trim()) {
+			imageGenerationError = format(T.templates.missingProviderKey, {
+				provider: imageGenerationProviderInstance.label
+			})
+			imageGenerationStatus = ''
+			imageGenerationResults = []
+			return
+		}
+		if (availableImageGenerationProviders.length === 0) {
+			imageGenerationError = format(T.templates.missingProviderKey, {
+				provider: T.providers.imageGenerationProviderKeys
+			})
+			imageGenerationStatus = ''
+			imageGenerationResults = []
+			return
+		}
+
+		const token = ++imageGenerationRequestToken
+		isGeneratingImages = true
+		imageGenerationStatus = ''
+		imageGenerationError = ''
+		try {
+			const response = await imageGenerationProviderInstance.search(
+				query,
+				{
+					page: 1,
+					perPage: IMAGE_SEARCH_RESULTS_PER_PAGE,
+					generationContext: buildImageGenerationPromptContext(selectedCard)
+				},
+				{
+					...currentImageGenerationProviderConfig,
+					promptTemplate: imageGenerationPromptTemplate
+				}
+			)
+			if (token !== imageGenerationRequestToken) return
+
+			imageGenerationResults = response.results
+			const visibleTotal = response.totalResults || response.results.length
+			imageGenerationStatus =
+				response.results.length === 0
+					? T.status.noImagesFound
+					: format(T.templates.imageCountFound, {
+							count: visibleTotal.toLocaleString(),
+							unit: plural(T.units.image, visibleTotal)
+						})
+		} catch (error) {
+			if (token !== imageGenerationRequestToken) return
+
+			imageGenerationResults = []
+			imageGenerationStatus = ''
+			imageGenerationError = error instanceof Error ? error.message : T.errors.couldNotSearchImages
+		} finally {
+			if (token === imageGenerationRequestToken) isGeneratingImages = false
+		}
+	}
+
 	async function importImageSearchResult(result: ImageSearchResult) {
 		if (importingImageResultId) return
 
 		importingImageResultId = result.id
-		imageSearchStatus = ''
-		imageSearchError = ''
+		const isGenerationResult = IMAGE_GENERATION_PROVIDER_IDS.includes(result.providerId)
+		if (isGenerationResult) {
+			imageGenerationStatus = ''
+			imageGenerationError = ''
+		} else {
+			imageSearchStatus = ''
+			imageSearchError = ''
+		}
 		try {
 			const nextImageDataUrl = await getImageSearchProvider(result.providerId).importResult(
 				result,
@@ -1935,10 +2059,19 @@ Do not return unchanged existing text.`
 			)
 			updateSelectedCard({ imageDataUrl: nextImageDataUrl, imageTransform: undefined })
 			pngStatus = ''
-			imageSearchStatus = T.status.imageAdded
-			closeImageSearch()
+			if (isGenerationResult) {
+				imageGenerationStatus = T.status.imageAdded
+				closeImageGeneration()
+			} else {
+				imageSearchStatus = T.status.imageAdded
+				closeImageSearch()
+			}
 		} catch (error) {
-			imageSearchError = error instanceof Error ? error.message : T.errors.couldNotImportImage
+			if (isGenerationResult) {
+				imageGenerationError = error instanceof Error ? error.message : T.errors.couldNotImportImage
+			} else {
+				imageSearchError = error instanceof Error ? error.message : T.errors.couldNotImportImage
+			}
 		} finally {
 			importingImageResultId = ''
 		}
@@ -2875,6 +3008,16 @@ Do not return unchanged existing text.`
 		</div>
 	</header>
 
+	{#if showUpdatePrompt}
+		<div class="update-banner" role="status" aria-live="polite">
+			<span>{T.status.newVersionAvailable}</span>
+			<button type="button" on:click={refreshForUpdate}>
+				<RefreshCw size={18} aria-hidden="true" />
+				{T.actions.refresh}
+			</button>
+		</div>
+	{/if}
+
 	<input
 		bind:this={fileInput}
 		class="visually-hidden"
@@ -3470,16 +3613,16 @@ Do not return unchanged existing text.`
 
 	{#if showImageSearchPanel}
 		<PanelModal
-			title={imageFinderMode === 'generate' ? T.modal.imageSearch.generateTitle : T.modal.imageSearch.title}
+			title={T.modal.imageSearch.title}
 			titleId="image-search-title"
-			eyebrow={imageFinderMode === 'generate' ? T.labels.imageGeneration : T.labels.imageSearch}
+			eyebrow={T.labels.imageSearch}
 			closeLabel={T.modal.imageSearch.close}
 			modalClass="image-search-modal"
 			onClose={closeImageSearch}
 		>
-			{#if activeImageProviders.length > 0}
+			{#if availableImageSearchProviders.length > 0}
 				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
-					{#each activeImageProviders as provider}
+					{#each availableImageSearchProviders as provider}
 						<button
 							type="button"
 							class:active={provider.id === imageSearchProvider}
@@ -3493,38 +3636,23 @@ Do not return unchanged existing text.`
 			{/if}
 
 			<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
-				{#if imageFinderMode === 'generate'}
-					<input
-						value={imageGenerationHints}
-						placeholder={T.placeholders.imageGenerationHints}
-						aria-label={T.aria.imageGenerationHints}
-						spellcheck="false"
-						on:input={(event) => updateImageGenerationHints(event.currentTarget.value)}
-					/>
-				{:else}
-					<input
-						value={imageSearchQuery}
-						placeholder={T.placeholders.imageSearch}
-						aria-label={T.aria.imageSearchQuery}
-						spellcheck="false"
-						on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
-					/>
-				{/if}
+				<input
+					value={imageSearchQuery}
+					placeholder={T.placeholders.imageSearch}
+					aria-label={T.aria.imageSearchQuery}
+					spellcheck="false"
+					on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
+				/>
 				<button
 					type="submit"
-					disabled={isSearchingImages || activeImageProviders.length === 0}
+					disabled={isSearchingImages || availableImageSearchProviders.length === 0}
 				>
-					{#if imageFinderMode === 'generate'}
-						<ImageIcon size={18} aria-hidden="true" />
-						{isSearchingImages ? T.actions.generating : T.actions.generate}
-					{:else}
-						<Search size={18} aria-hidden="true" />
-						{isSearchingImages ? T.actions.searching : T.actions.search}
-					{/if}
+					<Search size={18} aria-hidden="true" />
+					{isSearchingImages ? T.actions.searching : T.actions.search}
 				</button>
 			</form>
 
-			{#if imageFinderMode === 'search' && imageSearchProvider === 'pixabay'}
+			{#if imageSearchProvider === 'pixabay'}
 				<div class="image-search-filters">
 					<label>
 						<span>{T.labels.imageType}</span>
@@ -3546,7 +3674,7 @@ Do not return unchanged existing text.`
 						</select>
 					</label>
 				</div>
-			{:else if imageFinderMode === 'search' && imageSearchProvider === 'unsplash'}
+			{:else if imageSearchProvider === 'unsplash'}
 				<div class="image-search-filters">
 					<label>
 						<span>{T.labels.sort}</span>
@@ -3568,25 +3696,11 @@ Do not return unchanged existing text.`
 				<p class="status">{imageSearchStatus}</p>
 			{/if}
 
-			{#if imageSearchResults.length > 0}
-				<div class="image-search-results">
-					{#each imageSearchResults as result}
-						<button
-							type="button"
-							class="image-result-button"
-							disabled={Boolean(importingImageResultId)}
-							aria-label={format(T.templates.useImage, { alt: result.alt })}
-							title={result.alt}
-							on:click={() => importImageSearchResult(result)}
-						>
-							<img src={result.thumbUrl} alt="" />
-							{#if result.creditText}
-								<span>{result.creditText}</span>
-							{/if}
-						</button>
-					{/each}
-				</div>
-			{/if}
+			<ImageResultGrid
+				results={imageSearchResults}
+				{importingImageResultId}
+				onSelect={importImageSearchResult}
+			/>
 
 			<div class="image-search-footer">
 				<a
@@ -3596,8 +3710,7 @@ Do not return unchanged existing text.`
 				>
 					{format(T.templates.resultsFrom, { provider: imageSearchProviderInstance.label })}
 				</a>
-				{#if imageFinderMode === 'search'}
-					<div class="image-search-pages">
+				<div class="image-search-pages">
 					<button
 						type="button"
 						class="secondary"
@@ -3615,8 +3728,72 @@ Do not return unchanged existing text.`
 					>
 						{T.actions.next}
 					</button>
-					</div>
-				{/if}
+				</div>
+			</div>
+		</PanelModal>
+	{/if}
+
+	{#if showImageGenerationPanel}
+		<PanelModal
+			title={T.modal.imageSearch.generateTitle}
+			titleId="image-generation-title"
+			eyebrow={T.labels.imageGeneration}
+			closeLabel={T.modal.imageSearch.close}
+			modalClass="image-search-modal"
+			onClose={closeImageGeneration}
+		>
+			{#if availableImageGenerationProviders.length > 0}
+				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
+					{#each availableImageGenerationProviders as provider}
+						<button
+							type="button"
+							class:active={provider.id === imageGenerationProvider}
+							class="secondary"
+							on:click={() => updateImageGenerationProvider(provider.id)}
+						>
+							{provider.label}
+						</button>
+					{/each}
+				</div>
+			{/if}
+
+			<form class="image-search-form" on:submit|preventDefault={generateImages}>
+				<input
+					value={imageGenerationHints}
+					placeholder={T.placeholders.imageGenerationHints}
+					aria-label={T.aria.imageGenerationHints}
+					spellcheck="false"
+					on:input={(event) => updateImageGenerationHints(event.currentTarget.value)}
+				/>
+				<button
+					type="submit"
+					disabled={isGeneratingImages || availableImageGenerationProviders.length === 0}
+				>
+					<ImageIcon size={18} aria-hidden="true" />
+					{isGeneratingImages ? T.actions.generating : T.actions.generate}
+				</button>
+			</form>
+
+			{#if imageGenerationError}
+				<p class="status error">{imageGenerationError}</p>
+			{:else if imageGenerationStatus}
+				<p class="status">{imageGenerationStatus}</p>
+			{/if}
+
+			<ImageResultGrid
+				results={imageGenerationResults}
+				{importingImageResultId}
+				onSelect={importImageSearchResult}
+			/>
+
+			<div class="image-search-footer">
+				<a
+					href={imageSearchProviderSourceUrl(imageGenerationProvider)}
+					target="_blank"
+					rel="noreferrer"
+				>
+					{format(T.templates.resultsFrom, { provider: imageGenerationProviderInstance.label })}
+				</a>
 			</div>
 		</PanelModal>
 	{/if}
