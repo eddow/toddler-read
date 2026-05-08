@@ -6,7 +6,7 @@
 	export let title: string
 	export let titleId: string
 	export let eyebrow = ''
-	export let closeLabel = `Close ${title}`
+	export let closeLabel: string
 	export let modalClass = 'settings-modal'
 	export let backdropClass = ''
 	export let scrimClass = ''

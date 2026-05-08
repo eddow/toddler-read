@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
+	import { T } from '../i18n/i18n.svelte'
 
 	type ImageProvider = {
 		id: string
@@ -39,14 +40,14 @@
 </script>
 
 <div class="settings-section">
-	<p class="eyebrow">Image sources</p>
+	<p class="eyebrow">{T.labels.imageSources}</p>
 	{#each imageProviders as provider}
 		<label class="api-key-field">
-			{provider.label} API key
+			{provider.label} {T.labels.apiKey}
 			<input
 				type="password"
 				value={imageProviderConfigs[provider.id]?.apiKey ?? ''}
-				placeholder="Stored locally"
+				placeholder={T.placeholders.storedLocally}
 				spellcheck="false"
 				autocomplete="off"
 				on:input={(event) =>
@@ -61,9 +62,9 @@
 </div>
 
 <div class="settings-section">
-	<p class="eyebrow">Translation</p>
+	<p class="eyebrow">{T.labels.translation}</p>
 	<label class="api-key-field">
-		Translation provider
+		{T.labels.translationProvider}
 		<select
 			value={translationProvider}
 			on:change={(event) => dispatch('translationProviderChange', event.currentTarget.value)}
@@ -74,11 +75,11 @@
 		</select>
 	</label>
 	<label class="api-key-field">
-		{translationProviderLabel} API key
+		{translationProviderLabel} {T.labels.apiKey}
 		<input
 			type="password"
 			value={translationConfig.apiKey}
-			placeholder="Stored locally"
+			placeholder={T.placeholders.storedLocally}
 			spellcheck="false"
 			autocomplete="off"
 			on:input={(event) =>
@@ -86,7 +87,7 @@
 		/>
 	</label>
 	<label class="api-key-field">
-		{translationProviderLabel} model
+		{translationProviderLabel} {T.labels.model}
 		<input
 			value={translationConfig.model}
 			placeholder={translationConfig.model}
@@ -98,10 +99,10 @@
 	</label>
 	{#if showBaseUrl}
 		<label class="api-key-field">
-			Base URL
+			{T.labels.baseUrl}
 			<input
 				value={translationConfig.baseUrl ?? ''}
-				placeholder="https://api.example.com/v1"
+				placeholder={T.placeholders.baseUrl}
 				spellcheck="false"
 				autocomplete="off"
 				on:input={(event) =>
@@ -110,7 +111,7 @@
 		</label>
 	{/if}
 	<label class="api-key-field">
-		Translation prompt template
+		{T.labels.promptTemplate}
 		<textarea
 			value={promptTemplate}
 			rows="9"

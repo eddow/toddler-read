@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import { CircleCheckBig, CircleSlash, ListFilter } from 'lucide-svelte'
+	import { T } from '../i18n/i18n.svelte'
 
 	type PresenceFilterOption = {
 		value: PresenceFilter
@@ -14,15 +15,15 @@
 
 	export let value: PresenceFilter = 'all'
 	export let disabled = false
-	export let ariaLabel = 'Filter by presence'
+	export let ariaLabel = T.presence.ariaLabel
 	export let name = `presence-filter-${Math.random().toString(36).slice(2)}`
 	export let onValueChange: (value: PresenceFilter) => void = () => {}
 
-	const options: PresenceFilterOption[] = [
-		{ value: 'all', label: 'All', title: 'Show all', icon: ListFilter },
-		{ value: 'missing', label: 'Missing', title: 'Show missing', icon: CircleSlash },
-		{ value: 'present', label: 'Present', title: 'Show present', icon: CircleCheckBig }
-	]
+	$: options = [
+		{ value: 'all', label: T.presence.all, title: T.presence.showAll, icon: ListFilter },
+		{ value: 'missing', label: T.presence.missing, title: T.presence.showMissing, icon: CircleSlash },
+		{ value: 'present', label: T.presence.present, title: T.presence.showPresent, icon: CircleCheckBig }
+	] satisfies PresenceFilterOption[]
 </script>
 
 <div class="presence-filter-group" role="radiogroup" aria-label={ariaLabel} aria-disabled={disabled}>

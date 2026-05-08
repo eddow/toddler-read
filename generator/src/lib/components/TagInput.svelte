@@ -2,13 +2,12 @@
 	import { Plus, X } from 'lucide-svelte'
 	import { createEventDispatcher } from 'svelte'
 	import IconButton from './IconButton.svelte'
+	import { T, format } from '../i18n/i18n.svelte'
 
 	export let value = ''
 	export let tags: string[] = []
 	export let suggestions: string[] = []
 	export let listId = 'tag-options'
-	export let label = 'Tags'
-	export let placeholder = 'Add tag'
 
 	const dispatch = createEventDispatcher<{ add: void; remove: string }>()
 
@@ -26,13 +25,13 @@
 
 <div class="tag-panel">
 	<label class="tag-combobox">
-		<span>{label}</span>
+		<span>{T.labels.tags}</span>
 		<div class="tag-input-row">
 			<input
 				bind:value
 				list={listId}
-				{placeholder}
-				aria-label={placeholder}
+				placeholder={T.placeholders.addTag}
+				aria-label={T.placeholders.addTag}
 				on:keydown={handleKeydown}
 			/>
 			<datalist id={listId}>
@@ -40,20 +39,26 @@
 					<option value={tag}></option>
 				{/each}
 			</datalist>
-			<IconButton ariaLabel={placeholder} title={placeholder} disabled={!value.trim()} on:click={addTag}>
+			<IconButton
+				ariaLabel={T.placeholders.addTag}
+				title={T.placeholders.addTag}
+				disabled={!value.trim()}
+				on:click={addTag}
+			>
 				<Plus size={18} aria-hidden="true" />
 			</IconButton>
 		</div>
 	</label>
 	{#if tags.length > 0}
-		<div class="tag-chip-list" aria-label="Selected tags">
+		<div class="tag-chip-list" aria-label={T.aria.selectedTags}>
 			{#each tags as tag}
+				{@const removeLabel = format(T.templates.removeTag, { tag })}
 				<span class="tag-chip">
 					<span>{tag}</span>
 					<button
 						type="button"
-						aria-label={`Remove ${tag}`}
-						title={`Remove ${tag}`}
+						aria-label={removeLabel}
+						title={removeLabel}
 						on:click={() => dispatch('remove', tag)}
 					>
 						<X size={14} aria-hidden="true" />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
+	import { T } from '../i18n/i18n.svelte'
 
 	export let canvas: HTMLCanvasElement | undefined
 	export let canPan = false
@@ -26,7 +27,7 @@
 	class:dragging
 	class="card-preview"
 	role="group"
-	aria-label="Card image manager"
+	aria-label={T.aria.cardImageManager}
 	on:dragenter={(event) => preventAndDispatch('dragenter', event)}
 	on:dragover={(event) => preventAndDispatch('dragover', event)}
 	on:dragleave={(event) => dispatch('dragleave', event)}
@@ -35,7 +36,7 @@
 	<canvas
 		bind:this={canvas}
 		class:can-pan={canPan}
-		aria-label="Generated card preview"
+		aria-label={T.aria.generatedCardPreview}
 		on:pointerdown={(event) => dispatch('pointerdown', event)}
 		on:pointermove={(event) => dispatch('pointermove', event)}
 		on:pointerup={(event) => dispatch('pointerup', event)}

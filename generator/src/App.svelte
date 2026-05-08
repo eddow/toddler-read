@@ -99,13 +99,14 @@
 	import TagInput from './lib/components/TagInput.svelte'
 	import CardPreviewCanvas from './lib/components/CardPreviewCanvas.svelte'
 	import ProviderConfigFields from './lib/components/ProviderConfigFields.svelte'
+	import { T, format, hasLocale, loadPreferredLocale, setPreferredLocale } from './lib/i18n/i18n.svelte'
 
 	const MAX_ENTRIES = 4
 	const CORNER_SPECS = [
-		{ label: 'Top left corner', icon: ArrowUpLeft },
-		{ label: 'Top right corner', icon: ArrowUpRight },
-		{ label: 'Bottom left corner', icon: ArrowDownLeft },
-		{ label: 'Bottom right corner', icon: ArrowDownRight }
+		{ labelKey: 'topLeft', icon: ArrowUpLeft },
+		{ labelKey: 'topRight', icon: ArrowUpRight },
+		{ labelKey: 'bottomLeft', icon: ArrowDownLeft },
+		{ labelKey: 'bottomRight', icon: ArrowDownRight }
 	] as const
 	const GRID_SIZE_OPTIONS: CardGridSize[] = [1, 2, 3, 4]
 	const CARD_TEXT_STORAGE_KEY = 'toddler-read-generator-card-text'
@@ -113,6 +114,7 @@
 	const SETTINGS_STORAGE_KEY = 'toddler-read-generator-settings'
 	const LIBRARY_SELECTION_STORAGE_KEY = 'toddler-read-generator-selected-card-id'
 	const LIBRARY_VIEW_STORAGE_KEY = 'toddler-read-generator-library-view'
+	const SHOW_HELP_AT_STARTUP_STORAGE_KEY = 'toddler-read-generator-show-help-at-startup'
 	const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash'
 	const IMAGE_SEARCH_RESULTS_PER_PAGE = 12
 	const TRANSLATION_PROVIDERS = [
@@ -141,15 +143,6 @@
 	const TRANSLATION_RESPONSE_SCHEMA = {
 		translations: [{ index: 2, text: 'corrected or translated text' }]
 	}
-	// TODO: Should die in June
-	const LEGACY_TRANSLATION_PROMPT_TEMPLATE = [
-		'Translate these toddler reading card texts.',
-		'Use every source text as context for ambiguity and meaning.',
-		'Sources JSON: {{sourcesJson}}',
-		'Targets JSON: {{targetsJson}}',
-		'Return only JSON matching this schema: {{responseSchemaJson}}',
-		'For each target, return a short natural translation suitable for a young child.'
-	].join('\n')
 	const DEFAULT_TRANSLATION_PROMPT_TEMPLATE = [
 		'Translate and proofread these toddler reading card texts.',
 		'Use every source text as context for ambiguity and meaning.',
@@ -241,6 +234,8 @@
 	let showFileMenu = false
 	let showHelpPanel = false
 	let showApkPanel = false
+	let i18nReady = false
+	let showHelpAtStartup = true
 	let imageDataUrl: string | undefined
 	let imageTransform: ImageTransform | undefined
 	let previewImageTransform: ImageTransform | undefined
@@ -261,6 +256,7 @@
 	let libraryStatus = ''
 	let libraryError = ''
 	let deletingCardId = ''
+	let deletingCheckedCardsArmed = false
 	let editorDeleteArmed = false
 	let importMode: ImportMode = 'merge'
 	let apkUrl = ''
@@ -308,6 +304,7 @@
 	$: usedTags = buildUsedTags(cards)
 	$: tagSuggestions = usedTags.filter((tag) => !selectedCardTags.includes(tag))
 	$: managerSelectedCards = cards.filter((card) => selectedPrintCardIds.includes(card.id))
+	$: selectedDeleteCardIds = managerSelectedCards.map((card) => card.id)
 	$: managerTagFilters = buildManagerTagFilters(managerTagRows)
 	$: if (selectedCardId !== tagInputCardId) {
 		tagInputCardId = selectedCardId
@@ -319,6 +316,7 @@
 	$: selectedPrintCardIds = selectedPrintCardIds.filter((id) =>
 		cards.some((card) => card.id === id)
 	)
+	$: if (selectedDeleteCardIds.length === 0) deletingCheckedCardsArmed = false
 	$: selectedRectoCardIds = dedupeSelectedRectoIds(cards, selectedPrintCardIds)
 	$: allDisplayedSelected =
 		displayedManagerCards.length > 0 &&
@@ -343,7 +341,7 @@
 	$: pdfPageSize = getPdfPageSize(pdfConfig)
 	$: pdfLayoutLabel = getPdfLayoutLabel(pdfConfig)
 	$: printLayout = buildPrintLayout(cards, selectedRectoCardIds, pdfConfig)
-	$: printWarnings = buildPrintWarnings(cards, selectedRectoCardIds)
+	$: printWarnings = i18nReady ? buildPrintWarnings(cards, selectedRectoCardIds) : []
 	$: renderableEntries = toRenderableEntries(entries)
 	$: canExport = renderableEntries.length > 0
 	$: if (isMobileWorkspace && workspaceView === 'split') workspaceView = 'manager'
@@ -358,14 +356,20 @@
 	$: availableImageSearchProviders = IMAGE_SEARCH_PROVIDERS.filter((provider) =>
 		imageSearchProviderConfigs[provider.id].apiKey.trim()
 	)
-	$: translationDisabledReasons = getTranslationDisabledReasons(
-		translationProvider,
-		currentTranslationProviderConfig,
-		translationSources,
-		translationTargets
-	)
-	$: canTranslate = translationDisabledReasons.length === 0 && !isTranslating
-	$: translateButtonTitle = isTranslating ? 'Translating...' : translationDisabledReasons.join(', ')
+	$: translationDisabledReasons = i18nReady
+		? getTranslationDisabledReasons(
+				translationProvider,
+				currentTranslationProviderConfig,
+				translationSources,
+				translationTargets
+			)
+		: []
+	$: canTranslate = i18nReady && translationDisabledReasons.length === 0 && !isTranslating
+	$: translateButtonTitle = i18nReady
+		? isTranslating
+			? T.actions.translating
+			: translationDisabledReasons.join(', ')
+		: ''
 	$: imageSearchProviderInstance = getImageSearchProvider(imageSearchProvider)
 	$: imageSearchTotalPages = Math.max(
 		1,
@@ -390,7 +394,7 @@
 		pdfConfig,
 		reserveQrMargin,
 		showQrText,
-		showEditor
+		i18nReady && showEditor
 	)
 	$: void schedulePressPreviewRender(
 		printLayout,
@@ -398,7 +402,7 @@
 		pdfConfig,
 		reserveQrMargin,
 		showQrText,
-		showPress
+		i18nReady && showPress
 	)
 	$: void scheduleSelectedCardSave(selectedCard)
 	$: if (storageReady) {
@@ -426,8 +430,9 @@
 	onMount(() => {
 		loadStoredSettings()
 		loadLibraryPreferences()
+		loadShowHelpAtStartup()
 		storageReady = true
-		void initializeCardLibrary()
+		void initializeStartup()
 		apkUrl = import.meta.env.VITE_ANDROID_APK_URL || new URL('tr.apk', document.baseURI).href
 		readerUrl = import.meta.env.VITE_READER_URL || new URL('reader/', document.baseURI).href
 		const qrOptions = {
@@ -472,6 +477,17 @@
 		}
 	})
 
+	async function initializeStartup() {
+		try {
+			await loadPreferredLocale()
+		} finally {
+			i18nReady = true
+			if (showHelpAtStartup) showHelpPanel = true
+		}
+
+		await initializeCardLibrary()
+	}
+
 	async function schedulePreviewRender(
 		nextImageDataUrl: string | undefined,
 		nextImageTransform: ImageTransform | undefined,
@@ -503,7 +519,7 @@
 				target
 			)
 		} catch (error) {
-			renderError = error instanceof Error ? error.message : 'Could not render card.'
+			renderError = error instanceof Error ? error.message : T.errors.couldNotRenderCard
 		}
 	}
 
@@ -553,7 +569,7 @@
 				}
 			}
 		} catch (error) {
-			pressError = error instanceof Error ? error.message : 'Could not render layout preview.'
+			pressError = error instanceof Error ? error.message : T.errors.couldNotRenderLayoutPreview
 		}
 	}
 
@@ -596,6 +612,10 @@
 
 	function cornerSpecForIndex(index: number): (typeof CORNER_SPECS)[number] {
 		return CORNER_SPECS[index] ?? CORNER_SPECS[0]
+	}
+
+	function cornerLabelForIndex(index: number): string {
+		return T.corners[cornerSpecForIndex(index).labelKey]
 	}
 
 	function defaultCardTexts(): string[] {
@@ -723,7 +743,7 @@
 				}
 			}
 		} catch (error) {
-			libraryError = error instanceof Error ? error.message : 'Could not load card library.'
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotLoadCardLibrary
 		} finally {
 			libraryReady = true
 		}
@@ -740,7 +760,7 @@
 			await putCard(card)
 			libraryError = ''
 		} catch (error) {
-			libraryError = error instanceof Error ? error.message : 'Could not save card.'
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotSaveCard
 		}
 	}
 
@@ -808,10 +828,7 @@
 				typeof parsed.translationPromptTemplate === 'string' &&
 				parsed.translationPromptTemplate.trim()
 			) {
-				translationPromptTemplate =
-					parsed.translationPromptTemplate === LEGACY_TRANSLATION_PROMPT_TEMPLATE
-						? DEFAULT_TRANSLATION_PROMPT_TEMPLATE
-						: parsed.translationPromptTemplate
+				translationPromptTemplate = parsed.translationPromptTemplate
 			}
 			if (isTranslationProvider(parsed.translationProvider)) {
 				translationProvider = parsed.translationProvider
@@ -856,6 +873,16 @@
 		} catch {
 			// Keep defaults when stored settings are unreadable.
 		}
+	}
+
+	function loadShowHelpAtStartup() {
+		const stored = localStorage.getItem(SHOW_HELP_AT_STARTUP_STORAGE_KEY)
+		showHelpAtStartup = stored === null ? true : stored === 'true'
+	}
+
+	function updateShowHelpAtStartup(event: Event) {
+		showHelpAtStartup = (event.currentTarget as HTMLInputElement).checked
+		localStorage.setItem(SHOW_HELP_AT_STARTUP_STORAGE_KEY, String(showHelpAtStartup))
 	}
 
 	function normalizeStoredLanguageSetups(value: unknown[]): CornerLanguageSetup[] {
@@ -940,9 +967,7 @@
 	}
 
 	function isPdfPageFormat(value: unknown): value is PdfPageFormat {
-		return (
-			typeof value === 'string' && PDF_PAGE_FORMAT_OPTIONS.includes(value as PdfPageFormat)
-		)
+		return typeof value === 'string' && PDF_PAGE_FORMAT_OPTIONS.includes(value as PdfPageFormat)
 	}
 
 	function isPdfPageOrientation(value: unknown): value is PdfPageOrientation {
@@ -1050,9 +1075,7 @@
 	}
 
 	function updateManagerTagRowPresence(id: string, presenceFilter: PresenceFilter) {
-		managerTagRows = managerTagRows.map((row) =>
-			row.id === id ? { ...row, presenceFilter } : row
-		)
+		managerTagRows = managerTagRows.map((row) => (row.id === id ? { ...row, presenceFilter } : row))
 	}
 
 	function normalizeManagerTagRows() {
@@ -1098,7 +1121,7 @@
 			return { ...card, tags: normalizeTags([...currentTags, tag]) }
 		})
 		await persistCardsPatch(nextCards)
-		libraryStatus = `Added "${tag}" to selected cards.`
+		libraryStatus = format(T.templates.addedTag, { tag })
 	}
 
 	async function removeManagerTagFromSelection(row: ManagerTagFilterRow) {
@@ -1110,7 +1133,7 @@
 			return { ...card, tags: normalizeTags((card.tags ?? []).filter((entry) => entry !== tag)) }
 		})
 		await persistCardsPatch(nextCards)
-		libraryStatus = `Removed "${tag}" from selected cards.`
+		libraryStatus = format(T.templates.removedTag, { tag })
 	}
 
 	function updateImageTransform(patch: Partial<ImageTransform>) {
@@ -1212,11 +1235,12 @@
 		targets: TranslationTarget[]
 	): string[] {
 		const reasons: string[] = []
-		if (!config.apiKey.trim()) reasons.push('no key')
-		if (!config.model.trim()) reasons.push('no model')
-		if (isOpenAiCompatibleProvider(provider) && !config.baseUrl?.trim()) reasons.push('no base URL')
-		if (sources.length === 0) reasons.push('no source')
-		if (targets.length === 0) reasons.push('no target')
+		if (!config.apiKey.trim()) reasons.push(T.disabledReasons.noKey)
+		if (!config.model.trim()) reasons.push(T.disabledReasons.noModel)
+		if (isOpenAiCompatibleProvider(provider) && !config.baseUrl?.trim())
+			reasons.push(T.disabledReasons.noBaseUrl)
+		if (sources.length === 0) reasons.push(T.disabledReasons.noSource)
+		if (targets.length === 0) reasons.push(T.disabledReasons.noTarget)
 		return reasons
 	}
 
@@ -1262,16 +1286,26 @@
 				(index) => !nextTexts[index].trim()
 			)
 			if (missingRequiredTranslation) {
-				throw new Error(`${providerLabel(translationProvider)} returned no usable translations.`)
+				throw new Error(
+					format(T.templates.missingProviderTranslations, {
+						provider: providerLabel(translationProvider)
+					})
+				)
 			}
 
 			updateSelectedCard({ texts: buildTextsByLanguage(languageSetups, nextTexts) })
 			translationStatus =
 				changedCount === 0
-					? `Checked ${translationTargets.length} ${translationTargets.length === 1 ? 'text' : 'texts'}; no changes.`
-					: `Updated ${changedCount} ${changedCount === 1 ? 'text' : 'texts'}.`
+					? format(T.templates.checkedNoChanges, {
+							count: translationTargets.length,
+							unit: plural(T.units.text, translationTargets.length)
+						})
+					: format(T.templates.updatedCount, {
+							count: changedCount,
+							unit: plural(T.units.text, changedCount)
+						})
 		} catch (error) {
-			translationError = error instanceof Error ? error.message : 'Could not translate.'
+			translationError = error instanceof Error ? error.message : T.errors.couldNotTranslate
 		} finally {
 			isTranslating = false
 		}
@@ -1302,7 +1336,7 @@
 			}
 		})
 
-		if (!response.text) throw new Error('Gemini returned an empty response.')
+		if (!response.text) throw new Error(T.errors.geminiEmptyResponse)
 		return response.text
 	}
 
@@ -1312,7 +1346,7 @@
 		prompt: string
 	): Promise<string> {
 		const baseUrl = config.baseUrl?.trim()
-		if (!baseUrl) throw new Error('Missing base URL.')
+		if (!baseUrl) throw new Error(T.errors.missingBaseUrl)
 
 		const body: Record<string, unknown> = {
 			model: config.model.trim(),
@@ -1333,13 +1367,19 @@
 
 		if (!response.ok) {
 			throw new Error(
-				`${providerLabel(provider)} request failed: ${response.status} ${response.statusText}`
+				format(T.templates.requestFailed, {
+					provider: providerLabel(provider),
+					status: response.status,
+					statusText: response.statusText
+				})
 			)
 		}
 
 		const json = await response.json()
 		const content = extractOpenAiCompatibleContent(json)
-		if (!content) throw new Error(`${providerLabel(provider)} returned an empty response.`)
+		if (!content) {
+			throw new Error(format(T.templates.emptyProviderResponse, { provider: providerLabel(provider) }))
+		}
 		return content
 	}
 
@@ -1381,6 +1421,10 @@
 
 	function providerLabel(provider: TranslationProvider): string {
 		return TRANSLATION_PROVIDERS.find((entry) => entry.value === provider)?.label ?? provider
+	}
+
+	function plural(unit: { one: string; other: string }, count: number): string {
+		return count === 1 ? unit.one : unit.other
 	}
 
 	function configuredMarkerForLanguage(language: string): string {
@@ -1524,7 +1568,7 @@
 	function parseTranslationResponse(text: string): Array<{ index: number; text: string }> {
 		const parsed = JSON.parse(extractJsonText(text))
 		if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.translations)) {
-			throw new Error('Gemini response did not include a translations array.')
+			throw new Error(T.errors.parseTranslationResponse)
 		}
 
 		return parsed.translations
@@ -1561,7 +1605,7 @@
 		imageSearchError =
 			availableImageSearchProviders.length > 0
 				? ''
-				: 'Add a Pexels or Flaticon API key in Settings.'
+				: format(T.templates.missingProviderKey, { provider: T.providers.pexelsOrFlaticon })
 		if (imageSearchError) imageSearchResults = []
 		if (imageSearchQuery && availableImageSearchProviders.length > 0) {
 			void searchImages(1)
@@ -1620,13 +1664,15 @@
 
 		const query = imageSearchQuery.trim()
 		if (!currentImageSearchProviderConfig.apiKey.trim()) {
-			imageSearchError = `Add a ${imageSearchProviderInstance.label} API key in Settings.`
+			imageSearchError = format(T.templates.missingProviderKey, {
+				provider: imageSearchProviderInstance.label
+			})
 			imageSearchStatus = ''
 			imageSearchResults = []
 			return
 		}
 		if (!query) {
-			imageSearchError = 'Enter a search term.'
+			imageSearchError = T.errors.enterSearchTerm
 			imageSearchStatus = ''
 			imageSearchResults = []
 			return
@@ -1651,15 +1697,18 @@
 			const visibleTotal = response.totalResults || response.results.length
 			imageSearchStatus =
 				response.results.length === 0
-					? 'No images found.'
-					: `${visibleTotal.toLocaleString()} image${visibleTotal === 1 ? '' : 's'} found.`
+					? T.status.noImagesFound
+					: format(T.templates.imageCountFound, {
+							count: visibleTotal.toLocaleString(),
+							unit: plural(T.units.image, visibleTotal)
+						})
 		} catch (error) {
 			if (token !== imageSearchRequestToken) return
 
 			imageSearchResults = []
 			imageSearchHasNextPage = false
 			imageSearchStatus = ''
-			imageSearchError = error instanceof Error ? error.message : 'Could not search images.'
+			imageSearchError = error instanceof Error ? error.message : T.errors.couldNotSearchImages
 		} finally {
 			if (token === imageSearchRequestToken) isSearchingImages = false
 		}
@@ -1675,10 +1724,10 @@
 			const nextImageDataUrl = await imageSearchProviderInstance.importResult(result)
 			updateSelectedCard({ imageDataUrl: nextImageDataUrl, imageTransform: undefined })
 			pngStatus = ''
-			imageSearchStatus = 'Image added.'
+			imageSearchStatus = T.status.imageAdded
 			closeImageSearch()
 		} catch (error) {
-			imageSearchError = error instanceof Error ? error.message : 'Could not import image.'
+			imageSearchError = error instanceof Error ? error.message : T.errors.couldNotImportImage
 		} finally {
 			importingImageResultId = ''
 		}
@@ -1727,14 +1776,14 @@
 
 	async function readImageFile(file: File) {
 		if (!file.type.startsWith('image/')) {
-			renderError = 'Please choose an image file.'
+			renderError = T.errors.pleaseChooseImage
 			return
 		}
 
 		const nextImageDataUrl = await new Promise<string>((resolve, reject) => {
 			const reader = new FileReader()
 			reader.onload = () => resolve(String(reader.result))
-			reader.onerror = () => reject(new Error('Could not read image.'))
+			reader.onerror = () => reject(new Error(T.errors.couldNotReadImage))
 			reader.readAsDataURL(file)
 		})
 		imageTransformDraft = undefined
@@ -1780,8 +1829,10 @@
 		const center = centerBetweenPointers(first, second)
 		queueImagePanDraft({
 			zoom: imageGesture.startZoom * (distance / imageGesture.startDistance),
-			offsetX: imageGesture.startOffsetX + ((center.clientX - imageGesture.startCenterX) / rect.width) * 2,
-			offsetY: imageGesture.startOffsetY + ((center.clientY - imageGesture.startCenterY) / rect.height) * 2
+			offsetX:
+				imageGesture.startOffsetX + ((center.clientX - imageGesture.startCenterX) / rect.width) * 2,
+			offsetY:
+				imageGesture.startOffsetY + ((center.clientY - imageGesture.startCenterY) / rect.height) * 2
 		})
 	}
 
@@ -1873,6 +1924,7 @@
 	function selectCard(id: string) {
 		selectedCardId = id
 		deletingCardId = ''
+		deletingCheckedCardsArmed = false
 		editorDeleteArmed = false
 		libraryStatus = ''
 		libraryError = ''
@@ -1887,6 +1939,7 @@
 		selectedPrintCardIds = selectedPrintCardIds.includes(id)
 			? selectedPrintCardIds.filter((cardId) => cardId !== id)
 			: [...selectedPrintCardIds, id]
+		deletingCheckedCardsArmed = false
 		pressStatus = ''
 		pressError = ''
 	}
@@ -1899,6 +1952,7 @@
 		} else {
 			selectedPrintCardIds = [...new Set([...selectedPrintCardIds, ...displayedIds])]
 		}
+		deletingCheckedCardsArmed = false
 		pressStatus = ''
 		pressError = ''
 	}
@@ -1906,6 +1960,7 @@
 	function updateMainLanguage(value: string) {
 		mainLanguage = value
 		pairingCardId = ''
+		void setPreferredLocale(hasLocale(value) ? value : 'en')
 	}
 
 	function updateLanguageFilter(language: string, value: string) {
@@ -1948,19 +2003,19 @@
 		try {
 			await Promise.all(changedCards.map((card) => putCard(card)))
 		} catch (error) {
-			libraryError = error instanceof Error ? error.message : 'Could not save card links.'
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotSaveCardLinks
 		}
 	}
 
 	function cardLabel(card: StoredCard | undefined): string {
-		if (!card) return 'Missing card'
+		if (!card) return T.manager.missingCard
 		return card.texts[mainLanguage]?.trim() || card.id
 	}
 
 	function linkedCardLabel(card: StoredCard): string {
 		return card.versoCardId
 			? cardLabel(cards.find((entry) => entry.id === card.versoCardId))
-			: 'No verso'
+			: T.manager.noVerso
 	}
 
 	function candidateCardsFor(card: StoredCard): StoredCard[] {
@@ -1979,7 +2034,11 @@
 
 		if (missingVersoCount > 0) {
 			warnings.push(
-				`${missingVersoCount} selected ${missingVersoCount === 1 ? 'card has' : 'cards have'} blank verso slots.`
+				format(T.templates.selectedBlankVerso, {
+					count: missingVersoCount,
+					unit: plural(T.units.card, missingVersoCount),
+					verb: missingVersoCount === 1 ? T.verbs.has : T.verbs.have
+				})
 			)
 		}
 
@@ -1991,12 +2050,12 @@
 		cards = [...cards, card]
 		selectedCardId = card.id
 		workspaceView = workspaceView === 'manager' ? 'editor' : workspaceView
-		libraryStatus = 'New card created.'
+		libraryStatus = T.status.newCardCreated
 		libraryError = ''
 		try {
 			await putCard(card)
 		} catch (error) {
-			libraryError = error instanceof Error ? error.message : 'Could not create card.'
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotCreateCard
 		}
 	}
 
@@ -2014,7 +2073,7 @@
 		}
 		deletingCardId = ''
 		editorDeleteArmed = false
-		libraryStatus = 'Card deleted.'
+		libraryStatus = T.status.cardDeleted
 		libraryError = ''
 
 		try {
@@ -2022,8 +2081,56 @@
 			await Promise.all(changedCards.map((card) => putCard(card)))
 			if (remainingCards.length === 0) await putCard(fallbackCard)
 		} catch (error) {
-			libraryError = error instanceof Error ? error.message : 'Could not delete card.'
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotDeleteCard
 			cards = await getAllCards()
+			if (!cards.some((card) => card.id === selectedCardId) && cards[0])
+				selectedCardId = cards[0].id
+		}
+	}
+
+	async function confirmDeleteCheckedCards() {
+		const deleteIds = new Set(selectedDeleteCardIds)
+		if (deleteIds.size === 0) return
+
+		const remainingCards = cards
+			.filter((card) => !deleteIds.has(card.id))
+			.map((card) => {
+				if (!deleteIds.has(card.versoCardId ?? '')) return card
+				const { versoCardId: _removed, ...nextCard } = card
+				return nextCard
+			})
+		const changedCards = remainingCards.filter((card) => {
+			const current = cards.find((entry) => entry.id === card.id)
+			return JSON.stringify(current) !== JSON.stringify(card)
+		})
+		const fallbackCard = remainingCards[0] ?? { id: createCardId(), texts: {} }
+		const deletedCount = deleteIds.size
+
+		cards = remainingCards.length > 0 ? remainingCards : [fallbackCard]
+		selectedPrintCardIds = selectedPrintCardIds.filter((cardId) => !deleteIds.has(cardId))
+		if (!cards.some((card) => card.id === selectedCardId)) {
+			selectedCardId = fallbackCard.id
+		}
+		deletingCardId = ''
+		deletingCheckedCardsArmed = false
+		editorDeleteArmed = false
+		libraryStatus = format(T.templates.deletedCards, {
+			count: deletedCount,
+			unit: plural(T.units.card, deletedCount)
+		})
+		libraryError = ''
+
+		try {
+			await Promise.all([...deleteIds].map((id) => deleteCard(id)))
+			await Promise.all(changedCards.map((card) => putCard(card)))
+			if (remainingCards.length === 0) await putCard(fallbackCard)
+		} catch (error) {
+			libraryError =
+				error instanceof Error ? error.message : T.errors.couldNotDeleteSelectedCards
+			cards = await getAllCards()
+			selectedPrintCardIds = selectedPrintCardIds.filter((id) =>
+				cards.some((card) => card.id === id)
+			)
 			if (!cards.some((card) => card.id === selectedCardId) && cards[0])
 				selectedCardId = cards[0].id
 		}
@@ -2032,7 +2139,7 @@
 	function chooseImportFile(mode: ImportMode = 'merge') {
 		if (
 			mode === 'replace' &&
-			!window.confirm('Replace all cards with the selected import file? This cannot be undone.')
+			!window.confirm(T.errors.replaceConfirm)
 		) {
 			return
 		}
@@ -2057,7 +2164,7 @@
 		try {
 			const payload = await readCardsImportPayload(file)
 			const importCards = parseImportCards(payload)
-			if (importCards.length === 0) throw new Error('Import file has no cards.')
+			if (importCards.length === 0) throw new Error(T.errors.importFileHasNoCards)
 
 			const importPlan = planCardImport(mode === 'replace' ? [] : cards, importCards)
 			if (mode === 'replace') {
@@ -2069,7 +2176,10 @@
 				pairingCardId = ''
 				deletingCardId = ''
 				selectedCardId = cards[0]?.id ?? ''
-				libraryStatus = `Replaced library with ${cards.length} ${cards.length === 1 ? 'card' : 'cards'}.`
+				libraryStatus = format(T.templates.replacedLibrary, {
+					count: cards.length,
+					unit: plural(T.units.card, cards.length)
+				})
 				return
 			}
 
@@ -2098,8 +2208,8 @@
 				error instanceof Error
 					? error.message
 					: mode === 'replace'
-						? 'Could not replace cards.'
-						: 'Could not import cards.'
+						? T.errors.couldNotReplaceCards
+						: T.errors.couldNotImportCards
 			cards = await getAllCards()
 			if (!cards.some((card) => card.id === selectedCardId)) selectedCardId = cards[0]?.id ?? ''
 		}
@@ -2139,26 +2249,33 @@
 		const parts: string[] = []
 		if (result.importedCount > 0) {
 			parts.push(
-				`Imported ${result.importedCount} ${result.importedCount === 1 ? 'card' : 'cards'}`
+				format(T.templates.importedCards, {
+					count: result.importedCount,
+					unit: plural(T.units.card, result.importedCount)
+				})
 			)
 		}
 		if (result.mergedCount > 0) {
-			parts.push(`Merged ${result.mergedCount}`)
+			parts.push(format(T.templates.mergedCount, { count: result.mergedCount }))
 		}
 		if (result.skippedCount > 0) {
 			parts.push(
-				`Skipped ${result.skippedCount} ${result.skippedCount === 1 ? 'duplicate' : 'duplicates'}`
+				format(T.templates.skippedDuplicates, {
+					count: result.skippedCount,
+					unit: plural(T.units.duplicate, result.skippedCount)
+				})
 			)
 		}
 		if (result.conflictSeparateCount > 0) {
 			parts.push(
-				`Kept ${result.conflictSeparateCount} ${
-					result.conflictSeparateCount === 1 ? 'conflict' : 'conflicts'
-				} separate`
+				format(T.templates.keptConflicts, {
+					count: result.conflictSeparateCount,
+					unit: plural(T.units.conflict, result.conflictSeparateCount)
+				})
 			)
 		}
 
-		return parts.length > 0 ? `${parts.join('. ')}.` : 'Nothing to import.'
+		return parts.length > 0 ? `${parts.join('. ')}.` : T.status.nothingToImport
 	}
 
 	async function exportCompressedCards() {
@@ -2169,11 +2286,12 @@
 			const payload = createCardsExportPayload(cards, { includeImages: true })
 			const blob = await compressCardsExportPayload(payload)
 			downloadBlob(blob, 'toddler-read-cards.json.gz')
-			libraryStatus = `Exported compressed backup with ${cards.length} ${
-				cards.length === 1 ? 'card' : 'cards'
-			}.`
+			libraryStatus = format(T.templates.exportedCompressed, {
+				count: cards.length,
+				unit: plural(T.units.card, cards.length)
+			})
 		} catch (error) {
-			libraryError = error instanceof Error ? error.message : 'Could not export compressed backup.'
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotExportCompressed
 		}
 	}
 
@@ -2181,9 +2299,10 @@
 		const payload = createCardsExportPayload(cards, { includeImages: false })
 		const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
 		downloadBlob(blob, 'toddler-read-cards-image-less.json')
-		libraryStatus = `Exported image-less JSON with ${cards.length} ${
-			cards.length === 1 ? 'card' : 'cards'
-		}.`
+		libraryStatus = format(T.templates.exportedImageLess, {
+			count: cards.length,
+			unit: plural(T.units.card, cards.length)
+		})
 		libraryError = ''
 	}
 
@@ -2240,14 +2359,14 @@
 
 			if (!opened) {
 				URL.revokeObjectURL(url)
-				throw new Error('Could not open PNG preview. Please allow pop-ups for this page.')
+				throw new Error(T.errors.couldNotOpenPngPopup)
 			}
 
 			opened.opener = null
 			window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
-			pngStatus = 'PNG opened in a new tab.'
+			pngStatus = T.status.pngOpened
 		} catch (error) {
-			pngStatus = error instanceof Error ? error.message : 'Could not open PNG.'
+			pngStatus = error instanceof Error ? error.message : T.errors.couldNotOpenPng
 		}
 	}
 
@@ -2263,44 +2382,44 @@
 				unit: 'mm',
 				format: [pageSize.width, pageSize.height],
 				compress: true
-				})
-				let isFirstPage = true
+			})
+			let isFirstPage = true
 
-				for (const page of printLayout.pages) {
-					for (const slots of [page.rectoSlots, page.versoSlots]) {
-						await renderLayoutPageToCanvas(
-							{
-								slots,
-								cards: layoutCards,
-								pdfConfig,
-								reserveQrMargin,
-								showQrText
-							},
-							pdfCanvas
-						)
-						if (!isFirstPage) pdf.addPage([pageSize.width, pageSize.height], pageOrientation)
-						pdf.addImage(
-							pdfCanvas.toDataURL('image/png'),
-							'PNG',
-							0,
-							0,
-							pageSize.width,
-							pageSize.height
-						)
-						isFirstPage = false
-					}
+			for (const page of printLayout.pages) {
+				for (const slots of [page.rectoSlots, page.versoSlots]) {
+					await renderLayoutPageToCanvas(
+						{
+							slots,
+							cards: layoutCards,
+							pdfConfig,
+							reserveQrMargin,
+							showQrText
+						},
+						pdfCanvas
+					)
+					if (!isFirstPage) pdf.addPage([pageSize.width, pageSize.height], pageOrientation)
+					pdf.addImage(
+						pdfCanvas.toDataURL('image/png'),
+						'PNG',
+						0,
+						0,
+						pageSize.width,
+						pageSize.height
+					)
+					isFirstPage = false
 				}
+			}
 
-				const pdfBlob = pdf.output('blob')
+			const pdfBlob = pdf.output('blob')
 			const anchor = document.createElement('a')
 			const url = URL.createObjectURL(pdfBlob)
 			anchor.href = url
 			anchor.download = 'toddler-read-print-layout.pdf'
 			anchor.click()
 			URL.revokeObjectURL(url)
-			pressStatus = `PDF downloaded with ${printLayout.pages.length * 2} pages.`
+			pressStatus = format(T.templates.pdfDownloaded, { count: printLayout.pages.length * 2 })
 		} catch (error) {
-			pressError = error instanceof Error ? error.message : 'Could not download PDF.'
+			pressError = error instanceof Error ? error.message : T.errors.couldNotDownloadPdf
 		}
 	}
 
@@ -2308,47 +2427,52 @@
 		return new Promise((resolve, reject) => {
 			canvas.toBlob((blob) => {
 				if (blob) resolve(blob)
-				else reject(new Error('Could not create PNG.'))
+			else reject(new Error(T.errors.couldNotCreatePng))
 			}, 'image/png')
 		})
 	}
 </script>
 
 <svelte:head>
-	<title>Toddler QR Card Generator</title>
+	<title>{i18nReady ? T.app.documentTitle : 'Toddler Read'}</title>
 	<link rel="icon" type="image/png" href="/favicon.png" />
 	<link rel="apple-touch-icon" href="/app-icon.png" />
 </svelte:head>
 
+{#if !i18nReady}
+	<main class="app-loading" aria-label="Toddler Read">
+		<img src="/app-icon.png" alt="" />
+	</main>
+{:else}
 <main class="app-shell">
 	<header class="app-header library-header">
 		<div class="brand-block">
 			<button
 				type="button"
 				class="app-logo-button"
-				aria-label="Open help"
-				title="Help"
+				aria-label={T.aria.openHelp}
+				title={T.labels.help}
 				on:click={() => (showHelpPanel = true)}
 			>
 				<img src="/app-icon.png" alt="" />
 				<Info size={15} aria-hidden="true" />
 			</button>
 			<div class="title-block">
-				<p class="eyebrow">Toddler Read</p>
-				<h1>Toddler Read QR Card Generator</h1>
+				<p class="eyebrow">{T.app.brand}</p>
+				<h1>{T.app.title}</h1>
 			</div>
 		</div>
 		<div class="library-top-actions">
 			<div
 				class="segmented-control"
 				class:mobile-workspace={isMobileWorkspace}
-				aria-label="Workspace view"
+				aria-label={T.aria.workspaceView}
 			>
 				<button
 					type="button"
 					class:active={workspaceView === 'manager'}
-					aria-label="Manager"
-					title="Manager"
+					aria-label={T.aria.manager}
+					title={T.aria.manager}
 					on:click={() => (workspaceView = 'manager')}
 				>
 					<List size={18} aria-hidden="true" />
@@ -2357,8 +2481,8 @@
 					<button
 						type="button"
 						class:active={workspaceView === 'split'}
-						aria-label="Split"
-						title="Split"
+						aria-label={T.aria.split}
+						title={T.aria.split}
 						on:click={() => (workspaceView = 'split')}
 					>
 						<Columns2 size={18} aria-hidden="true" />
@@ -2367,8 +2491,8 @@
 				<button
 					type="button"
 					class:active={workspaceView === 'editor'}
-					aria-label="Editor"
-					title="Editor"
+					aria-label={T.labels.editor}
+					title={T.labels.editor}
 					on:click={() => (workspaceView = 'editor')}
 				>
 					<Pencil size={18} aria-hidden="true" />
@@ -2376,19 +2500,19 @@
 				<button
 					type="button"
 					class:active={workspaceView === 'press'}
-					aria-label="Printing press"
-					title="Printing press"
+					aria-label={T.aria.press}
+					title={T.aria.press}
 					on:click={() => (workspaceView = 'press')}
 				>
 					<Printer size={18} aria-hidden="true" />
 				</button>
 			</div>
-			<div class="pdf-config-control" title={`PDF layout: ${pdfLayoutLabel}`}>
+			<div class="pdf-config-control" title={format(T.templates.pdfLayout, { layout: pdfLayoutLabel })}>
 				<span>{pdfLayoutLabel}</span>
 				<button
 					type="button"
-					aria-label="PDF configuration"
-					title="PDF configuration"
+					aria-label={T.aria.pdfConfiguration}
+					title={T.aria.pdfConfiguration}
 					on:click={() => (showPdfConfigPanel = true)}
 				>
 					<span aria-hidden="true">📄</span>
@@ -2399,8 +2523,8 @@
 					<Languages size={18} aria-hidden="true" />
 					<select
 						value={mainLanguage}
-						aria-label="Reference language"
-						title={`Reference language: ${mainLanguage}`}
+						aria-label={T.aria.referenceLanguage}
+						title={format(T.templates.referenceLanguage, { language: mainLanguage })}
 						on:change={(event) => updateMainLanguage(event.currentTarget.value)}
 					>
 						{#each managerLanguages as language}
@@ -2409,15 +2533,15 @@
 					</select>
 				</label>
 			{/if}
-			<IconButton ariaLabel="Settings" on:click={() => (showSettingsPanel = !showSettingsPanel)}>
+			<IconButton ariaLabel={T.labels.settings} on:click={() => (showSettingsPanel = !showSettingsPanel)}>
 				<Settings size={18} aria-hidden="true" />
 			</IconButton>
 			<button type="button" on:click={createNewCard}>
 				<Plus size={18} aria-hidden="true" />
-				New card
+				{T.actions.newCard}
 			</button>
 			<details class="file-menu" bind:open={showFileMenu}>
-				<summary class="secondary" aria-label="File actions">File</summary>
+				<summary class="secondary" aria-label={T.aria.fileActions}>{T.actions.file}</summary>
 				<div class="file-menu-panel">
 					<button
 						type="button"
@@ -2428,7 +2552,7 @@
 						}}
 					>
 						<Upload size={18} aria-hidden="true" />
-						Import
+						{T.actions.import}
 					</button>
 					<button
 						type="button"
@@ -2439,7 +2563,7 @@
 						}}
 					>
 						<Upload size={18} aria-hidden="true" />
-						Replace
+						{T.actions.replace}
 					</button>
 					<button
 						type="button"
@@ -2451,7 +2575,7 @@
 						}}
 					>
 						<Download size={18} aria-hidden="true" />
-						Export compressed
+						{T.actions.exportCompressed}
 					</button>
 					<button
 						type="button"
@@ -2463,7 +2587,7 @@
 						}}
 					>
 						<Download size={18} aria-hidden="true" />
-						Export image-less JSON
+						{T.actions.exportImageLessJson}
 					</button>
 				</div>
 			</details>
@@ -2471,8 +2595,8 @@
 				<button
 					type="button"
 					class="apk-qr"
-					aria-label="Show PWA reader QR code"
-					title="Show PWA reader QR code"
+					aria-label={T.aria.showPwaReaderQr}
+					title={T.aria.showPwaReaderQr}
 					on:click={() => (showReaderInstallPanel = true)}
 				>
 					<span class="apk-qr-icon" aria-hidden="true">
@@ -2485,8 +2609,8 @@
 				<button
 					type="button"
 					class="apk-qr"
-					aria-label="Show Android APK QR code"
-					title="Show Android APK QR code"
+					aria-label={T.aria.showAndroidApkQr}
+					title={T.aria.showAndroidApkQr}
 					on:click={() => (showApkPanel = true)}
 				>
 					<span class="apk-qr-icon apk-qr-icon-android" aria-hidden="true">
@@ -2535,11 +2659,11 @@
 		class:workspace-press={workspaceView === 'press'}
 		class:workspace-split={workspaceView === 'split'}
 		class="workspace library-workspace"
-		aria-label="Card generator"
+		aria-label={T.aria.cardGenerator}
 	>
 		{#if showManager}
-			<section class="manager-pane" aria-label="Cards manager">
-				<div class="manager-tag-toolbar" aria-label="Manager tags">
+			<section class="manager-pane" aria-label={T.aria.cardsManager}>
+				<div class="manager-tag-toolbar" aria-label={T.aria.managerTags}>
 					<table class="manager-tag-table">
 						<tbody>
 							{#each managerTagRows as row (row.id)}
@@ -2550,8 +2674,8 @@
 											<input
 												value={row.tagInput}
 												list="manager-tag-options"
-												placeholder="Choose tag"
-												aria-label="Choose tag"
+												placeholder={T.labels.chooseTag}
+												aria-label={T.labels.chooseTag}
 												on:input={(event) =>
 													updateManagerTagRowInput(row.id, event.currentTarget.value)}
 												on:blur={normalizeManagerTagRows}
@@ -2559,7 +2683,7 @@
 										</label>
 									</td>
 									<td>
-										<div class="manager-tag-actions" aria-label="Selected cards tag actions">
+										<div class="manager-tag-actions" aria-label={T.aria.selectedCardsTagActions}>
 											<button
 												type="button"
 												class="secondary"
@@ -2567,7 +2691,7 @@
 												on:click={() => addManagerTagToSelection(row)}
 											>
 												<Plus size={16} aria-hidden="true" />
-												Add
+												{T.actions.add}
 											</button>
 											<button
 												type="button"
@@ -2576,7 +2700,7 @@
 												on:click={() => removeManagerTagFromSelection(row)}
 											>
 												<X size={16} aria-hidden="true" />
-												Remove
+												{T.actions.remove}
 											</button>
 										</div>
 									</td>
@@ -2584,7 +2708,7 @@
 										<PresenceFilterGroup
 											value={row.presenceFilter}
 											disabled={!rowTag}
-											ariaLabel={`Filter table by ${rowTag || 'tag'}`}
+											ariaLabel={format(T.templates.filterTableByTag, { tag: rowTag || 'tag' })}
 											name={`manager-tag-presence-filter-${row.id}`}
 											onValueChange={(value) => updateManagerTagRowPresence(row.id, value)}
 										/>
@@ -2603,32 +2727,32 @@
 					<table class="card-table">
 						<thead>
 							<tr>
-								<th aria-label="Print selection">
+								<th aria-label={T.aria.printSelection}>
 									<input
 										class="header-checkbox"
 										type="checkbox"
 										checked={allDisplayedSelected}
 										disabled={displayedManagerCards.length === 0}
 										use:setIndeterminate={someDisplayedSelected && !allDisplayedSelected}
-										aria-label="Select displayed cards"
+										aria-label={T.aria.selectDisplayedCards}
 										on:change={toggleDisplayedPrintSelection}
 									/>
 								</th>
-								<th title="Image">
+								<th title={T.manager.image}>
 									<div class="image-column-header">
 										<span class="column-title">
 											<ImageIcon size={17} aria-hidden="true" />
 											{#if duplicateColumnKeys.has('image')}
 												<DuplicateFocusButton
 													active={duplicateFocus === 'image'}
-													ariaLabel="Show duplicate images"
+													ariaLabel={T.aria.showDuplicateImages}
 													on:click={() => toggleDuplicateFocus('image')}
 												/>
 											{/if}
 										</span>
 										<PresenceFilterGroup
 											bind:value={imagePresenceFilter}
-											ariaLabel="Filter images"
+											ariaLabel={T.aria.filterImages}
 											name="image-presence-filter"
 										/>
 									</div>
@@ -2640,7 +2764,9 @@
 											{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(mainLanguage))}
 												<DuplicateFocusButton
 													active={duplicateFocus === duplicateColumnKeyForLanguage(mainLanguage)}
-													ariaLabel={`Show duplicate ${mainLanguage} values`}
+													ariaLabel={format(T.templates.showDuplicateLanguageValues, {
+														language: mainLanguage
+													})}
 													on:click={() =>
 														toggleDuplicateFocus(duplicateColumnKeyForLanguage(mainLanguage))}
 												/>
@@ -2649,8 +2775,7 @@
 										<input
 											class="language-column-filter"
 											value={languageFilters[mainLanguage] ?? ''}
-											placeholder={mainLanguage}
-											aria-label={`Filter ${mainLanguage}`}
+											aria-label={format(T.templates.filterLanguage, { language: mainLanguage })}
 											on:click|stopPropagation
 											on:input={(event) =>
 												updateLanguageFilter(mainLanguage, event.currentTarget.value)}
@@ -2660,21 +2785,49 @@
 								{#if !isMobileWorkspace}
 									<th>
 										<div class="verso-column-header">
-											<span class="column-title" title="Verso">
+											<span class="column-title" title={T.labels.verso}>
 												<Link2 size={17} aria-hidden="true" />
 											</span>
 											<PresenceFilterGroup
 												bind:value={versoPresenceFilter}
-												ariaLabel="Filter verso links"
+												ariaLabel={T.aria.filterVersoLinks}
 												name="verso-presence-filter"
 											/>
 										</div>
 									</th>
 								{/if}
 								{#if workspaceView === 'manager'}
-									<th class="manager-tags-column">Tags</th>
+									<th class="manager-tags-column">{T.labels.tags}</th>
 								{/if}
-								<th aria-label="Delete"></th>
+								<th aria-label={T.aria.deleteCheckedCards}>
+									{#if deletingCheckedCardsArmed}
+										<div class="delete-checked-confirm" aria-live="assertive">
+											<button type="button" class="danger" on:click={confirmDeleteCheckedCards}>
+												{T.actions.yes}
+											</button>
+											<strong>{format(T.templates.deleteCount, { count: selectedDeleteCardIds.length })}</strong>
+											<button
+												type="button"
+												class="secondary"
+												on:click={() => (deletingCheckedCardsArmed = false)}
+											>
+												{T.actions.no}
+											</button>
+										</div>
+									{:else}
+										<IconButton
+											ariaLabel={T.aria.deleteCheckedCards}
+											title={T.aria.deleteCheckedCards}
+											className="delete-checked-button"
+											variant="danger"
+											size={16}
+											disabled={selectedDeleteCardIds.length === 0}
+											on:click={() => (deletingCheckedCardsArmed = true)}
+										>
+											<Trash2 size={16} aria-hidden="true" />
+										</IconButton>
+									{/if}
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -2684,7 +2837,7 @@
 									on:click={() => openManagerCard(card.id)}
 								>
 									<td class="select-cell">
-										<label class="row-checkbox" title="Select for press">
+										<label class="row-checkbox" title={T.manager.selectForPress}>
 											<input
 												type="checkbox"
 												checked={selectedPrintCardIds.includes(card.id)}
@@ -2697,7 +2850,7 @@
 										{#if card.imageDataUrl}
 											<img class="manager-thumb" src={card.imageDataUrl} alt="" />
 										{:else}
-											<div class="manager-thumb empty-thumb" aria-label="No image"></div>
+											<div class="manager-thumb empty-thumb" aria-label={T.aria.noImage}></div>
 										{/if}
 									</td>
 									<td>{card.texts[mainLanguage] || ''}</td>
@@ -2705,12 +2858,12 @@
 										<td class="verso-cell">
 											{#if pairingCardId === card.id}
 												<select
-													aria-label="Choose verso card"
+													aria-label={T.aria.chooseVersoCard}
 													value={card.versoCardId ?? ''}
 													on:click|stopPropagation
 													on:change={(event) => updateVersoLink(card.id, event.currentTarget.value)}
 												>
-													<option value="">No verso</option>
+													<option value="">{T.manager.noVerso}</option>
 													{#each candidateCardsFor(card) as candidate}
 														<option value={candidate.id}>
 															{cardLabel(candidate)}
@@ -2721,7 +2874,7 @@
 												<button
 													type="button"
 													class="secondary verso-link-button"
-													title="Choose verso"
+													title={T.manager.chooseVerso}
 													on:click|stopPropagation={() => (pairingCardId = card.id)}
 												>
 													<Link2 size={15} aria-hidden="true" />
@@ -2729,8 +2882,8 @@
 												</button>
 												{#if card.versoCardId}
 													<IconButton
-														ariaLabel="Unlink verso"
-														title="Unlink verso"
+														ariaLabel={T.manager.unlinkVerso}
+														title={T.manager.unlinkVerso}
 														className="delete-icon-button"
 														size={15}
 														stopPropagation
@@ -2745,7 +2898,7 @@
 									{#if workspaceView === 'manager'}
 										<td class="manager-tags-cell">
 											{#if card.tags?.length}
-												<div class="manager-table-tags" aria-label="Tags">
+												<div class="manager-table-tags" aria-label={T.aria.tags}>
 													{#each card.tags as tag}
 														<span>{tag}</span>
 													{/each}
@@ -2755,21 +2908,21 @@
 									{/if}
 									<td class="delete-cell">
 										{#if deletingCardId === card.id}
-											<span>Delete?</span>
+											<span>{T.manager.deleteQuestion}</span>
 											<button
 												type="button"
 												class="danger-text"
-												on:click|stopPropagation={() => confirmDeleteCard(card.id)}>yes</button
+												on:click|stopPropagation={() => confirmDeleteCard(card.id)}>{T.actions.yesLower}</button
 											>
 											<button
 												type="button"
 												class="plain-text"
-												on:click|stopPropagation={() => (deletingCardId = '')}>no</button
+												on:click|stopPropagation={() => (deletingCardId = '')}>{T.actions.noLower}</button
 											>
 										{:else}
 											<IconButton
-												ariaLabel="Delete card"
-												title="Delete card"
+												ariaLabel={T.aria.deleteCard}
+												title={T.aria.deleteCard}
 												className="delete-icon-button"
 												size={16}
 												stopPropagation
@@ -2788,12 +2941,12 @@
 		{/if}
 
 		{#if showPress}
-			<section class="press-pane" aria-label="Printing press">
+			<section class="press-pane" aria-label={T.aria.press}>
 				<div class="pane-header">
 					<div class="press-actions">
 						<button type="button" class="secondary" on:click={() => (workspaceView = 'manager')}>
 							<List size={18} aria-hidden="true" />
-							Manage
+							{T.actions.manage}
 						</button>
 						<button
 							type="button"
@@ -2801,7 +2954,7 @@
 							on:click={downloadLayoutPdf}
 						>
 							<Download size={18} aria-hidden="true" />
-							Download PDF
+							{T.actions.downloadPdf}
 						</button>
 					</div>
 				</div>
@@ -2818,38 +2971,38 @@
 					<div class="empty-press">
 						<button type="button" on:click={() => (workspaceView = 'manager')}>
 							<List size={18} aria-hidden="true" />
-							Select cards
+							{T.actions.selectCards}
 						</button>
 					</div>
 				{:else}
-						<div class="press-pages">
-							{#each printLayout.pages as page, index}
-								<article class="press-page-pair">
-									<div class="press-page-header">
-										<strong>Page {index + 1}</strong>
-										<span>{pdfLayoutLabel}</span>
+					<div class="press-pages">
+						{#each printLayout.pages as page, index}
+							<article class="press-page-pair">
+								<div class="press-page-header">
+									<strong>{format(T.templates.page, { page: index + 1 })}</strong>
+									<span>{pdfLayoutLabel}</span>
+								</div>
+								<div class="press-preview-grid">
+									<div class="press-preview">
+										<span>{T.labels.recto}</span>
+										<canvas
+											bind:this={rectoPreviewCanvases[index]}
+											style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+											aria-label={format(T.templates.rectoPage, { page: index + 1 })}
+										></canvas>
 									</div>
-									<div class="press-preview-grid">
-										<div class="press-preview">
-											<span>Recto</span>
-											<canvas
-												bind:this={rectoPreviewCanvases[index]}
-												style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
-												aria-label={`Recto page ${index + 1}`}
-											></canvas>
-										</div>
-										<div class="press-preview">
-											<span>Verso</span>
-											<canvas
-												bind:this={versoPreviewCanvases[index]}
-												style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
-												aria-label={`Verso page ${index + 1}`}
-											></canvas>
-										</div>
+									<div class="press-preview">
+										<span>{T.labels.verso}</span>
+										<canvas
+											bind:this={versoPreviewCanvases[index]}
+											style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+											aria-label={format(T.templates.versoPage, { page: index + 1 })}
+										></canvas>
 									</div>
-								</article>
-							{/each}
-						</div>
+								</div>
+							</article>
+						{/each}
+					</div>
 				{/if}
 
 				{#if pressError}
@@ -2861,7 +3014,7 @@
 		{/if}
 
 		{#if showEditor}
-			<section class="editor-workspace" aria-label="Card editor">
+			<section class="editor-workspace" aria-label={T.aria.cardEditor}>
 				<div class="editor-pane">
 					<div class="language-header">
 						<div class="language-actions">
@@ -2873,22 +3026,22 @@
 									on:click={translateProducedTexts}
 								>
 									<Languages size={18} aria-hidden="true" />
-									{isTranslating ? 'Translating...' : 'Translate'}
+									{isTranslating ? T.actions.translating : T.actions.translate}
 								</button>
 							</span>
 							{#if editorDeleteArmed}
 								<button type="button" class="secondary" on:click={() => (editorDeleteArmed = false)}
-									>Cancel</button
+									>{T.actions.cancel}</button
 								>
 								<button
 									type="button"
 									class="danger"
 									on:click={() => selectedCard && confirmDeleteCard(selectedCard.id)}
 								>
-									Delete
+									{T.actions.delete}
 								</button>
 							{:else}
-								<IconButton ariaLabel="Delete card" on:click={() => (editorDeleteArmed = true)}>
+								<IconButton ariaLabel={T.aria.deleteCard} on:click={() => (editorDeleteArmed = true)}>
 									<Trash2 size={18} aria-hidden="true" />
 								</IconButton>
 							{/if}
@@ -2901,15 +3054,18 @@
 								<div class="language-tools">
 									<div
 										class="readonly-marker"
-										aria-label={entry.lang ? `${entry.lang} flag` : 'No language flag'}
+										aria-label={entry.lang ? format(T.templates.flag, { language: entry.lang }) : T.aria.noLanguageFlag}
 									>
 										{entry.marker}
 									</div>
 								</div>
-								<label class="text-field" aria-label={`${entry.lang} text`}>
+								<label
+									class="text-field"
+									aria-label={format(T.templates.languageText, { language: entry.lang })}
+								>
 									<input
 										value={entry.text}
-										placeholder="Hello"
+										placeholder={T.placeholders.cardText}
 										disabled={!entry.lang.trim()}
 										on:input={(event) => updateCardText(index, event.currentTarget.value)}
 									/>
@@ -2920,9 +3076,9 @@
 
 					<div class="image-panel">
 						<div class="image-panel-header">
-							<p class="eyebrow">Image</p>
+							<p class="eyebrow">{T.labels.image}</p>
 							{#if imageDataUrl}
-								<IconButton ariaLabel="Clear image" on:click={clearImage}>
+								<IconButton ariaLabel={T.aria.clearImage} on:click={clearImage}>
 									<X size={18} aria-hidden="true" />
 								</IconButton>
 							{/if}
@@ -2931,8 +3087,8 @@
 							<input
 								class="paste-target"
 								readonly
-								aria-label="Paste image here"
-								placeholder="Paste here"
+								aria-label={T.aria.pasteImageHere}
+								placeholder={T.placeholders.pasteHere}
 								on:paste={handleImagePaste}
 								on:keydown={(event) => {
 									if (event.ctrlKey || event.metaKey) return
@@ -2947,17 +3103,17 @@
 							/>
 							<button type="button" class="secondary" on:click={chooseImage}>
 								<ImagePlus size={18} aria-hidden="true" />
-								Choose
+								{T.actions.choose}
 							</button>
 							<button type="button" class="secondary" on:click={openImageSearch}>
 								<Search size={18} aria-hidden="true" />
-								Search
+								{T.actions.search}
 							</button>
 						</div>
 						{#if imageDataUrl && !isMobileWorkspace}
 							<div class="image-adjustments">
 								<label>
-									<span><Maximize2 size={16} aria-hidden="true" /> Size</span>
+									<span><Maximize2 size={16} aria-hidden="true" /> {T.labels.size}</span>
 									<input
 										type="range"
 										min="0.5"
@@ -2975,11 +3131,11 @@
 					{#if selectedCard}
 						<div class="verso-panel">
 							<div class="verso-panel-header">
-								<p class="eyebrow">Verso</p>
+								<p class="eyebrow">{T.labels.verso}</p>
 								{#if selectedCard.versoCardId}
 									<IconButton
-										ariaLabel="Unlink verso"
-										title="Unlink verso"
+										ariaLabel={T.manager.unlinkVerso}
+										title={T.manager.unlinkVerso}
 										on:click={() => clearVersoLink(selectedCard.id)}
 									>
 										<Link2Off size={18} aria-hidden="true" />
@@ -2989,11 +3145,11 @@
 							<label class="verso-select-field">
 								<Link2 size={18} aria-hidden="true" />
 								<select
-									aria-label="Choose verso card"
+									aria-label={T.aria.chooseVersoCard}
 									value={selectedCard.versoCardId ?? ''}
 									on:change={(event) => updateVersoLink(selectedCard.id, event.currentTarget.value)}
 								>
-									<option value="">No verso</option>
+									<option value="">{T.manager.noVerso}</option>
 									{#each candidateCardsFor(selectedCard) as candidate}
 										<option value={candidate.id}>{cardLabel(candidate)}</option>
 									{/each}
@@ -3023,7 +3179,7 @@
 						<div class="preview-actions">
 							<button type="button" disabled={!canExport} on:click={openPngPreview}>
 								<ExternalLink size={18} aria-hidden="true" />
-								Open PNG
+								{T.actions.openPng}
 							</button>
 						</div>
 					</div>
@@ -3057,15 +3213,15 @@
 
 	{#if showImageSearchPanel}
 		<PanelModal
-			title="Search image"
+			title={T.modal.imageSearch.title}
 			titleId="image-search-title"
-			eyebrow="Image source"
-			closeLabel="Close image search"
+			eyebrow={T.labels.imageSource}
+			closeLabel={T.modal.imageSearch.close}
 			modalClass="image-search-modal"
 			on:close={closeImageSearch}
 		>
 			{#if availableImageSearchProviders.length > 0}
-				<div class="image-provider-tabs" aria-label="Image source">
+				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
 					{#each availableImageSearchProviders as provider}
 						<button
 							type="button"
@@ -3082,8 +3238,8 @@
 			<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
 				<input
 					value={imageSearchQuery}
-					placeholder="apple"
-					aria-label="Image search query"
+					placeholder={T.placeholders.imageSearch}
+					aria-label={T.aria.imageSearchQuery}
 					spellcheck="false"
 					on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
 				/>
@@ -3092,7 +3248,7 @@
 					disabled={isSearchingImages || availableImageSearchProviders.length === 0}
 				>
 					<Search size={18} aria-hidden="true" />
-					{isSearchingImages ? 'Searching...' : 'Search'}
+					{isSearchingImages ? T.actions.searching : T.actions.search}
 				</button>
 			</form>
 
@@ -3109,7 +3265,7 @@
 							type="button"
 							class="image-result-button"
 							disabled={Boolean(importingImageResultId)}
-							aria-label={`Use ${result.alt}`}
+							aria-label={format(T.templates.useImage, { alt: result.alt })}
 							title={result.alt}
 							on:click={() => importImageSearchResult(result)}
 						>
@@ -3125,7 +3281,7 @@
 					target="_blank"
 					rel="noreferrer"
 				>
-					Results from {imageSearchProviderInstance.label}
+					{format(T.templates.resultsFrom, { provider: imageSearchProviderInstance.label })}
 				</a>
 				<div class="image-search-pages">
 					<button
@@ -3134,16 +3290,16 @@
 						disabled={imageSearchPage <= 1 || isSearchingImages}
 						on:click={() => searchImages(imageSearchPage - 1)}
 					>
-						Previous
+						{T.actions.previous}
 					</button>
-					<span>Page {imageSearchPage} of {imageSearchTotalPages}</span>
+					<span>{format(T.templates.pageOf, { page: imageSearchPage, total: imageSearchTotalPages })}</span>
 					<button
 						type="button"
 						class="secondary"
 						disabled={!imageSearchHasNextPage || isSearchingImages}
 						on:click={() => searchImages(imageSearchPage + 1)}
 					>
-						Next
+						{T.actions.next}
 					</button>
 				</div>
 			</div>
@@ -3152,30 +3308,30 @@
 
 	{#if showReaderInstallPanel}
 		<QRInstallPanel
-			title="Open reader"
+			title={T.modal.reader.title}
 			titleId="reader-install-title"
-			eyebrow="iPhone / Web"
-			closeLabel="Close reader install options"
+			eyebrow={T.modal.reader.eyebrow}
+			closeLabel={T.modal.reader.close}
 			qrDataUrl={readerQrDataUrl}
-			qrAlt="Reader web app QR code"
+			qrAlt={T.modal.reader.qrAlt}
 			href={readerUrl}
-			linkLabel="Open Reader"
+			linkLabel={T.actions.openReader}
 			linkTarget="_blank"
-			note="On iPhone, open in Safari, tap Share, then Add to Home Screen."
+			note={T.modal.reader.note}
 			on:close={() => (showReaderInstallPanel = false)}
 		/>
 	{/if}
 
 	{#if showApkPanel}
 		<QRInstallPanel
-			title="Download APK"
+			title={T.modal.apk.title}
 			titleId="apk-install-title"
-			eyebrow="Android"
-			closeLabel="Close Android APK QR code"
+			eyebrow={T.modal.apk.eyebrow}
+			closeLabel={T.modal.apk.close}
 			qrDataUrl={apkQrDataUrl}
-			qrAlt="Android APK QR code"
+			qrAlt={T.modal.apk.qrAlt}
 			href={apkUrl}
-			linkLabel="Download APK"
+			linkLabel={T.actions.downloadApk}
 			action="download"
 			on:close={() => (showApkPanel = false)}
 		/>
@@ -3183,9 +3339,9 @@
 
 	{#if showHelpPanel}
 		<PanelModal
-			title="Help"
+			title={T.modal.help.title}
 			titleId="help-title"
-			closeLabel="Close help"
+			closeLabel={T.modal.help.close}
 			modalClass="help-modal"
 			showCloseButton={false}
 			on:close={() => (showHelpPanel = false)}
@@ -3194,148 +3350,129 @@
 				<div class="help-title-row">
 					<img src="/app-icon.png" alt="" />
 					<div>
-						<p class="eyebrow">Toddler Read</p>
-						<h2 id="help-title">Help</h2>
+						<p class="eyebrow">{T.app.brand}</p>
+						<h2 id="help-title">{T.labels.help}</h2>
 					</div>
 				</div>
 			</div>
 
 			<div class="help-content">
 				<section>
-					<h3>Editing Cards</h3>
+					<h3>{T.help.localDataTitle}</h3>
+					<p>{T.help.localDataText1}</p>
+					<p>{T.help.localDataText2}</p>
+				</section>
+
+				<section>
+					<h3>{T.help.editingCards}</h3>
 					<p>
-						Use <strong>New card</strong> to create a card, then fill the text fields for the configured
-						corner languages. Each filled text becomes a QR payload that the reader can speak.
+						{T.help.editingCardsIntro} <strong>{T.help.editingCardsIntroAction}</strong>
+						{T.help.editingCardsIntroRest}
 					</p>
 					<ul>
-						<li>Choose or paste an image, or drag an image onto the preview.</li>
-						<li>Use image search when a provider API key is configured.</li>
-						<li>Adjust pan and size until the card preview looks right.</li>
+						{#each T.help.editingCardsItems.slice(0, 3) as item}
+							<li>{item}</li>
+						{/each}
 						<li>
-							Enable <strong>QR margin</strong> when images need extra room around QR codes.
-						</li>
-						<li>
-							Enable <strong>QR text</strong> when you want the QR payload printed under each code.
-						</li>
-						<li>Use the editor verso field to link cards for two-sided printing.</li>
-					</ul>
-				</section>
-
-					<section>
-						<h3>Settings</h3>
-						<p>
-							Open settings with the gear button. Settings are stored locally in this browser,
-							including API keys, language setup, PDF layout, QR margin, QR text, and provider
-							choices.
-						</p>
-						<ul>
-							<li>
-							<strong>Corner languages:</strong> set up to four language codes, such as
-							<code>en</code>, <code>fr</code>, or <code>ro</code>, and adjust the displayed marker.
+							{T.help.enableQrMarginIntro} <strong>{T.help.enableQrMarginLabel}</strong>
+							{T.help.enableQrMarginRest}
 						</li>
 						<li>
-							<strong>Image sources:</strong> add Pexels or Flaticon API keys to enable in-app image
-							search.
+							{T.help.enableQrTextIntro} <strong>{T.help.enableQrTextLabel}</strong>
+							{T.help.enableQrTextRest}
 						</li>
-						<li>
-							<strong>Translation:</strong> choose Gemini, OpenAI, DeepSeek, Z.AI, Groq, or a custom
-							OpenAI-compatible provider.
-						</li>
-						<li>
-							<strong>Model and base URL:</strong> keep the defaults unless your provider or account
-							requires a different model or endpoint.
-						</li>
-						<li>
-							<strong>Prompt template:</strong> controls how card texts are translated. The placeholders
-							are filled by the app before the request is sent.
-						</li>
+						<li>{T.help.editingCardsItems[3]}</li>
 					</ul>
 				</section>
 
 				<section>
-					<h3>API Keys</h3>
-					<p>
-						API keys are only needed for optional helpers. Translation keys let the app fill missing
-						language text from existing text on the card. Image search keys let the app search image
-						providers from the editor. Keys stay in local browser storage and are sent directly to
-						the selected provider when you use that feature.
-					</p>
-				</section>
-
-				<section>
-					<h3>Local Data</h3>
-					<p>
-						Card data is stored in this browser. Nothing is sent to Toddler Read servers, and there
-						is no account or cloud sync. Export your library from the file menu before clearing
-						browser data, switching browsers, or moving to another device.
-					</p>
-					<p>
-						The only network transmissions are the requests you trigger for translation or image
-						search, which go directly to the configured provider APIs.
-					</p>
-				</section>
-
-				<section>
-					<h3>File Menu</h3>
+					<h3>{T.labels.settings}</h3>
+					<p>{T.help.settingsIntro}</p>
 					<ul>
 						<li>
-							<strong>Import:</strong> adds cards from a JSON or compressed JSON export and merges
-							with your current library.
+							<strong>{T.help.cornerLanguagesLabel}</strong> {T.help.cornerLanguagesRest}
+							<code>en</code>, <code>fr</code>, {T.help.cornerLanguagesExamplesRest}
+							<code>ro</code>, {T.help.cornerLanguagesRestAfter}
 						</li>
 						<li>
-							<strong>Replace:</strong> imports a JSON or compressed JSON export after clearing the
-							current library.
+							<strong>{T.help.imageSourcesLabel}</strong> {T.help.imageSourcesRest}
 						</li>
 						<li>
-							<strong>Export compressed:</strong> downloads the full card library, including images,
-							as a compressed backup.
+							<strong>{T.help.translationLabel}</strong> {T.help.translationRest}
 						</li>
 						<li>
-							<strong>Export image-less JSON:</strong> downloads readable JSON without images for
-							hand editing.
+							<strong>{T.help.modelBaseUrlLabel}</strong> {T.help.modelBaseUrlRest}
+						</li>
+						<li>
+							<strong>{T.help.promptTemplateLabel}</strong> {T.help.promptTemplateRest}
 						</li>
 					</ul>
 				</section>
 
 				<section>
-					<h3>Manager And Printing Press</h3>
-					<p>
-						The manager is the card library. Select cards with the checkboxes and use filters to find
-						missing images, text, or verso links.
-					</p>
-					<p>
-						Open the printer view to preview selected cards as recto and verso pages. Choose the
-						PDF layout in the toolbar, review any warnings, then download the PDF and print it.
-					</p>
+					<h3>{T.help.apiKeysTitle}</h3>
+					<p>{T.help.apiKeysText}</p>
 				</section>
 
 				<section>
-					<h3>Links</h3>
+					<h3>{T.labels.fileMenu}</h3>
+					<ul>
+						<li>
+							<strong>{T.help.importLabel}</strong> {T.help.importRest}
+						</li>
+						<li>
+							<strong>{T.help.replaceLabel}</strong> {T.help.replaceRest}
+						</li>
+						<li>
+							<strong>{T.help.exportCompressedLabel}</strong> {T.help.exportCompressedRest}
+						</li>
+						<li>
+							<strong>{T.help.exportImageLessLabel}</strong> {T.help.exportImageLessRest}
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>{T.labels.managerAndPress}</h3>
+					<p>{T.help.managerPressText1}</p>
+					<p>{T.help.managerPressText2}</p>
+				</section>
+
+				<section>
+					<h3>{T.help.links}</h3>
 					<div class="help-links">
 						<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
 							<ExternalLink size={16} aria-hidden="true" />
-							Repository
+							{T.help.repository}
 						</a>
 						<a href={KO_FI_URL} target="_blank" rel="noreferrer">
 							<ExternalLink size={16} aria-hidden="true" />
-							Ko-fi
+							{T.help.kofi}
 						</a>
 					</div>
 				</section>
 			</div>
 
 			<div class="help-footer">
-				<button type="button" on:click={() => (showHelpPanel = false)}>OK</button>
+				<label class="startup-help-toggle">
+					<input
+						type="checkbox"
+						checked={showHelpAtStartup}
+						on:change={updateShowHelpAtStartup}
+					/>
+					<span>{T.help.showHelpAtStartup}</span>
+				</label>
+				<button type="button" on:click={() => (showHelpPanel = false)}>{T.actions.ok}</button>
 			</div>
 		</PanelModal>
 	{/if}
 
 	{#if showPdfConfigPanel}
 		<PanelModal
-			title="PDF layout"
+			title={T.labels.pdfLayout}
 			titleId="pdf-config-title"
-			eyebrow="Print"
-			closeLabel="Close PDF configuration"
+			eyebrow={T.labels.print}
+			closeLabel={T.modal.pdf.close}
 			on:close={() => (showPdfConfigPanel = false)}
 		>
 			<div class="pdf-config-summary">
@@ -3343,18 +3480,18 @@
 			</div>
 			<div class="pdf-config-fields">
 				<label>
-					Format
-					<select value={pageFormat} aria-label="PDF page format" on:change={updatePageFormat}>
+					{T.labels.format}
+					<select value={pageFormat} aria-label={T.aria.pdfPageFormat} on:change={updatePageFormat}>
 						{#each PDF_PAGE_FORMAT_OPTIONS as option}
 							<option value={option}>{option}</option>
 						{/each}
 					</select>
 				</label>
 				<label>
-					Orientation
+					{T.labels.orientation}
 					<select
 						value={pageOrientation}
-						aria-label="PDF page orientation"
+						aria-label={T.aria.pdfPageOrientation}
 						on:change={updatePageOrientation}
 					>
 						{#each PDF_PAGE_ORIENTATION_OPTIONS as option}
@@ -3363,8 +3500,8 @@
 					</select>
 				</label>
 				<label>
-					Size
-					<select value={gridSize} aria-label="PDF grid size" on:change={updateGridSize}>
+					{T.labels.size}
+					<select value={gridSize} aria-label={T.aria.pdfGridSize} on:change={updateGridSize}>
 						{#each GRID_SIZE_OPTIONS as option}
 							<option value={option}>{option}</option>
 						{/each}
@@ -3372,17 +3509,17 @@
 				</label>
 			</div>
 			<p class="pdf-config-note">
-				Cards stay portrait. Landscape pages double the slot count across the width.
+				{T.modal.pdf.note}
 			</p>
 		</PanelModal>
 	{/if}
 
 	{#if showSettingsPanel}
 		<PanelModal
-			title="Corner languages"
+			title={T.labels.cornerLanguages}
 			titleId="settings-title"
-			eyebrow="Settings"
-			closeLabel="Close settings"
+			eyebrow={T.labels.settings}
+			closeLabel={T.modal.settings.close}
 			on:close={() => (showSettingsPanel = false)}
 		>
 			<div class="settings-language-list">
@@ -3393,29 +3530,29 @@
 							<div
 								class="readonly-corner-icon"
 								role="img"
-								aria-label={corner.label}
-								title={corner.label}
+								aria-label={cornerLabelForIndex(index)}
+								title={cornerLabelForIndex(index)}
 							>
 								<svelte:component this={corner.icon} size={18} aria-hidden="true" />
 							</div>
 						</div>
 						<label>
-							Code
+							{T.labels.code}
 							<input
 								value={setup.lang}
 								maxlength="16"
-								placeholder="en"
+								placeholder={T.placeholders.languageCode}
 								spellcheck="false"
 								on:input={(event) =>
 									updateLanguageSetup(setup.id, { lang: event.currentTarget.value })}
 							/>
 						</label>
 						<label class="marker-field">
-							Flag
+							{T.labels.flag}
 							<input
 								value={setup.marker}
 								maxlength="4"
-								placeholder="🇬🇧"
+								placeholder={T.placeholders.flag}
 								spellcheck="false"
 								on:input={(event) =>
 									updateLanguageSetup(setup.id, { marker: event.currentTarget.value })}
@@ -3425,19 +3562,15 @@
 				{/each}
 			</div>
 			<section class="settings-section">
-				<h3>Rendering</h3>
+				<h3>{T.labels.rendering}</h3>
 				<div class="settings-toggle-list">
 					<label class="settings-toggle">
-						<input
-							type="checkbox"
-							checked={reserveQrMargin}
-							on:change={updateReserveQrMargin}
-						/>
-						<span>QR margin</span>
+						<input type="checkbox" checked={reserveQrMargin} on:change={updateReserveQrMargin} />
+						<span>{T.help.enableQrMarginLabel}</span>
 					</label>
 					<label class="settings-toggle">
 						<input type="checkbox" checked={showQrText} on:change={updateShowQrText} />
-						<span>QR text</span>
+						<span>{T.help.enableQrTextLabel}</span>
 					</label>
 				</div>
 			</section>
@@ -3464,3 +3597,4 @@
 		</PanelModal>
 	{/if}
 </main>
+{/if}
