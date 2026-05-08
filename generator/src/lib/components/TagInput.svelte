@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Plus, X } from 'lucide-svelte'
-	import { createEventDispatcher } from 'svelte'
 	import IconButton from './IconButton.svelte'
 	import { T, format } from '../i18n/i18n.svelte'
 
@@ -8,12 +7,12 @@
 	export let tags: string[] = []
 	export let suggestions: string[] = []
 	export let listId = 'tag-options'
-
-	const dispatch = createEventDispatcher<{ add: void; remove: string }>()
+	export let onAdd: () => void = () => {}
+	export let onRemove: (tag: string) => void = () => {}
 
 	function addTag() {
 		if (!value.trim()) return
-		dispatch('add')
+		onAdd()
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
@@ -43,7 +42,7 @@
 				ariaLabel={T.placeholders.addTag}
 				title={T.placeholders.addTag}
 				disabled={!value.trim()}
-				on:click={addTag}
+				onclick={addTag}
 			>
 				<Plus size={18} aria-hidden="true" />
 			</IconButton>
@@ -59,7 +58,7 @@
 						type="button"
 						aria-label={removeLabel}
 						title={removeLabel}
-						on:click={() => dispatch('remove', tag)}
+						on:click={() => onRemove(tag)}
 					>
 						<X size={14} aria-hidden="true" />
 					</button>

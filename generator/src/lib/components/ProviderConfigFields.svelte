@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
 	import { T } from '../i18n/i18n.svelte'
 
 	type ImageProvider = {
@@ -22,6 +21,9 @@
 		baseUrl?: string
 	}
 
+	type ImageConfigChange = { provider: string; field: 'apiKey'; value: string }
+	type TranslationConfigChange = { field: keyof TranslationConfig; value: string }
+
 	export let imageProviders: readonly ImageProvider[] = []
 	export let imageProviderConfigs: Record<string, ApiKeyConfig> = {}
 	export let translationProviders: readonly TranslationProvider[] = []
@@ -30,13 +32,10 @@
 	export let translationConfig: TranslationConfig = { apiKey: '', model: '', baseUrl: '' }
 	export let showBaseUrl = false
 	export let promptTemplate = ''
-
-	const dispatch = createEventDispatcher<{
-		imageConfigChange: { provider: string; field: 'apiKey'; value: string }
-		translationProviderChange: string
-		translationConfigChange: { field: keyof TranslationConfig; value: string }
-		promptTemplateChange: string
-	}>()
+	export let onImageConfigChange: (change: ImageConfigChange) => void = () => {}
+	export let onTranslationProviderChange: (value: string) => void = () => {}
+	export let onTranslationConfigChange: (change: TranslationConfigChange) => void = () => {}
+	export let onPromptTemplateChange: (value: string) => void = () => {}
 </script>
 
 <div class="settings-section">
@@ -51,7 +50,7 @@
 				spellcheck="false"
 				autocomplete="off"
 				on:input={(event) =>
-					dispatch('imageConfigChange', {
+					onImageConfigChange({
 						provider: provider.id,
 						field: 'apiKey',
 						value: event.currentTarget.value
@@ -67,7 +66,7 @@
 		{T.labels.translationProvider}
 		<select
 			value={translationProvider}
-			on:change={(event) => dispatch('translationProviderChange', event.currentTarget.value)}
+			on:change={(event) => onTranslationProviderChange(event.currentTarget.value)}
 		>
 			{#each translationProviders as provider}
 				<option value={provider.value}>{provider.label}</option>
@@ -83,7 +82,7 @@
 			spellcheck="false"
 			autocomplete="off"
 			on:input={(event) =>
-				dispatch('translationConfigChange', { field: 'apiKey', value: event.currentTarget.value })}
+				onTranslationConfigChange({ field: 'apiKey', value: event.currentTarget.value })}
 		/>
 	</label>
 	<label class="api-key-field">
@@ -94,7 +93,7 @@
 			spellcheck="false"
 			autocomplete="off"
 			on:input={(event) =>
-				dispatch('translationConfigChange', { field: 'model', value: event.currentTarget.value })}
+				onTranslationConfigChange({ field: 'model', value: event.currentTarget.value })}
 		/>
 	</label>
 	{#if showBaseUrl}
@@ -106,7 +105,7 @@
 				spellcheck="false"
 				autocomplete="off"
 				on:input={(event) =>
-					dispatch('translationConfigChange', { field: 'baseUrl', value: event.currentTarget.value })}
+					onTranslationConfigChange({ field: 'baseUrl', value: event.currentTarget.value })}
 			/>
 		</label>
 	{/if}
@@ -116,7 +115,7 @@
 			value={promptTemplate}
 			rows="9"
 			spellcheck="false"
-			on:input={(event) => dispatch('promptTemplateChange', event.currentTarget.value)}
+			on:input={(event) => onPromptTemplateChange(event.currentTarget.value)}
 		></textarea>
 	</label>
 </div>

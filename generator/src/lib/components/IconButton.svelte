@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte'
-
 	export let ariaLabel: string
 	export let title = ariaLabel
 	export let variant: 'primary' | 'secondary' | 'danger' = 'secondary'
@@ -9,12 +7,11 @@
 	export let size = 18
 	export let className = ''
 	export let stopPropagation = false
-
-	const dispatch = createEventDispatcher<{ click: MouseEvent }>()
+	export let onclick: ((event: MouseEvent) => void) | undefined = undefined
 
 	function handleClick(event: MouseEvent) {
 		if (stopPropagation) event.stopPropagation()
-		dispatch('click', event)
+		onclick?.(event)
 	}
 </script>
 

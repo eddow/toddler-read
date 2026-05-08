@@ -2533,7 +2533,7 @@
 					</select>
 				</label>
 			{/if}
-			<IconButton ariaLabel={T.labels.settings} on:click={() => (showSettingsPanel = !showSettingsPanel)}>
+			<IconButton ariaLabel={T.labels.settings} onclick={() => (showSettingsPanel = !showSettingsPanel)}>
 				<Settings size={18} aria-hidden="true" />
 			</IconButton>
 			<button type="button" on:click={createNewCard}>
@@ -2746,7 +2746,7 @@
 												<DuplicateFocusButton
 													active={duplicateFocus === 'image'}
 													ariaLabel={T.aria.showDuplicateImages}
-													on:click={() => toggleDuplicateFocus('image')}
+													onclick={() => toggleDuplicateFocus('image')}
 												/>
 											{/if}
 										</span>
@@ -2767,7 +2767,7 @@
 													ariaLabel={format(T.templates.showDuplicateLanguageValues, {
 														language: mainLanguage
 													})}
-													on:click={() =>
+													onclick={() =>
 														toggleDuplicateFocus(duplicateColumnKeyForLanguage(mainLanguage))}
 												/>
 											{/if}
@@ -2822,7 +2822,7 @@
 											variant="danger"
 											size={16}
 											disabled={selectedDeleteCardIds.length === 0}
-											on:click={() => (deletingCheckedCardsArmed = true)}
+											onclick={() => (deletingCheckedCardsArmed = true)}
 										>
 											<Trash2 size={16} aria-hidden="true" />
 										</IconButton>
@@ -2887,7 +2887,7 @@
 														className="delete-icon-button"
 														size={15}
 														stopPropagation
-														on:click={() => clearVersoLink(card.id)}
+														onclick={() => clearVersoLink(card.id)}
 													>
 														<Link2Off size={15} aria-hidden="true" />
 													</IconButton>
@@ -2926,7 +2926,7 @@
 												className="delete-icon-button"
 												size={16}
 												stopPropagation
-												on:click={() => (deletingCardId = card.id)}
+												onclick={() => (deletingCardId = card.id)}
 											>
 												<Trash2 size={16} aria-hidden="true" />
 											</IconButton>
@@ -3041,7 +3041,7 @@
 									{T.actions.delete}
 								</button>
 							{:else}
-								<IconButton ariaLabel={T.aria.deleteCard} on:click={() => (editorDeleteArmed = true)}>
+								<IconButton ariaLabel={T.aria.deleteCard} onclick={() => (editorDeleteArmed = true)}>
 									<Trash2 size={18} aria-hidden="true" />
 								</IconButton>
 							{/if}
@@ -3078,7 +3078,7 @@
 						<div class="image-panel-header">
 							<p class="eyebrow">{T.labels.image}</p>
 							{#if imageDataUrl}
-								<IconButton ariaLabel={T.aria.clearImage} on:click={clearImage}>
+								<IconButton ariaLabel={T.aria.clearImage} onclick={clearImage}>
 									<X size={18} aria-hidden="true" />
 								</IconButton>
 							{/if}
@@ -3136,7 +3136,7 @@
 									<IconButton
 										ariaLabel={T.manager.unlinkVerso}
 										title={T.manager.unlinkVerso}
-										on:click={() => clearVersoLink(selectedCard.id)}
+										onclick={() => clearVersoLink(selectedCard.id)}
 									>
 										<Link2Off size={18} aria-hidden="true" />
 									</IconButton>
@@ -3163,8 +3163,8 @@
 						tags={selectedCardTags}
 						suggestions={tagSuggestions}
 						listId="card-tag-options"
-						on:add={addSelectedTag}
-						on:remove={(event) => removeSelectedTag(event.detail)}
+						onAdd={addSelectedTag}
+						onRemove={removeSelectedTag}
 					/>
 
 					{#if translationError}
@@ -3188,14 +3188,14 @@
 						bind:canvas={previewCanvas}
 						dragging={isDragging}
 						canPan={Boolean(imageDataUrl)}
-						on:dragenter={() => (isDragging = true)}
-						on:dragover={() => (isDragging = true)}
-						on:dragleave={() => (isDragging = false)}
-						on:drop={(event) => onDrop(event.detail)}
-						on:pointerdown={(event) => startImageGesture(event.detail)}
-						on:pointermove={(event) => moveImageGesture(event.detail)}
-						on:pointerup={(event) => stopImageGesture(event.detail)}
-						on:pointercancel={(event) => stopImageGesture(event.detail)}
+						onDragenter={() => (isDragging = true)}
+						onDragover={() => (isDragging = true)}
+						onDragleave={() => (isDragging = false)}
+						onDrop={onDrop}
+						onPointerdown={startImageGesture}
+						onPointermove={moveImageGesture}
+						onPointerup={stopImageGesture}
+						onPointercancel={stopImageGesture}
 					/>
 
 					{#if renderError}
@@ -3218,7 +3218,7 @@
 			eyebrow={T.labels.imageSource}
 			closeLabel={T.modal.imageSearch.close}
 			modalClass="image-search-modal"
-			on:close={closeImageSearch}
+			onClose={closeImageSearch}
 		>
 			{#if availableImageSearchProviders.length > 0}
 				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
@@ -3318,7 +3318,7 @@
 			linkLabel={T.actions.openReader}
 			linkTarget="_blank"
 			note={T.modal.reader.note}
-			on:close={() => (showReaderInstallPanel = false)}
+			onClose={() => (showReaderInstallPanel = false)}
 		/>
 	{/if}
 
@@ -3333,7 +3333,7 @@
 			href={apkUrl}
 			linkLabel={T.actions.downloadApk}
 			action="download"
-			on:close={() => (showApkPanel = false)}
+			onClose={() => (showApkPanel = false)}
 		/>
 	{/if}
 
@@ -3344,7 +3344,7 @@
 			closeLabel={T.modal.help.close}
 			modalClass="help-modal"
 			showCloseButton={false}
-			on:close={() => (showHelpPanel = false)}
+			onClose={() => (showHelpPanel = false)}
 		>
 			<div slot="header" class="settings-header">
 				<div class="help-title-row">
@@ -3473,7 +3473,7 @@
 			titleId="pdf-config-title"
 			eyebrow={T.labels.print}
 			closeLabel={T.modal.pdf.close}
-			on:close={() => (showPdfConfigPanel = false)}
+			onClose={() => (showPdfConfigPanel = false)}
 		>
 			<div class="pdf-config-summary">
 				<span>{pdfLayoutLabel}</span>
@@ -3520,7 +3520,7 @@
 			titleId="settings-title"
 			eyebrow={T.labels.settings}
 			closeLabel={T.modal.settings.close}
-			on:close={() => (showSettingsPanel = false)}
+			onClose={() => (showSettingsPanel = false)}
 		>
 			<div class="settings-language-list">
 				{#each languageSetups as setup, index (setup.id)}
@@ -3583,16 +3583,16 @@
 				translationConfig={currentTranslationProviderConfig}
 				showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
 				promptTemplate={translationPromptTemplate}
-				on:imageConfigChange={(event) =>
+				onImageConfigChange={(change) =>
 					updateImageSearchProviderConfig(
-						event.detail.provider as ImageSearchProviderId,
-						event.detail.field,
-						event.detail.value
+						change.provider as ImageSearchProviderId,
+						change.field,
+						change.value
 					)}
-				on:translationProviderChange={(event) => updateTranslationProvider(event.detail)}
-				on:translationConfigChange={(event) =>
-					updateTranslationProviderConfig(event.detail.field, event.detail.value)}
-				on:promptTemplateChange={(event) => (translationPromptTemplate = event.detail)}
+				onTranslationProviderChange={(value) => updateTranslationProvider(value)}
+				onTranslationConfigChange={(change) =>
+					updateTranslationProviderConfig(change.field, change.value)}
+				onPromptTemplateChange={(value) => (translationPromptTemplate = value)}
 			/>
 		</PanelModal>
 	{/if}

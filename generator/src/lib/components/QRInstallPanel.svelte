@@ -13,6 +13,7 @@
 	export let linkTarget = ''
 	export let note = ''
 	export let action: 'download' | 'external' = 'external'
+	export let onClose: () => void = () => {}
 </script>
 
 <PanelModal
@@ -23,7 +24,7 @@
 	modalClass="apk-modal"
 	backdropClass="qr-backdrop"
 	scrimClass="qr-scrim"
-	on:close
+	{onClose}
 >
 	{#if qrDataUrl}
 		<img class="apk-modal-qr" src={qrDataUrl} alt={qrAlt} />

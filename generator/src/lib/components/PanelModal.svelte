@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { X } from 'lucide-svelte'
-	import { createEventDispatcher } from 'svelte'
 	import IconButton from './IconButton.svelte'
 
 	export let title: string
@@ -11,8 +10,7 @@
 	export let backdropClass = ''
 	export let scrimClass = ''
 	export let showCloseButton = true
-
-	const dispatch = createEventDispatcher<{ close: void }>()
+	export let onClose: () => void = () => {}
 </script>
 
 <div class={`modal-backdrop ${backdropClass}`.trim()}>
@@ -20,7 +18,7 @@
 		type="button"
 		class={`modal-scrim ${scrimClass}`.trim()}
 		aria-label={closeLabel}
-		on:click={() => dispatch('close')}
+		on:click={onClose}
 	></button>
 	<div class={modalClass} role="dialog" aria-modal="true" aria-labelledby={titleId} tabindex="-1">
 		{#if $$slots.header}
@@ -34,7 +32,7 @@
 					<h2 id={titleId}>{title}</h2>
 				</div>
 				{#if showCloseButton}
-					<IconButton ariaLabel={closeLabel} title={closeLabel} on:click={() => dispatch('close')}>
+					<IconButton ariaLabel={closeLabel} title={closeLabel} onclick={onClose}>
 						<X size={18} aria-hidden="true" />
 					</IconButton>
 				{/if}

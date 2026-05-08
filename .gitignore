@@ -1,6 +1,7 @@
 node_modules
 *.js
 !reader/sw.js
+!generator/public/sw.js
 !reader/vendor/
 !reader/vendor/jsQR.js
 tr.apk

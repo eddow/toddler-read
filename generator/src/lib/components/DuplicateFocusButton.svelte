@@ -5,6 +5,7 @@
 	export let active = false
 	export let ariaLabel: string
 	export let title = ariaLabel
+	export let onclick: ((event: MouseEvent) => void) | undefined = undefined
 </script>
 
 <IconButton
@@ -13,7 +14,7 @@
 	{title}
 	className="duplicate-focus-button"
 	size={13}
-	on:click
+	{onclick}
 >
 	<Copy size={13} aria-hidden="true" />
 </IconButton>
