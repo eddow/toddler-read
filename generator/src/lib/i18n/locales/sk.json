@@ -203,6 +203,8 @@
     "format": "Formátovať",
     "help": "Pomoc",
     "image": "Obrázok",
+    "imageGeneration": "Generovanie obrazu",
+    "imageGenerationPromptTemplate": "Šablóna výzvy na vytvorenie obrázka",
     "imageSource": "Zdroj obrázka",
     "imageSources": "Zdroje obrázkov",
     "managerAndPress": "Manažér a Tlačiareň",
@@ -217,10 +219,12 @@
     "size": "Veľkosť",
     "tags": "Tagy",
     "translation": "Preklad",
+    "translationPromptTemplate": "Šablóna výzvy na preklad",
     "translationProvider": "Poskytovateľ prekladov",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai alebo Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "alebo",
     "cornerLanguagesRestAfter": "a upravte zobrazenú značku.",
     "imageSourcesLabel": "Zdroje obrázkov:",
-    "imageSourcesRest": "pridajte klávesy Pexels alebo Flaticon API, aby ste povolili vyhľadávanie obrázkov v aplikácii.",
+    "imageSourcesRest": "pridajte kľúče API Pexels, Flaticon, Leonardo.Ai alebo Pollinations.ai, aby ste umožnili vyhľadávanie a generovanie obrázkov v aplikácii.",
     "translationLabel": "preklad:",
     "translationRest": "vyberte Gemini, OpenAI, DeepSeek, Z.AI, Groq alebo vlastného poskytovateľa kompatibilného so OpenAI.",
     "modelBaseUrlLabel": "Model a základná adresa URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Šablóna výzvy:",
     "promptTemplateRest": "ovláda spôsob prekladu textov kariet. Zástupné symboly vyplní aplikácia pred odoslaním žiadosti.",
     "apiKeysTitle": "Klávesy API",
-    "apiKeysText": "Kľúče API sú potrebné len pre voliteľných pomocníkov. Prekladové klávesy umožňujú aplikácii doplniť chýbajúci jazykový text z existujúceho textu na karte. Klávesy vyhľadávania obrázkov umožňujú aplikácii vyhľadávať poskytovateľov obrázkov z editora. Kľúče zostávajú v miestnom úložisku prehliadača a pri použití tejto funkcie sa odosielajú priamo vybranému poskytovateľovi.",
+    "apiKeysText": "Kľúče API sú potrebné len pre voliteľných pomocníkov. Prekladové klávesy umožňujú aplikácii doplniť chýbajúci jazykový text z existujúceho textu na karte. Obrázkové kľúče umožňujú aplikácii vyhľadávať alebo generovať obrázky z editora. Kľúče zostávajú v miestnom úložisku prehliadača a pri použití tejto funkcie sa odosielajú priamo vybranému poskytovateľovi.",
     "localDataTitle": "Miestne údaje",
     "localDataText1": "Údaje a nastavenia karty sú uložené v lokálnom úložisku tohto prehliadača. Jazyk použitia sa v lokálnom úložisku pamätá aj samostatne. Na servery Toddler Read sa nič neodosiela a nedochádza k synchronizácii účtu ani cloudu.",
     "localDataText2": "Pred vymazaním údajov prehliadača, prepnutím prehliadača alebo presunom na iné zariadenie exportujte svoju knižnicu z ponuky súborov. Jedinými sieťovými prenosmi sú požiadavky na preklad alebo vyhľadávanie obrázkov, ktoré smerujú priamo k nakonfigurovanému poskytovateľovi APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "stiahne čitateľný JSON bez obrázkov na ručnú úpravu.",
     "managerPressText1": "Správcom je knižnica kariet. Vyberte karty pomocou začiarkavacích políčok a pomocou filtrov nájdite chýbajúce obrázky, text alebo spätné odkazy.",
     "managerPressText2": "Otvorte zobrazenie tlačiarne a zobrazte si ukážku vybratých kariet ako strany lícnej a rubovej strany. Vyberte rozloženie PDF na paneli s nástrojmi, skontrolujte všetky upozornenia, potom si stiahnite PDF a vytlačte ho.",
+    "apiCredits": "Podporované rozhrania API",
     "links": "Odkazy",
     "repository": "Úložisko",
     "kofi": "Ko-fi"

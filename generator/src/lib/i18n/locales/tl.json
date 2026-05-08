@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Tulong",
     "image": "Imahe",
+    "imageGeneration": "Pagbuo ng imahe",
+    "imageGenerationPromptTemplate": "Prompt na template ng pagbuo ng larawan",
     "imageSource": "Pinagmulan ng larawan",
     "imageSources": "Mga mapagkukunan ng larawan",
     "managerAndPress": "Manager At Printing Press",
@@ -217,10 +219,12 @@
     "size": "Sukat",
     "tags": "Mga tag",
     "translation": "Pagsasalin",
+    "translationPromptTemplate": "Template ng prompt ng pagsasalin",
     "translationProvider": "Tagabigay ng pagsasalin",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, o Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "o",
     "cornerLanguagesRestAfter": "at ayusin ang ipinapakitang marker.",
     "imageSourcesLabel": "Mga mapagkukunan ng larawan:",
-    "imageSourcesRest": "magdagdag ng mga Pexels o Flaticon API key upang paganahin ang in-app na paghahanap ng larawan.",
+    "imageSourcesRest": "magdagdag ng mga Pexels, Flaticon, Leonardo.Ai, o Pollinations.ai API keys upang paganahin ang in-app na paghahanap ng imahe at pagbuo.",
     "translationLabel": "Pagsasalin:",
     "translationRest": "piliin ang Gemini, OpenAI, DeepSeek, Z.AI, Groq, o isang custom na provider na tugma sa OpenAI.",
     "modelBaseUrlLabel": "Modelo at base URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Prompt na template:",
     "promptTemplateRest": "kinokontrol kung paano isinasalin ang mga card text. Ang mga placeholder ay pinupuno ng app bago ipadala ang kahilingan.",
     "apiKeysTitle": "API Keys",
-    "apiKeysText": "Ang mga API key ay kailangan lamang para sa mga opsyonal na katulong. Hinahayaan ng mga translation key ang app na punan ang nawawalang text ng wika mula sa kasalukuyang text sa card. Hinahayaan ng mga key sa paghahanap ng larawan ang app na maghanap ng mga tagapagbigay ng larawan mula sa editor. Ang mga susi ay nananatili sa lokal na imbakan ng browser at direktang ipinadala sa napiling provider kapag ginamit mo ang tampok na iyon.",
+    "apiKeysText": "Ang mga API key ay kailangan lamang para sa mga opsyonal na katulong. Hinahayaan ng mga translation key ang app na punan ang nawawalang text ng wika mula sa kasalukuyang text sa card. Hinahayaan ng mga image key ang app na maghanap o bumuo ng mga larawan mula sa editor. Ang mga susi ay nananatili sa lokal na imbakan ng browser at direktang ipinadala sa napiling provider kapag ginamit mo ang tampok na iyon.",
     "localDataTitle": "Lokal na Data",
     "localDataText1": "Ang data at mga setting ng card ay nakaimbak sa lokal na storage ng browser na ito. Ang wika ng paggamit ay naaalala rin nang hiwalay sa lokal na imbakan. Walang ipinapadala sa mga server ng Toddler Read, at walang account o cloud sync.",
     "localDataText2": "I-export ang iyong library mula sa menu ng file bago i-clear ang data ng browser, lumipat ng browser, o lumipat sa ibang device. Ang tanging mga pagpapadala sa network ay ang mga kahilingang na-trigger mo para sa pagsasalin o paghahanap ng imahe, na direktang napupunta sa naka-configure na provider na APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "nagda-download ng nababasang JSON nang walang mga larawan para sa pag-edit ng kamay.",
     "managerPressText1": "Ang manager ay ang card library. Pumili ng mga card na may mga checkbox at gumamit ng mga filter para maghanap ng mga nawawalang larawan, text, o verso link.",
     "managerPressText2": "Buksan ang view ng printer upang i-preview ang mga napiling card bilang recto at verso na mga pahina. Piliin ang layout ng PDF sa toolbar, suriin ang anumang mga babala, pagkatapos ay i-download ang PDF at i-print ito.",
+    "apiCredits": "Mga suportadong API",
     "links": "Mga link",
     "repository": "Imbakan",
     "kofi": "Ko-fi"

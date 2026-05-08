@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Ajutor",
     "image": "Imagine",
+    "imageGeneration": "Generarea imaginii",
+    "imageGenerationPromptTemplate": "Șablon de prompt pentru generarea imaginii",
     "imageSource": "Sursa imaginii",
     "imageSources": "Surse de imagine",
     "managerAndPress": "Manager și tipar",
@@ -217,10 +219,12 @@
     "size": "Dimensiune",
     "tags": "Etichete",
     "translation": "Traducere",
+    "translationPromptTemplate": "Șablon prompt de traducere",
     "translationProvider": "Furnizor de traduceri",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai sau Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "sau",
     "cornerLanguagesRestAfter": "și ajustați marcatorul afișat.",
     "imageSourcesLabel": "Surse imagini:",
-    "imageSourcesRest": "adăugați cheile Pexels sau Flaticon API pentru a activa căutarea de imagini în aplicație.",
+    "imageSourcesRest": "adăugați chei API Pexels, Flaticon, Leonardo.Ai sau Pollinations.ai pentru a activa căutarea și generarea de imagini în aplicație.",
     "translationLabel": "Traducere:",
     "translationRest": "alegeți Gemini, OpenAI, DeepSeek, Z.AI, Groq sau un furnizor personalizat compatibil cu OpenAI.",
     "modelBaseUrlLabel": "Model și URL de bază:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Șablon prompt:",
     "promptTemplateRest": "controlează modul în care sunt traduse textele cardurilor. Substituenții sunt completați de aplicație înainte ca cererea să fie trimisă.",
     "apiKeysTitle": "Chei API",
-    "apiKeysText": "Cheile API sunt necesare doar pentru ajutoarele opționale. Tastele de traducere permit aplicației să completeze textul lingvistic lipsă din textul existent de pe card. Tastele de căutare de imagini permit aplicației să caute furnizorii de imagini din editor. Cheile rămân în stocarea locală a browserului și sunt trimise direct furnizorului selectat atunci când utilizați această funcție.",
+    "apiKeysText": "Cheile API sunt necesare doar pentru ajutoarele opționale. Tastele de traducere permit aplicației să completeze textul lingvistic lipsă din textul existent de pe card. Tastele de imagine permit aplicației să caute sau să genereze imagini din editor. Cheile rămân în stocarea locală a browserului și sunt trimise direct furnizorului selectat atunci când utilizați această funcție.",
     "localDataTitle": "Date locale",
     "localDataText1": "Datele și setările cardului sunt stocate în spațiul de stocare local al acestui browser. Limba de utilizare este memorată separat și în stocarea locală. Nimic nu este trimis către serverele Toddler Read și nu există sincronizare de cont sau cloud.",
     "localDataText2": "Exportați biblioteca din meniul de fișiere înainte de a șterge datele browserului, a schimba browserul sau a muta pe alt dispozitiv. Singurele transmisii de rețea sunt solicitările pe care le declanșați pentru traducere sau căutare de imagini, care ajung direct la furnizorul configurat APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "descarcă JSON care poate fi citit fără imagini pentru editare manuală.",
     "managerPressText1": "Managerul este biblioteca de carduri. Selectați cardurile cu casetele de selectare și utilizați filtre pentru a găsi imagini, text sau link-uri verso care lipsesc.",
     "managerPressText2": "Deschideți vizualizarea imprimantei pentru a previzualiza cardurile selectate ca pagini recto și verso. Alegeți aspectul PDF din bara de instrumente, examinați orice avertismente, apoi descărcați PDF și imprimați-l.",
+    "apiCredits": "API-uri acceptate",
     "links": "Legături",
     "repository": "Depozitul",
     "kofi": "Ko-fi"

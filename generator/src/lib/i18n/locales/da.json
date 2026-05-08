@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Hjælp",
     "image": "Billede",
+    "imageGeneration": "Billedgenerering",
+    "imageGenerationPromptTemplate": "Billedgenereringspromptskabelon",
     "imageSource": "Billedkilde",
     "imageSources": "Billedkilder",
     "managerAndPress": "Bestyrer og trykkeri",
@@ -217,10 +219,12 @@
     "size": "Størrelse",
     "tags": "Tags",
     "translation": "Oversættelse",
+    "translationPromptTemplate": "Oversættelsespromptskabelon",
     "translationProvider": "Oversættelsesudbyder",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "eller",
     "cornerLanguagesRestAfter": "og juster den viste markør.",
     "imageSourcesLabel": "Billedkilder:",
-    "imageSourcesRest": "tilføje Pexels eller Flaticon API nøgler for at aktivere billedsøgning i appen.",
+    "imageSourcesRest": "tilføje Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai API-nøgler for at aktivere billedsøgning og generering i appen.",
     "translationLabel": "Oversættelse:",
     "translationRest": "vælg Gemini, OpenAI, DeepSeek, Z.AI, Groq eller en brugerdefineret OpenAI-kompatibel udbyder.",
     "modelBaseUrlLabel": "Model og basis-URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Spørgsmålsskabelon:",
     "promptTemplateRest": "styrer, hvordan korttekster oversættes. Pladsholderne udfyldes af appen, før anmodningen sendes.",
     "apiKeysTitle": "API nøgler",
-    "apiKeysText": "API-nøgler er kun nødvendige for valgfri hjælpere. Oversættelsesnøgler lader appen udfylde manglende sprogtekst fra eksisterende tekst på kortet. Billedsøgningsnøgler lader appen søge billedudbydere fra editoren. Nøgler forbliver i det lokale browserlager og sendes direkte til den valgte udbyder, når du bruger denne funktion.",
+    "apiKeysText": "API-nøgler er kun nødvendige for valgfri hjælpere. Oversættelsesnøgler lader appen udfylde manglende sprogtekst fra eksisterende tekst på kortet. Billedtaster lader appen søge eller generere billeder fra editoren. Nøgler forbliver i det lokale browserlager og sendes direkte til den valgte udbyder, når du bruger denne funktion.",
     "localDataTitle": "Lokale data",
     "localDataText1": "Kortdata og -indstillinger gemmes i denne browsers lokale lager. Brugssproget huskes også separat i lokal lagring. Der sendes intet til Toddler Read-servere, og der er ingen konto- eller skysynkronisering.",
     "localDataText2": "Eksporter dit bibliotek fra filmenuen, før du rydder browserdata, skifter browser eller flytter til en anden enhed. De eneste netværkstransmissioner er de anmodninger, du udløser for oversættelse eller billedsøgning, som går direkte til den konfigurerede udbyder APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "downloader den læsbare JSON uden billeder til håndredigering.",
     "managerPressText1": "Lederen er kortbiblioteket. Vælg kort med afkrydsningsfelterne, og brug filtre til at finde manglende billeder, tekst eller verso-links.",
     "managerPressText2": "Åbn printervisningen for at få vist udvalgte kort som recto- og verso-sider. Vælg PDF-layoutet på værktøjslinjen, gennemgå eventuelle advarsler, download derefter PDF og udskriv den.",
+    "apiCredits": "Understøttede API'er",
     "links": "Links",
     "repository": "Depot",
     "kofi": "Ko-fi"

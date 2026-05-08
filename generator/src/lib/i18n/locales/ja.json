@@ -203,6 +203,8 @@
     "format": "フォーマット",
     "help": "ヘルプ",
     "image": "画像",
+    "imageGeneration": "画像生成",
+    "imageGenerationPromptTemplate": "画像生成プロンプトのテンプレート",
     "imageSource": "画像ソース",
     "imageSources": "画像ソース",
     "managerAndPress": "マネージャーと印刷機",
@@ -217,10 +219,12 @@
     "size": "サイズ",
     "tags": "タグ",
     "translation": "翻訳",
+    "translationPromptTemplate": "翻訳プロンプトのテンプレート",
     "translationProvider": "翻訳プロバイダー",
     "verso": "ヴァーソ"
   },
   "providers": {
+    "imageProviderKeys": "Pexels、Flaticon、Leonardo.Ai、または Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "または",
     "cornerLanguagesRestAfter": "表示されたマーカーを調整します。",
     "imageSourcesLabel": "画像ソース:",
-    "imageSourcesRest": "Pexels または Flaticon API キーを追加して、アプリ内画像検索を有効にします。",
+    "imageSourcesRest": "Pexels、Flaticon、Leonardo.Ai、または Pollinations.ai API キーを追加して、アプリ内画像の検索と生成を有効にします。",
     "translationLabel": "翻訳:",
     "translationRest": "Gemini、OpenAI、DeepSeek、Z.AI、Groq、またはカスタムの OpenAI 互換プロバイダーを選択します。",
     "modelBaseUrlLabel": "モデルとベース URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "プロンプトテンプレート:",
     "promptTemplateRest": "カードテキストの翻訳方法を制御します。プレースホルダーは、リクエストが送信される前にアプリによって入力されます。",
     "apiKeysTitle": "API キー",
-    "apiKeysText": "API キーは、オプションのヘルパーにのみ必要です。翻訳キーを使用すると、カード上の既存のテキストから不足している言語テキストをアプリで埋めることができます。画像検索キーを使用すると、アプリはエディターから画像プロバイダーを検索できます。キーはローカルのブラウザー ストレージに保存され、その機能を使用するときに選択したプロバイダーに直接送信されます。",
+    "apiKeysText": "API キーはオプションのヘルパーにのみ必要です。翻訳キーを使用すると、カード上の既存のテキストから不足している言語テキストをアプリで埋めることができます。画像キーを使用すると、アプリがエディターから画像を検索または生成できるようになります。キーはローカルのブラウザー ストレージに保存され、その機能を使用するときに選択したプロバイダーに直接送信されます。",
     "localDataTitle": "ローカルデータ",
     "localDataText1": "カードのデータと設定は、このブラウザのローカル ストレージに保存されます。使用言語もローカル ストレージに別途記憶されます。 Toddler Read サーバーには何も送信されず、アカウントやクラウド同期もありません。",
     "localDataText2": "ブラウザのデータをクリアしたり、ブラウザを切り替えたり、別のデバイスに移動したりする前に、ファイル メニューからライブラリをエクスポートしてください。唯一のネットワーク送信は、翻訳または画像検索のためにトリガーされたリクエストであり、構成されたプロバイダー APIs に直接送信されます。",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "手動編集用に画像なしで読み取り可能な JSON をダウンロードします。",
     "managerPressText1": "管理者はカードライブラリです。チェックボックスを使用してカードを選択し、フィルターを使用して、欠落している画像、テキスト、または反転リンクを見つけます。",
     "managerPressText2": "プリンター ビューを開いて、選択したカードを表ページと裏ページとしてプレビューします。ツールバーで PDF レイアウトを選択し、警告を確認してから、PDF をダウンロードして印刷します。",
+    "apiCredits": "サポートされている API",
     "links": "リンク",
     "repository": "リポジトリ",
     "kofi": "Ko-fi"

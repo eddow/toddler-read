@@ -203,6 +203,8 @@
     "format": "Formato",
     "help": "Axuda",
     "image": "Imaxe",
+    "imageGeneration": "Xeración de imaxes",
+    "imageGenerationPromptTemplate": "Modelo de solicitude de xeración de imaxes",
     "imageSource": "Fonte da imaxe",
     "imageSources": "Fontes da imaxe",
     "managerAndPress": "Administrador e imprenta",
@@ -217,10 +219,12 @@
     "size": "Tamaño",
     "tags": "Etiquetas",
     "translation": "Tradución",
+    "translationPromptTemplate": "Modelo de solicitude de tradución",
     "translationProvider": "Provedor de tradución",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ou Polinizacións.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "ou",
     "cornerLanguagesRestAfter": "e axuste o marcador mostrado.",
     "imageSourcesLabel": "Fontes da imaxe:",
-    "imageSourcesRest": "engade as claves Pexels ou Flaticon API para activar a busca de imaxes na aplicación.",
+    "imageSourcesRest": "engade claves de API Pexels, Flaticon, Leonardo.Ai ou Pollinations.ai para activar a busca e xeración de imaxes na aplicación.",
     "translationLabel": "Tradución:",
     "translationRest": "escolle Gemini, OpenAI, DeepSeek, Z.AI, Groq ou un fornecedor personalizado compatible con OpenAI.",
     "modelBaseUrlLabel": "Modelo e URL base:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Modelo de solicitude:",
     "promptTemplateRest": "controla como se traducen os textos das tarxetas. A aplicación enche os marcadores de posición antes de enviar a solicitude.",
     "apiKeysTitle": "Chaves API",
-    "apiKeysText": "As chaves API só son necesarias para os axudantes opcionais. As claves de tradución permiten que a aplicación enche o texto do idioma que falta a partir do texto existente na tarxeta. As claves de busca de imaxes permiten á aplicación buscar provedores de imaxes desde o editor. As claves permanecen no almacenamento local do navegador e envíanse directamente ao provedor seleccionado cando utilizas esa función.",
+    "apiKeysText": "As claves API só son necesarias para os axudantes opcionais. As claves de tradución permiten que a aplicación enche o texto do idioma que falta a partir do texto existente na tarxeta. As teclas de imaxe permiten á aplicación buscar ou xerar imaxes desde o editor. As claves permanecen no almacenamento local do navegador e envíanse directamente ao provedor seleccionado cando utilizas esa función.",
     "localDataTitle": "Datos locais",
     "localDataText1": "Os datos e a configuración da tarxeta gárdanse no almacenamento local deste navegador. O idioma de uso tamén se lembra por separado no almacenamento local. Non se envía nada aos servidores Toddler Read e non hai conta nin sincronización na nube.",
     "localDataText2": "Exporta a túa biblioteca desde o menú de ficheiros antes de borrar os datos do navegador, cambiar de navegador ou mover a outro dispositivo. As únicas transmisións de rede son as solicitudes que activas para a tradución ou a busca de imaxes, que van directamente ao fornecedor configurado APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "descarga JSON lexible sen imaxes para editar manualmente.",
     "managerPressText1": "O xestor é a biblioteca de tarxetas. Seleccione tarxetas coas caixas de verificación e use filtros para buscar imaxes, texto ou ligazóns ao verso que faltan.",
     "managerPressText2": "Abre a vista da impresora para ver as tarxetas seleccionadas como páxinas ao recto e ao verso. Escolle o deseño de PDF na barra de ferramentas, revisa as advertencias e, a continuación, descarga o PDF e imprímao.",
+    "apiCredits": "API compatibles",
     "links": "Ligazóns",
     "repository": "Repositorio",
     "kofi": "Ko-fi"

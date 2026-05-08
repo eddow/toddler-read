@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Kömək edin",
     "image": "Şəkil",
+    "imageGeneration": "Şəkil generasiyası",
+    "imageGenerationPromptTemplate": "Şəkil yaratma əmri şablonu",
     "imageSource": "Şəkil mənbəyi",
     "imageSources": "Şəkil mənbələri",
     "managerAndPress": "Menecer və mətbəə",
@@ -217,10 +219,12 @@
     "size": "Ölçü",
     "tags": "Teqlər",
     "translation": "Tərcümə",
+    "translationPromptTemplate": "Tərcümə xəbərdarlığı şablonu",
     "translationProvider": "Tərcümə təminatçısı",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai və ya Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "və ya",
     "cornerLanguagesRestAfter": "və göstərilən markeri tənzimləyin.",
     "imageSourcesLabel": "Şəkil mənbələri:",
-    "imageSourcesRest": "tətbiqdaxili şəkil axtarışını aktivləşdirmək üçün Pexels və ya Flaticon API düymələrini əlavə edin.",
+    "imageSourcesRest": "tətbiqdaxili şəkil axtarışını və yaradılmasını aktivləşdirmək üçün Pexels, Flaticon, Leonardo.Ai və ya Pollinations.ai API açarlarını əlavə edin.",
     "translationLabel": "Tərcümə:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq və ya fərdi OpenAI uyğun provayderi seçin.",
     "modelBaseUrlLabel": "Model və əsas URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Tələb şablonu:",
     "promptTemplateRest": "kart mətnlərinin necə tərcümə olunduğuna nəzarət edir. Sorğu göndərilməmişdən əvvəl yer tutanlar proqram tərəfindən doldurulur.",
     "apiKeysTitle": "API Açarları",
-    "apiKeysText": "API açarları yalnız əlavə köməkçilər üçün lazımdır. Tərcümə düymələri proqrama kartdakı mövcud mətndən çatışmayan dil mətnini doldurmağa imkan verir. Şəkil axtarış düymələri proqrama redaktordan şəkil təminatçılarını axtarmağa imkan verir. Açarlar yerli brauzer yaddaşında qalır və siz bu funksiyadan istifadə etdiyiniz zaman birbaşa seçilmiş provayderə göndərilir.",
+    "apiKeysText": "API açarları yalnız əlavə köməkçilər üçün lazımdır. Tərcümə düymələri proqrama kartdakı mövcud mətndən çatışmayan dil mətnini doldurmağa imkan verir. Şəkil düymələri proqrama redaktordan şəkillər axtarmağa və ya yaratmağa imkan verir. Açarlar yerli brauzer yaddaşında qalır və siz həmin funksiyadan istifadə etdiyiniz zaman birbaşa seçilmiş provayderə göndərilir.",
     "localDataTitle": "Yerli Məlumat",
     "localDataText1": "Kart məlumatları və parametrləri bu brauzerin yerli yaddaşında saxlanılır. İstifadə dili yerli yaddaşda da ayrıca yadda saxlanılır. Toddler Read serverlərinə heç nə göndərilmir və heç bir hesab və ya bulud sinxronizasiyası yoxdur.",
     "localDataText2": "Brauzer məlumatlarını təmizləməzdən, brauzerləri dəyişməzdən və ya başqa cihaza keçməzdən əvvəl kitabxananızı fayl menyusundan ixrac edin. Yeganə şəbəkə ötürülmələri tərcümə və ya şəkil axtarışı üçün işə saldığınız sorğulardır ki, onlar birbaşa konfiqurasiya edilmiş APIs provayderinə gedirlər.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "əl ilə redaktə etmək üçün şəkillər olmadan oxunaqlı JSON yükləyir.",
     "managerPressText1": "Menecer kart kitabxanasıdır. Onay qutuları olan kartları seçin və çatışmayan şəkilləri, mətnləri və ya əksinə bağlantıları tapmaq üçün filtrlərdən istifadə edin.",
     "managerPressText2": "Seçilmiş kartları düz və əks səhifələr kimi önizləmək üçün printer görünüşünü açın. Alətlər panelində PDF tərtibatını seçin, istənilən xəbərdarlıqları nəzərdən keçirin, sonra PDF-i endirin və çap edin.",
+    "apiCredits": "Dəstəklənən API-lər",
     "links": "Bağlantılar",
     "repository": "Repository",
     "kofi": "Ko-fi"

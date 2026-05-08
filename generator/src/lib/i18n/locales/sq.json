@@ -203,6 +203,8 @@
     "format": "Formati",
     "help": "Ndihmë",
     "image": "Imazhi",
+    "imageGeneration": "Gjenerimi i imazhit",
+    "imageGenerationPromptTemplate": "Modeli i shpejtë i gjenerimit të imazhit",
     "imageSource": "Burimi i imazhit",
     "imageSources": "Burimet e imazhit",
     "managerAndPress": "Menaxher dhe shtypshkronjë",
@@ -217,10 +219,12 @@
     "size": "Madhësia",
     "tags": "Etiketat",
     "translation": "Përkthimi",
+    "translationPromptTemplate": "Modeli i kërkesës së përkthimit",
     "translationProvider": "Ofruesi i përkthimit",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, ose Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "ose",
     "cornerLanguagesRestAfter": "dhe rregulloni shënuesin e shfaqur.",
     "imageSourcesLabel": "Burimet e imazhit:",
-    "imageSourcesRest": "shtoni çelësat Pexels ose Flaticon API për të mundësuar kërkimin e imazheve brenda aplikacionit.",
+    "imageSourcesRest": "shtoni çelësat API Pexels, Flaticon, Leonardo.Ai ose Pollinations.ai për të mundësuar kërkimin dhe gjenerimin e imazheve brenda aplikacionit.",
     "translationLabel": "Përkthimi:",
     "translationRest": "zgjidhni Gemini, OpenAI, DeepSeek, Z.AI, Groq ose një ofrues të personalizuar të pajtueshëm me OpenAI.",
     "modelBaseUrlLabel": "Modeli dhe URL-ja bazë:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Modeli i kërkesës:",
     "promptTemplateRest": "kontrollon se si përkthehen tekstet e kartës. Mbajtësit e vendeve plotësohen nga aplikacioni përpara se të dërgohet kërkesa.",
     "apiKeysTitle": "Çelësat API",
-    "apiKeysText": "Çelësat API nevojiten vetëm për ndihmësit opsionalë. Çelësat e përkthimit lejojnë që aplikacioni të plotësojë tekstin e gjuhës që mungon nga teksti ekzistues në kartë. Tastet e kërkimit të imazhit lejojnë që aplikacioni të kërkojë ofruesit e imazheve nga redaktori. Çelësat qëndrojnë në hapësirën ruajtëse të shfletuesit lokal dhe dërgohen drejtpërdrejt te ofruesi i zgjedhur kur përdorni atë veçori.",
+    "apiKeysText": "Çelësat API nevojiten vetëm për ndihmësit opsionalë. Çelësat e përkthimit lejojnë që aplikacioni të plotësojë tekstin e gjuhës që mungon nga teksti ekzistues në kartë. Tastet e imazhit lejojnë që aplikacioni të kërkojë ose të gjenerojë imazhe nga redaktori. Çelësat qëndrojnë në hapësirën ruajtëse të shfletuesit lokal dhe dërgohen drejtpërdrejt te ofruesi i zgjedhur kur përdorni atë veçori.",
     "localDataTitle": "Të dhënat lokale",
     "localDataText1": "Të dhënat dhe cilësimet e kartës ruhen në hapësirën ruajtëse lokale të këtij shfletuesi. Gjuha e përdorimit mbahet mend veçmas edhe në ruajtjen lokale. Asgjë nuk u dërgohet serverëve Toddler Read dhe nuk ka asnjë llogari ose sinkronizim në renë kompjuterike.",
     "localDataText2": "Eksportoni bibliotekën tuaj nga menyja e skedarëve përpara se të pastroni të dhënat e shfletuesit, të ndërroni shfletuesit ose të zhvendoseni në një pajisje tjetër. Transmetimet e vetme të rrjetit janë kërkesat që aktivizoni për përkthim ose kërkim imazhi, të cilat shkojnë drejtpërdrejt te ofruesi i konfiguruar APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "shkarkon JSON të lexueshëm pa imazhe për modifikim me dorë.",
     "managerPressText1": "Menaxheri është biblioteka e kartave. Zgjidhni kartat me kutitë e kontrollit dhe përdorni filtra për të gjetur imazhet, tekstin ose lidhjet që mungojnë.",
     "managerPressText2": "Hapni pamjen e printerit për të parë paraprakisht kartat e zgjedhura si faqe recto dhe verso. Zgjidhni paraqitjen PDF në shiritin e veglave, rishikoni çdo paralajmërim, më pas shkarkoni PDF dhe printoni atë.",
+    "apiCredits": "API të mbështetura",
     "links": "Lidhjet",
     "repository": "Depoja",
     "kofi": "Ko-fi"

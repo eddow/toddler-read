@@ -203,6 +203,8 @@
     "format": "Formato",
     "help": "Aiuto",
     "image": "Immagine",
+    "imageGeneration": "Generazione di immagini",
+    "imageGenerationPromptTemplate": "Modello di richiesta di generazione di immagini",
     "imageSource": "Fonte dell'immagine",
     "imageSources": "Fonti di immagini",
     "managerAndPress": "Responsabile e tipografia",
@@ -217,10 +219,12 @@
     "size": "Dimensioni",
     "tags": "Tag",
     "translation": "Traduzione",
+    "translationPromptTemplate": "Modello di richiesta di traduzione",
     "translationProvider": "Fornitore di traduzioni",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai o Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "o",
     "cornerLanguagesRestAfter": "e regolare il contrassegno visualizzato.",
     "imageSourcesLabel": "Fonti di immagini:",
-    "imageSourcesRest": "aggiungi le chiavi Pexels o Flaticon API per abilitare la ricerca di immagini in-app.",
+    "imageSourcesRest": "aggiungi le chiavi API Pexels, Flaticon, Leonardo.Ai o Pollinations.ai per abilitare la ricerca e la generazione di immagini in-app.",
     "translationLabel": "Traduzione:",
     "translationRest": "scegli Gemini, OpenAI, DeepSeek, Z.AI, Groq o un provider personalizzato compatibile con OpenAI.",
     "modelBaseUrlLabel": "Modello e URL di base:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Modello di richiesta:",
     "promptTemplateRest": "controlla come vengono tradotti i testi delle carte. I segnaposto vengono riempiti dall'app prima dell'invio della richiesta.",
     "apiKeysTitle": "Tasti API",
-    "apiKeysText": "Le chiavi API sono necessarie solo per gli helper opzionali. Le chiavi di traduzione consentono all'app di riempire il testo nella lingua mancante dal testo esistente sulla carta. Le chiavi di ricerca delle immagini consentono all'app di cercare fornitori di immagini dall'editor. Le chiavi rimangono nella memoria del browser locale e vengono inviate direttamente al provider selezionato quando utilizzi tale funzionalità.",
+    "apiKeysText": "Le chiavi API sono necessarie solo per gli helper opzionali. Le chiavi di traduzione consentono all'app di riempire il testo nella lingua mancante dal testo esistente sulla carta. Le chiavi immagine consentono all'app di cercare o generare immagini dall'editor. Le chiavi rimangono nella memoria del browser locale e vengono inviate direttamente al provider selezionato quando utilizzi tale funzionalità.",
     "localDataTitle": "Dati locali",
     "localDataText1": "I dati e le impostazioni della carta vengono archiviati nella memoria locale di questo browser. Anche la lingua di utilizzo viene ricordata separatamente nella memoria locale. Nulla viene inviato ai server Toddler Read e non esiste alcun account o sincronizzazione cloud.",
     "localDataText2": "Esporta la tua libreria dal menu File prima di cancellare i dati del browser, cambiare browser o passare a un altro dispositivo. Le uniche trasmissioni di rete sono le richieste di traduzione o ricerca di immagini che vengono inviate direttamente al provider configurato APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "scarica JSON leggibile senza immagini per la modifica manuale.",
     "managerPressText1": "Il gestore è la biblioteca delle carte. Seleziona le carte con le caselle di controllo e utilizza i filtri per trovare immagini, testo o collegamenti sul verso mancanti.",
     "managerPressText2": "Apri la visualizzazione della stampante per visualizzare in anteprima le carte selezionate come pagine recto e verso. Scegli il layout PDF nella barra degli strumenti, controlla eventuali avvisi, quindi scarica PDF e stampalo.",
+    "apiCredits": "API supportate",
     "links": "Collegamenti",
     "repository": "Deposito",
     "kofi": "Ko-fi"

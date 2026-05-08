@@ -203,6 +203,8 @@
     "format": "Formatieren",
     "help": "Hilfe",
     "image": "Bild",
+    "imageGeneration": "Bilderzeugung",
+    "imageGenerationPromptTemplate": "Vorlage für Eingabeaufforderungen zur Bildgenerierung",
     "imageSource": "Bildquelle",
     "imageSources": "Bildquellen",
     "managerAndPress": "Manager und Druckerei",
@@ -217,10 +219,12 @@
     "size": "Größe",
     "tags": "Schlagworte",
     "translation": "Übersetzung",
+    "translationPromptTemplate": "Vorlage für Übersetzungsaufforderungen",
     "translationProvider": "Übersetzungsanbieter",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai oder Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "oder",
     "cornerLanguagesRestAfter": "und passen Sie die angezeigte Markierung an.",
     "imageSourcesLabel": "Bildquellen:",
-    "imageSourcesRest": "Fügen Sie die Schlüssel Pexels oder Flaticon API hinzu, um die In-App-Bildsuche zu aktivieren.",
+    "imageSourcesRest": "Fügen Sie Pexels-, Flaticon-, Leonardo.Ai- oder Pollinations.ai-API-Schlüssel hinzu, um die Suche und Generierung von In-App-Bildern zu ermöglichen.",
     "translationLabel": "Übersetzung:",
     "translationRest": "Wählen Sie Gemini, OpenAI, DeepSeek, Z.AI, Groq oder einen benutzerdefinierten OpenAI-kompatiblen Anbieter.",
     "modelBaseUrlLabel": "Modell- und Basis-URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Eingabeaufforderungsvorlage:",
     "promptTemplateRest": "steuert, wie Kartentexte übersetzt werden. Die Platzhalter werden von der App gefüllt, bevor die Anfrage gesendet wird.",
     "apiKeysTitle": "API-Schlüssel",
-    "apiKeysText": "API-Schlüssel werden nur für optionale Helfer benötigt. Mithilfe von Übersetzungsschlüsseln kann die App fehlenden Sprachtext aus vorhandenem Text auf der Karte ergänzen. Mithilfe der Bildsuchtasten kann die App im Editor nach Bildanbietern suchen. Schlüssel bleiben im lokalen Browserspeicher und werden direkt an den ausgewählten Anbieter gesendet, wenn Sie diese Funktion nutzen.",
+    "apiKeysText": "API-Schlüssel werden nur für optionale Helfer benötigt. Mithilfe von Übersetzungsschlüsseln kann die App fehlenden Sprachtext aus vorhandenem Text auf der Karte ergänzen. Mit Bildschlüsseln kann die App Bilder im Editor suchen oder generieren. Schlüssel bleiben im lokalen Browserspeicher und werden direkt an den ausgewählten Anbieter gesendet, wenn Sie diese Funktion nutzen.",
     "localDataTitle": "Lokale Daten",
     "localDataText1": "Kartendaten und -einstellungen werden im lokalen Speicher dieses Browsers gespeichert. Die Verwendungssprache wird auch separat im lokalen Speicher gespeichert. Es wird nichts an Toddler Read-Server gesendet und es findet keine Konto- oder Cloud-Synchronisierung statt.",
     "localDataText2": "Exportieren Sie Ihre Bibliothek über das Dateimenü, bevor Sie Browserdaten löschen, den Browser wechseln oder auf ein anderes Gerät wechseln. Die einzigen Netzwerkübertragungen sind die von Ihnen ausgelösten Anfragen zur Übersetzung oder Bildsuche, die direkt an den konfigurierten Anbieter APIs gehen.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "Lädt lesbares JSON ohne Bilder zur Handbearbeitung herunter.",
     "managerPressText1": "Der Verwalter ist die Kartenbibliothek. Wählen Sie Karten mit den Kontrollkästchen aus und verwenden Sie Filter, um fehlende Bilder, Texte oder Links auf der Rückseite zu finden.",
     "managerPressText2": "Öffnen Sie die Druckeransicht, um eine Vorschau ausgewählter Karten als Vorder- und Rückseite anzuzeigen. Wählen Sie das PDF-Layout in der Symbolleiste aus, überprüfen Sie alle Warnungen, laden Sie dann das PDF herunter und drucken Sie es aus.",
+    "apiCredits": "Unterstützte APIs",
     "links": "Links",
     "repository": "Repository",
     "kofi": "Ko-fi"

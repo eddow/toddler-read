@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Yordam",
     "image": "Rasm",
+    "imageGeneration": "Tasvir yaratish",
+    "imageGenerationPromptTemplate": "Tasvir yaratish uchun shablon",
     "imageSource": "Rasm manbai",
     "imageSources": "Rasm manbalari",
     "managerAndPress": "Menejer va bosmaxona",
@@ -217,10 +219,12 @@
     "size": "Hajmi",
     "tags": "Teglar",
     "translation": "Tarjima",
+    "translationPromptTemplate": "Tarjima so'rovi shablon",
     "translationProvider": "Tarjima provayderi",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai yoki Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "yoki",
     "cornerLanguagesRestAfter": "va ko'rsatilgan markerni sozlang.",
     "imageSourcesLabel": "Rasm manbalari:",
-    "imageSourcesRest": "ilova ichida tasvir qidirishni yoqish uchun Pexels yoki Flaticon API tugmalarini qo‘shing.",
+    "imageSourcesRest": "ilova ichida tasvir qidirish va yaratish uchun Pexels, Flaticon, Leonardo.Ai yoki Pollinations.ai API kalitlarini qo‘shing.",
     "translationLabel": "Tarjimasi:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq yoki maxsus OpenAI-mos keladigan provayderni tanlang.",
     "modelBaseUrlLabel": "Model va asosiy URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Tezkor shablon:",
     "promptTemplateRest": "karta matnlari qanday tarjima qilinishini nazorat qiladi. So'rov yuborilishidan oldin to'ldiruvchilar ilova tomonidan to'ldiriladi.",
     "apiKeysTitle": "API kalitlari",
-    "apiKeysText": "API kalitlari faqat ixtiyoriy yordamchilar uchun kerak. Tarjima tugmalari ilovaga etishmayotgan til matnini kartadagi mavjud matndan toʻldirish imkonini beradi. Rasm qidirish tugmalari ilovaga muharrirdan rasm provayderlarini qidirish imkonini beradi. Kalitlar mahalliy brauzer xotirasida qoladi va siz ushbu xususiyatdan foydalanganda bevosita tanlangan provayderga yuboriladi.",
+    "apiKeysText": "API kalitlari faqat ixtiyoriy yordamchilar uchun kerak. Tarjima tugmalari ilovaga etishmayotgan til matnini kartadagi mavjud matndan toʻldirish imkonini beradi. Rasm tugmalari ilovaga muharrirdan rasmlarni qidirish yoki yaratish imkonini beradi. Kalitlar mahalliy brauzer xotirasida qoladi va siz ushbu xususiyatdan foydalanganda bevosita tanlangan provayderga yuboriladi.",
     "localDataTitle": "Mahalliy ma'lumotlar",
     "localDataText1": "Karta ma'lumotlari va sozlamalari ushbu brauzerning mahalliy xotirasida saqlanadi. Foydalanish tili mahalliy xotirada ham alohida eslab qolinadi. Toddler Read serverlariga hech narsa yuborilmaydi va hisob yoki bulut sinxronizatsiyasi mavjud emas.",
     "localDataText2": "Brauzer ma'lumotlarini tozalash, brauzerlarni almashtirish yoki boshqa qurilmaga o'tishdan oldin kutubxonangizni fayl menyusidan eksport qiling. Yagona tarmoq uzatishlari tarjima yoki tasvirni qidirish uchun ishga tushiradigan so'rovlar bo'lib, ular to'g'ridan-to'g'ri konfiguratsiya qilingan APIs provayderiga boradi.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "qo'lda tahrirlash uchun tasvirlarsiz o'qiladigan JSON-ni yuklab oladi.",
     "managerPressText1": "Menejer - bu kartalar kutubxonasi. Belgilash katakchalari bilan kartalarni tanlang va etishmayotgan rasmlar, matn yoki boshqa havolalarni topish uchun filtrlardan foydalaning.",
     "managerPressText2": "Tanlangan kartalarni recto va verso sahifalar sifatida ko'rish uchun printer ko'rinishini oching. Asboblar panelida PDF tartibini tanlang, barcha ogohlantirishlarni ko‘rib chiqing, so‘ng PDF ni yuklab oling va chop eting.",
+    "apiCredits": "Qo'llab-quvvatlanadigan API",
     "links": "Havolalar",
     "repository": "Repozitariy",
     "kofi": "Ko-fi"

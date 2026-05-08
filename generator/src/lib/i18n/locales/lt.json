@@ -203,6 +203,8 @@
     "format": "Formatas",
     "help": "Pagalba",
     "image": "Vaizdas",
+    "imageGeneration": "Vaizdo generavimas",
+    "imageGenerationPromptTemplate": "Vaizdo generavimo raginimo šablonas",
     "imageSource": "Vaizdo šaltinis",
     "imageSources": "Vaizdo šaltiniai",
     "managerAndPress": "Vadovas ir spaustuvė",
@@ -217,10 +219,12 @@
     "size": "Dydis",
     "tags": "Žymos",
     "translation": "Vertimas",
+    "translationPromptTemplate": "Vertimo raginimo šablonas",
     "translationProvider": "Vertimų teikėjas",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai arba Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "arba",
     "cornerLanguagesRestAfter": "ir sureguliuokite rodomą žymeklį.",
     "imageSourcesLabel": "Vaizdo šaltiniai:",
-    "imageSourcesRest": "pridėkite Pexels arba Flaticon API klavišus, kad įgalintumėte vaizdų paiešką programoje.",
+    "imageSourcesRest": "pridėkite Pexels, Flaticon, Leonardo.Ai arba Pollinations.ai API raktus, kad įgalintumėte vaizdų paiešką ir generavimą programoje.",
     "translationLabel": "Vertimas:",
     "translationRest": "pasirinkite Gemini, OpenAI, DeepSeek, Z.AI, Groq arba tinkintą su OpenAI suderinamą teikėją.",
     "modelBaseUrlLabel": "Modelis ir bazinis URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Raginimo šablonas:",
     "promptTemplateRest": "kontroliuoja, kaip verčiami kortelių tekstai. Vietos žymeklius programa užpildo prieš išsiųsdama užklausą.",
     "apiKeysTitle": "API raktai",
-    "apiKeysText": "API raktai reikalingi tik pasirenkamiems pagalbininkams. Vertimo raktai leidžia programai užpildyti trūkstamą kalbos tekstą iš esamo teksto kortelėje. Vaizdų paieškos klavišai leidžia programai redagavimo priemonėje ieškoti vaizdų teikėjų. Raktai lieka vietinėje naršyklės saugykloje ir siunčiami tiesiai pasirinktam teikėjui, kai naudojate šią funkciją.",
+    "apiKeysText": "API raktai reikalingi tik pasirenkamiems pagalbininkams. Vertimo raktai leidžia programai užpildyti trūkstamą kalbos tekstą iš esamo teksto kortelėje. Vaizdo klavišai leidžia programai ieškoti arba generuoti vaizdus iš redagavimo priemonės. Raktai lieka vietinėje naršyklės saugykloje ir siunčiami tiesiai pasirinktam teikėjui, kai naudojate šią funkciją.",
     "localDataTitle": "Vietiniai duomenys",
     "localDataText1": "Kortelės duomenys ir nustatymai saugomi šios naršyklės vietinėje saugykloje. Naudojimo kalba taip pat atskirai įsimenama vietinėje saugykloje. Niekas nesiunčiamas į Toddler Read serverius ir nėra paskyros ar debesies sinchronizavimo.",
     "localDataText2": "Eksportuokite biblioteką iš failų meniu prieš išvalydami naršyklės duomenis, perjungdami naršyklę arba perkeldami į kitą įrenginį. Vieninteliai tinklo perdavimai yra vertimo arba vaizdų paieškos užklausos, kurios tiesiogiai nukreipiamos į sukonfigūruotą teikėją APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "atsisiunčia skaitomus JSON be vaizdų, kad būtų galima redaguoti rankomis.",
     "managerPressText1": "Vadovas yra kortelių biblioteka. Pasirinkite korteles su žymimaisiais laukeliais ir naudokite filtrus, kad surastumėte trūkstamus vaizdus, ​​​​tekstą arba atvirkštines nuorodas.",
     "managerPressText2": "Atidarykite spausdintuvo rodinį, kad peržiūrėtumėte pasirinktas korteles kaip tiesiuosius ir atvirkštinius puslapius. Įrankių juostoje pasirinkite PDF išdėstymą, peržiūrėkite visus įspėjimus, tada atsisiųskite PDF ir atsispausdinkite.",
+    "apiCredits": "Palaikomos API",
     "links": "Nuorodos",
     "repository": "Saugykla",
     "kofi": "Ko-fi"

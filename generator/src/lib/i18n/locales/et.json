@@ -203,6 +203,8 @@
     "format": "Vorming",
     "help": "Abi",
     "image": "Pilt",
+    "imageGeneration": "Pildi genereerimine",
+    "imageGenerationPromptTemplate": "Pildi genereerimise viipa mall",
     "imageSource": "Pildi allikas",
     "imageSources": "Piltide allikad",
     "managerAndPress": "Juht ja trükipress",
@@ -217,10 +219,12 @@
     "size": "Suurus",
     "tags": "Sildid",
     "translation": "Tõlge",
+    "translationPromptTemplate": "Tõlkeviipa mall",
     "translationProvider": "Tõlke pakkuja",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai või Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "või",
     "cornerLanguagesRestAfter": "ja reguleerige kuvatavat markerit.",
     "imageSourcesLabel": "Piltide allikad:",
-    "imageSourcesRest": "lisage rakendusesisese pildiotsingu lubamiseks võtmed Pexels või Flaticon API.",
+    "imageSourcesRest": "lisage Pexelsi, Flaticoni, Leonardo.Ai või Pollinations.ai API võtmed, et võimaldada rakendusesisest piltide otsimist ja genereerimist.",
     "translationLabel": "Tõlge:",
     "translationRest": "valige Gemini, OpenAI, DeepSeek, Z.AI, Groq või kohandatud OpenAI-ga ühilduv pakkuja.",
     "modelBaseUrlLabel": "Mudel ja baas-URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Viipa mall:",
     "promptTemplateRest": "juhib kaarditekstide tõlkimist. Rakendus täidab kohatäitjad enne päringu saatmist.",
     "apiKeysTitle": "Võtmed API",
-    "apiKeysText": "API võtmeid on vaja ainult valikuliste abiliste jaoks. Tõlkeklahvid võimaldavad rakendusel täita puuduva keele teksti kaardil olemasoleva tekstiga. Pildiotsingu klahvid võimaldavad rakendusel otsida redaktorist pildipakkujaid. Võtmed jäävad kohalikku brauseri salvestusruumi ja saadetakse selle funktsiooni kasutamisel otse valitud pakkujale.",
+    "apiKeysText": "API võtmeid on vaja ainult valikuliste abistajate jaoks. Tõlkeklahvid võimaldavad rakendusel täita puuduva keele teksti kaardil olemasoleva tekstiga. Pildiklahvid võimaldavad rakendusel otsida või luua redaktoris pilte. Võtmed jäävad kohalikku brauseri salvestusruumi ja saadetakse selle funktsiooni kasutamisel otse valitud pakkujale.",
     "localDataTitle": "Kohalikud andmed",
     "localDataText1": "Kaardi andmed ja seaded salvestatakse selle brauseri kohalikku salvestusruumi. Kasutuskeel jäetakse eraldi meelde ka kohalikus mälus. Midagi ei saadeta Toddler Read serveritesse ning puudub konto ega pilvesünkroonimine.",
     "localDataText2": "Eksportige oma teek failimenüüst enne brauseri andmete kustutamist, brauseri vahetamist või teise seadmesse kolimist. Ainsad võrguedastused on päringud, mille käivitate tõlkimiseks või pildiotsinguks ja mis suunatakse otse konfigureeritud teenusepakkujale APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "laadib käsitsi redigeerimiseks alla loetava JSON ilma piltideta.",
     "managerPressText1": "Juhataja on kaardiraamatukogu. Valige märkeruutudega kaardid ja kasutage puuduvate piltide, teksti või vastupidiste linkide leidmiseks filtreid.",
     "managerPressText2": "Avage printerivaade, et vaadata valitud kaartide eelvaadet rekto- ja versolehtedena. Valige tööriistaribalt paigutus PDF, vaadake üle kõik hoiatused, seejärel laadige alla PDF ja printige see.",
+    "apiCredits": "Toetatud API-d",
     "links": "Lingid",
     "repository": "Hoidla",
     "kofi": "Ko-fi"

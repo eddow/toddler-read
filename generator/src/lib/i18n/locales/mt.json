@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Għajnuna",
     "image": "Immaġni",
+    "imageGeneration": "Ġenerazzjoni tal-immaġni",
+    "imageGenerationPromptTemplate": "Mudell fil-pront tal-ġenerazzjoni tal-immaġni",
     "imageSource": "Sors tal-immaġni",
     "imageSources": "Sorsi tal-immaġni",
     "managerAndPress": "Maniġer U Stampar",
@@ -217,10 +219,12 @@
     "size": "Daqs",
     "tags": "Tikketti",
     "translation": "Traduzzjoni",
+    "translationPromptTemplate": "Mudell fil-pront tat-traduzzjoni",
     "translationProvider": "Fornitur tat-traduzzjoni",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, jew Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "jew",
     "cornerLanguagesRestAfter": "u aġġusta l-markatur murija.",
     "imageSourcesLabel": "Sorsi tal-immaġni:",
-    "imageSourcesRest": "żid iċ-ċwievet Pexels jew Flaticon API biex tippermetti t-tfittxija tal-immaġni fl-app.",
+    "imageSourcesRest": "żid Pexels, Flaticon, Leonardo.Ai, jew Pollinations.ai API keys biex tippermetti t-tfittxija u l-ġenerazzjoni tal-immaġni fl-app.",
     "translationLabel": "Traduzzjoni:",
     "translationRest": "agħżel Gemini, OpenAI, DeepSeek, Z.AI, Groq, jew fornitur tad-dwana kompatibbli ma 'OpenAI.",
     "modelBaseUrlLabel": "Mudell u URL bażi:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Mudell fil-pront:",
     "promptTemplateRest": "tikkontrolla kif it-testi tal-karti jiġu tradotti. Il-placeholders jimtlew mill-app qabel ma tintbagħat it-talba.",
     "apiKeysTitle": "Ċwievet API",
-    "apiKeysText": "Iċ-ċwievet API huma meħtieġa biss għal helpers fakultattivi. Iċ-ċwievet tat-traduzzjoni jħallu l-app timla t-test tal-lingwa nieqes mit-test eżistenti fuq il-karta. Iċ-ċwievet tat-tiftix tal-immaġni jippermettu lill-app tfittex fornituri tal-immaġni mill-editur. Iċ-ċwievet jibqgħu fil-ħażna lokali tal-browser u jintbagħtu direttament lill-fornitur magħżul meta tuża dik il-karatteristika.",
+    "apiKeysText": "Iċ-ċwievet API huma meħtieġa biss għal helpers fakultattivi. Iċ-ċwievet tat-traduzzjoni jħallu l-app timla t-test tal-lingwa nieqes mit-test eżistenti fuq il-karta. Iċ-ċwievet tal-immaġni jippermettu lill-app tfittex jew tiġġenera immaġini mill-editur. Iċ-ċwievet jibqgħu fil-ħażna lokali tal-browser u jintbagħtu direttament lill-fornitur magħżul meta tuża dik il-karatteristika.",
     "localDataTitle": "Dejta Lokali",
     "localDataText1": "Id-dejta u s-settings tal-biljett huma maħżuna fil-ħażna lokali ta' dan il-browser. Il-lingwa tal-użu hija mfakkar separatament fil-ħażna lokali wkoll. Xejn ma jintbagħat lil servers Toddler Read, u m'hemm l-ebda kont jew cloud sync.",
     "localDataText2": "Esporta l-librerija tiegħek mill-menu tal-fajls qabel ma tikklerja d-dejta tal-brawżer, taqleb il-brawżers jew tiċċaqlaq għal apparat ieħor. L-uniċi trażmissjonijiet tan-netwerk huma t-talbiet li tqanqal għat-traduzzjoni jew it-tfittxija tal-immaġni, li jmorru direttament lill-fornitur konfigurat APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "downloads JSON li jistgħu jinqraw mingħajr immaġini għall-editjar bl-idejn.",
     "managerPressText1": "Il-maniġer huwa l-librerija tal-karti. Agħżel kards bil-kaxxi ta' kontroll u uża filtri biex issib immaġini, test jew links neqsin.",
     "managerPressText2": "Iftaħ il-veduta tal-istampatur biex tipprevedi l-karti magħżula bħala paġni recto u verso. Agħżel it-tqassim PDF fil-toolbar, irrevedi kwalunkwe twissijiet, imbagħad niżżel iż-PDF u ipprintjah.",
+    "apiCredits": "APIs appoġġjati",
     "links": "Links",
     "repository": "Repożitorju",
     "kofi": "Ko-fi"

@@ -203,6 +203,8 @@
     "format": "Muoto",
     "help": "Apua",
     "image": "Kuva",
+    "imageGeneration": "Kuvan luominen",
+    "imageGenerationPromptTemplate": "Kuvan luontikehotemalli",
     "imageSource": "Kuvan lähde",
     "imageSources": "Kuvan lähteet",
     "managerAndPress": "Johtaja ja painokone",
@@ -217,10 +219,12 @@
     "size": "Koko",
     "tags": "Tunnisteet",
     "translation": "Käännös",
+    "translationPromptTemplate": "Käännöskehotemalli",
     "translationProvider": "Käännöspalvelu",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai tai Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "tai",
     "cornerLanguagesRestAfter": "ja säädä näytössä olevaa merkkiä.",
     "imageSourcesLabel": "Kuvalähteet:",
-    "imageSourcesRest": "lisää näppäimet Pexels tai Flaticon API ottaaksesi käyttöön sovelluksen sisäisen kuvahaun.",
+    "imageSourcesRest": "lisää Pexels-, Flaticon-, Leonardo.Ai- tai Pollinations.ai API-avaimet mahdollistaaksesi sovelluksen sisäisen kuvahaun ja -luonnin.",
     "translationLabel": "Käännös:",
     "translationRest": "valitse Gemini, OpenAI, DeepSeek, Z.AI, Groq tai mukautettu OpenAI-yhteensopiva toimittaja.",
     "modelBaseUrlLabel": "Malli ja perus-URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Kehotusmalli:",
     "promptTemplateRest": "ohjaa, kuinka korttitekstit käännetään. Sovellus täyttää paikkamerkit ennen pyynnön lähettämistä.",
     "apiKeysTitle": "API avaimet",
-    "apiKeysText": "API-avaimia tarvitaan vain valinnaisille avustajille. Käännösavainten avulla sovellus täyttää puuttuvan kielen tekstin kortilla olevasta tekstistä. Kuvahakunäppäimillä sovellus voi etsiä kuvantarjoajia editorista. Avaimet pysyvät paikallisessa selaimen tallennustilassa ja lähetetään suoraan valitulle palveluntarjoajalle, kun käytät tätä ominaisuutta.",
+    "apiKeysText": "API-avaimia tarvitaan vain valinnaisille avustajille. Käännösavainten avulla sovellus täyttää puuttuvan kielen tekstin kortilla olevasta tekstistä. Kuvaavainten avulla sovellus voi etsiä tai luoda kuvia editorista. Avaimet pysyvät paikallisessa selaimen tallennustilassa ja lähetetään suoraan valitulle palveluntarjoajalle, kun käytät tätä ominaisuutta.",
     "localDataTitle": "Paikalliset tiedot",
     "localDataText1": "Kortin tiedot ja asetukset tallennetaan tämän selaimen paikalliseen tallennustilaan. Käyttökieli muistetaan erikseen myös paikallisessa tallennustilassa. Mitään ei lähetetä Toddler Read-palvelimille, eikä tiliä tai pilvisynkronointia ole.",
     "localDataText2": "Vie kirjastosi tiedostovalikosta, ennen kuin tyhjennät selaintiedot, vaihdat selainta tai siirrät toiseen laitteeseen. Ainoat verkkolähetykset ovat käynnistämäsi käännös- tai kuvahakupyynnöt, jotka menevät suoraan määritetylle tarjoajalle APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "lataa luettavan JSON:n ilman kuvia käsin muokattavaksi.",
     "managerPressText1": "Johtaja on korttikirjasto. Valitse kortit valintaruuduilla ja käytä suodattimia löytääksesi puuttuvia kuvia, tekstiä tai käänteisiä linkkejä.",
     "managerPressText2": "Avaa tulostinnäkymä esikatsellaksesi valittuja kortteja suora- ja käänteissivuina. Valitse työkalupalkista PDF-asettelu, tarkista mahdolliset varoitukset, lataa sitten PDF ja tulosta se.",
+    "apiCredits": "Tuetut API:t",
     "links": "Linkit",
     "repository": "Arkisto",
     "kofi": "Ko-fi"

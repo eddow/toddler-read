@@ -203,6 +203,8 @@
     "format": "Snið",
     "help": "Hjálp",
     "image": "Mynd",
+    "imageGeneration": "Myndagerð",
+    "imageGenerationPromptTemplate": "Myndagerð hvetja sniðmát",
     "imageSource": "Uppruni myndar",
     "imageSources": "Myndaheimildir",
     "managerAndPress": "Framkvæmdastjóri og prentsmiðja",
@@ -217,10 +219,12 @@
     "size": "Stærð",
     "tags": "Merki",
     "translation": "Þýðing",
+    "translationPromptTemplate": "Sniðmát fyrir þýðingu hvetja",
     "translationProvider": "Þýðingaraðili",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eða Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "eða",
     "cornerLanguagesRestAfter": "og stilltu merkið sem birtist.",
     "imageSourcesLabel": "Myndaheimildir:",
-    "imageSourcesRest": "bættu við Pexels eða Flaticon API lyklum til að virkja myndaleit í forriti.",
+    "imageSourcesRest": "bættu við Pexels, Flaticon, Leonardo.Ai eða Pollinations.ai API lyklum til að virkja myndaleit og myndun í forriti.",
     "translationLabel": "Þýðing:",
     "translationRest": "veldu Gemini, OpenAI, DeepSeek, Z.AI, Groq eða sérsniðna OpenAI-samhæfðan þjónustuaðila.",
     "modelBaseUrlLabel": "Líkan og grunnslóð:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Hvetja sniðmát:",
     "promptTemplateRest": "stjórnar hvernig kortatextar eru þýddir. Staðsetningarnar fyllast af appinu áður en beiðnin er send.",
     "apiKeysTitle": "API lyklar",
-    "apiKeysText": "API lyklar eru aðeins nauðsynlegar fyrir valfrjálsa aðstoðarmenn. Þýðingarlyklar gera forritinu kleift að fylla út texta sem vantar tungumál úr núverandi texta á kortinu. Myndaleitarlyklar gera forritinu kleift að leita að myndaveitum úr ritlinum. Lyklar eru í staðbundinni geymslu vafra og eru sendir beint til valda þjónustuveitunnar þegar þú notar þann eiginleika.",
+    "apiKeysText": "API keys are only needed for optional helpers. Þýðingarlyklar gera forritinu kleift að fylla út texta sem vantar tungumál úr núverandi texta á kortinu. Myndlyklar gera forritinu kleift að leita eða búa til myndir úr ritlinum. Lyklar eru í staðbundinni geymslu vafra og eru sendir beint til valda þjónustuveitunnar þegar þú notar þann eiginleika.",
     "localDataTitle": "Staðbundin gögn",
     "localDataText1": "Kortagögn og stillingar eru geymdar í staðbundinni geymslu þessa vafra. Notkunartungumálið er einnig minnst sérstaklega í staðbundinni geymslu. Ekkert er sent til Toddler Read netþjóna og það er engin reikningur eða skýjasamstilling.",
     "localDataText2": "Flyttu út bókasafnið þitt úr skráarvalmyndinni áður en þú hreinsar vafragögn, skiptir um vafra eða færir í annað tæki. Einu netsendingarnar eru beiðnirnar sem þú kallar fram um þýðingar eða myndaleit, sem fara beint til stilltu þjónustuveitunnar APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "hleður niður læsilegum JSON án mynda til handvinnslu.",
     "managerPressText1": "Umsjónarmaður er kortasafnið. Veldu spjöld með gátreitunum og notaðu síur til að finna myndir sem vantar, texta eða verso tengla.",
     "managerPressText2": "Opnaðu prentaraskjáinn til að forskoða valin spjöld sem rétta og verso síður. Veldu PDF útlitið á tækjastikunni, skoðaðu allar viðvaranir, halaðu síðan niður PDF og prentaðu hana út.",
+    "apiCredits": "Stuðningur API",
     "links": "Tenglar",
     "repository": "Geymsla",
     "kofi": "Ko-fi"

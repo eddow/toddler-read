@@ -203,6 +203,8 @@
     "format": "Biçim",
     "help": "Yardım",
     "image": "Resim",
+    "imageGeneration": "Görüntü oluşturma",
+    "imageGenerationPromptTemplate": "Görüntü oluşturma istemi şablonu",
     "imageSource": "Resim kaynağı",
     "imageSources": "Resim kaynakları",
     "managerAndPress": "Yönetici ve Matbaa",
@@ -217,10 +219,12 @@
     "size": "Boyut",
     "tags": "Etiketler",
     "translation": "Çeviri",
+    "translationPromptTemplate": "Çeviri istemi şablonu",
     "translationProvider": "Çeviri sağlayıcı",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai veya Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "veya",
     "cornerLanguagesRestAfter": "ve görüntülenen işaretçiyi ayarlayın.",
     "imageSourcesLabel": "Resim kaynakları:",
-    "imageSourcesRest": "uygulama içi görsel aramayı etkinleştirmek için Pexels veya Flaticon API anahtarlarını ekleyin.",
+    "imageSourcesRest": "uygulama içi görsel aramayı ve oluşturmayı etkinleştirmek için Pexels, Flaticon, Leonardo.Ai veya Pollinations.ai API anahtarlarını ekleyin.",
     "translationLabel": "Çeviri:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq veya OpenAI uyumlu özel bir sağlayıcıyı seçin.",
     "modelBaseUrlLabel": "Model ve temel URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "İstem şablonu:",
     "promptTemplateRest": "kart metinlerinin nasıl çevrildiğini kontrol eder. Yer tutucular, istek gönderilmeden önce uygulama tarafından doldurulur.",
     "apiKeysTitle": "API Anahtarları",
-    "apiKeysText": "API anahtarları yalnızca isteğe bağlı yardımcılar için gereklidir. Çeviri tuşları, uygulamanın karttaki mevcut metinden eksik dil metnini doldurmasına olanak tanır. Görsel arama tuşları, uygulamanın düzenleyiciden görsel sağlayıcıları aramasına olanak tanır. Anahtarlar yerel tarayıcı deposunda kalır ve bu özelliği kullandığınızda doğrudan seçilen sağlayıcıya gönderilir.",
+    "apiKeysText": "API anahtarları yalnızca isteğe bağlı yardımcılar için gereklidir. Çeviri tuşları, uygulamanın karttaki mevcut metinden eksik dil metnini doldurmasına olanak tanır. Resim tuşları, uygulamanın düzenleyiciden resim aramasına veya oluşturmasına olanak tanır. Anahtarlar yerel tarayıcı deposunda kalır ve bu özelliği kullandığınızda doğrudan seçilen sağlayıcıya gönderilir.",
     "localDataTitle": "Yerel Veriler",
     "localDataText1": "Kart verileri ve ayarlar bu tarayıcının yerel deposunda saklanır. Kullanım dili yerel depolamada da ayrı olarak hatırlanır. Toddler Read sunucularına hiçbir şey gönderilmez ve hesap veya bulut senkronizasyonu yoktur.",
     "localDataText2": "Tarayıcı verilerini temizlemeden, tarayıcıları değiştirmeden veya başka bir cihaza geçmeden önce kitaplığınızı dosya menüsünden dışa aktarın. Ağ aktarımları yalnızca çeviri veya görsel arama için tetiklediğiniz ve doğrudan yapılandırılmış sağlayıcı API'lere giden isteklerdir.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "elle düzenleme için resimler olmadan okunabilir JSON'i indirir.",
     "managerPressText1": "Yönetici kart kütüphanesidir. Onay kutularını içeren kartları seçin ve eksik görselleri, metinleri veya verso bağlantılarını bulmak için filtreleri kullanın.",
     "managerPressText2": "Seçilen kartların recto ve verso sayfaları olarak önizlemesini görmek için yazıcı görünümünü açın. Araç çubuğunda PDF düzenini seçin, uyarıları inceleyin, ardından PDF'i indirin ve yazdırın.",
+    "apiCredits": "Desteklenen API'ler",
     "links": "Bağlantılar",
     "repository": "Depo",
     "kofi": "Ko-fi"

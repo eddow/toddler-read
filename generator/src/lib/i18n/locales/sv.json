@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Hjälp",
     "image": "Bild",
+    "imageGeneration": "Bildgenerering",
+    "imageGenerationPromptTemplate": "Bildgenereringspromptmall",
     "imageSource": "Bildkälla",
     "imageSources": "Bildkällor",
     "managerAndPress": "Chef och tryckpress",
@@ -217,10 +219,12 @@
     "size": "Storlek",
     "tags": "Taggar",
     "translation": "Översättning",
+    "translationPromptTemplate": "Översättningsmall",
     "translationProvider": "Översättningsleverantör",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "eller",
     "cornerLanguagesRestAfter": "och justera den visade markören.",
     "imageSourcesLabel": "Bildkällor:",
-    "imageSourcesRest": "lägg till Pexels eller Flaticon API nycklar för att aktivera bildsökning i appen.",
+    "imageSourcesRest": "lägg till Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai API-nycklar för att möjliggöra bildsökning och generering i appen.",
     "translationLabel": "Översättning:",
     "translationRest": "välj Gemini, OpenAI, DeepSeek, Z.AI, Groq eller en anpassad OpenAI-kompatibel leverantör.",
     "modelBaseUrlLabel": "Modell och basadress:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Snabbmall:",
     "promptTemplateRest": "styr hur korttexter översätts. Platshållarna fylls i av appen innan begäran skickas.",
     "apiKeysTitle": "API-tangenter",
-    "apiKeysText": "API-nycklar behövs endast för valfria hjälpare. Översättningsnycklar låter appen fylla saknad språktext från befintlig text på kortet. Bildsökningsnycklar låter appen söka bildleverantörer från redigeraren. Nycklar stannar i lokal webbläsarlagring och skickas direkt till den valda leverantören när du använder den funktionen.",
+    "apiKeysText": "API-nycklar behövs endast för valfria hjälpare. Översättningsnycklar låter appen fylla saknad språktext från befintlig text på kortet. Bildnycklar låter appen söka eller generera bilder från redigeraren. Nycklar stannar i lokal webbläsarlagring och skickas direkt till den valda leverantören när du använder den funktionen.",
     "localDataTitle": "Lokala data",
     "localDataText1": "Kortdata och inställningar lagras i den här webbläsarens lokala lagring. Användningsspråket kommer också ihåg separat i lokal lagring. Ingenting skickas till Toddler Read-servrar och det finns ingen konto- eller molnsynkronisering.",
     "localDataText2": "Exportera ditt bibliotek från filmenyn innan du rensar webbläsardata, byter webbläsare eller flyttar till en annan enhet. De enda nätverksöverföringarna är de förfrågningar du utlöser för översättning eller bildsökning, som går direkt till den konfigurerade leverantören APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "laddar ner läsbar JSON utan bilder för handredigering.",
     "managerPressText1": "Chefen är kortbiblioteket. Välj kort med kryssrutorna och använd filter för att hitta saknade bilder, text eller verso-länkar.",
     "managerPressText2": "Öppna skrivarvyn för att förhandsgranska valda kort som recto- och verso-sidor. Välj PDF-layouten i verktygsfältet, granska eventuella varningar, ladda sedan ner PDF och skriv ut den.",
+    "apiCredits": "API:er som stöds",
     "links": "Länkar",
     "repository": "Förvar",
     "kofi": "Ko-fi"

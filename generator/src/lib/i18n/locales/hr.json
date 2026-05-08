@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "pomoć",
     "image": "Slika",
+    "imageGeneration": "Generiranje slike",
+    "imageGenerationPromptTemplate": "Predložak upita za generiranje slike",
     "imageSource": "Izvor slike",
     "imageSources": "Izvori slika",
     "managerAndPress": "Upravitelj i tiskara",
@@ -217,10 +219,12 @@
     "size": "Veličina",
     "tags": "oznake",
     "translation": "Prijevod",
+    "translationPromptTemplate": "Predložak upita za prijevod",
     "translationProvider": "Pružatelj usluga prijevoda",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ili Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "ili",
     "cornerLanguagesRestAfter": "i podesite prikazani marker.",
     "imageSourcesLabel": "Izvori slika:",
-    "imageSourcesRest": "dodajte ključeve Pexels ili Flaticon API kako biste omogućili pretraživanje slika u aplikaciji.",
+    "imageSourcesRest": "dodajte Pexels, Flaticon, Leonardo.Ai ili Pollinations.ai API ključeve kako biste omogućili pretraživanje i generiranje slika u aplikaciji.",
     "translationLabel": "prijevod:",
     "translationRest": "odaberite Gemini, OpenAI, DeepSeek, Z.AI, Groq ili prilagođenog pružatelja kompatibilnog sa OpenAI.",
     "modelBaseUrlLabel": "Model i osnovni URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Predložak upita:",
     "promptTemplateRest": "kontrolira kako se prevode tekstovi kartica. Aplikacija ispunjava rezervirana mjesta prije slanja zahtjeva.",
     "apiKeysTitle": "Ključevi API",
-    "apiKeysText": "Ključevi API potrebni su samo za dodatne pomoćnike. Prijevodne tipke omogućuju aplikaciji da ispuni jezik koji nedostaje iz postojećeg teksta na kartici. Tipke za pretraživanje slika omogućuju aplikaciji pretraživanje pružatelja slika iz uređivača. Ključevi ostaju u lokalnoj pohrani preglednika i šalju se izravno odabranom pružatelju usluga kada koristite tu značajku.",
+    "apiKeysText": "API ključevi su potrebni samo za dodatne pomoćnike. Prijevodne tipke omogućuju aplikaciji da ispuni jezik koji nedostaje iz postojećeg teksta na kartici. Slikovni ključevi omogućuju aplikaciji pretraživanje ili generiranje slika iz uređivača. Ključevi ostaju u lokalnoj pohrani preglednika i šalju se izravno odabranom pružatelju usluga kada koristite tu značajku.",
     "localDataTitle": "Lokalni podaci",
     "localDataText1": "Podaci i postavke kartice pohranjeni su u lokalnoj pohrani ovog preglednika. Jezik upotrebe također se zasebno pamti u lokalnoj pohrani. Ništa se ne šalje Toddler Read poslužiteljima i nema računa niti sinkronizacije u oblaku.",
     "localDataText2": "Izvezite svoju biblioteku iz izbornika datoteka prije brisanja podataka preglednika, promjene preglednika ili prelaska na drugi uređaj. Jedini mrežni prijenos su zahtjevi koje pokrećete za prijevodom ili pretraživanjem slika, a koji idu izravno konfiguriranom pružatelju usluga APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "preuzima čitljiv JSON bez slika za ručno uređivanje.",
     "managerPressText1": "Voditelj je likovne knjižnice. Odaberite kartice s potvrdnim okvirima i upotrijebite filtre za pronalaženje slika, teksta ili veza koje nedostaju.",
     "managerPressText2": "Otvorite prikaz pisača kako biste pregledali odabrane kartice kao recto i verso stranice. Odaberite izgled PDF na alatnoj traci, pregledajte sva upozorenja, zatim preuzmite PDF i ispišite ga.",
+    "apiCredits": "Podržani API-ji",
     "links": "Linkovi",
     "repository": "Spremište",
     "kofi": "Ko-fi"

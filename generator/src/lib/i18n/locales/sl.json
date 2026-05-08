@@ -203,6 +203,8 @@
     "format": "Oblika",
     "help": "pomoč",
     "image": "Slika",
+    "imageGeneration": "Generiranje slike",
+    "imageGenerationPromptTemplate": "Predloga poziva za ustvarjanje slike",
     "imageSource": "Vir slike",
     "imageSources": "Viri slik",
     "managerAndPress": "Upravitelj in tiskarna",
@@ -217,10 +219,12 @@
     "size": "Velikost",
     "tags": "Oznake",
     "translation": "Prevajanje",
+    "translationPromptTemplate": "Predloga poziva za prevajanje",
     "translationProvider": "Ponudnik prevodov",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ali Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "oz",
     "cornerLanguagesRestAfter": "in prilagodite prikazano oznako.",
     "imageSourcesLabel": "Viri slik:",
-    "imageSourcesRest": "dodajte ključa Pexels ali Flaticon API, da omogočite iskanje slik v aplikaciji.",
+    "imageSourcesRest": "dodajte ključe API Pexels, Flaticon, Leonardo.Ai ali Pollinations.ai, da omogočite iskanje in ustvarjanje slik v aplikaciji.",
     "translationLabel": "Prevod:",
     "translationRest": "izberite Gemini, OpenAI, DeepSeek, Z.AI, Groq ali ponudnika po meri, združljivega z OpenAI.",
     "modelBaseUrlLabel": "Model in osnovni URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Predloga za poziv:",
     "promptTemplateRest": "nadzoruje prevajanje besedil kartic. Oznake mesta zapolni aplikacija, preden pošlje zahtevo.",
     "apiKeysTitle": "Ključi API",
-    "apiKeysText": "Ključi API so potrebni samo za neobvezne pomočnike. Prevajalski ključi omogočajo, da aplikacija zapolni besedilo v manjkajočem jeziku iz obstoječega besedila na kartici. Tipke za iskanje slik omogočajo aplikaciji iskanje ponudnikov slik iz urejevalnika. Ključi ostanejo v lokalnem pomnilniku brskalnika in se pošljejo neposredno izbranemu ponudniku, ko uporabite to funkcijo.",
+    "apiKeysText": "Ključi API so potrebni samo za neobvezne pomočnike. Prevajalski ključi omogočajo, da aplikacija zapolni besedilo v manjkajočem jeziku iz obstoječega besedila na kartici. Slikovni ključi omogočajo aplikaciji iskanje ali ustvarjanje slik iz urejevalnika. Ključi ostanejo v lokalnem pomnilniku brskalnika in se pošljejo neposredno izbranemu ponudniku, ko uporabite to funkcijo.",
     "localDataTitle": "Lokalni podatki",
     "localDataText1": "Podatki in nastavitve kartice so shranjeni v lokalni shrambi tega brskalnika. Jezik uporabe se ločeno shrani tudi v lokalni shrambi. Nič ni poslano strežnikom Toddler Read in ni računa ali sinhronizacije v oblaku.",
     "localDataText2": "Izvozite svojo knjižnico iz menija datotek, preden počistite podatke brskalnika, zamenjate brskalnik ali se premaknete na drugo napravo. Edini omrežni prenosi so zahteve, ki jih sprožite za prevod ali iskanje slik, ki gredo neposredno do konfiguriranega ponudnika APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "prenese berljiv JSON brez slik za ročno urejanje.",
     "managerPressText1": "Upravitelj je izkaznica. Izberite kartice s potrditvenimi polji in uporabite filtre, da poiščete manjkajoče slike, besedilo ali povratne povezave.",
     "managerPressText2": "Odprite pogled tiskalnika za predogled izbranih kartic kot strani recto in verso. V orodni vrstici izberite postavitev PDF, preglejte vsa opozorila, nato prenesite PDF in jo natisnite.",
+    "apiCredits": "Podprti API-ji",
     "links": "Povezave",
     "repository": "Repozitorij",
     "kofi": "Ko-fi"

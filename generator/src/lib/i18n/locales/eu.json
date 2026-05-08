@@ -203,6 +203,8 @@
     "format": "Formatua",
     "help": "Laguntza",
     "image": "Irudia",
+    "imageGeneration": "Irudiak sortzea",
+    "imageGenerationPromptTemplate": "Irudiak sortzeko gonbit txantiloia",
     "imageSource": "Irudiaren iturria",
     "imageSources": "Irudi iturriak",
     "managerAndPress": "Kudeatzailea eta Inprimategia",
@@ -217,10 +219,12 @@
     "size": "Tamaina",
     "tags": "Etiketak",
     "translation": "Itzulpena",
+    "translationPromptTemplate": "Itzulpen gonbidapenaren txantiloia",
     "translationProvider": "Itzulpen hornitzailea",
     "verso": "Alderantziz"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai edo Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "edo",
     "cornerLanguagesRestAfter": "eta egokitu bistaratzen den markatzailea.",
     "imageSourcesLabel": "Irudi iturriak:",
-    "imageSourcesRest": "gehitu Pexels edo Flaticon API teklak aplikazioko irudien bilaketa gaitzeko.",
+    "imageSourcesRest": "gehitu Pexels, Flaticon, Leonardo.Ai edo Pollinations.ai API gakoak aplikazioan irudiak bilatzeko eta sortzeko gaitzeko.",
     "translationLabel": "Itzulpena:",
     "translationRest": "aukeratu Gemini, OpenAI, DeepSeek, Z.AI, Groq edo OpenAI-rekin bateragarria den hornitzaile pertsonalizatu bat.",
     "modelBaseUrlLabel": "Eredua eta oinarrizko URLa:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Galdera txantiloia:",
     "promptTemplateRest": "txartelaren testuak nola itzultzen diren kontrolatzen du. Leku-markak aplikazioak betetzen ditu eskaera bidali aurretik.",
     "apiKeysTitle": "API gakoak",
-    "apiKeysText": "API gakoak aukerako laguntzaileentzat bakarrik behar dira. Itzulpen-teklek aplikazioari txartelean dagoen testutik falta den hizkuntza-testua betetzeko aukera ematen diote. Irudiak bilatzeko gakoei esker, aplikazioari irudi-hornitzaileak editoretik bila ditzakete. Gakoak tokiko arakatzailearen biltegian geratzen dira eta aukeratutako hornitzaileari zuzenean bidaltzen zaizkio funtzio hori erabiltzen duzunean.",
+    "apiKeysText": "API gakoak aukerako laguntzaileentzat bakarrik behar dira. Itzulpen-teklek aplikazioari txartelean dagoen testutik falta den hizkuntza-testua betetzeko aukera ematen diote. Irudi teklak aplikazioari editorearen irudiak bilatzeko edo sortzeko aukera ematen diote. Gakoak tokiko arakatzailearen biltegian geratzen dira eta aukeratutako hornitzaileari zuzenean bidaltzen zaizkio funtzio hori erabiltzen duzunean.",
     "localDataTitle": "Tokiko Datuak",
     "localDataText1": "Txartelaren datuak eta ezarpenak arakatzaile honen tokiko biltegian gordetzen dira. Erabilera-hizkuntza bereizita gogoratzen da tokiko biltegian ere. Ez da ezer bidaltzen Toddler Read zerbitzarietara, eta ez dago konturik edo hodeiko sinkronizaziorik.",
     "localDataText2": "Esportatu zure liburutegia fitxategien menutik arakatzailearen datuak garbitu, arakatzailea aldatu edo beste gailu batera eraman aurretik. Sareko transmisio bakarrak itzulpenak edo irudiak bilatzeko abiarazten dituzun eskaerak dira, zuzenean konfiguratutako APIs hornitzailera joaten direnak.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "JSON irakurgarria deskargatzen du eskuz editatzeko irudirik gabe.",
     "managerPressText1": "Kudeatzailea txartelaren liburutegia da. Hautatu kontrol-laukiak dituzten txartelak eta erabili iragazkiak falta diren irudiak, testuak edo estekak aurkitzeko.",
     "managerPressText2": "Ireki inprimagailuaren ikuspegia hautatutako txartelak antzezpenaren eta atzeko orri gisa aurreikusteko. Aukeratu PDF diseinua tresna-barran, berrikusi edozein abisu, eta deskargatu PDF eta inprimatu.",
+    "apiCredits": "Onartutako APIak",
     "links": "Estekak",
     "repository": "Biltegia",
     "kofi": "Ko-fi"

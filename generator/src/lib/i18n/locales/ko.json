@@ -203,6 +203,8 @@
     "format": "형식",
     "help": "도움말",
     "image": "이미지",
+    "imageGeneration": "이미지 생성",
+    "imageGenerationPromptTemplate": "이미지 생성 프롬프트 템플릿",
     "imageSource": "이미지 출처",
     "imageSources": "이미지 출처",
     "managerAndPress": "관리자 및 인쇄기",
@@ -217,10 +219,12 @@
     "size": "크기",
     "tags": "태그",
     "translation": "번역",
+    "translationPromptTemplate": "번역 프롬프트 템플릿",
     "translationProvider": "번역 제공업체",
     "verso": "베르소"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai 또는 Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "또는",
     "cornerLanguagesRestAfter": "표시된 마커를 조정합니다.",
     "imageSourcesLabel": "이미지 출처:",
-    "imageSourcesRest": "인앱 이미지 검색을 활성화하려면 Pexels 또는 Flaticon API 키를 추가하세요.",
+    "imageSourcesRest": "인앱 이미지 검색 및 생성을 활성화하려면 Pexels, Flaticon, Leonardo.Ai 또는 Pollinations.ai API 키를 추가하세요.",
     "translationLabel": "번역:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq 또는 맞춤 OpenAI 호환 공급자를 선택하세요.",
     "modelBaseUrlLabel": "모델 및 기본 URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "프롬프트 템플릿:",
     "promptTemplateRest": "카드 텍스트가 번역되는 방식을 제어합니다. 자리 표시자는 요청이 전송되기 전에 앱에 의해 채워집니다.",
     "apiKeysTitle": "API 키",
-    "apiKeysText": "API 키는 선택적 도우미에만 필요합니다. 번역 키를 사용하면 앱이 카드의 기존 텍스트에서 누락된 언어 텍스트를 채울 수 있습니다. 이미지 검색 키를 사용하면 앱이 편집기에서 이미지 제공자를 검색할 수 있습니다. 키는 로컬 브라우저 저장소에 유지되며 해당 기능을 사용할 때 선택한 공급자에게 직접 전송됩니다.",
+    "apiKeysText": "API 키는 선택적 도우미에만 필요합니다. 번역 키를 사용하면 앱이 카드의 기존 텍스트에서 누락된 언어 텍스트를 채울 수 있습니다. 이미지 키를 사용하면 앱이 편집기에서 이미지를 검색하거나 생성할 수 있습니다. 키는 로컬 브라우저 저장소에 유지되며 해당 기능을 사용할 때 선택한 공급자에게 직접 전송됩니다.",
     "localDataTitle": "로컬 데이터",
     "localDataText1": "카드 데이터 및 설정은 이 브라우저의 로컬 저장소에 저장됩니다. 사용 언어는 로컬 저장소에도 별도로 기억됩니다. Toddler Read 서버로 아무 것도 전송되지 않으며 계정이나 클라우드 동기화도 없습니다.",
     "localDataText2": "브라우저 데이터를 지우거나, 브라우저를 전환하거나, 다른 장치로 이동하기 전에 파일 메뉴에서 라이브러리를 내보내세요. 유일한 네트워크 전송은 구성된 공급자 APIs로 직접 이동하는 번역 또는 이미지 검색을 위해 트리거하는 요청입니다.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "수동 편집을 위해 이미지 없이 읽을 수 있는 JSON를 다운로드합니다.",
     "managerPressText1": "관리자는 카드 라이브러리입니다. 체크박스가 있는 카드를 선택하고 필터를 사용하여 누락된 이미지, 텍스트 또는 링크를 찾으세요.",
     "managerPressText2": "선택한 카드를 가로 및 세로 페이지로 미리 보려면 프린터 보기를 엽니다. 도구 모음에서 PDF 레이아웃을 선택하고 경고를 검토한 다음 PDF를 다운로드하여 인쇄하세요.",
+    "apiCredits": "지원되는 API",
     "links": "링크",
     "repository": "저장소",
     "kofi": "Ko-fi"

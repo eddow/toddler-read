@@ -203,6 +203,8 @@
     "format": "Formátum",
     "help": "Segítség",
     "image": "Kép",
+    "imageGeneration": "Képgenerálás",
+    "imageGenerationPromptTemplate": "Képgeneráló prompt sablon",
     "imageSource": "Kép forrása",
     "imageSources": "Képforrások",
     "managerAndPress": "Menedzser és Nyomda",
@@ -217,10 +219,12 @@
     "size": "Méret",
     "tags": "Címkék",
     "translation": "Fordítás",
+    "translationPromptTemplate": "Fordítási felszólító sablon",
     "translationProvider": "Fordításszolgáltató",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai vagy Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "vagy",
     "cornerLanguagesRestAfter": "és állítsa be a megjelenített jelölőt.",
     "imageSourcesLabel": "Képforrások:",
-    "imageSourcesRest": "adjon hozzá Pexels vagy Flaticon API kulcsokat az alkalmazáson belüli képkeresés engedélyezéséhez.",
+    "imageSourcesRest": "adjon hozzá Pexels, Flaticon, Leonardo.Ai vagy Pollinations.ai API-kulcsokat az alkalmazáson belüli képkeresés és -generálás engedélyezéséhez.",
     "translationLabel": "Fordítás:",
     "translationRest": "válasszon Gemini, OpenAI, DeepSeek, Z.AI, Groq vagy egyéni OpenAI-kompatibilis szolgáltatót.",
     "modelBaseUrlLabel": "Modell és alap URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Prompt sablon:",
     "promptTemplateRest": "szabályozza a kártyaszövegek fordítását. A helyőrzőket az alkalmazás tölti ki a kérés elküldése előtt.",
     "apiKeysTitle": "API kulcsok",
-    "apiKeysText": "A API kulcsokra csak az opcionális segítőknek van szükségük. A fordítókulcsok segítségével az alkalmazás kitöltheti a hiányzó nyelvi szöveget a kártyán lévő szövegből. A képkereső billentyűk segítségével az alkalmazás képszolgáltatókat kereshet a szerkesztőből. A kulcsok a böngésző helyi tárhelyén maradnak, és közvetlenül a kiválasztott szolgáltatóhoz kerülnek, amikor ezt a funkciót használja.",
+    "apiKeysText": "API-kulcsokra csak az opcionális segítőknek van szükségük. A fordítókulcsok segítségével az alkalmazás kitöltheti a hiányzó nyelvi szöveget a kártyán lévő szövegből. A képkulcsok lehetővé teszik az alkalmazás számára, hogy képeket keressen vagy generáljon a szerkesztőből. A kulcsok a helyi böngésző tárhelyén maradnak, és a funkció használatakor közvetlenül a kiválasztott szolgáltatóhoz kerülnek.",
     "localDataTitle": "Helyi adatok",
     "localDataText1": "A kártyaadatok és beállítások a böngésző helyi tárhelyén tárolódnak. A használati nyelvet a helyi tárhely külön is megjegyzi. Semmi sem kerül elküldésre a Toddler Read szerverekre, és nincs fiók vagy felhő szinkronizálás.",
     "localDataText2": "Exportálja könyvtárát a fájl menüből, mielőtt törli a böngésző adatait, böngészőt vált, vagy másik eszközre költözik. Az egyetlen hálózati átvitel a fordítási vagy képkeresési kérések, amelyek közvetlenül a konfigurált APIs szolgáltatóhoz érkeznek.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "letölti az olvasható JSON-et képek nélkül a kézi szerkesztéshez.",
     "managerPressText1": "A menedzser a kártyakönyvtár. Jelölje ki a kártyákat a jelölőnégyzetekkel, és szűrőkkel keresse meg a hiányzó képeket, szöveget vagy verso linkeket.",
     "managerPressText2": "Nyissa meg a nyomtató nézetet, hogy megtekinthesse a kiválasztott kártyákat recto és verso oldalakként. Válassza ki a PDF elrendezést az eszköztáron, tekintse át a figyelmeztetéseket, majd töltse le és nyomtassa ki a PDF fájlt.",
+    "apiCredits": "Támogatott API-k",
     "links": "Linkek",
     "repository": "Adattár",
     "kofi": "Ko-fi"

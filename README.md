@@ -126,6 +126,28 @@ Cards are stored locally in IndexedDB and can be imported/exported as JSON.
 
 See [generator.md](generator.md) for the full workflow.
 
+## Supported APIs
+
+Toddler Read can optionally call third-party APIs directly from the browser for
+translation, image search, and image generation. API keys stay in local browser
+storage and are sent only to the selected provider when you use that feature.
+
+- Translation:
+  [![Gemini API](https://img.shields.io/badge/Gemini-API-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/gemini-api)
+  [![OpenAI API](https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai&logoColor=white)](https://platform.openai.com)
+  [![DeepSeek API](https://img.shields.io/badge/DeepSeek-API-4D6BFF?style=for-the-badge)](https://platform.deepseek.com)
+  [![Z.AI API](https://img.shields.io/badge/Z.AI-API-111111?style=for-the-badge)](https://docs.z.ai)
+  [![Groq API](https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white)](https://console.groq.com)
+  and custom OpenAI-compatible endpoints.
+- Image search:
+  [![Pexels API](https://img.shields.io/badge/Pexels-API-05A081?style=for-the-badge&logo=pexels&logoColor=white)](https://www.pexels.com/api/)
+  [![Flaticon API](https://img.shields.io/badge/Flaticon-API-0C9ED9?style=for-the-badge)](https://www.flaticon.com/api)
+- Image generation:
+  [![Leonardo.Ai API](https://img.shields.io/badge/Leonardo.Ai-API-111827?style=for-the-badge)](https://docs.leonardo.ai)
+  [![Built with Pollinations.ai](https://img.shields.io/badge/Built%20with-Pollinations.ai-111111?style=for-the-badge)](https://pollinations.ai)
+
+If you don't know, with 5€/$ in both deepseek and pollinations, you generate & translate hundreds of cards
+
 ## Notes
 
 - Camera access requires HTTPS or localhost in regular browsers.

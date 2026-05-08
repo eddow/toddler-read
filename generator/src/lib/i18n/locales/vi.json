@@ -203,6 +203,8 @@
     "format": "định dạng",
     "help": "Trợ giúp",
     "image": "Hình ảnh",
+    "imageGeneration": "Tạo hình ảnh",
+    "imageGenerationPromptTemplate": "Mẫu lời nhắc tạo hình ảnh",
     "imageSource": "Nguồn hình ảnh",
     "imageSources": "Nguồn hình ảnh",
     "managerAndPress": "Giám đốc và Nhà in",
@@ -217,10 +219,12 @@
     "size": "Kích thước",
     "tags": "Thẻ",
     "translation": "Dịch thuật",
+    "translationPromptTemplate": "Mẫu nhắc dịch",
     "translationProvider": "Nhà cung cấp dịch thuật",
     "verso": "ngược lại"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai hoặc Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "hoặc",
     "cornerLanguagesRestAfter": "và điều chỉnh điểm đánh dấu được hiển thị.",
     "imageSourcesLabel": "Nguồn hình ảnh:",
-    "imageSourcesRest": "thêm khóa Pexels hoặc Flaticon API để bật tìm kiếm hình ảnh trong ứng dụng.",
+    "imageSourcesRest": "thêm các khóa API Pexels, Flaticon, Leonardo.Ai hoặc Pollinations.ai để cho phép tìm kiếm và tạo hình ảnh trong ứng dụng.",
     "translationLabel": "Bản dịch:",
     "translationRest": "chọn Gemini, OpenAI, DeepSeek, Z.AI, Groq hoặc nhà cung cấp tương thích với OpenAI tùy chỉnh.",
     "modelBaseUrlLabel": "URL mô hình và cơ sở:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Mẫu nhắc nhở:",
     "promptTemplateRest": "kiểm soát cách dịch văn bản thẻ. Phần giữ chỗ được ứng dụng điền trước khi yêu cầu được gửi.",
     "apiKeysTitle": "Khóa API",
-    "apiKeysText": "Khóa API chỉ cần thiết cho người trợ giúp tùy chọn. Phím dịch cho phép ứng dụng điền văn bản ngôn ngữ còn thiếu từ văn bản hiện có trên thẻ. Phím tìm kiếm hình ảnh cho phép ứng dụng tìm kiếm nhà cung cấp hình ảnh từ trình chỉnh sửa. Khóa vẫn được lưu trong bộ nhớ cục bộ của trình duyệt và được gửi trực tiếp đến nhà cung cấp đã chọn khi bạn sử dụng tính năng đó.",
+    "apiKeysText": "Khóa API chỉ cần thiết cho người trợ giúp tùy chọn. Phím dịch cho phép ứng dụng điền văn bản ngôn ngữ còn thiếu từ văn bản hiện có trên thẻ. Phím hình ảnh cho phép ứng dụng tìm kiếm hoặc tạo hình ảnh từ trình chỉnh sửa. Khóa vẫn được lưu trong bộ nhớ cục bộ của trình duyệt và được gửi trực tiếp đến nhà cung cấp đã chọn khi bạn sử dụng tính năng đó.",
     "localDataTitle": "Dữ liệu cục bộ",
     "localDataText1": "Dữ liệu thẻ và cài đặt được lưu trữ trong bộ nhớ cục bộ của trình duyệt này. Ngôn ngữ sử dụng cũng được ghi nhớ riêng trong bộ nhớ cục bộ. Không có gì được gửi đến máy chủ Toddler Read và không có đồng bộ hóa tài khoản hoặc đám mây.",
     "localDataText2": "Xuất thư viện của bạn từ menu tệp trước khi xóa dữ liệu trình duyệt, chuyển đổi trình duyệt hoặc chuyển sang thiết bị khác. Việc truyền mạng duy nhất là các yêu cầu bạn kích hoạt để dịch hoặc tìm kiếm hình ảnh, được chuyển trực tiếp đến nhà cung cấp API đã định cấu hình.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "tải xuống JSON có thể đọc được mà không cần hình ảnh để chỉnh sửa bằng tay.",
     "managerPressText1": "Người quản lý là thư viện thẻ. Chọn các thẻ có hộp kiểm và sử dụng bộ lọc để tìm hình ảnh, văn bản hoặc liên kết ngược lại bị thiếu.",
     "managerPressText2": "Mở chế độ xem máy in để xem trước các thẻ đã chọn dưới dạng trang recto và verso. Chọn bố cục PDF trên thanh công cụ, xem lại mọi cảnh báo, sau đó tải xuống PDF và in.",
+    "apiCredits": "API được hỗ trợ",
     "links": "Liên kết",
     "repository": "Kho lưu trữ",
     "kofi": "Ko-fi"

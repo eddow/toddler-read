@@ -203,6 +203,8 @@
     "format": "格式",
     "help": "帮助",
     "image": "图片",
+    "imageGeneration": "图像生成",
+    "imageGenerationPromptTemplate": "图片生成提示模板",
     "imageSource": "图片来源",
     "imageSources": "图片来源",
     "managerAndPress": "经理和印刷厂",
@@ -217,10 +219,12 @@
     "size": "尺寸",
     "tags": "标签",
     "translation": "翻译",
+    "translationPromptTemplate": "翻译提示模板",
     "translationProvider": "翻译提供商",
     "verso": "维索"
   },
   "providers": {
+    "imageProviderKeys": "Pexels、Flaticon、Leonardo.Ai 或 Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "或",
     "cornerLanguagesRestAfter": "并调整显示的标记。",
     "imageSourcesLabel": "图片来源：",
-    "imageSourcesRest": "添加 Pexels 或 Flaticon API 键以启用应用内图像搜索。",
+    "imageSourcesRest": "添加 Pexels、Flaticon、Leonardo.Ai 或 Pollinations.ai API 密钥以启用应用内图像搜索和生成。",
     "translationLabel": "翻译：",
     "translationRest": "选择 Gemini、OpenAI、DeepSeek、Z.AI、Groq 或自定义 OpenAI 兼容提供程序。",
     "modelBaseUrlLabel": "型号和基本 URL：",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "提示模板：",
     "promptTemplateRest": "控制卡片文本的翻译方式。占位符由应用程序在发送请求之前填充。",
     "apiKeysTitle": "API 按键",
-    "apiKeysText": "仅可选助手需要 API 密钥。翻译键可让应用程序填充卡片上现有文本中缺失的语言文本。图像搜索键让应用程序可以从编辑器中搜索图像提供者。密钥保留在本地浏览器存储中，并在您使用该功能时直接发送到选定的提供商。",
+    "apiKeysText": "仅可选助手需要 API 密钥。翻译键让应用程序可以填充卡片上现有文本中缺失的语言文本。图像键允许应用程序从编辑器搜索或生成图像。密钥保留在本地浏览器存储中，并在您使用该功能时直接发送到选定的提供商。",
     "localDataTitle": "本地数据",
     "localDataText1": "卡数据和设置存储在此浏览器的本地存储中。使用语言也单独记录在本地存储中。没有任何内容发送到 Toddler Read 服务器，也没有帐户或云同步。",
     "localDataText2": "在清除浏览器数据、切换浏览器或移动到其他设备之前，请从文件菜单导出您的资料库。唯一的网络传输是您触发的翻译或图像搜索请求，这些请求直接发送到配置的提供商 APIs。",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "下载可读的 JSON，无需手动编辑图像。",
     "managerPressText1": "管理者就是卡库。选择带有复选框的卡片并使用过滤器查找丢失的图像、文本或反面链接。",
     "managerPressText2": "打开打印机视图以预览所选卡片的正面和反面页面。在工具栏中选择 PDF 布局，查看所有警告，然后下载 PDF 并打印。",
+    "apiCredits": "支持的API",
     "links": "友情链接",
     "repository": "存储库",
     "kofi": "Ko-fi"

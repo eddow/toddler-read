@@ -203,6 +203,8 @@
     "format": "Formāts",
     "help": "Palīdzība",
     "image": "Attēls",
+    "imageGeneration": "Attēlu ģenerēšana",
+    "imageGenerationPromptTemplate": "Attēlu ģenerēšanas uzvednes veidne",
     "imageSource": "Attēla avots",
     "imageSources": "Attēlu avoti",
     "managerAndPress": "Vadītājs un tipogrāfija",
@@ -217,10 +219,12 @@
     "size": "Izmērs",
     "tags": "Tagi",
     "translation": "Tulkošana",
+    "translationPromptTemplate": "Tulkošanas uzvednes veidne",
     "translationProvider": "Tulkošanas nodrošinātājs",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai vai Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "vai",
     "cornerLanguagesRestAfter": "un noregulējiet parādīto marķieri.",
     "imageSourcesLabel": "Attēlu avoti:",
-    "imageSourcesRest": "pievienojiet taustiņus Pexels vai Flaticon API, lai iespējotu attēlu meklēšanu lietotnē.",
+    "imageSourcesRest": "pievienojiet Pexels, Flaticon, Leonardo.Ai vai Pollinations.ai API atslēgas, lai iespējotu attēlu meklēšanu un ģenerēšanu lietotnē.",
     "translationLabel": "Tulkojums:",
     "translationRest": "izvēlieties Gemini, OpenAI, DeepSeek, Z.AI, Groq vai pielāgotu ar OpenAI saderīgu pakalpojumu sniedzēju.",
     "modelBaseUrlLabel": "Modeļa un bāzes URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Uzvednes veidne:",
     "promptTemplateRest": "kontrolē, kā tiek tulkoti kartīšu teksti. Pirms pieprasījuma nosūtīšanas lietotne aizpilda vietturus.",
     "apiKeysTitle": "API atslēgas",
-    "apiKeysText": "API atslēgas ir nepieciešamas tikai papildu palīgiem. Tulkošanas atslēgas ļauj lietotnei aizpildīt trūkstošo valodas tekstu no esošā teksta kartītē. Attēlu meklēšanas taustiņi ļauj lietotnei meklēt attēlu nodrošinātājus no redaktora. Atslēgas paliek vietējā pārlūkprogrammas krātuvē un tiek tieši nosūtītas atlasītajam pakalpojumu sniedzējam, kad izmantojat šo funkciju.",
+    "apiKeysText": "API atslēgas ir nepieciešamas tikai papildu palīgiem. Tulkošanas atslēgas ļauj lietotnei aizpildīt trūkstošo valodas tekstu no esošā teksta kartītē. Attēlu taustiņi ļauj lietotnei meklēt vai ģenerēt attēlus no redaktora. Atslēgas paliek vietējā pārlūkprogrammas krātuvē un tiek tieši nosūtītas atlasītajam pakalpojumu sniedzējam, kad izmantojat šo funkciju.",
     "localDataTitle": "Vietējie dati",
     "localDataText1": "Kartes dati un iestatījumi tiek glabāti šīs pārlūkprogrammas lokālajā atmiņā. Arī vietējā krātuvē lietošanas valoda tiek atcerēta atsevišķi. Uz Toddler Read serveriem nekas netiek nosūtīts, un nav konta vai mākoņa sinhronizācijas.",
     "localDataText2": "Pirms pārlūkprogrammas datu dzēšanas, pārlūkprogrammas pārslēgšanas vai pārvietošanas uz citu ierīci eksportējiet savu bibliotēku no failu izvēlnes. Vienīgās tīkla pārraides ir pieprasījumi, ko aktivizējat tulkošanai vai attēlu meklēšanai, kas tiek tieši nosūtīti konfigurētajam pakalpojumu sniedzējam APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "lejupielādē lasāmu JSON bez attēliem manuālai rediģēšanai.",
     "managerPressText1": "Pārzinis ir karšu bibliotēka. Atlasiet kartītes ar izvēles rūtiņām un izmantojiet filtrus, lai atrastu trūkstošos attēlus, tekstu vai otrās saites.",
     "managerPressText2": "Atveriet printera skatu, lai priekšskatītu atlasītās kartītes kā taisnās un otrās lapas. Rīkjoslā izvēlieties PDF izkārtojumu, pārskatiet visus brīdinājumus, pēc tam lejupielādējiet PDF un izdrukājiet to.",
+    "apiCredits": "Atbalstītās API",
     "links": "Saites",
     "repository": "Repozitorijs",
     "kofi": "Ko-fi"

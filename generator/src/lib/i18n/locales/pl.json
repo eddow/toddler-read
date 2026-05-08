@@ -203,6 +203,8 @@
     "format": "Sformatuj",
     "help": "Pomoc",
     "image": "Obraz",
+    "imageGeneration": "Generowanie obrazu",
+    "imageGenerationPromptTemplate": "Szablon monitu o generowanie obrazu",
     "imageSource": "Źródło obrazu",
     "imageSources": "Źródła obrazów",
     "managerAndPress": "Menedżer i prasa drukarska",
@@ -217,10 +219,12 @@
     "size": "Rozmiar",
     "tags": "Tagi",
     "translation": "Tłumaczenie",
+    "translationPromptTemplate": "Szablon monitu o tłumaczenie",
     "translationProvider": "Dostawca tłumaczeń",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai lub Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "lub",
     "cornerLanguagesRestAfter": "i dostosuj wyświetlany znacznik.",
     "imageSourcesLabel": "Źródła obrazu:",
-    "imageSourcesRest": "dodaj klucze Pexels lub Flaticon API, aby umożliwić wyszukiwanie obrazów w aplikacji.",
+    "imageSourcesRest": "dodaj klucze API Pexels, Flaticon, Leonardo.Ai lub Pollinations.ai, aby umożliwić wyszukiwanie i generowanie obrazów w aplikacji.",
     "translationLabel": "Tłumaczenie:",
     "translationRest": "wybierz Gemini, OpenAI, DeepSeek, Z.AI, Groq lub niestandardowego dostawcę kompatybilnego z OpenAI.",
     "modelBaseUrlLabel": "Model i podstawowy adres URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Szablon podpowiedzi:",
     "promptTemplateRest": "kontroluje sposób tłumaczenia tekstów kart. Elementy zastępcze są wypełniane przez aplikację przed wysłaniem żądania.",
     "apiKeysTitle": "Klucze API",
-    "apiKeysText": "Klucze API są potrzebne tylko opcjonalnym pomocnikom. Klucze tłumaczące pozwalają aplikacji uzupełnić brakujący tekst w języku istniejącym tekstem na karcie. Klawisze wyszukiwania obrazów umożliwiają aplikacji wyszukiwanie dostawców obrazów w edytorze. Klucze pozostają w pamięci lokalnej przeglądarki i są wysyłane bezpośrednio do wybranego dostawcy, gdy korzystasz z tej funkcji.",
+    "apiKeysText": "Klucze API są potrzebne tylko opcjonalnym pomocnikom. Klucze tłumaczące pozwalają aplikacji uzupełnić brakujący tekst w języku istniejącym tekstem na karcie. Klawisze obrazów umożliwiają aplikacji wyszukiwanie lub generowanie obrazów z edytora. Klucze pozostają w pamięci lokalnej przeglądarki i są wysyłane bezpośrednio do wybranego dostawcy, gdy korzystasz z tej funkcji.",
     "localDataTitle": "Dane lokalne",
     "localDataText1": "Dane i ustawienia karty są przechowywane w pamięci lokalnej tej przeglądarki. Język użytkowania jest również zapamiętywany oddzielnie w pamięci lokalnej. Nic nie jest wysyłane na serwery Toddler Read i nie ma synchronizacji konta ani chmury.",
     "localDataText2": "Wyeksportuj swoją bibliotekę z menu plików przed wyczyszczeniem danych przeglądarki, zmianą przeglądarki lub przeniesieniem na inne urządzenie. Jedyne transmisje sieciowe to wywoływane przez Ciebie żądania tłumaczenia lub wyszukiwania obrazów, które trafiają bezpośrednio do skonfigurowanego dostawcy APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "pobiera czytelny JSON bez obrazów do ręcznej edycji.",
     "managerPressText1": "Menedżerem jest biblioteka kart. Zaznacz karty z polami wyboru i użyj filtrów, aby znaleźć brakujące obrazy, tekst lub linki na odwrocie.",
     "managerPressText2": "Otwórz widok drukarki, aby wyświetlić podgląd wybranych kart w formie stron recto i verso. Wybierz układ PDF na pasku narzędzi, przejrzyj wszelkie ostrzeżenia, a następnie pobierz PDF i wydrukuj go.",
+    "apiCredits": "Obsługiwane interfejsy API",
     "links": "Linki",
     "repository": "Repozytorium",
     "kofi": "Ko-fi"

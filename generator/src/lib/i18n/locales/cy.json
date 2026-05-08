@@ -203,6 +203,8 @@
     "format": "Fformat",
     "help": "Help",
     "image": "Delwedd",
+    "imageGeneration": "Cynhyrchu delwedd",
+    "imageGenerationPromptTemplate": "Templed annog cynhyrchu delwedd",
     "imageSource": "Ffynhonnell delwedd",
     "imageSources": "Ffynonellau delwedd",
     "managerAndPress": "Rheolwr A Wasg Argraffu",
@@ -217,10 +219,12 @@
     "size": "Maint",
     "tags": "Tagiau",
     "translation": "Cyfieithiad",
+    "translationPromptTemplate": "Templed anogwr cyfieithu",
     "translationProvider": "Darparwr cyfieithu",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, neu Peilliadau.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "neu",
     "cornerLanguagesRestAfter": "ac addasu'r marciwr sy'n cael ei arddangos.",
     "imageSourcesLabel": "Ffynonellau delwedd:",
-    "imageSourcesRest": "ychwanegu allweddi Pexels neu Flaticon API i alluogi chwiliad delwedd mewn-app.",
+    "imageSourcesRest": "ychwanegu allweddi Pexels, Flaticon, Leonardo.Ai, neu Pollinations.ai API i alluogi chwilio a chynhyrchu delwedd mewn-app.",
     "translationLabel": "Cyfieithiad:",
     "translationRest": "dewiswch Gemini, OpenAI, DeepSeek, Z.AI, Groq, neu ddarparwr sy'n gydnaws â OpenAI wedi'i deilwra.",
     "modelBaseUrlLabel": "URL model a sylfaen:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Templed prydlon:",
     "promptTemplateRest": "rheoli sut mae testunau cardiau yn cael eu cyfieithu. Mae'r deiliaid lleoedd yn cael eu llenwi gan yr ap cyn anfon y cais.",
     "apiKeysTitle": "Bysellau API",
-    "apiKeysText": "Dim ond ar gyfer cynorthwywyr dewisol y mae angen allweddi API. Mae bysellau cyfieithu yn gadael i'r ap lenwi testun iaith coll o'r testun presennol ar y cerdyn. Mae bysellau chwilio delwedd yn gadael i'r ap chwilio darparwyr delwedd gan y golygydd. Mae allweddi'n aros mewn storfa porwr lleol ac yn cael eu hanfon yn uniongyrchol at y darparwr a ddewiswyd pan fyddwch chi'n defnyddio'r nodwedd honno.",
+    "apiKeysText": "Dim ond ar gyfer cynorthwywyr dewisol y mae angen allweddi API. Mae bysellau cyfieithu yn gadael i'r ap lenwi testun iaith coll o'r testun presennol ar y cerdyn. Mae bysellau delwedd yn gadael i'r ap chwilio neu gynhyrchu delweddau gan y golygydd. Mae allweddi yn aros mewn storfa porwr lleol ac yn cael eu hanfon yn uniongyrchol at y darparwr a ddewiswyd pan fyddwch yn defnyddio'r nodwedd honno.",
     "localDataTitle": "Data Lleol",
     "localDataText1": "Mae data cerdyn a gosodiadau yn cael eu storio yn storfa leol y porwr hwn. Mae'r iaith ddefnydd yn cael ei chofio ar wahân mewn storfa leol hefyd. Nid oes dim yn cael ei anfon at weinyddion Toddler Read, ac nid oes unrhyw gyfrif na chysoni cwmwl.",
     "localDataText2": "Allforiwch eich llyfrgell o'r ddewislen ffeil cyn clirio data porwr, newid porwyr, neu symud i ddyfais arall. Yr unig drosglwyddiadau rhwydwaith yw'r ceisiadau rydych chi'n eu sbarduno am gyfieithu neu chwilio delwedd, sy'n mynd yn syth i'r darparwr cyfluniedig APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "lawrlwytho JSON darllenadwy heb ddelweddau i'w golygu â llaw.",
     "managerPressText1": "Y rheolwr yw'r llyfrgell gardiau. Dewiswch gardiau gyda'r blychau ticio a defnyddiwch hidlwyr i ddod o hyd i ddelweddau coll, testun, neu ddolenni verso.",
     "managerPressText2": "Agorwch olwg yr argraffydd i gael rhagolwg o gardiau dethol fel tudalennau recto a verso. Dewiswch y gosodiad PDF yn y bar offer, adolygwch unrhyw rybuddion, yna lawrlwythwch y PDF a'i argraffu.",
+    "apiCredits": "APIs a gefnogir",
     "links": "Cysylltiadau",
     "repository": "Ystorfa",
     "kofi": "Ko-fi"

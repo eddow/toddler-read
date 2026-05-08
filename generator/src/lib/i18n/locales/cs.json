@@ -203,6 +203,8 @@
     "format": "Formát",
     "help": "Pomoc",
     "image": "Obrázek",
+    "imageGeneration": "Generování obrazu",
+    "imageGenerationPromptTemplate": "Šablona výzvy k vytvoření obrázku",
     "imageSource": "Zdroj obrázku",
     "imageSources": "Zdroje obrázků",
     "managerAndPress": "Manažer a tiskařský lis",
@@ -217,10 +219,12 @@
     "size": "Velikost",
     "tags": "Tagy",
     "translation": "Překlad",
+    "translationPromptTemplate": "Šablona výzvy k překladu",
     "translationProvider": "Poskytovatel překladů",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai nebo Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "nebo",
     "cornerLanguagesRestAfter": "a upravte zobrazenou značku.",
     "imageSourcesLabel": "Zdroje obrázků:",
-    "imageSourcesRest": "přidáním kláves Pexels nebo Flaticon API povolte vyhledávání obrázků v aplikaci.",
+    "imageSourcesRest": "přidejte klíče API Pexels, Flaticon, Leonardo.Ai nebo Pollinations.ai, abyste umožnili vyhledávání a generování obrázků v aplikaci.",
     "translationLabel": "překlad:",
     "translationRest": "vyberte Gemini, OpenAI, DeepSeek, Z.AI, Groq nebo vlastního poskytovatele kompatibilního se OpenAI.",
     "modelBaseUrlLabel": "Model a základní URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Šablona výzvy:",
     "promptTemplateRest": "řídí, jak se texty karet překládají. Zástupné symboly jsou vyplněny aplikací před odesláním požadavku.",
     "apiKeysTitle": "Klávesy API",
-    "apiKeysText": "Klíče API jsou potřeba pouze pro volitelné pomocníky. Překladové klávesy umožňují aplikaci doplnit chybějící jazykový text z existujícího textu na kartě. Klávesy pro vyhledávání obrázků umožňují aplikaci vyhledávat poskytovatele obrázků z editoru. Klíče zůstávají v místním úložišti prohlížeče a při použití této funkce jsou odesílány přímo vybranému poskytovateli.",
+    "apiKeysText": "Klíče API jsou potřeba pouze pro volitelné pomocníky. Překladové klávesy umožňují aplikaci doplnit chybějící jazykový text z existujícího textu na kartě. Obrázkové klíče umožňují aplikaci vyhledávat nebo generovat obrázky z editoru. Klíče zůstávají v místním úložišti prohlížeče a při použití této funkce jsou odesílány přímo vybranému poskytovateli.",
     "localDataTitle": "Místní data",
     "localDataText1": "Data a nastavení karty jsou uložena v místním úložišti tohoto prohlížeče. Jazyk použití se také pamatuje samostatně v místním úložišti. Na servery Toddler Read se nic neodesílá a nedochází k synchronizaci účtu ani cloudu.",
     "localDataText2": "Před vymazáním dat prohlížeče, přepnutím prohlížeče nebo přesunem na jiné zařízení exportujte svou knihovnu z nabídky souborů. Jedinými síťovými přenosy jsou požadavky na překlad nebo vyhledávání obrázků, které směřují přímo k nakonfigurovanému poskytovateli APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "stáhne čitelný JSON bez obrázků pro ruční úpravy.",
     "managerPressText1": "Správcem je knihovna karet. Vyberte karty se zaškrtávacími políčky a použijte filtry k nalezení chybějících obrázků, textu nebo zpětných odkazů.",
     "managerPressText2": "Otevřete zobrazení tiskárny a zobrazte náhled vybraných karet jako lícových a rubových stránek. Vyberte rozvržení PDF na panelu nástrojů, zkontrolujte všechna varování, stáhněte si PDF a vytiskněte jej.",
+    "apiCredits": "Podporovaná rozhraní API",
     "links": "Odkazy",
     "repository": "Úložiště",
     "kofi": "Ko-fi"

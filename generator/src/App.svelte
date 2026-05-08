@@ -70,11 +70,13 @@
 		type ImportPlan
 	} from './lib/cards-transfer'
 	import {
+		DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE,
 		IMAGE_SEARCH_PROVIDERS,
 		defaultImageSearchProviderConfigs,
 		getImageSearchProvider,
 		isImageSearchProvider,
 		normalizeStoredImageSearchProviderConfigs,
+		type ImageGenerationPromptContext,
 		type ImageSearchProviderConfig,
 		type ImageSearchProviderConfigs,
 		type ImageSearchProviderId,
@@ -151,18 +153,63 @@
 	const TRANSLATION_RESPONSE_SCHEMA = {
 		translations: [{ index: 2, text: 'corrected or translated text' }]
 	}
-	const DEFAULT_TRANSLATION_PROMPT_TEMPLATE = [
-		'Translate and proofread these toddler reading card texts.',
-		'Use every source text as context for ambiguity and meaning.',
-		'Sources JSON: {{sourcesJson}}',
-		'Targets JSON: {{targetsJson}}',
-		'Return only JSON matching this schema: {{responseSchemaJson}}',
-		'For each target with existing text, return corrected text only if spelling, accents, diacritics, or capitalization need fixing in the target language.',
-		'For each target with empty text, return a short natural translation suitable for a young child.',
-		'Do not return unchanged existing text.'
-	].join('\n')
+	const DEFAULT_TRANSLATION_PROMPT_TEMPLATE = `Translate and proofread these toddler reading card texts.
+Use every source text as context for ambiguity and meaning.
+Sources JSON: {{sourcesJson}}
+Targets JSON: {{targetsJson}}
+Return only JSON matching this schema: {{responseSchemaJson}}
+For each target with existing text, return corrected text only if spelling, accents, diacritics, or capitalization need fixing in the target language.
+For each target with empty text, return a short natural translation suitable for a young child.
+Do not return unchanged existing text.`
 	const REPOSITORY_URL = 'https://github.com/eddow/toddler-read'
 	const KO_FI_URL = 'https://ko-fi.com/emedware'
+	const API_CREDIT_LINKS = [
+		{
+			label: 'Gemini',
+			href: 'https://ai.google.dev/gemini-api',
+			badge: 'https://img.shields.io/badge/Gemini-API-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white'
+		},
+		{
+			label: 'OpenAI',
+			href: 'https://platform.openai.com',
+			badge: 'https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai&logoColor=white'
+		},
+		{
+			label: 'DeepSeek',
+			href: 'https://platform.deepseek.com',
+			badge: 'https://img.shields.io/badge/DeepSeek-API-4D6BFF?style=for-the-badge'
+		},
+		{
+			label: 'Z.AI',
+			href: 'https://docs.z.ai',
+			badge: 'https://img.shields.io/badge/Z.AI-API-111111?style=for-the-badge'
+		},
+		{
+			label: 'Groq',
+			href: 'https://console.groq.com',
+			badge: 'https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white'
+		},
+		{
+			label: 'Pexels',
+			href: 'https://www.pexels.com/api/',
+			badge: 'https://img.shields.io/badge/Pexels-API-05A081?style=for-the-badge&logo=pexels&logoColor=white'
+		},
+		{
+			label: 'Flaticon',
+			href: 'https://www.flaticon.com/api',
+			badge: 'https://img.shields.io/badge/Flaticon-API-0C9ED9?style=for-the-badge'
+		},
+		{
+			label: 'Leonardo.Ai',
+			href: 'https://docs.leonardo.ai',
+			badge: 'https://img.shields.io/badge/Leonardo.Ai-API-111827?style=for-the-badge'
+		},
+		{
+			label: 'Built with Pollinations.ai',
+			href: 'https://pollinations.ai',
+			badge: 'https://img.shields.io/badge/Built%20with-Pollinations.ai-111111?style=for-the-badge'
+		}
+	] as const
 	let idCounter = 0
 
 	type TranslationProvider = (typeof TRANSLATION_PROVIDERS)[number]['value']
@@ -217,6 +264,7 @@
 	let translationProvider: TranslationProvider = 'gemini'
 	let translationProviderConfigs = defaultTranslationProviderConfigs()
 	let translationPromptTemplate = DEFAULT_TRANSLATION_PROMPT_TEMPLATE
+	let imageGenerationPromptTemplate = DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE
 	let imageSearchProvider: ImageSearchProviderId = 'pexels'
 	let imageSearchProviderConfigs: ImageSearchProviderConfigs = defaultImageSearchProviderConfigs()
 	let showImageSearchPanel = false
@@ -243,6 +291,7 @@
 	let showHelpPanel = false
 	let showApkPanel = false
 	let i18nReady = false
+	let usageLocale = ''
 	let usageDirection: LocaleDirection = 'ltr'
 	let showHelpAtStartup = true
 	let imageDataUrl: string | undefined
@@ -430,6 +479,7 @@
 				translationProvider,
 				translationProviderConfigs,
 				translationPromptTemplate,
+				imageGenerationPromptTemplate,
 				imageSearchProvider,
 				imageSearchProviderConfigs
 			})
@@ -839,6 +889,12 @@
 			) {
 				translationPromptTemplate = parsed.translationPromptTemplate
 			}
+			if (
+				typeof parsed.imageGenerationPromptTemplate === 'string' &&
+				parsed.imageGenerationPromptTemplate.trim()
+			) {
+				imageGenerationPromptTemplate = parsed.imageGenerationPromptTemplate
+			}
 			if (isTranslationProvider(parsed.translationProvider)) {
 				translationProvider = parsed.translationProvider
 			}
@@ -860,6 +916,14 @@
 				imageSearchProviderConfigs = normalizeStoredImageSearchProviderConfigs(
 					parsed.imageSearchProviderConfigs
 				)
+				const legacyLeonardoPrompt = parsed.imageSearchProviderConfigs.leonardo?.promptTemplate
+				if (
+					!parsed.imageGenerationPromptTemplate &&
+					typeof legacyLeonardoPrompt === 'string' &&
+					legacyLeonardoPrompt.trim()
+				) {
+					imageGenerationPromptTemplate = legacyLeonardoPrompt
+				}
 			}
 			if (typeof parsed.geminiApiKey === 'string' || typeof parsed.geminiModel === 'string') {
 				translationProviderConfigs = migrateLegacyGeminiConfig(
@@ -1614,7 +1678,7 @@
 		imageSearchError =
 			availableImageSearchProviders.length > 0
 				? ''
-				: format(T.templates.missingProviderKey, { provider: T.providers.pexelsOrFlaticon })
+				: format(T.templates.missingProviderKey, { provider: T.providers.imageProviderKeys })
 		if (imageSearchError) imageSearchResults = []
 		if (imageSearchQuery && availableImageSearchProviders.length > 0) {
 			void searchImages(1)
@@ -1663,7 +1727,32 @@
 		)
 	}
 
+	function buildImageGenerationPromptContext(card: StoredCard | undefined): ImageGenerationPromptContext {
+		const textsByLanguage: Record<string, string> = {}
+		if (!card) return { textsByLanguage }
+
+		for (const setup of normalizeLanguageSetupCount(languageSetups)) {
+			const language = setup.lang.trim()
+			const text = language ? card.texts[language]?.trim() : ''
+			if (language && text) textsByLanguage[language] = text
+		}
+
+		for (const [language, text] of Object.entries(card.texts).sort(([left], [right]) =>
+			left.localeCompare(right)
+		)) {
+			const normalizedLanguage = language.trim()
+			const normalizedText = text.trim()
+			if (normalizedLanguage && normalizedText && !textsByLanguage[normalizedLanguage]) {
+				textsByLanguage[normalizedLanguage] = normalizedText
+			}
+		}
+
+		return { textsByLanguage }
+	}
+
 	function imageSearchProviderSourceUrl(provider: ImageSearchProviderId): string {
+		if (provider === 'pollinations') return 'https://pollinations.ai'
+		if (provider === 'leonardo') return 'https://app.leonardo.ai'
 		if (provider === 'flaticon') return 'https://www.flaticon.com'
 		return 'https://www.pexels.com'
 	}
@@ -1694,8 +1783,15 @@
 		try {
 			const response = await imageSearchProviderInstance.search(
 				query,
-				{ page, perPage: IMAGE_SEARCH_RESULTS_PER_PAGE },
-				currentImageSearchProviderConfig
+				{
+					page,
+					perPage: IMAGE_SEARCH_RESULTS_PER_PAGE,
+					generationContext: buildImageGenerationPromptContext(selectedCard)
+				},
+				{
+					...currentImageSearchProviderConfig,
+					promptTemplate: imageGenerationPromptTemplate
+				}
 			)
 			if (token !== imageSearchRequestToken) return
 
@@ -1973,6 +2069,7 @@
 	}
 
 	function syncDocumentLanguage(nextLocale: string) {
+		usageLocale = nextLocale
 		usageDirection = direction()
 		if (typeof document === 'undefined') return
 		document.documentElement.lang = nextLocale
@@ -2461,7 +2558,7 @@
 </script>
 
 <svelte:head>
-	<title>{i18nReady ? T.app.documentTitle : 'Toddler Read'}</title>
+	<title>{i18nReady && usageLocale ? T.app.documentTitle : 'Toddler Read'}</title>
 	<link rel="icon" type="image/png" href="/favicon.png" />
 	<link rel="apple-touch-icon" href="/app-icon.png" />
 </svelte:head>
@@ -2471,6 +2568,7 @@
 		<img src="/app-icon.png" alt="" />
 	</main>
 {:else}
+{#key usageLocale}
 <main class="app-shell" dir={usageDirection}>
 	<header class="app-header library-header">
 		<div class="brand-block">
@@ -3492,6 +3590,14 @@
 							{T.help.kofi}
 						</a>
 					</div>
+					<h3>{T.help.apiCredits}</h3>
+					<div class="api-credit-links">
+						{#each API_CREDIT_LINKS as provider}
+							<a href={provider.href} target="_blank" rel="noreferrer" aria-label={provider.label}>
+								<img src={provider.badge} alt={provider.label} loading="lazy" />
+							</a>
+						{/each}
+					</div>
 				</section>
 			</div>
 
@@ -3562,6 +3668,7 @@
 			titleId="settings-title"
 			eyebrow={T.labels.settings}
 			closeLabel={T.modal.settings.close}
+			modalClass="settings-modal settings-modal-grid"
 			onClose={() => (showSettingsPanel = false)}
 		>
 			<div class="settings-language-list">
@@ -3624,19 +3731,22 @@
 				translationProviderLabel={providerLabel(translationProvider)}
 				translationConfig={currentTranslationProviderConfig}
 				showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
-				promptTemplate={translationPromptTemplate}
+				{imageGenerationPromptTemplate}
+				{translationPromptTemplate}
 				onImageConfigChange={(change) =>
 					updateImageSearchProviderConfig(
 						change.provider as ImageSearchProviderId,
 						change.field,
 						change.value
 					)}
+				onImageGenerationPromptTemplateChange={(value) => (imageGenerationPromptTemplate = value)}
 				onTranslationProviderChange={(value) => updateTranslationProvider(value)}
 				onTranslationConfigChange={(change) =>
 					updateTranslationProviderConfig(change.field, change.value)}
-				onPromptTemplateChange={(value) => (translationPromptTemplate = value)}
+				onTranslationPromptTemplateChange={(value) => (translationPromptTemplate = value)}
 			/>
 		</PanelModal>
 	{/if}
 </main>
+{/key}
 {/if}

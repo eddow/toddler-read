@@ -203,6 +203,8 @@
     "format": "Formáid",
     "help": "Cabhrú",
     "image": "Íomhá",
+    "imageGeneration": "Giniúint íomhá",
+    "imageGenerationPromptTemplate": "Teimpléad leideanna giniúna íomhá",
     "imageSource": "Foinse íomhá",
     "imageSources": "Foinsí íomhá",
     "managerAndPress": "Bainisteoir Agus Preas Priontála",
@@ -217,10 +219,12 @@
     "size": "Méid",
     "tags": "Clibeanna",
     "translation": "Aistriúchán",
+    "translationPromptTemplate": "Teimpléad leid aistriúcháin",
     "translationProvider": "Soláthraí aistriúcháin",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, nó Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "nó",
     "cornerLanguagesRestAfter": "agus an marcóir ar taispeáint a choigeartú.",
     "imageSourcesLabel": "Foinsí íomhánna:",
-    "imageSourcesRest": "cuir eochracha Pexels nó Flaticon API leis chun cuardach íomhá in-app a chumasú.",
+    "imageSourcesRest": "cuir eochracha Pexels, Flaticon, Leonardo.Ai, nó Pollinations.ai API chun cuardach agus giniúint íomhá in-app a chumasú.",
     "translationLabel": "Aistriúchán:",
     "translationRest": "roghnaigh Gemini, OpenAI, DeepSeek, Z.AI, Groq, nó soláthraí saincheaptha OpenAI-comhoiriúnach.",
     "modelBaseUrlLabel": "URL múnla agus bonn:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Teimpléad leid:",
     "promptTemplateRest": "rialaíonn sé conas a aistrítear téacsanna cártaí. Líonann an aip na háitsealbhóirí sula seoltar an t-iarratas.",
     "apiKeysTitle": "Eochracha API",
-    "apiKeysText": "Níl eochracha API ag teastáil ach do chúntóirí roghnacha. Ligeann eochracha aistriúcháin don aip an téacs teanga atá ar iarraidh a líonadh ón téacs atá ar an gcárta cheana féin. Ligeann eochracha cuardaigh íomhá don aip soláthraithe íomhá a chuardach ón eagarthóir. Fanann eochracha i stór áitiúil brabhsálaí agus seoltar iad go díreach chuig an soláthraí roghnaithe nuair a úsáideann tú an ghné sin.",
+    "apiKeysText": "Níl eochracha API ag teastáil ach do chúntóirí roghnacha. Ligeann eochracha aistriúcháin don aip an téacs teanga atá ar iarraidh a líonadh ón téacs atá ar an gcárta cheana féin. Ligeann eochracha íomhá don aip íomhánna a chuardach nó a ghiniúint ón eagarthóir. Fanann eochracha i stór áitiúil brabhsálaí agus seoltar iad go díreach chuig an soláthraí roghnaithe nuair a úsáideann tú an ghné sin.",
     "localDataTitle": "Sonraí Áitiúla",
     "localDataText1": "Stóráiltear sonraí cárta agus socruithe i stóras áitiúil an bhrabhsálaí seo. Cuimhnítear an teanga úsáide ar leithligh sa stór áitiúil freisin. Ní sheoltar aon rud chuig freastalaithe Toddler Read, agus níl aon chuntas ná sioncronú néil ann.",
     "localDataText2": "Easpórtáil do leabharlann ón roghchlár comhad roimh duit sonraí brabhsálaí a ghlanadh, brabhsálaithe a athrú, nó bogadh chuig gléas eile. Is iad na t-aon tarchur líonra amháin na hiarratais a spreagann tú ar aistriúchán nó cuardach íomhá, a théann díreach chuig an soláthraí cumraithe APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "íoslódálacha JSON inléite gan íomhánna le haghaidh eagarthóireacht láimhe.",
     "managerPressText1": "Is é an bainisteoir leabharlann na gcártaí. Roghnaigh cártaí leis na ticbhoscaí agus bain úsáid as scagairí chun íomhánna, téacs nó naisc verso atá in easnamh a fháil.",
     "managerPressText2": "Oscail an t-amharc printéir chun réamhamharc a dhéanamh ar chártaí roghnaithe mar leathanaigh ceart agus verso. Roghnaigh leagan amach PDF sa bharra uirlisí, athbhreithnigh aon rabhadh, ansin íoslódáil an PDF agus priontáil é.",
+    "apiCredits": "APIanna tacaithe",
     "links": "Naisc",
     "repository": "Stór",
     "kofi": "Ko-fi"

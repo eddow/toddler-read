@@ -203,6 +203,8 @@
     "format": "Formaat",
     "help": "Hulp",
     "image": "Afbeelding",
+    "imageGeneration": "Beeldgeneratie",
+    "imageGenerationPromptTemplate": "Sjabloon voor prompt voor het genereren van afbeeldingen",
     "imageSource": "Afbeeldingsbron",
     "imageSources": "Beeldbronnen",
     "managerAndPress": "Manager En Drukpers",
@@ -217,10 +219,12 @@
     "size": "Grootte",
     "tags": "Labels",
     "translation": "Vertaling",
+    "translationPromptTemplate": "Sjabloon voor vertaalprompts",
     "translationProvider": "Vertaalbureau",
     "verso": "Anders"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai of Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "of",
     "cornerLanguagesRestAfter": "en pas de weergegeven markering aan.",
     "imageSourcesLabel": "Beeldbronnen:",
-    "imageSourcesRest": "voeg Pexels- of Flaticon API-sleutels toe om het zoeken naar afbeeldingen in de app mogelijk te maken.",
+    "imageSourcesRest": "voeg API-sleutels van Pexels, Flaticon, Leonardo.Ai of Pollinations.ai toe om het zoeken en genereren van afbeeldingen in de app mogelijk te maken.",
     "translationLabel": "Vertaling:",
     "translationRest": "kies Gemini, OpenAI, DeepSeek, Z.AI, Groq of een aangepaste OpenAI-compatibele provider.",
     "modelBaseUrlLabel": "Model- en basis-URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Promptsjabloon:",
     "promptTemplateRest": "bepaalt hoe kaartteksten worden vertaald. De tijdelijke aanduidingen worden door de app ingevuld voordat de aanvraag wordt verzonden.",
     "apiKeysTitle": "API-toetsen",
-    "apiKeysText": "API-sleutels zijn alleen nodig voor optionele helpers. Met vertaalsleutels kan de app ontbrekende taaltekst aanvullen met bestaande tekst op de kaart. Met de zoektoetsen voor afbeeldingen kan de app vanuit de editor naar afbeeldingsaanbieders zoeken. Sleutels blijven in de lokale browseropslag en worden rechtstreeks naar de geselecteerde provider verzonden wanneer u die functie gebruikt.",
+    "apiKeysText": "API-sleutels zijn alleen nodig voor optionele helpers. Met vertaalsleutels kan de app ontbrekende taaltekst aanvullen met bestaande tekst op de kaart. Met afbeeldingssleutels kan de app afbeeldingen zoeken of genereren vanuit de editor. Sleutels blijven in de lokale browseropslag en worden rechtstreeks naar de geselecteerde provider verzonden wanneer u die functie gebruikt.",
     "localDataTitle": "Lokale gegevens",
     "localDataText1": "Kaartgegevens en instellingen worden opgeslagen in de lokale opslag van deze browser. De gebruikstaal wordt ook afzonderlijk onthouden in de lokale opslag. Er wordt niets naar de Toddler Read-servers verzonden en er is geen account- of cloudsynchronisatie.",
     "localDataText2": "Exporteer uw bibliotheek vanuit het bestandsmenu voordat u browsergegevens wist, van browser wisselt of naar een ander apparaat gaat. De enige netwerktransmissies zijn de verzoeken die u activeert voor vertaling of zoeken naar afbeeldingen, die rechtstreeks naar de geconfigureerde provider APIs gaan.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "downloadt leesbare JSON zonder afbeeldingen voor handmatige bewerking.",
     "managerPressText1": "De beheerder is de kaartbibliotheek. Selecteer kaarten met de selectievakjes en gebruik filters om ontbrekende afbeeldingen, tekst of versolinks te vinden.",
     "managerPressText2": "Open de printerweergave om geselecteerde kaarten als recto- en verso-pagina's te bekijken. Kies de PDF-indeling in de werkbalk, bekijk eventuele waarschuwingen, download vervolgens de PDF en druk deze af.",
+    "apiCredits": "Ondersteunde API's",
     "links": "Koppelingen",
     "repository": "Bewaarplaats",
     "kofi": "Ko-fi"

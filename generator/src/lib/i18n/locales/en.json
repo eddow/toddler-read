@@ -186,6 +186,8 @@
     "format": "Format",
     "help": "Help",
     "image": "Image",
+    "imageGeneration": "Image generation",
+    "imageGenerationPromptTemplate": "Image generation prompt template",
     "imageSource": "Image source",
     "imageSources": "Image sources",
     "managerAndPress": "Manager And Printing Press",
@@ -200,10 +202,12 @@
     "size": "Size",
     "tags": "Tags",
     "translation": "Translation",
+    "translationPromptTemplate": "Translation prompt template",
     "translationProvider": "Translation provider",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, or Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -288,7 +292,7 @@
     "cornerLanguagesExamplesRest": "or",
     "cornerLanguagesRestAfter": "and adjust the displayed marker.",
     "imageSourcesLabel": "Image sources:",
-    "imageSourcesRest": "add Pexels or Flaticon API keys to enable in-app image search.",
+    "imageSourcesRest": "add Pexels, Flaticon, Leonardo.Ai, or Pollinations.ai API keys to enable in-app image search and generation.",
     "translationLabel": "Translation:",
     "translationRest": "choose Gemini, OpenAI, DeepSeek, Z.AI, Groq, or a custom OpenAI-compatible provider.",
     "modelBaseUrlLabel": "Model and base URL:",
@@ -296,7 +300,7 @@
     "promptTemplateLabel": "Prompt template:",
     "promptTemplateRest": "controls how card texts are translated. The placeholders are filled by the app before the request is sent.",
     "apiKeysTitle": "API Keys",
-    "apiKeysText": "API keys are only needed for optional helpers. Translation keys let the app fill missing language text from existing text on the card. Image search keys let the app search image providers from the editor. Keys stay in local browser storage and are sent directly to the selected provider when you use that feature.",
+    "apiKeysText": "API keys are only needed for optional helpers. Translation keys let the app fill missing language text from existing text on the card. Image keys let the app search or generate images from the editor. Keys stay in local browser storage and are sent directly to the selected provider when you use that feature.",
     "localDataTitle": "Local Data",
     "localDataText1": "Card data and settings are stored in this browser's local storage. The usage language is remembered separately in local storage too. Nothing is sent to Toddler Read servers, and there is no account or cloud sync.",
     "localDataText2": "Export your library from the file menu before clearing browser data, switching browsers, or moving to another device. The only network transmissions are the requests you trigger for translation or image search, which go directly to the configured provider APIs.",
@@ -313,6 +317,7 @@
     "exportCompleteRest": "downloads readable JSON with the full card library, including images.",
     "managerPressText1": "The manager is the card library. Select cards with the checkboxes and use filters to find missing images, text, or verso links.",
     "managerPressText2": "Open the printer view to preview selected cards as recto and verso pages. Choose the PDF layout in the toolbar, review any warnings, then download the PDF and print it.",
+    "apiCredits": "Supported APIs",
     "links": "Links",
     "repository": "Repository",
     "kofi": "Ko-fi"

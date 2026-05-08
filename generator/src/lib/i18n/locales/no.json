@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Hjelp",
     "image": "Bilde",
+    "imageGeneration": "Bildegenerering",
+    "imageGenerationPromptTemplate": "Mal for bildegenerering",
     "imageSource": "Bildekilde",
     "imageSources": "Bildekilder",
     "managerAndPress": "Bestyrer og trykkeri",
@@ -217,10 +219,12 @@
     "size": "Størrelse",
     "tags": "Tagger",
     "translation": "Oversettelse",
+    "translationPromptTemplate": "Oversettelsespromptmal",
     "translationProvider": "Oversettelsesleverandør",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "eller",
     "cornerLanguagesRestAfter": "og juster den viste markøren.",
     "imageSourcesLabel": "Bildekilder:",
-    "imageSourcesRest": "legg til Pexels- eller Flaticon API-nøkler for å aktivere bildesøk i appen.",
+    "imageSourcesRest": "legg til Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai API-nøkler for å aktivere bildesøk og generering i appen.",
     "translationLabel": "Oversettelse:",
     "translationRest": "velg Gemini, OpenAI, DeepSeek, Z.AI, Groq eller en tilpasset OpenAI-kompatibel leverandør.",
     "modelBaseUrlLabel": "Modell og basis-URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Spørsmål mal:",
     "promptTemplateRest": "styrer hvordan korttekster oversettes. Plassholderne fylles ut av appen før forespørselen sendes.",
     "apiKeysTitle": "API-taster",
-    "apiKeysText": "API-nøkler er kun nødvendig for valgfrie hjelpere. Oversettelsestaster lar appen fylle manglende språktekst fra eksisterende tekst på kortet. Bildesøketaster lar appen søke etter bildeleverandører fra redaktøren. Nøkler forblir i lokal nettleserlagring og sendes direkte til den valgte leverandøren når du bruker denne funksjonen.",
+    "apiKeysText": "API-nøkler er kun nødvendig for valgfrie hjelpere. Oversettelsestaster lar appen fylle manglende språktekst fra eksisterende tekst på kortet. Bildetaster lar appen søke eller generere bilder fra redigeringsprogrammet. Nøkler forblir i lokal nettleserlagring og sendes direkte til den valgte leverandøren når du bruker denne funksjonen.",
     "localDataTitle": "Lokale data",
     "localDataText1": "Kortdata og innstillinger lagres i denne nettleserens lokale lagring. Bruksspråket huskes også separat i lokal lagring. Ingenting sendes til Toddler Read-servere, og det er ingen konto- eller skysynkronisering.",
     "localDataText2": "Eksporter biblioteket ditt fra filmenyen før du sletter nettleserdata, bytter nettleser eller flytter til en annen enhet. De eneste nettverksoverføringene er forespørslene du utløser for oversettelse eller bildesøk, som går direkte til den konfigurerte leverandøren APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "laster ned lesbare JSON uten bilder for håndredigering.",
     "managerPressText1": "Leder er kortbiblioteket. Velg kort med avmerkingsboksene og bruk filtre for å finne manglende bilder, tekst eller verso-koblinger.",
     "managerPressText2": "Åpne skrivervisningen for å forhåndsvise valgte kort som recto- og verso-sider. Velg PDF-oppsettet på verktøylinjen, se gjennom eventuelle advarsler, last ned PDF og skriv den ut.",
+    "apiCredits": "Støttede APIer",
     "links": "Linker",
     "repository": "Depot",
     "kofi": "Ko-fi"

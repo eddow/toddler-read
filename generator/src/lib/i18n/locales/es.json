@@ -203,6 +203,8 @@
     "format": "Formato",
     "help": "Ayuda",
     "image": "Imagen",
+    "imageGeneration": "Generación de imágenes",
+    "imageGenerationPromptTemplate": "Plantilla de mensaje de generación de imágenes",
     "imageSource": "Fuente de la imagen",
     "imageSources": "Fuentes de imágenes",
     "managerAndPress": "Gerente e imprenta",
@@ -217,10 +219,12 @@
     "size": "Tamaño",
     "tags": "Etiquetas",
     "translation": "Traducción",
+    "translationPromptTemplate": "Plantilla de mensaje de traducción",
     "translationProvider": "Proveedor de traducción",
     "verso": "reverso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai o Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "o",
     "cornerLanguagesRestAfter": "y ajuste el marcador mostrado.",
     "imageSourcesLabel": "Fuentes de imágenes:",
-    "imageSourcesRest": "agregue las claves Pexels o Flaticon API para habilitar la búsqueda de imágenes en la aplicación.",
+    "imageSourcesRest": "agregue claves API de Pexels, Flaticon, Leonardo.Ai o Pollinations.ai para permitir la búsqueda y generación de imágenes en la aplicación.",
     "translationLabel": "Traducción:",
     "translationRest": "elija Gemini, OpenAI, DeepSeek, Z.AI, Groq o un proveedor personalizado compatible con OpenAI.",
     "modelBaseUrlLabel": "Modelo y URL base:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Plantilla de aviso:",
     "promptTemplateRest": "controla cómo se traducen los textos de las tarjetas. La aplicación completa los marcadores de posición antes de enviar la solicitud.",
     "apiKeysTitle": "Claves API",
-    "apiKeysText": "Las claves API solo son necesarias para los ayudantes opcionales. Las claves de traducción permiten que la aplicación complete el texto del idioma que falta a partir del texto existente en la tarjeta. Las claves de búsqueda de imágenes permiten a la aplicación buscar proveedores de imágenes desde el editor. Las claves permanecen en el almacenamiento del navegador local y se envían directamente al proveedor seleccionado cuando utiliza esa función.",
+    "apiKeysText": "Las claves API solo son necesarias para los ayudantes opcionales. Las claves de traducción permiten que la aplicación complete el texto del idioma que falta a partir del texto existente en la tarjeta. Las claves de imagen permiten que la aplicación busque o genere imágenes desde el editor. Las claves permanecen en el almacenamiento del navegador local y se envían directamente al proveedor seleccionado cuando utiliza esa función.",
     "localDataTitle": "Datos locales",
     "localDataText1": "Los datos y la configuración de la tarjeta se almacenan en el almacenamiento local de este navegador. El idioma de uso también se recuerda por separado en el almacenamiento local. No se envía nada a los servidores de Toddler Read y no hay cuenta ni sincronización en la nube.",
     "localDataText2": "Exporte su biblioteca desde el menú de archivos antes de borrar los datos del navegador, cambiar de navegador o pasar a otro dispositivo. Las únicas transmisiones de red son las solicitudes que usted activa para traducción o búsqueda de imágenes, que van directamente al proveedor configurado APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "descarga JSON legible sin imágenes para edición manual.",
     "managerPressText1": "El administrador es la biblioteca de tarjetas. Seleccione tarjetas con las casillas de verificación y use filtros para encontrar imágenes, texto o enlaces en reverso que falten.",
     "managerPressText2": "Abra la vista de impresora para obtener una vista previa de las tarjetas seleccionadas como páginas anverso y reverso. Elija el diseño PDF en la barra de herramientas, revise las advertencias, luego descargue el PDF e imprímalo.",
+    "apiCredits": "API compatibles",
     "links": "Enlaces",
     "repository": "Repositorio",
     "kofi": "Ko-fi"

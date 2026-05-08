@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Tolong",
     "image": "Imej",
+    "imageGeneration": "Penjanaan imej",
+    "imageGenerationPromptTemplate": "Templat gesaan penjanaan imej",
     "imageSource": "Sumber imej",
     "imageSources": "Sumber imej",
     "managerAndPress": "Pengurus Dan Mesin Cetak",
@@ -217,10 +219,12 @@
     "size": "Saiz",
     "tags": "Tag",
     "translation": "Terjemahan",
+    "translationPromptTemplate": "Templat gesaan terjemahan",
     "translationProvider": "Penyedia terjemahan",
     "verso": "Sebaliknya"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, atau Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "atau",
     "cornerLanguagesRestAfter": "dan laraskan penanda yang dipaparkan.",
     "imageSourcesLabel": "Sumber imej:",
-    "imageSourcesRest": "tambah kekunci Pexels atau Flaticon API untuk mendayakan carian imej dalam apl.",
+    "imageSourcesRest": "tambahkan kunci API Pexels, Flaticon, Leonardo.Ai atau Pollinations.ai untuk mendayakan carian dan penjanaan imej dalam apl.",
     "translationLabel": "Terjemahan:",
     "translationRest": "pilih Gemini, OpenAI, DeepSeek, Z.AI, Groq atau pembekal serasi OpenAI tersuai.",
     "modelBaseUrlLabel": "Model dan URL asas:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Templat gesaan:",
     "promptTemplateRest": "mengawal cara teks kad diterjemahkan. Ruang letak diisi oleh apl sebelum permintaan dihantar.",
     "apiKeysTitle": "Kunci API",
-    "apiKeysText": "Kunci API hanya diperlukan untuk pembantu pilihan. Kekunci terjemahan membenarkan apl mengisi teks bahasa yang hilang daripada teks sedia ada pada kad. Kekunci carian imej membenarkan apl mencari pembekal imej daripada editor. Kunci kekal dalam storan penyemak imbas setempat dan dihantar terus kepada pembekal yang dipilih apabila anda menggunakan ciri tersebut.",
+    "apiKeysText": "Kunci API hanya diperlukan untuk pembantu pilihan. Kekunci terjemahan membenarkan apl mengisi teks bahasa yang hilang daripada teks sedia ada pada kad. Kekunci imej membolehkan apl mencari atau menjana imej daripada editor. Kunci kekal dalam storan penyemak imbas setempat dan dihantar terus kepada pembekal yang dipilih apabila anda menggunakan ciri tersebut.",
     "localDataTitle": "Data Tempatan",
     "localDataText1": "Data dan tetapan kad disimpan dalam storan setempat penyemak imbas ini. Bahasa penggunaan diingati secara berasingan dalam storan tempatan juga. Tiada apa-apa dihantar ke pelayan Toddler Read dan tiada penyegerakan akaun atau awan.",
     "localDataText2": "Eksport pustaka anda daripada menu fail sebelum mengosongkan data penyemak imbas, menukar penyemak imbas atau beralih ke peranti lain. Satu-satunya penghantaran rangkaian ialah permintaan yang anda cetuskan untuk terjemahan atau carian imej, yang pergi terus ke pembekal yang dikonfigurasikan APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "memuat turun JSON yang boleh dibaca tanpa imej untuk penyuntingan tangan.",
     "managerPressText1": "Pengurus adalah perpustakaan kad. Pilih kad dengan kotak pilihan dan gunakan penapis untuk mencari imej, teks atau pautan verso yang hilang.",
     "managerPressText2": "Buka paparan pencetak untuk melihat pratonton kad yang dipilih sebagai halaman recto dan verso. Pilih reka letak PDF dalam bar alat, semak sebarang amaran, kemudian muat turun PDF dan cetaknya.",
+    "apiCredits": "API yang disokong",
     "links": "Pautan",
     "repository": "Repositori",
     "kofi": "Ko-fi"

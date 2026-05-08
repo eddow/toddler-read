@@ -185,6 +185,8 @@
     "format": "Format",
     "help": "Aide",
     "image": "Image",
+    "imageGeneration": "Génération d'images",
+    "imageGenerationPromptTemplate": "Modèle d'invite de génération d'images",
     "imageSource": "Source d'image",
     "imageSources": "Sources d'images",
     "managerAndPress": "Gestionnaire et presse d'impression",
@@ -199,10 +201,12 @@
     "size": "Taille",
     "tags": "Étiquettes",
     "translation": "Traduction",
+    "translationPromptTemplate": "Modèle d'invite de traduction",
     "translationProvider": "Fournisseur de traduction",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ou Pollinations.ai",
     "pexelsOrFlaticon": "Pexels ou Flaticon"
   },
   "verbs": {
@@ -287,7 +291,7 @@
     "cornerLanguagesExamplesRest": "ou",
     "cornerLanguagesRestAfter": "puis ajustez le marqueur affiché.",
     "imageSourcesLabel": "Sources d'images :",
-    "imageSourcesRest": "ajoutez des clés API Pexels ou Flaticon pour activer la recherche d'images dans l'application.",
+    "imageSourcesRest": "ajoutez des clés API Pexels, Flaticon, Leonardo.Ai ou Pollinations.ai pour activer la recherche et la génération d'images dans l'application.",
     "translationLabel": "Traduction :",
     "translationRest": "choisissez Gemini, OpenAI, DeepSeek, Z.AI, Groq ou un fournisseur personnalisé compatible OpenAI.",
     "modelBaseUrlLabel": "Modèle et URL de base :",
@@ -295,7 +299,7 @@
     "promptTemplateLabel": "Modèle de prompt :",
     "promptTemplateRest": "contrôle la façon dont les textes des cartes sont traduits. Les emplacements réservés sont remplis par l'application avant l'envoi de la requête.",
     "apiKeysTitle": "Clés API",
-    "apiKeysText": "Les clés API ne sont nécessaires que pour les assistants optionnels. Les clés de traduction permettent à l'application de remplir les textes manquants à partir du texte existant sur la carte. Les clés de recherche d'images permettent de rechercher des images depuis l'éditeur. Les clés restent dans le stockage local du navigateur et sont envoyées directement au fournisseur choisi lorsque vous utilisez cette fonction.",
+    "apiKeysText": "Les clés API ne sont nécessaires que pour les assistants facultatifs. Les clés de traduction permettent à l'application de remplir le texte de langue manquant à partir du texte existant sur la carte. Les clés d'image permettent à l'application de rechercher ou de générer des images à partir de l'éditeur. Les clés restent dans le stockage local du navigateur et sont envoyées directement au fournisseur sélectionné lorsque vous utilisez cette fonctionnalité.",
     "localDataTitle": "Données locales",
     "localDataText1": "Les cartes et les réglages sont stockés dans le stockage local de ce navigateur. La langue d'utilisation est aussi mémorisée séparément dans le stockage local. Rien n'est envoyé aux serveurs Toddler Read, et il n'y a ni compte ni synchronisation cloud.",
     "localDataText2": "Exportez votre bibliothèque depuis le menu fichier avant d'effacer les données du navigateur, de changer de navigateur ou de passer à un autre appareil. Les seules transmissions réseau sont les requêtes de traduction ou de recherche d'images que vous déclenchez, envoyées directement aux API des fournisseurs configurés.",
@@ -310,6 +314,7 @@
     "exportImageLessRest": "télécharge un JSON lisible sans images pour une modification manuelle.",
     "managerPressText1": "Le gestionnaire est la bibliothèque de cartes. Sélectionnez des cartes avec les cases à cocher et utilisez les filtres pour trouver les images, textes ou liens verso manquants.",
     "managerPressText2": "Ouvrez la vue imprimante pour prévisualiser les cartes sélectionnées en pages recto et verso. Choisissez la mise en page PDF dans la barre d'outils, vérifiez les avertissements, puis téléchargez et imprimez le PDF.",
+    "apiCredits": "API prises en charge",
     "links": "Liens",
     "repository": "Dépôt",
     "kofi": "Ko-fi"

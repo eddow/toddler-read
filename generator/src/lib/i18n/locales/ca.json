@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Ajuda",
     "image": "Imatge",
+    "imageGeneration": "Generació d'imatges",
+    "imageGenerationPromptTemplate": "Plantilla de sol·licitud de generació d'imatges",
     "imageSource": "Font de la imatge",
     "imageSources": "Fonts d'imatge",
     "managerAndPress": "Gestor i impremta",
@@ -217,10 +219,12 @@
     "size": "Mida",
     "tags": "Etiquetes",
     "translation": "Traducció",
+    "translationPromptTemplate": "Plantilla de sol·licitud de traducció",
     "translationProvider": "Proveïdor de traducció",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai o Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "o",
     "cornerLanguagesRestAfter": "i ajusteu el marcador mostrat.",
     "imageSourcesLabel": "Fonts de la imatge:",
-    "imageSourcesRest": "afegiu les claus Pexels o Flaticon API per habilitar la cerca d'imatges a l'aplicació.",
+    "imageSourcesRest": "afegiu les claus de l'API Pexels, Flaticon, Leonardo.Ai o Pollinations.ai per habilitar la cerca i la generació d'imatges a l'aplicació.",
     "translationLabel": "Traducció:",
     "translationRest": "tria Gemini, OpenAI, DeepSeek, Z.AI, Groq o un proveïdor personalitzat compatible amb OpenAI.",
     "modelBaseUrlLabel": "Model i URL base:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Plantilla de sol·licitud:",
     "promptTemplateRest": "controla com es tradueixen els textos de les targetes. L'aplicació omple els marcadors de posició abans que s'enviï la sol·licitud.",
     "apiKeysTitle": "Claus API",
-    "apiKeysText": "Les claus API només són necessàries per als ajudants opcionals. Les claus de traducció permeten que l'aplicació ompli el text de l'idioma que falta a partir del text existent a la targeta. Les claus de cerca d'imatges permeten a l'aplicació cercar proveïdors d'imatges des de l'editor. Les claus romanen a l'emmagatzematge local del navegador i s'envien directament al proveïdor seleccionat quan utilitzeu aquesta funció.",
+    "apiKeysText": "Les claus API només són necessàries per als ajudants opcionals. Les claus de traducció permeten que l'aplicació ompli el text de l'idioma que falta a partir del text existent a la targeta. Les claus d'imatge permeten que l'aplicació cerqui o generi imatges des de l'editor. Les claus romanen a l'emmagatzematge local del navegador i s'envien directament al proveïdor seleccionat quan utilitzeu aquesta funció.",
     "localDataTitle": "Dades locals",
     "localDataText1": "Les dades i la configuració de la targeta s'emmagatzemen a l'emmagatzematge local d'aquest navegador. L'idioma d'ús també es recorda per separat a l'emmagatzematge local. No s'envia res als servidors Toddler Read i no hi ha cap compte ni sincronització al núvol.",
     "localDataText2": "Exporteu la vostra biblioteca des del menú de fitxers abans d'esborrar les dades del navegador, canviar de navegador o moure's a un altre dispositiu. Les úniques transmissions de xarxa són les sol·licituds que activeu per a la traducció o la cerca d'imatges, que van directament al proveïdor configurat APIs.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "baixa JSON llegible sense imatges per editar-les manualment.",
     "managerPressText1": "El gestor és la biblioteca de targetes. Seleccioneu les targetes amb les caselles de selecció i utilitzeu filtres per trobar imatges, text o enllaços al revers que falten.",
     "managerPressText2": "Obriu la vista de la impressora per previsualitzar les targetes seleccionades com a pàgines recto i revers. Trieu el disseny PDF a la barra d'eines, reviseu els avisos i, a continuació, baixeu el PDF i imprimiu-lo.",
+    "apiCredits": "API compatibles",
     "links": "Enllaços",
     "repository": "Repositori",
     "kofi": "Ko-fi"

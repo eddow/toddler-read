@@ -203,6 +203,8 @@
     "format": "Format",
     "help": "Bantuan",
     "image": "Gambar",
+    "imageGeneration": "Pembuatan gambar",
+    "imageGenerationPromptTemplate": "Templat prompt pembuatan gambar",
     "imageSource": "Sumber gambar",
     "imageSources": "Sumber gambar",
     "managerAndPress": "Manajer Dan Percetakan",
@@ -217,10 +219,12 @@
     "size": "Ukuran",
     "tags": "Tag",
     "translation": "Terjemahan",
+    "translationPromptTemplate": "Templat perintah terjemahan",
     "translationProvider": "Penyedia terjemahan",
     "verso": "Sebaliknya"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, atau Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "atau",
     "cornerLanguagesRestAfter": "dan sesuaikan penanda yang ditampilkan.",
     "imageSourcesLabel": "Sumber gambar:",
-    "imageSourcesRest": "tambahkan kunci Pexels atau Flaticon API untuk mengaktifkan pencarian gambar dalam aplikasi.",
+    "imageSourcesRest": "tambahkan kunci API Pexels, Flaticon, Leonardo.Ai, atau Pollinations.ai untuk mengaktifkan pencarian dan pembuatan gambar dalam aplikasi.",
     "translationLabel": "Terjemahan:",
     "translationRest": "pilih Gemini, OpenAI, DeepSeek, Z.AI, Groq, atau penyedia khusus yang kompatibel dengan OpenAI.",
     "modelBaseUrlLabel": "URL model dan dasar:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Templat cepat:",
     "promptTemplateRest": "mengontrol bagaimana teks kartu diterjemahkan. Placeholder diisi oleh aplikasi sebelum permintaan dikirim.",
     "apiKeysTitle": "Kunci API",
-    "apiKeysText": "Kunci API hanya diperlukan untuk pembantu opsional. Kunci terjemahan memungkinkan aplikasi mengisi teks bahasa yang hilang dari teks yang ada di kartu. Tombol pencarian gambar memungkinkan aplikasi mencari penyedia gambar dari editor. Kunci tetap berada di penyimpanan browser lokal dan dikirim langsung ke penyedia yang dipilih saat Anda menggunakan fitur tersebut.",
+    "apiKeysText": "Kunci API hanya diperlukan untuk pembantu opsional. Kunci terjemahan memungkinkan aplikasi mengisi teks bahasa yang hilang dari teks yang ada di kartu. Kunci gambar memungkinkan aplikasi mencari atau menghasilkan gambar dari editor. Kunci tetap berada di penyimpanan browser lokal dan dikirim langsung ke penyedia yang dipilih saat Anda menggunakan fitur tersebut.",
     "localDataTitle": "Data Lokal",
     "localDataText1": "Data dan pengaturan kartu disimpan di penyimpanan lokal browser ini. Bahasa penggunaan juga diingat secara terpisah di penyimpanan lokal. Tidak ada yang dikirim ke server Toddler Read, dan tidak ada sinkronisasi akun atau cloud.",
     "localDataText2": "Ekspor perpustakaan Anda dari menu file sebelum menghapus data browser, berpindah browser, atau berpindah ke perangkat lain. Satu-satunya transmisi jaringan adalah permintaan yang Anda picu untuk terjemahan atau pencarian gambar, yang langsung menuju ke penyedia APIs yang dikonfigurasi.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "mengunduh JSON yang dapat dibaca tanpa gambar untuk diedit dengan tangan.",
     "managerPressText1": "Manajernya adalah perpustakaan kartu. Pilih kartu dengan kotak centang dan gunakan filter untuk menemukan gambar, teks, atau tautan sebaliknya yang hilang.",
     "managerPressText2": "Buka tampilan printer untuk melihat pratinjau kartu yang dipilih sebagai halaman recto dan verso. Pilih tata letak PDF di toolbar, tinjau peringatan apa pun, lalu unduh PDF dan cetak.",
+    "apiCredits": "API yang didukung",
     "links": "Tautan",
     "repository": "Gudang",
     "kofi": "Ko-fi"

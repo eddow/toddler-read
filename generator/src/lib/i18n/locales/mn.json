@@ -203,6 +203,8 @@
     "format": "Формат",
     "help": "Туслаач",
     "image": "Зураг",
+    "imageGeneration": "Зураг үүсгэх",
+    "imageGenerationPromptTemplate": "Зураг үүсгэх шуурхай загвар",
     "imageSource": "Зургийн эх сурвалж",
     "imageSources": "Зургийн эх сурвалжууд",
     "managerAndPress": "Менежер ба хэвлэх машин",
@@ -217,10 +219,12 @@
     "size": "Хэмжээ",
     "tags": "Шошго",
     "translation": "Орчуулга",
+    "translationPromptTemplate": "Орчуулгын шуурхай загвар",
     "translationProvider": "Орчуулгын үйлчилгээ үзүүлэгч",
     "verso": "Verso"
   },
   "providers": {
+    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, эсвэл Pollinations.ai",
     "pexelsOrFlaticon": "Pexels or Flaticon"
   },
   "verbs": {
@@ -305,7 +309,7 @@
     "cornerLanguagesExamplesRest": "эсвэл",
     "cornerLanguagesRestAfter": "болон харуулсан тэмдэглэгээг тохируулна уу.",
     "imageSourcesLabel": "Зургийн эх сурвалж:",
-    "imageSourcesRest": "апп доторх зургийн хайлтыг идэвхжүүлэхийн тулд Pexels эсвэл Flaticon API товчлууруудыг нэмнэ үү.",
+    "imageSourcesRest": "Pexels, Flaticon, Leonardo.Ai эсвэл Pollinations.ai API түлхүүрүүдийг нэмж, апп доторх зураг хайх, үүсгэх боломжтой.",
     "translationLabel": "Орчуулга:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq эсвэл OpenAI-тэй нийцтэй үйлчилгээ үзүүлэгчийг сонгоно уу.",
     "modelBaseUrlLabel": "Загвар ба үндсэн URL:",
@@ -313,7 +317,7 @@
     "promptTemplateLabel": "Мэдээллийн загвар:",
     "promptTemplateRest": "картын текстийг хэрхэн орчуулахыг хянадаг. The placeholders are filled by the app before the request is sent.",
     "apiKeysTitle": "API түлхүүрүүд",
-    "apiKeysText": "API товчлуурууд нь зөвхөн нэмэлт туслахуудад хэрэгтэй. Орчуулгын товчлуурууд нь апп-д карт дээрх байгаа текстээс дутуу хэлний текстийг бөглөх боломжийг олгодог. Image search keys let the app search image providers from the editor. Keys stay in local browser storage and are sent directly to the selected provider when you use that feature.",
+    "apiKeysText": "API түлхүүрүүд нь зөвхөн нэмэлт туслахуудад хэрэгтэй. Орчуулгын товчлуурууд нь апп-д карт дээрх байгаа текстээс дутуу хэлний текстийг бөглөх боломжийг олгодог. Зургийн товчлуурууд нь програмыг засварлагчаас хайх эсвэл зураг үүсгэх боломжийг олгодог. Түлхүүрүүд нь хөтчийн дотоод санах ойд байх бөгөөд таныг энэ функцийг ашиглах үед сонгосон үйлчилгээ үзүүлэгч рүү шууд илгээгдэнэ.",
     "localDataTitle": "Орон нутгийн өгөгдөл",
     "localDataText1": "Картын өгөгдөл болон тохиргоог энэ хөтчийн дотоод санах ойд хадгалсан. Хэрэглээний хэлийг орон нутгийн санах ойд тусад нь санах болно. Toddler Read серверүүд рүү юу ч илгээгдээгүй бөгөөд бүртгэл эсвэл үүлэн синк байхгүй байна.",
     "localDataText2": "Export your library from the file menu before clearing browser data, switching browsers, or moving to another device. Цорын ганц сүлжээний дамжуулалт бол орчуулга эсвэл зураг хайлт хийх хүсэлтүүд бөгөөд тохируулсан APIs үйлчилгээ үзүүлэгч рүү шууд очдог.",
@@ -328,6 +332,7 @@
     "exportImageLessRest": "гар засварлах зураггүйгээр унших боломжтой JSON татаж авдаг.",
     "managerPressText1": "Менежер нь картын номын сан юм. Шалгалтын нүдтэй картуудыг сонгоод, дутуу зураг, текст эсвэл эсрэгээр холбоосыг олохын тулд шүүлтүүр ашиглана уу.",
     "managerPressText2": "Сонгосон картуудыг recto болон verso хуудас хэлбэрээр урьдчилан харахын тулд принтерийн харагдацыг нээнэ үү. Хэрэгслийн самбараас PDF бүдүүвчийг сонгоод, дурын анхааруулгыг хянаж үзээд PDF-г татаж аваад хэвлэнэ үү.",
+    "apiCredits": "Дэмжигдсэн API",
     "links": "Холбоосууд",
     "repository": "Хадгалах газар",
     "kofi": "Ko-fi"

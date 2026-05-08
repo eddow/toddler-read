@@ -158,6 +158,24 @@ In the editor, each language row has translation controls:
 The Translate button is enabled when there is an API key, model, at least one
 source text, and at least one target language.
 
+## Provider Credits
+
+Optional provider APIs are called directly from the browser when configured:
+
+- Translation:
+  [![Gemini API](https://img.shields.io/badge/Gemini-API-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/gemini-api)
+  [![OpenAI API](https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai&logoColor=white)](https://platform.openai.com)
+  [![DeepSeek API](https://img.shields.io/badge/DeepSeek-API-4D6BFF?style=for-the-badge)](https://platform.deepseek.com)
+  [![Z.AI API](https://img.shields.io/badge/Z.AI-API-111111?style=for-the-badge)](https://docs.z.ai)
+  [![Groq API](https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white)](https://console.groq.com)
+  and custom OpenAI-compatible endpoints.
+- Image search:
+  [![Pexels API](https://img.shields.io/badge/Pexels-API-05A081?style=for-the-badge&logo=pexels&logoColor=white)](https://www.pexels.com/api/)
+  [![Flaticon API](https://img.shields.io/badge/Flaticon-API-0C9ED9?style=for-the-badge)](https://www.flaticon.com/api)
+- Image generation:
+  [![Leonardo.Ai API](https://img.shields.io/badge/Leonardo.Ai-API-111827?style=for-the-badge)](https://docs.leonardo.ai)
+  [![Built with Pollinations.ai](https://img.shields.io/badge/Built%20with-Pollinations.ai-111111?style=for-the-badge)](https://pollinations.ai)
+
 ## Import And Export
 
 Export downloads:
