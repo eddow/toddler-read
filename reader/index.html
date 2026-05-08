@@ -418,12 +418,14 @@
 			let stream = null;
 			let scanTimer = null;
 			let scanning = false;
+			let scanStartId = 0;
 			let currentSoundSrc = '';
 			let currentMediaEmbed = null;
 			let currentSoundCloudWidget = null;
 			let currentTts = null;
 			let currentSpeechUtterance = null;
 			let playingFallbackSound = false;
+			const CAMERA_START_TIMEOUT_MS = 12000;
 
 			// ---- Screen switching ----
 			function showScanner() {
@@ -448,6 +450,12 @@
 				showScanner();
 				setScanMessage('');
 				startScanning();
+			}
+
+			function shouldScannerRun() {
+				return scannerScreen.classList.contains('active') &&
+					helpBackdrop.classList.contains('hidden') &&
+					document.visibilityState !== 'hidden';
 			}
 
 			function setScanMessage(message) {
@@ -905,6 +913,17 @@
 				));
 			}
 
+			function withTimeout(promise, timeoutMs, message) {
+				let timeoutId = null;
+				const timeout = new Promise((_, reject) => {
+					timeoutId = setTimeout(() => reject(new Error(message)), timeoutMs);
+				});
+
+				return Promise.race([promise, timeout]).finally(() => {
+					clearTimeout(timeoutId);
+				});
+			}
+
 			async function getQrScanner() {
 				if ('BarcodeDetector' in window) {
 					if (BarcodeDetector.getSupportedFormats) {
@@ -951,18 +970,32 @@
 			}
 
 			async function startScanning() {
-				if (scanning) return;
+				if (scanning || !shouldScannerRun()) return;
 
 				scanning = true;
+				const startId = ++scanStartId;
 				scannerScreen.classList.add('is-scanning');
 				setScanMessage('');
 
 				try {
-					stream = await getUserMediaCompat({
+					const nextStream = await withTimeout(getUserMediaCompat({
 						video: { facingMode: 'environment', width: { ideal: 640 }, height: { ideal: 640 } }
-					});
+					}), CAMERA_START_TIMEOUT_MS, 'Camera did not start. Tap stop, then try again.');
+
+					if (startId !== scanStartId || !shouldScannerRun()) {
+						nextStream.getTracks().forEach(t => t.stop());
+						if (startId === scanStartId) stopScanning();
+						return;
+					}
+
+					stream = nextStream;
 					video.srcObject = stream;
-					await video.play();
+					await withTimeout(video.play(), CAMERA_START_TIMEOUT_MS, 'Camera preview did not start. Tap stop, then try again.');
+
+					if (startId !== scanStartId || !shouldScannerRun()) {
+						stopScanning();
+						return;
+					}
 
 					const scanQrCode = await getQrScanner();
 					if (!scanQrCode) {
@@ -1000,6 +1033,7 @@
 			}
 
 			function stopScanning() {
+				scanStartId++;
 				scanning = false;
 				scannerScreen.classList.remove('is-scanning');
 				if (scanTimer) { clearInterval(scanTimer); scanTimer = null; }
@@ -1008,6 +1042,12 @@
 					stream = null;
 				}
 				video.srcObject = null;
+			}
+
+			function restartScannerIfVisible() {
+				if (!shouldScannerRun()) return;
+				stopScanning();
+				startScanning();
 			}
 
 			// ---- Button handlers ----
@@ -1038,6 +1078,23 @@
 					navigator.serviceWorker.register('sw.js').catch(() => {});
 				});
 			}
+
+			document.addEventListener('visibilitychange', () => {
+				if (document.visibilityState === 'hidden') {
+					stopScanning();
+					return;
+				}
+
+				restartScannerIfVisible();
+			});
+
+			window.addEventListener('pageshow', (event) => {
+				if (event.persisted) restartScannerIfVisible();
+			});
+
+			window.addEventListener('focus', () => {
+				restartScannerIfVisible();
+			});
 
 			// ---- Cleanup on page unload ----
 			window.addEventListener('beforeunload', () => {
