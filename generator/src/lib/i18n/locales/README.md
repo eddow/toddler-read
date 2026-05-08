@@ -19,9 +19,6 @@ Existing locale files:
 
 - `en` - English
 - `fr` - French
-
-Tier 1, high-value first wave:
-
 - `de` - German
 - `es` - Spanish
 - `it` - Italian
@@ -48,6 +45,8 @@ Tier 1, high-value first wave:
 - `id` - Indonesian
 - `vi` - Vietnamese
 - `th` - Thai
+
+Tier 1, high-value first wave: complete.
 
 Tier 2, broader Europe:
 
@@ -104,4 +103,6 @@ Locale filenames must be exactly two lowercase letters plus `.json`. Regional or
 
 When a two-letter code covers multiple common variants, use the broadest default for the first translation file and document that choice in the translation change if it matters.
 
-Right-to-left locales currently planned are `ar`, `he`, `fa`, and `ur`. They should not be considered fully shipped until the UI has been smoke-tested for directionality, alignment, truncation, and modal/table layout.
+Right-to-left locales currently planned are `ar`, `he`, `fa`, and `ur`. These locale codes activate RTL direction for the generator UI. They should not be considered fully shipped until the UI has been smoke-tested for directionality, alignment, truncation, and modal/table layout.
+
+Card corner labels describe physical printed corners. They are not reading-direction-relative, so the top-left card slot remains top-left even when the usage language is RTL.

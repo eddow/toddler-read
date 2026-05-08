@@ -422,7 +422,7 @@ input::placeholder {
 
 .app-logo-button svg {
   position: absolute;
-  right: 3px;
+  inset-inline-end: 3px;
   bottom: 3px;
   width: 19px;
   height: 19px;
@@ -1537,7 +1537,7 @@ input:not([type=checkbox],[type=radio],[type=range],[type=file]).language-column
   gap: 16px;
   min-height: 0;
   overflow: auto;
-  padding-right: 4px;
+  padding-inline-end: 4px;
 }
 
 .help-content section {
@@ -1567,7 +1567,7 @@ input:not([type=checkbox],[type=radio],[type=range],[type=file]).language-column
   display: grid;
   gap: 6px;
   margin: 0;
-  padding-left: 1.1rem;
+  padding-inline-start: 1.1rem;
 }
 
 .help-content code {

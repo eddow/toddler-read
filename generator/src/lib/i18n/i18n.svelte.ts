@@ -3,9 +3,11 @@
 type TranslationTree = Record<string, any>
 
 export type LocaleCode = string
+export type LocaleDirection = 'ltr' | 'rtl'
 export type Translations = TranslationTree
 
 const FALLBACK_LOCALE = 'en'
+const RTL_LOCALES = ['ar', 'he', 'fa', 'ur']
 const USAGE_LANGUAGE_STORAGE_KEY = 'toddler-read-generator-usage-language'
 const localeModules = import.meta.glob('./locales/*.json') as Record<
 	string,
@@ -33,6 +35,14 @@ export function isLocaleCode(locale: string): locale is LocaleCode {
 
 export function hasLocale(locale: string): locale is LocaleCode {
 	return isLocaleCode(locale) && localeCodes.includes(locale)
+}
+
+export function isRtlLocale(locale: string): boolean {
+	return RTL_LOCALES.includes(normalizeLocaleCode(locale))
+}
+
+export function direction(): LocaleDirection {
+	return isRtlLocale(currentLocale) ? 'rtl' : 'ltr'
 }
 
 export async function loadPreferredLocale(): Promise<LocaleCode> {

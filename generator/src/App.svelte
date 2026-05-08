@@ -99,7 +99,15 @@
 	import TagInput from './lib/components/TagInput.svelte'
 	import CardPreviewCanvas from './lib/components/CardPreviewCanvas.svelte'
 	import ProviderConfigFields from './lib/components/ProviderConfigFields.svelte'
-	import { T, format, hasLocale, loadPreferredLocale, setPreferredLocale } from './lib/i18n/i18n.svelte'
+	import {
+		T,
+		direction,
+		format,
+		hasLocale,
+		loadPreferredLocale,
+		setPreferredLocale,
+		type LocaleDirection
+	} from './lib/i18n/i18n.svelte'
 
 	const MAX_ENTRIES = 4
 	const CORNER_SPECS = [
@@ -235,6 +243,7 @@
 	let showHelpPanel = false
 	let showApkPanel = false
 	let i18nReady = false
+	let usageDirection: LocaleDirection = 'ltr'
 	let showHelpAtStartup = true
 	let imageDataUrl: string | undefined
 	let imageTransform: ImageTransform | undefined
@@ -479,7 +488,7 @@
 
 	async function initializeStartup() {
 		try {
-			await loadPreferredLocale()
+			syncDocumentLanguage(await loadPreferredLocale())
 		} finally {
 			i18nReady = true
 			if (showHelpAtStartup) showHelpPanel = true
@@ -1960,7 +1969,14 @@
 	function updateMainLanguage(value: string) {
 		mainLanguage = value
 		pairingCardId = ''
-		void setPreferredLocale(hasLocale(value) ? value : 'en')
+		void setPreferredLocale(hasLocale(value) ? value : 'en').then(syncDocumentLanguage)
+	}
+
+	function syncDocumentLanguage(nextLocale: string) {
+		usageDirection = direction()
+		if (typeof document === 'undefined') return
+		document.documentElement.lang = nextLocale
+		document.documentElement.dir = usageDirection
 	}
 
 	function updateLanguageFilter(language: string, value: string) {
@@ -2444,7 +2460,7 @@
 		<img src="/app-icon.png" alt="" />
 	</main>
 {:else}
-<main class="app-shell">
+<main class="app-shell" dir={usageDirection}>
 	<header class="app-header library-header">
 		<div class="brand-block">
 			<button
