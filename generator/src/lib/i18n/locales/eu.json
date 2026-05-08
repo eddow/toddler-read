@@ -15,6 +15,8 @@
     "exportCompressed": "Esportatu konprimituta",
     "exportImageLessJson": "Esportatu irudirik gabeko JSON",
     "file": "Fitxategia",
+    "generate": "Sortu",
+    "generating": "Sortzen...",
     "import": "Inportatu",
     "manage": "Kudeatu",
     "newCard": "Txartel berria",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Iragazi estekak",
     "generatedCardPreview": "Sortutako txartelaren aurrebista",
     "imageSearchQuery": "Irudiak bilatzeko kontsulta",
+    "imageGenerationHints": "Irudiak sortzeko aholku gehigarriak",
     "loadingApp": "Toddler Read kargatzen",
     "manager": "Kudeatzailea",
     "managerTags": "Kudeatzailearen etiketak",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} erantzun huts bat itzuli du.",
     "missingProviderTranslations": "{{provider}}-k ez du itzulpen erabilgarririk itzuli.",
     "missingProviderKey": "Gehitu {{provider}} API gako bat Ezarpenak atalean.",
+    "exportedComplete": "JSON osoa esportatu da {{count}} {{unit}}-rekin.",
     "exportedCompressed": "{{count}} {{unit}}-rekin konprimitutako babeskopia esportatu da.",
     "exportedImageLess": "Irudirik gabeko JSON {{count}} {{unit}}-rekin esportatu da.",
     "pdfDownloaded": "PDF {{count}} orriekin deskargatu da.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API gakoa",
     "baseUrl": "Oinarrizko URLa",
+    "category": "Kategoria",
     "chooseTag": "Aukeratu etiketa",
     "code": "Kodea",
     "cornerLanguages": "Txoko hizkuntzak",
@@ -204,9 +209,13 @@
     "help": "Laguntza",
     "image": "Irudia",
     "imageGeneration": "Irudiak sortzea",
+    "imageGenerationSources": "Irudiak sortzeko iturriak",
     "imageGenerationPromptTemplate": "Irudiak sortzeko gonbit txantiloia",
+    "imageSearch": "Irudien bilaketa",
+    "imageSearchSources": "Irudiak bilatzeko iturriak",
     "imageSource": "Irudiaren iturria",
     "imageSources": "Irudi iturriak",
+    "imageType": "Irudi mota",
     "managerAndPress": "Kudeatzailea eta Inprimategia",
     "model": "eredua",
     "orientation": "Orientazioa",
@@ -217,6 +226,7 @@
     "rendering": "Errendatzea",
     "settings": "Ezarpenak",
     "size": "Tamaina",
+    "sort": "Ordenatu",
     "tags": "Etiketak",
     "translation": "Itzulpena",
     "translationPromptTemplate": "Itzulpen gonbidapenaren txantiloia",
@@ -224,8 +234,45 @@
     "verso": "Alderantziz"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai edo Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai edo OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai edo OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay edo Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay edo Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Kategoria guztiak",
+    "pixabayTypes": {
+      "all": "Denak",
+      "photo": "Argazkia",
+      "illustration": "Ilustrazioa",
+      "vector": "Bektorea"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Atzeko planoak",
+      "fashion": "Moda",
+      "nature": "Natura",
+      "science": "Zientzia",
+      "education": "Hezkuntza",
+      "feelings": "Sentimenduak",
+      "health": "Osasuna",
+      "people": "Jendea",
+      "religion": "Erlijioa",
+      "places": "Lekuak",
+      "animals": "Animaliak",
+      "industry": "Industria",
+      "computer": "Ordenagailua",
+      "food": "Janaria",
+      "sports": "Kirolak",
+      "transportation": "Garraioa",
+      "travel": "Bidaia",
+      "buildings": "Eraikinak",
+      "business": "Negozioak",
+      "music": "Musika"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Garrantzitsua",
+      "latest": "Azkena"
+    }
   },
   "verbs": {
     "has": "ditu",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Kaixo",
     "flag": "🏳️",
+    "imageGenerationHints": "estilo, aldarte edo konposizio iradokizun gehigarriak",
     "imageSearch": "sagarra",
     "languageCode": "eu",
     "pasteHere": "Itsatsi hemen",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Itxi irudien bilaketa",
+      "generateTitle": "Sortu irudia",
       "title": "Bilatu irudia"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "edo",
     "cornerLanguagesRestAfter": "eta egokitu bistaratzen den markatzailea.",
     "imageSourcesLabel": "Irudi iturriak:",
-    "imageSourcesRest": "gehitu Pexels, Flaticon, Leonardo.Ai edo Pollinations.ai API gakoak aplikazioan irudiak bilatzeko eta sortzeko gaitzeko.",
+    "imageSourcesRest": "gehitu Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai edo OpenAI API gakoak aplikazioan irudiak bilatzeko eta sortzeko gaitzeko.",
     "translationLabel": "Itzulpena:",
     "translationRest": "aukeratu Gemini, OpenAI, DeepSeek, Z.AI, Groq edo OpenAI-rekin bateragarria den hornitzaile pertsonalizatu bat.",
     "modelBaseUrlLabel": "Eredua eta oinarrizko URLa:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "txartelaren liburutegi osoa deskargatzen du, irudiak barne, babeskopia konprimitu gisa.",
     "exportImageLessLabel": "Esportatu irudirik gabeko JSON:",
     "exportImageLessRest": "JSON irakurgarria deskargatzen du eskuz editatzeko irudirik gabe.",
+    "exportCompleteLabel": "Esportatu JSON osoa:",
+    "exportCompleteRest": "JSON irakurgarria deskargatzen du txartelaren liburutegi osoarekin, irudiak barne.",
     "managerPressText1": "Kudeatzailea txartelaren liburutegia da. Hautatu kontrol-laukiak dituzten txartelak eta erabili iragazkiak falta diren irudiak, testuak edo estekak aurkitzeko.",
     "managerPressText2": "Ireki inprimagailuaren ikuspegia hautatutako txartelak antzezpenaren eta atzeko orri gisa aurreikusteko. Aukeratu PDF diseinua tresna-barran, berrikusi edozein abisu, eta deskargatu PDF eta inprimatu.",
     "apiCredits": "Onartutako APIak",

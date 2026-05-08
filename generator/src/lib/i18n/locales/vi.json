@@ -15,6 +15,8 @@
     "exportCompressed": "Xuất nén",
     "exportImageLessJson": "Xuất JSON không có hình ảnh",
     "file": "Tập tin",
+    "generate": "Phát ra",
+    "generating": "Đang tạo...",
     "import": "Nhập khẩu",
     "manage": "Quản lý",
     "newCard": "Thẻ mới",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Lọc so với các liên kết",
     "generatedCardPreview": "Xem trước thẻ đã tạo",
     "imageSearchQuery": "Truy vấn tìm kiếm hình ảnh",
+    "imageGenerationHints": "Gợi ý tạo hình ảnh bổ sung",
     "loadingApp": "Đang tải Toddler Read",
     "manager": "Người quản lý",
     "managerTags": "Thẻ người quản lý",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} trả về phản hồi trống.",
     "missingProviderTranslations": "{{provider}} trả về không có bản dịch nào có thể sử dụng được.",
     "missingProviderKey": "Thêm khóa {{provider}} API trong Cài đặt.",
+    "exportedComplete": "Đã xuất JSON hoàn chỉnh với {{count}} {{unit}}.",
     "exportedCompressed": "Đã xuất bản sao lưu nén với {{count}} {{unit}}.",
     "exportedImageLess": "Đã xuất JSON không có hình ảnh bằng {{count}} {{unit}}.",
     "pdfDownloaded": "PDF được tải xuống bằng các trang {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Khóa API",
     "baseUrl": "URL cơ sở",
+    "category": "Loại",
     "chooseTag": "Chọn thẻ",
     "code": "Mã",
     "cornerLanguages": "Ngôn ngữ góc",
@@ -204,9 +209,13 @@
     "help": "Trợ giúp",
     "image": "Hình ảnh",
     "imageGeneration": "Tạo hình ảnh",
+    "imageGenerationSources": "Nguồn tạo hình ảnh",
     "imageGenerationPromptTemplate": "Mẫu lời nhắc tạo hình ảnh",
+    "imageSearch": "Tìm kiếm hình ảnh",
+    "imageSearchSources": "Nguồn tìm kiếm hình ảnh",
     "imageSource": "Nguồn hình ảnh",
     "imageSources": "Nguồn hình ảnh",
+    "imageType": "Loại hình ảnh",
     "managerAndPress": "Giám đốc và Nhà in",
     "model": "người mẫu",
     "orientation": "định hướng",
@@ -217,6 +226,7 @@
     "rendering": "Kết xuất",
     "settings": "Cài đặt",
     "size": "Kích thước",
+    "sort": "Loại",
     "tags": "Thẻ",
     "translation": "Dịch thuật",
     "translationPromptTemplate": "Mẫu nhắc dịch",
@@ -224,8 +234,45 @@
     "verso": "ngược lại"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai hoặc Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Bapt, Leonardo.Ai, Pollinations.ai hoặc OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollination.ai hoặc OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay hoặc Bapt",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay hoặc Bapt"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Tất cả danh mục",
+    "pixabayTypes": {
+      "all": "Tất cả",
+      "photo": "Ảnh",
+      "illustration": "Hình minh họa",
+      "vector": "Vectơ"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Hình nền",
+      "fashion": "Thời trang",
+      "nature": "Thiên nhiên",
+      "science": "Khoa học",
+      "education": "Giáo dục",
+      "feelings": "Cảm xúc",
+      "health": "Sức khỏe",
+      "people": "Mọi người",
+      "religion": "Tôn giáo",
+      "places": "Địa điểm",
+      "animals": "Động vật",
+      "industry": "Ngành công nghiệp",
+      "computer": "Máy tính",
+      "food": "Đồ ăn",
+      "sports": "Thể thao",
+      "transportation": "Vận tải",
+      "travel": "Du lịch",
+      "buildings": "Tòa nhà",
+      "business": "Việc kinh doanh",
+      "music": "Âm nhạc"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Liên quan",
+      "latest": "Mới nhất"
+    }
   },
   "verbs": {
     "has": "có",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "xin chào",
     "flag": "🇻🇳",
+    "imageGenerationHints": "gợi ý thêm về phong cách, tâm trạng hoặc bố cục",
     "imageSearch": "táo",
     "languageCode": "vi",
     "pasteHere": "Dán vào đây",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Đóng tìm kiếm hình ảnh",
+      "generateTitle": "Tạo hình ảnh",
       "title": "Tìm kiếm hình ảnh"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "hoặc",
     "cornerLanguagesRestAfter": "và điều chỉnh điểm đánh dấu được hiển thị.",
     "imageSourcesLabel": "Nguồn hình ảnh:",
-    "imageSourcesRest": "thêm các khóa API Pexels, Flaticon, Leonardo.Ai hoặc Pollinations.ai để cho phép tìm kiếm và tạo hình ảnh trong ứng dụng.",
+    "imageSourcesRest": "thêm các khóa API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollination.ai hoặc OpenAI để cho phép tìm kiếm và tạo hình ảnh trong ứng dụng.",
     "translationLabel": "Bản dịch:",
     "translationRest": "chọn Gemini, OpenAI, DeepSeek, Z.AI, Groq hoặc nhà cung cấp tương thích với OpenAI tùy chỉnh.",
     "modelBaseUrlLabel": "URL mô hình và cơ sở:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "tải xuống toàn bộ thư viện thẻ, bao gồm cả hình ảnh, dưới dạng bản sao lưu nén.",
     "exportImageLessLabel": "Xuất JSON không có hình ảnh:",
     "exportImageLessRest": "tải xuống JSON có thể đọc được mà không cần hình ảnh để chỉnh sửa bằng tay.",
+    "exportCompleteLabel": "Xuất JSON hoàn chỉnh:",
+    "exportCompleteRest": "tải xuống JSON có thể đọc được với thư viện thẻ đầy đủ, bao gồm cả hình ảnh.",
     "managerPressText1": "Người quản lý là thư viện thẻ. Chọn các thẻ có hộp kiểm và sử dụng bộ lọc để tìm hình ảnh, văn bản hoặc liên kết ngược lại bị thiếu.",
     "managerPressText2": "Mở chế độ xem máy in để xem trước các thẻ đã chọn dưới dạng trang recto và verso. Chọn bố cục PDF trên thanh công cụ, xem lại mọi cảnh báo, sau đó tải xuống PDF và in.",
     "apiCredits": "API được hỗ trợ",

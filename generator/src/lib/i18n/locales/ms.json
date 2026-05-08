@@ -15,6 +15,8 @@
     "exportCompressed": "Eksport dimampatkan",
     "exportImageLessJson": "Eksport JSON tanpa imej",
     "file": "Fail",
+    "generate": "Menjana",
+    "generating": "Menjana...",
     "import": "Import",
     "manage": "Uruskan",
     "newCard": "Kad baru",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Tapis pautan verso",
     "generatedCardPreview": "Pratonton kad yang dijana",
     "imageSearchQuery": "Pertanyaan carian imej",
+    "imageGenerationHints": "Petua penjanaan imej tambahan",
     "loadingApp": "Memuatkan Toddler Read",
     "manager": "Pengurus",
     "managerTags": "Tag pengurus",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} mengembalikan respons kosong.",
     "missingProviderTranslations": "{{provider}} tidak mengembalikan terjemahan yang boleh digunakan.",
     "missingProviderKey": "Tambahkan kekunci {{provider}} API dalam Tetapan.",
+    "exportedComplete": "Mengeksport JSON lengkap dengan {{count}} {{unit}}.",
     "exportedCompressed": "Sandaran mampat yang dieksport dengan {{count}} {{unit}}.",
     "exportedImageLess": "JSON tanpa imej dieksport dengan {{count}} {{unit}}.",
     "pdfDownloaded": "PDF dimuat turun dengan halaman {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Kunci API",
     "baseUrl": "URL asas",
+    "category": "kategori",
     "chooseTag": "Pilih tag",
     "code": "Kod",
     "cornerLanguages": "Bahasa sudut",
@@ -204,9 +209,13 @@
     "help": "Tolong",
     "image": "Imej",
     "imageGeneration": "Penjanaan imej",
+    "imageGenerationSources": "Sumber penjanaan imej",
     "imageGenerationPromptTemplate": "Templat gesaan penjanaan imej",
+    "imageSearch": "Carian imej",
+    "imageSearchSources": "Sumber carian imej",
     "imageSource": "Sumber imej",
     "imageSources": "Sumber imej",
+    "imageType": "Jenis imej",
     "managerAndPress": "Pengurus Dan Mesin Cetak",
     "model": "model",
     "orientation": "Orientasi",
@@ -217,6 +226,7 @@
     "rendering": "Penyampaian",
     "settings": "tetapan",
     "size": "Saiz",
+    "sort": "Isih",
     "tags": "Tag",
     "translation": "Terjemahan",
     "translationPromptTemplate": "Templat gesaan terjemahan",
@@ -224,8 +234,45 @@
     "verso": "Sebaliknya"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, atau Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai atau OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai atau OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay atau Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay atau Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Semua kategori",
+    "pixabayTypes": {
+      "all": "Semua",
+      "photo": "Foto",
+      "illustration": "Ilustrasi",
+      "vector": "vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Latar belakang",
+      "fashion": "Fesyen",
+      "nature": "alam semula jadi",
+      "science": "Sains",
+      "education": "Pendidikan",
+      "feelings": "Perasaan",
+      "health": "Kesihatan",
+      "people": "Orang ramai",
+      "religion": "agama",
+      "places": "tempat",
+      "animals": "Haiwan",
+      "industry": "industri",
+      "computer": "Komputer",
+      "food": "Makanan",
+      "sports": "sukan",
+      "transportation": "Pengangkutan",
+      "travel": "Perjalanan",
+      "buildings": "Bangunan",
+      "business": "Perniagaan",
+      "music": "Muzik"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Berkaitan",
+      "latest": "Terkini"
+    }
   },
   "verbs": {
     "has": "mempunyai",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hello",
     "flag": "🇲🇾",
+    "imageGenerationHints": "gaya tambahan, mood atau pembayang gubahan",
     "imageSearch": "epal",
     "languageCode": "ms",
     "pasteHere": "Tampal di sini",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Tutup carian imej",
+      "generateTitle": "Hasilkan imej",
       "title": "Cari imej"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "atau",
     "cornerLanguagesRestAfter": "dan laraskan penanda yang dipaparkan.",
     "imageSourcesLabel": "Sumber imej:",
-    "imageSourcesRest": "tambahkan kunci API Pexels, Flaticon, Leonardo.Ai atau Pollinations.ai untuk mendayakan carian dan penjanaan imej dalam apl.",
+    "imageSourcesRest": "tambahkan kunci Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai atau OpenAI untuk mendayakan carian dan penjanaan imej dalam apl.",
     "translationLabel": "Terjemahan:",
     "translationRest": "pilih Gemini, OpenAI, DeepSeek, Z.AI, Groq atau pembekal serasi OpenAI tersuai.",
     "modelBaseUrlLabel": "Model dan URL asas:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "memuat turun pustaka kad penuh, termasuk imej, sebagai sandaran termampat.",
     "exportImageLessLabel": "Eksport JSON tanpa imej:",
     "exportImageLessRest": "memuat turun JSON yang boleh dibaca tanpa imej untuk penyuntingan tangan.",
+    "exportCompleteLabel": "Eksport JSON lengkap:",
+    "exportCompleteRest": "memuat turun JSON yang boleh dibaca dengan pustaka kad penuh, termasuk imej.",
     "managerPressText1": "Pengurus adalah perpustakaan kad. Pilih kad dengan kotak pilihan dan gunakan penapis untuk mencari imej, teks atau pautan verso yang hilang.",
     "managerPressText2": "Buka paparan pencetak untuk melihat pratonton kad yang dipilih sebagai halaman recto dan verso. Pilih reka letak PDF dalam bar alat, semak sebarang amaran, kemudian muat turun PDF dan cetaknya.",
     "apiCredits": "API yang disokong",

@@ -15,6 +15,8 @@
     "exportCompressed": "সংকুচিত রপ্তানি",
     "exportImageLessJson": "ছবি-হীন JSON রপ্তানি করুন",
     "file": "ফাইল",
+    "generate": "তৈরি করুন",
+    "generating": "তৈরি হচ্ছে...",
     "import": "আমদানি",
     "manage": "পরিচালনা করুন",
     "newCard": "নতুন কার্ড",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "ফিল্টার verso লিঙ্ক",
     "generatedCardPreview": "জেনারেটেড কার্ড প্রিভিউ",
     "imageSearchQuery": "ছবি অনুসন্ধান ক্যোয়ারী",
+    "imageGenerationHints": "অতিরিক্ত ইমেজ জেনারেশন ইঙ্গিত",
     "loadingApp": "Toddler Read লোড হচ্ছে৷",
     "manager": "ম্যানেজার",
     "managerTags": "ম্যানেজার ট্যাগ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} একটি খালি প্রতিক্রিয়া ফিরিয়ে দিয়েছে।",
     "missingProviderTranslations": "{{provider}} কোনো ব্যবহারযোগ্য অনুবাদ ফেরত দেয়নি।",
     "missingProviderKey": "সেটিংসে একটি {{provider}} API কী যোগ করুন।",
+    "exportedComplete": "{{count}} {{unit}} এর সাথে সম্পূর্ণ JSON রপ্তানি করা হয়েছে।",
     "exportedCompressed": "{{count}} {{unit}} এর সাথে সংকুচিত ব্যাকআপ রপ্তানি করা হয়েছে।",
     "exportedImageLess": "{{count}} {{unit}} সহ ছবি-হীন JSON রপ্তানি করা হয়েছে।",
     "pdfDownloaded": "{{count}} পৃষ্ঠাগুলির সাথে PDF ডাউনলোড করা হয়েছে৷",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API কী",
     "baseUrl": "বেস ইউআরএল",
+    "category": "শ্রেণী",
     "chooseTag": "ট্যাগ নির্বাচন করুন",
     "code": "কোড",
     "cornerLanguages": "কোণার ভাষা",
@@ -204,9 +209,13 @@
     "help": "সাহায্য",
     "image": "ছবি",
     "imageGeneration": "ইমেজ প্রজন্ম",
+    "imageGenerationSources": "ইমেজ জেনারেশন সোর্স",
     "imageGenerationPromptTemplate": "ইমেজ জেনারেশন প্রম্পট টেমপ্লেট",
+    "imageSearch": "চিত্র অনুসন্ধান",
+    "imageSearchSources": "ছবি অনুসন্ধান সূত্র",
     "imageSource": "ইমেজ সোর্স",
     "imageSources": "ছবি সূত্র",
+    "imageType": "ছবির ধরন",
     "managerAndPress": "ম্যানেজার এবং প্রিন্টিং প্রেস",
     "model": "মডেল",
     "orientation": "ওরিয়েন্টেশন",
@@ -217,6 +226,7 @@
     "rendering": "রেন্ডারিং",
     "settings": "সেটিংস",
     "size": "আকার",
+    "sort": "সাজান",
     "tags": "ট্যাগ",
     "translation": "অনুবাদ",
     "translationPromptTemplate": "অনুবাদ প্রম্পট টেমপ্লেট",
@@ -224,8 +234,45 @@
     "verso": "ভার্সো"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, বা Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, বা OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, বা OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, বা Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, বা Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "সমস্ত বিভাগ",
+    "pixabayTypes": {
+      "all": "সব",
+      "photo": "ছবি",
+      "illustration": "ইলাস্ট্রেশন",
+      "vector": "ভেক্টর"
+    },
+    "pixabayCategories": {
+      "backgrounds": "পটভূমি",
+      "fashion": "ফ্যাশন",
+      "nature": "প্রকৃতি",
+      "science": "বিজ্ঞান",
+      "education": "শিক্ষা",
+      "feelings": "অনুভূতি",
+      "health": "স্বাস্থ্য",
+      "people": "মানুষ",
+      "religion": "ধর্ম",
+      "places": "স্থান",
+      "animals": "প্রাণী",
+      "industry": "শিল্প",
+      "computer": "কম্পিউটার",
+      "food": "খাদ্য",
+      "sports": "খেলাধুলা",
+      "transportation": "পরিবহন",
+      "travel": "ভ্রমণ",
+      "buildings": "ভবন",
+      "business": "ব্যবসা",
+      "music": "সঙ্গীত"
+    },
+    "unsplashOrderBy": {
+      "relevant": "প্রাসঙ্গিক",
+      "latest": "সর্বশেষ"
+    }
   },
   "verbs": {
     "has": "আছে",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "হ্যালো",
     "flag": "🇧🇩",
+    "imageGenerationHints": "অতিরিক্ত শৈলী, মেজাজ, বা রচনা ইঙ্গিত",
     "imageSearch": "আপেল",
     "languageCode": "bn",
     "pasteHere": "এখানে পেস্ট করুন",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ছবি অনুসন্ধান বন্ধ করুন",
+      "generateTitle": "ইমেজ তৈরি করুন",
       "title": "চিত্র অনুসন্ধান করুন"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "বা",
     "cornerLanguagesRestAfter": "এবং প্রদর্শিত মার্কার সামঞ্জস্য করুন।",
     "imageSourcesLabel": "ছবি সূত্র:",
-    "imageSourcesRest": "অ্যাপ-মধ্যস্থ চিত্র অনুসন্ধান এবং প্রজন্ম সক্ষম করতে Pexels, Flaticon, Leonardo.Ai বা Pollinations.ai API কী যোগ করুন।",
+    "imageSourcesRest": "অ্যাপ-মধ্যস্থ চিত্র অনুসন্ধান এবং প্রজন্ম সক্ষম করতে Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, বা OpenAI API কী যোগ করুন।",
     "translationLabel": "অনুবাদ:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, অথবা একটি কাস্টম OpenAI-সামঞ্জস্যপূর্ণ প্রদানকারী বেছে নিন।",
     "modelBaseUrlLabel": "মডেল এবং ভিত্তি URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "একটি সংকুচিত ব্যাকআপ হিসাবে ছবি সহ সম্পূর্ণ কার্ড লাইব্রেরি ডাউনলোড করে।",
     "exportImageLessLabel": "ছবি-হীন JSON রপ্তানি করুন:",
     "exportImageLessRest": "হাত সম্পাদনার জন্য ছবি ছাড়াই পঠনযোগ্য JSON ডাউনলোড করে।",
+    "exportCompleteLabel": "সম্পূর্ণ JSON রপ্তানি করুন:",
+    "exportCompleteRest": "ছবি সহ সম্পূর্ণ কার্ড লাইব্রেরি সহ পাঠযোগ্য JSON ডাউনলোড করে।",
     "managerPressText1": "ম্যানেজার হল কার্ড লাইব্রেরি। চেকবক্স সহ কার্ডগুলি নির্বাচন করুন এবং অনুপস্থিত চিত্র, পাঠ্য বা বিপরীত লিঙ্কগুলি খুঁজে পেতে ফিল্টারগুলি ব্যবহার করুন৷",
     "managerPressText2": "রেক্টো এবং ভার্সো পেজ হিসাবে নির্বাচিত কার্ডগুলির পূর্বরূপ দেখতে প্রিন্টার ভিউ খুলুন। টুলবারে PDF লেআউট বেছে নিন, যেকোনো সতর্কতা পর্যালোচনা করুন, তারপর PDF ডাউনলোড করুন এবং মুদ্রণ করুন।",
     "apiCredits": "সমর্থিত API",

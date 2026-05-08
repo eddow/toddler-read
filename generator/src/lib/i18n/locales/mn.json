@@ -15,6 +15,8 @@
     "exportCompressed": "Шахсан экспорт",
     "exportImageLessJson": "JSON-г зураггүйгээр экспортлох",
     "file": "Файл",
+    "generate": "Үүсгэх",
+    "generating": "Үүсгэж байна...",
     "import": "Импорт",
     "manage": "Удирдах",
     "newCard": "Шинэ карт",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Холбоосыг шүүнэ үү",
     "generatedCardPreview": "Үүсгэсэн картыг урьдчилан үзэх",
     "imageSearchQuery": "Зургийн хайлтын асуулга",
+    "imageGenerationHints": "Зураг үүсгэх нэмэлт зөвлөмжүүд",
     "loadingApp": "Toddler Read ачаалж байна",
     "manager": "Менежер",
     "managerTags": "Менежерийн шошго",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} хоосон хариултыг буцаасан.",
     "missingProviderTranslations": "{{provider}} ашиглах боломжтой орчуулгыг буцаагаагүй.",
     "missingProviderKey": "\"Тохиргоо\" хэсэгт {{provider}} API түлхүүр нэмнэ үү.",
+    "exportedComplete": "{{count}} {{unit}} бүхий бүрэн JSON-г экспортолсон.",
     "exportedCompressed": "{{count}} {{unit}} ашиглан шахсан нөөцлөлтийг экспортолсон.",
     "exportedImageLess": "{{count}} {{unit}}-тай JSON-г зураггүй экспортолсон.",
     "pdfDownloaded": "PDF-г {{count}} хуудсуудтай татаж авсан.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API түлхүүр",
     "baseUrl": "Үндсэн URL",
+    "category": "Ангилал",
     "chooseTag": "Шошго сонгоно уу",
     "code": "Код",
     "cornerLanguages": "Булангийн хэлүүд",
@@ -204,9 +209,13 @@
     "help": "Туслаач",
     "image": "Зураг",
     "imageGeneration": "Зураг үүсгэх",
+    "imageGenerationSources": "Зураг үүсгэх эх сурвалжууд",
     "imageGenerationPromptTemplate": "Зураг үүсгэх шуурхай загвар",
+    "imageSearch": "Зургийн хайлт",
+    "imageSearchSources": "Зургийн хайлтын эх сурвалжууд",
     "imageSource": "Зургийн эх сурвалж",
     "imageSources": "Зургийн эх сурвалжууд",
+    "imageType": "Зургийн төрөл",
     "managerAndPress": "Менежер ба хэвлэх машин",
     "model": "загвар",
     "orientation": "Баримтлал",
@@ -217,6 +226,7 @@
     "rendering": "Тайлбарлах",
     "settings": "Тохиргоо",
     "size": "Хэмжээ",
+    "sort": "Эрэмбэлэх",
     "tags": "Шошго",
     "translation": "Орчуулга",
     "translationPromptTemplate": "Орчуулгын шуурхай загвар",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, эсвэл Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai эсвэл OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, эсвэл OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay эсвэл Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay эсвэл Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Бүх ангилал",
+    "pixabayTypes": {
+      "all": "Бүгд",
+      "photo": "Зураг",
+      "illustration": "Дүрслэл",
+      "vector": "Вектор"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Арын дэвсгэр",
+      "fashion": "Загвар",
+      "nature": "Байгаль",
+      "science": "Шинжлэх ухаан",
+      "education": "Боловсрол",
+      "feelings": "Мэдрэмж",
+      "health": "Эрүүл мэнд",
+      "people": "Хүмүүс",
+      "religion": "Шашин",
+      "places": "Газар",
+      "animals": "Амьтад",
+      "industry": "Аж үйлдвэр",
+      "computer": "Компьютер",
+      "food": "Хоол хүнс",
+      "sports": "Спорт",
+      "transportation": "Тээвэр",
+      "travel": "Аялал",
+      "buildings": "Барилга байгууламж",
+      "business": "Бизнес",
+      "music": "Хөгжим"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Холбогдох",
+      "latest": "Хамгийн сүүлийн үеийн"
+    }
   },
   "verbs": {
     "has": "байна",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Сайн уу",
     "flag": "🇲🇳",
+    "imageGenerationHints": "нэмэлт хэв маяг, сэтгэлийн байдал, найруулгын зөвлөмжүүд",
     "imageSearch": "алим",
     "languageCode": "mn",
     "pasteHere": "Энд буулгана уу",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Зургийн хайлтыг хаах",
+      "generateTitle": "Зураг үүсгэх",
       "title": "Search image"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "эсвэл",
     "cornerLanguagesRestAfter": "болон харуулсан тэмдэглэгээг тохируулна уу.",
     "imageSourcesLabel": "Зургийн эх сурвалж:",
-    "imageSourcesRest": "Pexels, Flaticon, Leonardo.Ai эсвэл Pollinations.ai API түлхүүрүүдийг нэмж, апп доторх зураг хайх, үүсгэх боломжтой.",
+    "imageSourcesRest": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai эсвэл OpenAI API түлхүүрүүдийг нэмж, апп доторх зураг хайх, үүсгэх боломжтой.",
     "translationLabel": "Орчуулга:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq эсвэл OpenAI-тэй нийцтэй үйлчилгээ үзүүлэгчийг сонгоно уу.",
     "modelBaseUrlLabel": "Загвар ба үндсэн URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "картын номын сан, түүний дотор зургуудыг шахсан нөөц болгон татаж авдаг.",
     "exportImageLessLabel": "JSON-г зураггүй экспортлох:",
     "exportImageLessRest": "гар засварлах зураггүйгээр унших боломжтой JSON татаж авдаг.",
+    "exportCompleteLabel": "JSON-г бүрэн экспортлох:",
+    "exportCompleteRest": "Унших боломжтой JSON-г зураг оруулаад картын бүрэн номын сантай татаж авдаг.",
     "managerPressText1": "Менежер нь картын номын сан юм. Шалгалтын нүдтэй картуудыг сонгоод, дутуу зураг, текст эсвэл эсрэгээр холбоосыг олохын тулд шүүлтүүр ашиглана уу.",
     "managerPressText2": "Сонгосон картуудыг recto болон verso хуудас хэлбэрээр урьдчилан харахын тулд принтерийн харагдацыг нээнэ үү. Хэрэгслийн самбараас PDF бүдүүвчийг сонгоод, дурын анхааруулгыг хянаж үзээд PDF-г татаж аваад хэвлэнэ үү.",
     "apiCredits": "Дэмжигдсэн API",

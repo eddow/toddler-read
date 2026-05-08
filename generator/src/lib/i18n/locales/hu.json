@@ -15,6 +15,8 @@
     "exportCompressed": "Exportálás tömörítve",
     "exportImageLessJson": "Kép nélküli JSON exportálása",
     "file": "Fájl",
+    "generate": "Generál",
+    "generating": "Létrehozás...",
     "import": "Importálás",
     "manage": "Kezelése",
     "newCard": "Új kártya",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Vero linkek szűrése",
     "generatedCardPreview": "Generált kártya előnézet",
     "imageSearchQuery": "Képkereső lekérdezés",
+    "imageGenerationHints": "További tippek a kép létrehozásához",
     "loadingApp": "Toddler Read betöltése",
     "manager": "Menedzser",
     "managerTags": "Menedzser címkék",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "A {{provider}} üres választ adott vissza.",
     "missingProviderTranslations": "A {{provider}} nem adott vissza használható fordítást.",
     "missingProviderKey": "Adjon hozzá egy {{provider}} API kulcsot a Beállításokban.",
+    "exportedComplete": "A teljes JSON exportálva a következővel: {{count}} {{unit}}.",
     "exportedCompressed": "Exportált tömörített biztonsági másolat a {{count}} {{unit}} segítségével.",
     "exportedImageLess": "Exportált kép nélküli JSON és {{count}} {{unit}}.",
     "pdfDownloaded": "PDF letöltve a {{count}} oldalakkal.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API kulcs",
     "baseUrl": "Alap URL",
+    "category": "Kategória",
     "chooseTag": "Válassza ki a címkét",
     "code": "kód",
     "cornerLanguages": "Saroknyelvek",
@@ -204,9 +209,13 @@
     "help": "Segítség",
     "image": "Kép",
     "imageGeneration": "Képgenerálás",
+    "imageGenerationSources": "Képgeneráló források",
     "imageGenerationPromptTemplate": "Képgeneráló prompt sablon",
+    "imageSearch": "Képkeresés",
+    "imageSearchSources": "Képkereső források",
     "imageSource": "Kép forrása",
     "imageSources": "Képforrások",
+    "imageType": "Kép típusa",
     "managerAndPress": "Menedzser és Nyomda",
     "model": "modell",
     "orientation": "Tájékozódás",
@@ -217,6 +226,7 @@
     "rendering": "Renderelés",
     "settings": "Beállítások elemre",
     "size": "Méret",
+    "sort": "Fajta",
     "tags": "Címkék",
     "translation": "Fordítás",
     "translationPromptTemplate": "Fordítási felszólító sablon",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai vagy Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai vagy OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai vagy OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay vagy Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay vagy Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Minden kategória",
+    "pixabayTypes": {
+      "all": "Minden",
+      "photo": "Fénykép",
+      "illustration": "Ábra",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Hátterek",
+      "fashion": "Divat",
+      "nature": "Természet",
+      "science": "Tudomány",
+      "education": "Oktatás",
+      "feelings": "Érzések",
+      "health": "Egészség",
+      "people": "Emberek",
+      "religion": "Vallás",
+      "places": "Helyek",
+      "animals": "Állatok",
+      "industry": "Ipar",
+      "computer": "Számítógép",
+      "food": "Élelmiszer",
+      "sports": "Sport",
+      "transportation": "Szállítás",
+      "travel": "Utazási",
+      "buildings": "Épületek",
+      "business": "Üzleti",
+      "music": "Zene"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Lényeges",
+      "latest": "Legújabb"
+    }
   },
   "verbs": {
     "has": "rendelkezik",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hello",
     "flag": "🇭🇺",
+    "imageGenerationHints": "extra stílus-, hangulat- vagy kompozíciós tippek",
     "imageSearch": "alma",
     "languageCode": "hu",
     "pasteHere": "Illessze be ide",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Képkeresés bezárása",
+      "generateTitle": "Kép generálása",
       "title": "Kép keresése"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "vagy",
     "cornerLanguagesRestAfter": "és állítsa be a megjelenített jelölőt.",
     "imageSourcesLabel": "Képforrások:",
-    "imageSourcesRest": "adjon hozzá Pexels, Flaticon, Leonardo.Ai vagy Pollinations.ai API-kulcsokat az alkalmazáson belüli képkeresés és -generálás engedélyezéséhez.",
+    "imageSourcesRest": "adjon hozzá Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai vagy OpenAI API kulcsokat az alkalmazáson belüli képkeresés és -generálás engedélyezéséhez.",
     "translationLabel": "Fordítás:",
     "translationRest": "válasszon Gemini, OpenAI, DeepSeek, Z.AI, Groq vagy egyéni OpenAI-kompatibilis szolgáltatót.",
     "modelBaseUrlLabel": "Modell és alap URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "letölti a teljes kártyakönyvtárat, beleértve a képeket is, tömörített biztonsági másolatként.",
     "exportImageLessLabel": "Kép nélküli JSON exportálása:",
     "exportImageLessRest": "letölti az olvasható JSON-et képek nélkül a kézi szerkesztéshez.",
+    "exportCompleteLabel": "A teljes JSON exportálása:",
+    "exportCompleteRest": "letölti az olvasható JSON-t a teljes kártyakönyvtárral, beleértve a képeket.",
     "managerPressText1": "A menedzser a kártyakönyvtár. Jelölje ki a kártyákat a jelölőnégyzetekkel, és szűrőkkel keresse meg a hiányzó képeket, szöveget vagy verso linkeket.",
     "managerPressText2": "Nyissa meg a nyomtató nézetet, hogy megtekinthesse a kiválasztott kártyákat recto és verso oldalakként. Válassza ki a PDF elrendezést az eszköztáron, tekintse át a figyelmeztetéseket, majd töltse le és nyomtassa ki a PDF fájlt.",
     "apiCredits": "Támogatott API-k",

@@ -15,6 +15,8 @@
     "exportCompressed": "Ekspordi tihendatud",
     "exportImageLessJson": "Eksportige ilma pildita JSON",
     "file": "Fail",
+    "generate": "Genereeri",
+    "generating": "Loomine...",
     "import": "Import",
     "manage": "Halda",
     "newCard": "Uus kaart",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtreerige vastupidiseid linke",
     "generatedCardPreview": "Loodud kaardi eelvaade",
     "imageSearchQuery": "Pildiotsingu päring",
+    "imageGenerationHints": "Täiendavad vihjed piltide genereerimiseks",
     "loadingApp": "Toddler Read laadimine",
     "manager": "Juht",
     "managerTags": "Halduri sildid",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} tagastas tühja vastuse.",
     "missingProviderTranslations": "{{provider}} ei tagastanud ühtegi kasutatavat tõlget.",
     "missingProviderKey": "Lisage seadetes võti {{provider}} API.",
+    "exportedComplete": "Eksporditi täielik JSON asukohaga {{count}} {{unit}}.",
     "exportedCompressed": "Eksporditi tihendatud varukoopia rakendusega {{count}} {{unit}}.",
     "exportedImageLess": "Eksporditud pildita JSON koos {{count}} {{unit}}-ga.",
     "pdfDownloaded": "PDF on alla laaditud koos {{count}} lehtedega.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Võti API",
     "baseUrl": "Baas-URL",
+    "category": "Kategooria",
     "chooseTag": "Valige silt",
     "code": "Kood",
     "cornerLanguages": "Nurgakeeled",
@@ -204,9 +209,13 @@
     "help": "Abi",
     "image": "Pilt",
     "imageGeneration": "Pildi genereerimine",
+    "imageGenerationSources": "Piltide genereerimise allikad",
     "imageGenerationPromptTemplate": "Pildi genereerimise viipa mall",
+    "imageSearch": "Pildiotsing",
+    "imageSearchSources": "Pildiotsingu allikad",
     "imageSource": "Pildi allikas",
     "imageSources": "Piltide allikad",
+    "imageType": "Pildi tüüp",
     "managerAndPress": "Juht ja trükipress",
     "model": "mudel",
     "orientation": "Orienteerumine",
@@ -217,6 +226,7 @@
     "rendering": "Renderdamine",
     "settings": "Seaded",
     "size": "Suurus",
+    "sort": "Sorteeri",
     "tags": "Sildid",
     "translation": "Tõlge",
     "translationPromptTemplate": "Tõlkeviipa mall",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai või Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai või OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai või OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay või Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay või Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Kõik kategooriad",
+    "pixabayTypes": {
+      "all": "Kõik",
+      "photo": "Foto",
+      "illustration": "Illustratsioon",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Taustad",
+      "fashion": "Mood",
+      "nature": "Loodus",
+      "science": "Teadus",
+      "education": "Haridus",
+      "feelings": "Tunded",
+      "health": "Tervis",
+      "people": "Inimesed",
+      "religion": "Religioon",
+      "places": "Kohad",
+      "animals": "Loomad",
+      "industry": "Tööstus",
+      "computer": "Arvuti",
+      "food": "Toit",
+      "sports": "Sport",
+      "transportation": "Transport",
+      "travel": "Reisimine",
+      "buildings": "Hooned",
+      "business": "Äri",
+      "music": "Muusika"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Asjakohane",
+      "latest": "Viimased"
+    }
   },
   "verbs": {
     "has": "on",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Tere",
     "flag": "🇪🇪",
+    "imageGenerationHints": "täiendavaid stiili-, meeleolu- või kompositsioonivihjeid",
     "imageSearch": "õun",
     "languageCode": "et",
     "pasteHere": "Kleebi siia",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Sule pildiotsing",
+      "generateTitle": "Loo pilt",
       "title": "Otsi pilti"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "või",
     "cornerLanguagesRestAfter": "ja reguleerige kuvatavat markerit.",
     "imageSourcesLabel": "Piltide allikad:",
-    "imageSourcesRest": "lisage Pexelsi, Flaticoni, Leonardo.Ai või Pollinations.ai API võtmed, et võimaldada rakendusesisest piltide otsimist ja genereerimist.",
+    "imageSourcesRest": "lisage rakendusesisese pildiotsingu ja -loomise võimaldamiseks võtmed Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai või OpenAI API.",
     "translationLabel": "Tõlge:",
     "translationRest": "valige Gemini, OpenAI, DeepSeek, Z.AI, Groq või kohandatud OpenAI-ga ühilduv pakkuja.",
     "modelBaseUrlLabel": "Mudel ja baas-URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "laadib tihendatud varukoopiana alla kogu kaarditeegi, sealhulgas pildid.",
     "exportImageLessLabel": "Ekspordi ilma pildita JSON:",
     "exportImageLessRest": "laadib käsitsi redigeerimiseks alla loetava JSON ilma piltideta.",
+    "exportCompleteLabel": "Ekspordi täielik JSON:",
+    "exportCompleteRest": "laadib alla loetava JSON-i koos täieliku kaarditeegiga, sealhulgas piltidega.",
     "managerPressText1": "Juhataja on kaardiraamatukogu. Valige märkeruutudega kaardid ja kasutage puuduvate piltide, teksti või vastupidiste linkide leidmiseks filtreid.",
     "managerPressText2": "Avage printerivaade, et vaadata valitud kaartide eelvaadet rekto- ja versolehtedena. Valige tööriistaribalt paigutus PDF, vaadake üle kõik hoiatused, seejärel laadige alla PDF ja printige see.",
     "apiCredits": "Toetatud API-d",

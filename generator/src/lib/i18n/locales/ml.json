@@ -15,6 +15,8 @@
     "exportCompressed": "കയറ്റുമതി ചുരുക്കി",
     "exportImageLessJson": "ഇമേജ് ഇല്ലാത്ത JSON എക്‌സ്‌പോർട്ടുചെയ്യുക",
     "file": "ഫയൽ",
+    "generate": "സൃഷ്ടിക്കുക",
+    "generating": "സൃഷ്ടിക്കുന്നു...",
     "import": "ഇറക്കുമതി ചെയ്യുക",
     "manage": "കൈകാര്യം ചെയ്യുക",
     "newCard": "പുതിയ കാർഡ്",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "വേർസോ ലിങ്കുകൾ ഫിൽട്ടർ ചെയ്യുക",
     "generatedCardPreview": "സൃഷ്ടിച്ച കാർഡ് പ്രിവ്യൂ",
     "imageSearchQuery": "ഇമേജ് തിരയൽ അന്വേഷണം",
+    "imageGenerationHints": "അധിക ഇമേജ് ജനറേഷൻ സൂചനകൾ",
     "loadingApp": "Toddler Read ലോഡുചെയ്യുന്നു",
     "manager": "മാനേജർ",
     "managerTags": "മാനേജർ ടാഗുകൾ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ഒരു ശൂന്യമായ പ്രതികരണം നൽകി.",
     "missingProviderTranslations": "{{provider}} ഉപയോഗയോഗ്യമായ വിവർത്തനങ്ങളൊന്നും നൽകിയിട്ടില്ല.",
     "missingProviderKey": "ക്രമീകരണങ്ങളിൽ {{provider}} API കീ ചേർക്കുക.",
+    "exportedComplete": "{{count}} {{unit}} എന്നതിനൊപ്പം പൂർണ്ണമായ JSON കയറ്റുമതി ചെയ്തു.",
     "exportedCompressed": "{{count}} {{unit}} ഉപയോഗിച്ച് കംപ്രസ് ചെയ്ത ബാക്കപ്പ് കയറ്റുമതി ചെയ്തു.",
     "exportedImageLess": "{{count}} {{unit}} ഉപയോഗിച്ച് ഇമേജ്-ലെസ് JSON എക്സ്പോർട്ട് ചെയ്തു.",
     "pdfDownloaded": "{{count}} പേജുകൾക്കൊപ്പം PDF ഡൗൺലോഡ് ചെയ്തു.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API കീ",
     "baseUrl": "അടിസ്ഥാന URL",
+    "category": "വിഭാഗം",
     "chooseTag": "ടാഗ് തിരഞ്ഞെടുക്കുക",
     "code": "കോഡ്",
     "cornerLanguages": "കോർണർ ഭാഷകൾ",
@@ -204,9 +209,13 @@
     "help": "സഹായിക്കുക",
     "image": "ചിത്രം",
     "imageGeneration": "ഇമേജ് ജനറേഷൻ",
+    "imageGenerationSources": "ഇമേജ് ജനറേഷൻ ഉറവിടങ്ങൾ",
     "imageGenerationPromptTemplate": "ഇമേജ് ജനറേഷൻ പ്രോംപ്റ്റ് ടെംപ്ലേറ്റ്",
+    "imageSearch": "ചിത്ര തിരയൽ",
+    "imageSearchSources": "ഇമേജ് തിരയൽ ഉറവിടങ്ങൾ",
     "imageSource": "ചിത്രത്തിൻ്റെ ഉറവിടം",
     "imageSources": "ചിത്ര ഉറവിടങ്ങൾ",
+    "imageType": "ചിത്ര തരം",
     "managerAndPress": "മാനേജരും പ്രിൻ്റിംഗ് പ്രസും",
     "model": "മാതൃക",
     "orientation": "ഓറിയൻ്റേഷൻ",
@@ -217,6 +226,7 @@
     "rendering": "റെൻഡറിംഗ്",
     "settings": "ക്രമീകരണങ്ങൾ",
     "size": "വലിപ്പം",
+    "sort": "അടുക്കുക",
     "tags": "ടാഗുകൾ",
     "translation": "വിവർത്തനം",
     "translationPromptTemplate": "വിവർത്തന പ്രോംപ്റ്റ് ടെംപ്ലേറ്റ്",
@@ -224,8 +234,45 @@
     "verso": "വേർസോ"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, അല്ലെങ്കിൽ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, അല്ലെങ്കിൽ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, അല്ലെങ്കിൽ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, അല്ലെങ്കിൽ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, അല്ലെങ്കിൽ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "എല്ലാ വിഭാഗങ്ങളും",
+    "pixabayTypes": {
+      "all": "എല്ലാം",
+      "photo": "ഫോട്ടോ",
+      "illustration": "ചിത്രീകരണം",
+      "vector": "വെക്റ്റർ"
+    },
+    "pixabayCategories": {
+      "backgrounds": "പശ്ചാത്തലങ്ങൾ",
+      "fashion": "ഫാഷൻ",
+      "nature": "പ്രകൃതി",
+      "science": "ശാസ്ത്രം",
+      "education": "വിദ്യാഭ്യാസം",
+      "feelings": "വികാരങ്ങൾ",
+      "health": "ആരോഗ്യം",
+      "people": "ആളുകൾ",
+      "religion": "മതം",
+      "places": "സ്ഥലങ്ങൾ",
+      "animals": "മൃഗങ്ങൾ",
+      "industry": "വ്യവസായം",
+      "computer": "കമ്പ്യൂട്ടർ",
+      "food": "ഭക്ഷണം",
+      "sports": "സ്പോർട്സ്",
+      "transportation": "ഗതാഗതം",
+      "travel": "യാത്ര",
+      "buildings": "കെട്ടിടങ്ങൾ",
+      "business": "ബിസിനസ്സ്",
+      "music": "സംഗീതം"
+    },
+    "unsplashOrderBy": {
+      "relevant": "പ്രസക്തമായ",
+      "latest": "ഏറ്റവും പുതിയത്"
+    }
   },
   "verbs": {
     "has": "ഉണ്ട്",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ഹലോ",
     "flag": "🇮🇳",
+    "imageGenerationHints": "അധിക ശൈലി, മാനസികാവസ്ഥ അല്ലെങ്കിൽ കോമ്പോസിഷൻ സൂചനകൾ",
     "imageSearch": "ആപ്പിൾ",
     "languageCode": "ml",
     "pasteHere": "ഇവിടെ ഒട്ടിക്കുക",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ഇമേജ് തിരയൽ അടയ്‌ക്കുക",
+      "generateTitle": "ചിത്രം സൃഷ്ടിക്കുക",
       "title": "ചിത്രം തിരയുക"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "അല്ലെങ്കിൽ",
     "cornerLanguagesRestAfter": "കൂടാതെ പ്രദർശിപ്പിച്ച മാർക്കർ ക്രമീകരിക്കുക.",
     "imageSourcesLabel": "ചിത്ര ഉറവിടങ്ങൾ:",
-    "imageSourcesRest": "ഇൻ-ആപ്പ് ഇമേജ് തിരയലും ജനറേഷനും പ്രവർത്തനക്ഷമമാക്കാൻ Pexels, Flaticon, Leonardo.Ai അല്ലെങ്കിൽ Pollinations.ai API കീകൾ ചേർക്കുക.",
+    "imageSourcesRest": "ഇൻ-ആപ്പ് ഇമേജ് തിരയലും ജനറേഷനും പ്രവർത്തനക്ഷമമാക്കാൻ Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai അല്ലെങ്കിൽ OpenAI API കീകൾ ചേർക്കുക.",
     "translationLabel": "വിവർത്തനം:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, അല്ലെങ്കിൽ ഒരു ഇഷ്‌ടാനുസൃത OpenAI-അനുയോജ്യ ദാതാവ് തിരഞ്ഞെടുക്കുക.",
     "modelBaseUrlLabel": "മോഡലും അടിസ്ഥാന URL ഉം:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "കംപ്രസ് ചെയ്ത ബാക്കപ്പായി ഇമേജുകൾ ഉൾപ്പെടെയുള്ള മുഴുവൻ കാർഡ് ലൈബ്രറിയും ഡൗൺലോഡ് ചെയ്യുന്നു.",
     "exportImageLessLabel": "ഇമേജ് ഇല്ലാത്ത JSON എക്‌സ്‌പോർട്ടുചെയ്യുക:",
     "exportImageLessRest": "ഹാൻഡ് എഡിറ്റിംഗിനായി ചിത്രങ്ങളില്ലാതെ റീഡബിൾ JSON ഡൗൺലോഡ് ചെയ്യുന്നു.",
+    "exportCompleteLabel": "കയറ്റുമതി പൂർത്തിയായി JSON:",
+    "exportCompleteRest": "ഇമേജുകൾ ഉൾപ്പെടെ മുഴുവൻ കാർഡ് ലൈബ്രറിയോടൊപ്പം വായിക്കാനാകുന്ന JSON ഡൗൺലോഡ് ചെയ്യുന്നു.",
     "managerPressText1": "കാർഡ് ലൈബ്രറിയാണ് മാനേജർ. ചെക്ക്‌ബോക്‌സുകളുള്ള കാർഡുകൾ തിരഞ്ഞെടുത്ത് നഷ്‌ടമായ ചിത്രങ്ങൾ, ടെക്‌സ്‌റ്റ് അല്ലെങ്കിൽ വെർസോ ലിങ്കുകൾ കണ്ടെത്താൻ ഫിൽട്ടറുകൾ ഉപയോഗിക്കുക.",
     "managerPressText2": "തിരഞ്ഞെടുത്ത കാർഡുകൾ റെക്റ്റോ, വേർസോ പേജുകളായി പ്രിവ്യൂ ചെയ്യാൻ പ്രിൻ്റർ വ്യൂ തുറക്കുക. ടൂൾബാറിൽ PDF ലേഔട്ട് തിരഞ്ഞെടുക്കുക, ഏതെങ്കിലും മുന്നറിയിപ്പുകൾ അവലോകനം ചെയ്യുക, തുടർന്ന് PDF ഡൗൺലോഡ് ചെയ്‌ത് പ്രിൻ്റ് ചെയ്യുക.",
     "apiCredits": "പിന്തുണയ്ക്കുന്ന API-കൾ",

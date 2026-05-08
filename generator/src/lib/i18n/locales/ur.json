@@ -15,6 +15,8 @@
     "exportCompressed": "کمپریسڈ برآمد کریں۔",
     "exportImageLessJson": "بغیر تصویر کے JSON برآمد کریں۔",
     "file": "فائل",
+    "generate": "پیدا کریں۔",
+    "generating": "پیدا ہو رہا ہے...",
     "import": "درآمد کریں۔",
     "manage": "انتظام کریں۔",
     "newCard": "نیا کارڈ",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "لنکس کو فلٹر کریں۔",
     "generatedCardPreview": "تیار کردہ کارڈ کا پیش نظارہ",
     "imageSearchQuery": "تصویری تلاش کا استفسار",
+    "imageGenerationHints": "اضافی تصویر بنانے کے اشارے",
     "loadingApp": "Toddler Read لوڈ ہو رہا ہے۔",
     "manager": "مینیجر",
     "managerTags": "مینیجر ٹیگز",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} نے ایک خالی جواب واپس کیا۔",
     "missingProviderTranslations": "{{provider}} نے کوئی قابل استعمال ترجمہ واپس نہیں کیا۔",
     "missingProviderKey": "ترتیبات میں {{provider}} API کلید شامل کریں۔",
+    "exportedComplete": "{{count}} {{unit}} کے ساتھ مکمل JSON برآمد کیا گیا۔",
     "exportedCompressed": "{{count}} {{unit}} کے ساتھ ایکسپورٹ شدہ کمپریسڈ بیک اپ۔",
     "exportedImageLess": "{{count}} {{unit}} کے ساتھ بغیر تصویر والے JSON کو برآمد کیا گیا۔",
     "pdfDownloaded": "PDF {{count}} صفحات کے ساتھ ڈاؤن لوڈ کیا گیا۔",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API کلید",
     "baseUrl": "بنیادی URL",
+    "category": "زمرہ",
     "chooseTag": "ٹیگ کا انتخاب کریں۔",
     "code": "کوڈ",
     "cornerLanguages": "کونے کی زبانیں۔",
@@ -204,9 +209,13 @@
     "help": "مدد",
     "image": "تصویر",
     "imageGeneration": "تصویر کی نسل",
+    "imageGenerationSources": "تصویری نسل کے ذرائع",
     "imageGenerationPromptTemplate": "امیج جنریشن پرامپٹ ٹیمپلیٹ",
+    "imageSearch": "تصویری تلاش",
+    "imageSearchSources": "تصویری تلاش کے ذرائع",
     "imageSource": "تصویری ماخذ",
     "imageSources": "تصویری ذرائع",
+    "imageType": "تصویر کی قسم",
     "managerAndPress": "مینیجر اور پرنٹنگ پریس",
     "model": "ماڈل",
     "orientation": "واقفیت",
@@ -217,6 +226,7 @@
     "rendering": "رینڈرنگ",
     "settings": "ترتیبات",
     "size": "سائز",
+    "sort": "چھانٹنا",
     "tags": "ٹیگز",
     "translation": "ترجمہ",
     "translationPromptTemplate": "ترجمہ پرامپٹ ٹیمپلیٹ",
@@ -224,8 +234,45 @@
     "verso": "ورسو"
   },
   "providers": {
-    "imageProviderKeys": "Pexels، Flaticon، Leonardo.Ai، یا Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai، یا OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai، Pollinations.ai، یا OpenAI",
+    "imageSearchProviderKeys": "Pexels، Flaticon، Pixabay، یا Unsplash",
+    "pexelsOrFlaticon": "Pexels، Flaticon، Pixabay، یا Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "تمام زمرے",
+    "pixabayTypes": {
+      "all": "تمام",
+      "photo": "تصویر",
+      "illustration": "مثال",
+      "vector": "ویکٹر"
+    },
+    "pixabayCategories": {
+      "backgrounds": "پس منظر",
+      "fashion": "فیشن",
+      "nature": "فطرت",
+      "science": "سائنس",
+      "education": "تعلیم",
+      "feelings": "احساسات",
+      "health": "صحت",
+      "people": "لوگ",
+      "religion": "مذہب",
+      "places": "مقامات",
+      "animals": "جانور",
+      "industry": "صنعت",
+      "computer": "کمپیوٹر",
+      "food": "کھانا",
+      "sports": "کھیل",
+      "transportation": "نقل و حمل",
+      "travel": "سفر",
+      "buildings": "عمارتیں",
+      "business": "کاروبار",
+      "music": "موسیقی"
+    },
+    "unsplashOrderBy": {
+      "relevant": "متعلقہ",
+      "latest": "تازہ ترین"
+    }
   },
   "verbs": {
     "has": "ہے",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ہیلو",
     "flag": "🇵🇰",
+    "imageGenerationHints": "اضافی انداز، مزاج، یا ساخت کے اشارے",
     "imageSearch": "سیب",
     "languageCode": "ur",
     "pasteHere": "یہاں چسپاں کریں۔",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "تصویر کی تلاش بند کریں۔",
+      "generateTitle": "تصویر بنائیں",
       "title": "تصویر تلاش کریں۔"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "یا",
     "cornerLanguagesRestAfter": "اور دکھائے گئے مارکر کو ایڈجسٹ کریں۔",
     "imageSourcesLabel": "تصویری ذرائع:",
-    "imageSourcesRest": "ایپ امیج سرچ اور جنریشن کو فعال کرنے کے لیے Pexels، Flaticon، Leonardo.Ai، یا Pollinations.ai API کیز شامل کریں۔",
+    "imageSourcesRest": "ایپ امیج سرچ اور جنریشن کو فعال کرنے کے لیے Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai، Pollinations.ai، یا OpenAI API کیز شامل کریں۔",
     "translationLabel": "ترجمہ:",
     "translationRest": "Gemini، OpenAI، DeepSeek، Z.AI، Groq، یا اپنی مرضی کے مطابق OpenAI سے ہم آہنگ فراہم کنندہ کا انتخاب کریں۔",
     "modelBaseUrlLabel": "ماڈل اور بنیادی URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "کمپریسڈ بیک اپ کے طور پر تصاویر سمیت مکمل کارڈ لائبریری کو ڈاؤن لوڈ کرتا ہے۔",
     "exportImageLessLabel": "بغیر تصویر کے JSON برآمد کریں:",
     "exportImageLessRest": "ہینڈ ایڈیٹنگ کے لیے تصاویر کے بغیر پڑھنے کے قابل JSON ڈاؤن لوڈ کرتا ہے۔",
+    "exportCompleteLabel": "مکمل JSON برآمد کریں:",
+    "exportCompleteRest": "پڑھنے کے قابل JSON کو مکمل کارڈ لائبریری کے ساتھ ڈاؤن لوڈ کرتا ہے، بشمول تصاویر۔",
     "managerPressText1": "مینیجر کارڈ لائبریری ہے۔ چیک باکسز والے کارڈز کو منتخب کریں اور گمشدہ امیجز، ٹیکسٹ، یا ورسو لنکس تلاش کرنے کے لیے فلٹرز استعمال کریں۔",
     "managerPressText2": "ریکٹو اور ورسو صفحات کے بطور منتخب کارڈز کا پیش نظارہ کرنے کے لیے پرنٹر ویو کھولیں۔ ٹول بار میں PDF لے آؤٹ کا انتخاب کریں، کسی بھی انتباہ کا جائزہ لیں، پھر PDF ڈاؤن لوڈ کریں اور اسے پرنٹ کریں۔",
     "apiCredits": "تعاون یافتہ APIs",

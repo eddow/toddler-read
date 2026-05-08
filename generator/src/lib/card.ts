@@ -70,21 +70,75 @@ const PDF_PAGE_FORMATS: Record<PdfPageFormat, { widthMm: number; heightMm: numbe
 };
 
 const DEFAULT_REGION_BY_LANGUAGE: Record<string, string> = {
+  az: 'AZ',
+  be: 'BY',
   bg: 'BG',
+  bs: 'BA',
+  cs: 'CZ',
+  da: 'DK',
   de: 'DE',
   el: 'GR',
   en: 'GB',
   es: 'ES',
+  et: 'EE',
+  fi: 'FI',
   fr: 'FR',
+  ga: 'IE',
+  hr: 'HR',
+  hu: 'HU',
+  id: 'ID',
+  is: 'IS',
   it: 'IT',
   ja: 'JP',
+  kk: 'KZ',
+  ky: 'KG',
+  lt: 'LT',
+  lv: 'LV',
+  mk: 'MK',
+  ms: 'MY',
+  mt: 'MT',
   nl: 'NL',
+  no: 'NO',
   pl: 'PL',
   pt: 'PT',
   ro: 'RO',
   ru: 'RU',
+  sk: 'SK',
+  sl: 'SI',
+  sq: 'AL',
+  sr: 'RS',
+  sv: 'SE',
   tr: 'TR',
-  uk: 'UA'
+  uk: 'UA',
+  uz: 'UZ',
+  vi: 'VN'
+};
+
+const DEFAULT_MARKER_BY_LANGUAGE: Record<string, string> = {
+  ar: 'ض',
+  bn: 'ব',
+  fa: 'ف',
+  gu: 'ગ',
+  he: 'א',
+  hi: 'ह',
+  hy: 'Ա',
+  ka: 'ა',
+  km: 'ក',
+  kn: 'ಕ',
+  ko: '한',
+  lo: 'ລ',
+  ml: 'മ',
+  mn: 'ᠮ',
+  mr: 'म',
+  my: 'မ',
+  ne: 'न',
+  pa: 'ਪ',
+  si: 'සි',
+  ta: 'த',
+  te: 'తె',
+  th: 'ก',
+  ur: 'ع',
+  zh: '中'
 };
 
 export const DEFAULT_CARD_GRID_SIZE: CardGridSize = 1;
@@ -142,6 +196,11 @@ export function markerForLanguage(lang: string): Pick<RenderableEntry, 'marker' 
   const defaultRegion = language ? DEFAULT_REGION_BY_LANGUAGE[language] : undefined;
   if (defaultRegion) {
     return { marker: regionCodeToFlag(defaultRegion), markerKind: 'flag' };
+  }
+
+  const defaultMarker = language ? DEFAULT_MARKER_BY_LANGUAGE[language] : undefined;
+  if (defaultMarker) {
+    return { marker: defaultMarker, markerKind: 'code' };
   }
 
   return {
@@ -621,6 +680,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     const image = new Image();
     image.onload = () => resolve(image);
     image.onerror = () => reject(new Error('Could not load image.'));
+    if (/^https?:\/\//i.test(src)) image.crossOrigin = 'anonymous';
     image.src = src;
   });
   imageCache.set(src, promise);

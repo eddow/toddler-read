@@ -15,6 +15,8 @@
     "exportCompressed": "ರಫ್ತು ಸಂಕುಚಿತ",
     "exportImageLessJson": "ಚಿತ್ರ-ಕಡಿಮೆ JSON ರಫ್ತು ಮಾಡಿ",
     "file": "ಫೈಲ್",
+    "generate": "ರಚಿಸಿ",
+    "generating": "ಉತ್ಪಾದಿಸಲಾಗುತ್ತಿದೆ...",
     "import": "ಆಮದು ಮಾಡಿಕೊಳ್ಳಿ",
     "manage": "ನಿರ್ವಹಿಸಿ",
     "newCard": "ಹೊಸ ಕಾರ್ಡ್",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "ವ್ಯತಿರಿಕ್ತ ಲಿಂಕ್‌ಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ",
     "generatedCardPreview": "ಕಾರ್ಡ್ ಪೂರ್ವವೀಕ್ಷಣೆ ರಚಿಸಲಾಗಿದೆ",
     "imageSearchQuery": "ಚಿತ್ರ ಹುಡುಕಾಟ ಪ್ರಶ್ನೆ",
+    "imageGenerationHints": "ಹೆಚ್ಚುವರಿ ಚಿತ್ರ ರಚನೆಯ ಸುಳಿವುಗಳು",
     "loadingApp": "Toddler Read ಲೋಡ್ ಆಗುತ್ತಿದೆ",
     "manager": "ಮ್ಯಾನೇಜರ್",
     "managerTags": "ಮ್ಯಾನೇಜರ್ ಟ್ಯಾಗ್ಗಳು",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ಖಾಲಿ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಹಿಂತಿರುಗಿಸಿದೆ.",
     "missingProviderTranslations": "{{provider}} ಯಾವುದೇ ಬಳಸಬಹುದಾದ ಅನುವಾದಗಳನ್ನು ಹಿಂತಿರುಗಿಸಿಲ್ಲ.",
     "missingProviderKey": "ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ {{provider}} API ಕೀಯನ್ನು ಸೇರಿಸಿ.",
+    "exportedComplete": "{{count}} {{unit}} ಜೊತೆಗೆ ಸಂಪೂರ್ಣ JSON ಅನ್ನು ರಫ್ತು ಮಾಡಲಾಗಿದೆ.",
     "exportedCompressed": "{{count}} {{unit}} ನೊಂದಿಗೆ ಸಂಕುಚಿತ ಬ್ಯಾಕಪ್ ಅನ್ನು ರಫ್ತು ಮಾಡಲಾಗಿದೆ.",
     "exportedImageLess": "{{count}} {{unit}} ಜೊತೆಗೆ ಚಿತ್ರ-ಕಡಿಮೆ JSON ಅನ್ನು ರಫ್ತು ಮಾಡಲಾಗಿದೆ.",
     "pdfDownloaded": "{{count}} ಪುಟಗಳೊಂದಿಗೆ PDF ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API ಕೀ",
     "baseUrl": "ಮೂಲ URL",
+    "category": "ವರ್ಗ",
     "chooseTag": "ಟ್ಯಾಗ್ ಆಯ್ಕೆಮಾಡಿ",
     "code": "ಕೋಡ್",
     "cornerLanguages": "ಮೂಲೆ ಭಾಷೆಗಳು",
@@ -204,9 +209,13 @@
     "help": "ಸಹಾಯ",
     "image": "ಚಿತ್ರ",
     "imageGeneration": "ಚಿತ್ರ ರಚನೆ",
+    "imageGenerationSources": "ಚಿತ್ರ ರಚನೆಯ ಮೂಲಗಳು",
     "imageGenerationPromptTemplate": "ಚಿತ್ರ ನಿರ್ಮಾಣ ಪ್ರಾಂಪ್ಟ್ ಟೆಂಪ್ಲೇಟ್",
+    "imageSearch": "ಚಿತ್ರ ಹುಡುಕಾಟ",
+    "imageSearchSources": "ಚಿತ್ರ ಹುಡುಕಾಟ ಮೂಲಗಳು",
     "imageSource": "ಚಿತ್ರದ ಮೂಲ",
     "imageSources": "ಚಿತ್ರ ಮೂಲಗಳು",
+    "imageType": "ಚಿತ್ರದ ಪ್ರಕಾರ",
     "managerAndPress": "ಮ್ಯಾನೇಜರ್ ಮತ್ತು ಪ್ರಿಂಟಿಂಗ್ ಪ್ರೆಸ್",
     "model": "ಮಾದರಿ",
     "orientation": "ದೃಷ್ಟಿಕೋನ",
@@ -217,6 +226,7 @@
     "rendering": "ರೆಂಡರಿಂಗ್",
     "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
     "size": "ಗಾತ್ರ",
+    "sort": "ವಿಂಗಡಿಸಿ",
     "tags": "ಟ್ಯಾಗ್‌ಗಳು",
     "translation": "ಅನುವಾದ",
     "translationPromptTemplate": "ಅನುವಾದ ಪ್ರಾಂಪ್ಟ್ ಟೆಂಪ್ಲೇಟ್",
@@ -224,8 +234,45 @@
     "verso": "ವರ್ಸೊ"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, ಅಥವಾ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ಅಥವಾ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, ಅಥವಾ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, ಅಥವಾ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, ಅಥವಾ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "ಎಲ್ಲಾ ವರ್ಗಗಳು",
+    "pixabayTypes": {
+      "all": "ಎಲ್ಲಾ",
+      "photo": "ಫೋಟೋ",
+      "illustration": "ವಿವರಣೆ",
+      "vector": "ವೆಕ್ಟರ್"
+    },
+    "pixabayCategories": {
+      "backgrounds": "ಹಿನ್ನೆಲೆಗಳು",
+      "fashion": "ಫ್ಯಾಷನ್",
+      "nature": "ಪ್ರಕೃತಿ",
+      "science": "ವಿಜ್ಞಾನ",
+      "education": "ಶಿಕ್ಷಣ",
+      "feelings": "ಭಾವನೆಗಳು",
+      "health": "ಆರೋಗ್ಯ",
+      "people": "ಜನರು",
+      "religion": "ಧರ್ಮ",
+      "places": "ಸ್ಥಳಗಳು",
+      "animals": "ಪ್ರಾಣಿಗಳು",
+      "industry": "ಉದ್ಯಮ",
+      "computer": "ಕಂಪ್ಯೂಟರ್",
+      "food": "ಆಹಾರ",
+      "sports": "ಕ್ರೀಡೆಗಳು",
+      "transportation": "ಸಾರಿಗೆ",
+      "travel": "ಪ್ರಯಾಣ",
+      "buildings": "ಕಟ್ಟಡಗಳು",
+      "business": "ವ್ಯಾಪಾರ",
+      "music": "ಸಂಗೀತ"
+    },
+    "unsplashOrderBy": {
+      "relevant": "ಸಂಬಂಧಿತ",
+      "latest": "ಇತ್ತೀಚಿನ"
+    }
   },
   "verbs": {
     "has": "ಹೊಂದಿದೆ",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ನಮಸ್ಕಾರ",
     "flag": "🇮🇳",
+    "imageGenerationHints": "ಹೆಚ್ಚುವರಿ ಶೈಲಿ, ಮನಸ್ಥಿತಿ ಅಥವಾ ಸಂಯೋಜನೆಯ ಸುಳಿವುಗಳು",
     "imageSearch": "ಸೇಬು",
     "languageCode": "kn",
     "pasteHere": "ಇಲ್ಲಿ ಅಂಟಿಸಿ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ಚಿತ್ರ ಹುಡುಕಾಟವನ್ನು ಮುಚ್ಚಿ",
+      "generateTitle": "ಚಿತ್ರವನ್ನು ರಚಿಸಿ",
       "title": "ಚಿತ್ರವನ್ನು ಹುಡುಕಿ"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ಅಥವಾ",
     "cornerLanguagesRestAfter": "ಮತ್ತು ಪ್ರದರ್ಶಿಸಲಾದ ಮಾರ್ಕರ್ ಅನ್ನು ಹೊಂದಿಸಿ.",
     "imageSourcesLabel": "ಚಿತ್ರದ ಮೂಲಗಳು:",
-    "imageSourcesRest": "ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿನ ಇಮೇಜ್ ಹುಡುಕಾಟ ಮತ್ತು ಉತ್ಪಾದನೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Pexels, Flaticon, Leonardo.Ai, ಅಥವಾ Pollinations.ai API ಕೀಗಳನ್ನು ಸೇರಿಸಿ.",
+    "imageSourcesRest": "ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿ ಇಮೇಜ್ ಹುಡುಕಾಟ ಮತ್ತು ಉತ್ಪಾದನೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ಅಥವಾ OpenAI API ಕೀಗಳನ್ನು ಸೇರಿಸಿ.",
     "translationLabel": "ಅನುವಾದ:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, ಅಥವಾ ಕಸ್ಟಮ್ OpenAI-ಹೊಂದಾಣಿಕೆಯ ಪೂರೈಕೆದಾರರನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
     "modelBaseUrlLabel": "ಮಾದರಿ ಮತ್ತು ಮೂಲ URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ಸಂಕುಚಿತ ಬ್ಯಾಕ್‌ಅಪ್‌ನಂತೆ ಚಿತ್ರಗಳನ್ನು ಒಳಗೊಂಡಂತೆ ಪೂರ್ಣ ಕಾರ್ಡ್ ಲೈಬ್ರರಿಯನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.",
     "exportImageLessLabel": "ಚಿತ್ರ-ಕಡಿಮೆ JSON ರಫ್ತು ಮಾಡಿ:",
     "exportImageLessRest": "ಕೈ ಸಂಪಾದನೆಗಾಗಿ ಚಿತ್ರಗಳಿಲ್ಲದೆ ಓದಬಹುದಾದ JSON ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.",
+    "exportCompleteLabel": "JSON ರಫ್ತು ಪೂರ್ಣಗೊಂಡಿದೆ:",
+    "exportCompleteRest": "ಚಿತ್ರಗಳನ್ನು ಒಳಗೊಂಡಂತೆ ಪೂರ್ಣ ಕಾರ್ಡ್ ಲೈಬ್ರರಿಯೊಂದಿಗೆ ಓದಬಲ್ಲ JSON ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತದೆ.",
     "managerPressText1": "ಮ್ಯಾನೇಜರ್ ಕಾರ್ಡ್ ಲೈಬ್ರರಿ. ಚೆಕ್‌ಬಾಕ್ಸ್‌ಗಳೊಂದಿಗೆ ಕಾರ್ಡ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಕಾಣೆಯಾದ ಚಿತ್ರಗಳು, ಪಠ್ಯ ಅಥವಾ ವರ್ಸೊ ಲಿಂಕ್‌ಗಳನ್ನು ಹುಡುಕಲು ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಬಳಸಿ.",
     "managerPressText2": "ಆಯ್ಕೆಮಾಡಿದ ಕಾರ್ಡ್‌ಗಳನ್ನು ರೆಕ್ಟೊ ಮತ್ತು ವರ್ಸೊ ಪುಟಗಳಂತೆ ಪೂರ್ವವೀಕ್ಷಿಸಲು ಪ್ರಿಂಟರ್ ವೀಕ್ಷಣೆಯನ್ನು ತೆರೆಯಿರಿ. ಟೂಲ್‌ಬಾರ್‌ನಲ್ಲಿ PDF ಲೇಔಟ್ ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಿ, ಯಾವುದೇ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ, ನಂತರ PDF ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ಅದನ್ನು ಮುದ್ರಿಸಿ.",
     "apiCredits": "ಬೆಂಬಲಿತ API ಗಳು",

@@ -15,6 +15,8 @@
     "exportCompressed": "I-export ang naka-compress",
     "exportImageLessJson": "I-export ang JSON na walang larawan",
     "file": "file",
+    "generate": "Bumuo",
+    "generating": "Binubuo...",
     "import": "Mag-import",
     "manage": "Pamahalaan",
     "newCard": "Bagong card",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "I-filter ang mga verso link",
     "generatedCardPreview": "Nakabuo ng preview ng card",
     "imageSearchQuery": "Query sa paghahanap ng larawan",
+    "imageGenerationHints": "Karagdagang mga pahiwatig sa pagbuo ng larawan",
     "loadingApp": "Nilo-load ang Toddler Read",
     "manager": "Manager",
     "managerTags": "Mga tag ng manager",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "Nagbalik ang {{provider}} ng walang laman na tugon.",
     "missingProviderTranslations": "Walang naibalik na mga pagsasalin ang {{provider}}.",
     "missingProviderKey": "Magdagdag ng {{provider}} API key sa Mga Setting.",
+    "exportedComplete": "Na-export ang kumpletong JSON na may {{count}} {{unit}}.",
     "exportedCompressed": "Na-export ang naka-compress na backup gamit ang {{count}} {{unit}}.",
     "exportedImageLess": "Na-export ang JSON na walang larawan na may {{count}} {{unit}}.",
     "pdfDownloaded": "Na-download ang PDF gamit ang mga pahina ng {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API key",
     "baseUrl": "Base URL",
+    "category": "Kategorya",
     "chooseTag": "Pumili ng tag",
     "code": "Code",
     "cornerLanguages": "Mga wika sa sulok",
@@ -204,9 +209,13 @@
     "help": "Tulong",
     "image": "Imahe",
     "imageGeneration": "Pagbuo ng imahe",
+    "imageGenerationSources": "Mga mapagkukunan ng pagbuo ng larawan",
     "imageGenerationPromptTemplate": "Prompt na template ng pagbuo ng larawan",
+    "imageSearch": "Paghahanap ng larawan",
+    "imageSearchSources": "Mga mapagkukunan ng paghahanap ng larawan",
     "imageSource": "Pinagmulan ng larawan",
     "imageSources": "Mga mapagkukunan ng larawan",
+    "imageType": "Uri ng larawan",
     "managerAndPress": "Manager At Printing Press",
     "model": "modelo",
     "orientation": "Oryentasyon",
@@ -217,6 +226,7 @@
     "rendering": "Nagre-render",
     "settings": "Mga setting",
     "size": "Sukat",
+    "sort": "Pagbukud-bukurin",
     "tags": "Mga tag",
     "translation": "Pagsasalin",
     "translationPromptTemplate": "Template ng prompt ng pagsasalin",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, o Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, o OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, o OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, o Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, o Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Lahat ng kategorya",
+    "pixabayTypes": {
+      "all": "Lahat",
+      "photo": "Larawan",
+      "illustration": "Ilustrasyon",
+      "vector": "Vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Mga background",
+      "fashion": "Fashion",
+      "nature": "Kalikasan",
+      "science": "Agham",
+      "education": "Edukasyon",
+      "feelings": "Mga damdamin",
+      "health": "Kalusugan",
+      "people": "Mga tao",
+      "religion": "Relihiyon",
+      "places": "Mga lugar",
+      "animals": "Mga hayop",
+      "industry": "Industriya",
+      "computer": "Computer",
+      "food": "Pagkain",
+      "sports": "Palakasan",
+      "transportation": "Transportasyon",
+      "travel": "Paglalakbay",
+      "buildings": "Mga gusali",
+      "business": "negosyo",
+      "music": "Musika"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Kaugnay",
+      "latest": "Pinakabago"
+    }
   },
   "verbs": {
     "has": "may",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hello",
     "flag": "🇵🇭",
+    "imageGenerationHints": "dagdag na istilo, mood, o mga pahiwatig ng komposisyon",
     "imageSearch": "mansanas",
     "languageCode": "tl",
     "pasteHere": "Idikit dito",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Isara ang paghahanap ng larawan",
+      "generateTitle": "Bumuo ng larawan",
       "title": "Maghanap ng larawan"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "o",
     "cornerLanguagesRestAfter": "at ayusin ang ipinapakitang marker.",
     "imageSourcesLabel": "Mga mapagkukunan ng larawan:",
-    "imageSourcesRest": "magdagdag ng mga Pexels, Flaticon, Leonardo.Ai, o Pollinations.ai API keys upang paganahin ang in-app na paghahanap ng imahe at pagbuo.",
+    "imageSourcesRest": "magdagdag ng mga Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, o OpenAI API key upang paganahin ang in-app na paghahanap at pagbuo ng larawan.",
     "translationLabel": "Pagsasalin:",
     "translationRest": "piliin ang Gemini, OpenAI, DeepSeek, Z.AI, Groq, o isang custom na provider na tugma sa OpenAI.",
     "modelBaseUrlLabel": "Modelo at base URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "dina-download ang buong card library, kabilang ang mga larawan, bilang isang naka-compress na backup.",
     "exportImageLessLabel": "I-export ang JSON na walang larawan:",
     "exportImageLessRest": "nagda-download ng nababasang JSON nang walang mga larawan para sa pag-edit ng kamay.",
+    "exportCompleteLabel": "I-export ang kumpletong JSON:",
+    "exportCompleteRest": "nagda-download ng nababasang JSON na may buong card library, kasama ang mga larawan.",
     "managerPressText1": "Ang manager ay ang card library. Pumili ng mga card na may mga checkbox at gumamit ng mga filter para maghanap ng mga nawawalang larawan, text, o verso link.",
     "managerPressText2": "Buksan ang view ng printer upang i-preview ang mga napiling card bilang recto at verso na mga pahina. Piliin ang layout ng PDF sa toolbar, suriin ang anumang mga babala, pagkatapos ay i-download ang PDF at i-print ito.",
     "apiCredits": "Mga suportadong API",

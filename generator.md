@@ -172,9 +172,12 @@ Optional provider APIs are called directly from the browser when configured:
 - Image search:
   [![Pexels API](https://img.shields.io/badge/Pexels-API-05A081?style=for-the-badge&logo=pexels&logoColor=white)](https://www.pexels.com/api/)
   [![Flaticon API](https://img.shields.io/badge/Flaticon-API-0C9ED9?style=for-the-badge)](https://www.flaticon.com/api)
+  [![Pixabay API](https://img.shields.io/badge/Pixabay-API-2EC66D?style=for-the-badge&logo=pixabay&logoColor=white)](https://pixabay.com/api/docs/)
+  [![Unsplash API](https://img.shields.io/badge/Unsplash-API-000000?style=for-the-badge&logo=unsplash&logoColor=white)](https://unsplash.com/documentation)
 - Image generation:
   [![Leonardo.Ai API](https://img.shields.io/badge/Leonardo.Ai-API-111827?style=for-the-badge)](https://docs.leonardo.ai)
   [![Built with Pollinations.ai](https://img.shields.io/badge/Built%20with-Pollinations.ai-111111?style=for-the-badge)](https://pollinations.ai)
+  [![OpenAI API](https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai&logoColor=white)](https://platform.openai.com/docs/guides/image-generation)
 
 ## Import And Export
 

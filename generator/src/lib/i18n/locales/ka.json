@@ -15,6 +15,8 @@
     "exportCompressed": "ექსპორტი შეკუმშული",
     "exportImageLessJson": "გამოსახულების გარეშე JSON ექსპორტი",
     "file": "ფაილი",
+    "generate": "გენერირება",
+    "generating": "გენერირება...",
     "import": "იმპორტი",
     "manage": "მართვა",
     "newCard": "ახალი ბარათი",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "გაფილტრეთ ბმულები",
     "generatedCardPreview": "გენერირებული ბარათის გადახედვა",
     "imageSearchQuery": "სურათის საძიებო მოთხოვნა",
+    "imageGenerationHints": "გამოსახულების გენერირების დამატებითი მინიშნებები",
     "loadingApp": "იტვირთება Toddler Read",
     "manager": "მენეჯერი",
     "managerTags": "მენეჯერის ტეგები",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}}-მა დააბრუნა ცარიელი პასუხი.",
     "missingProviderTranslations": "{{provider}}-მა არ დააბრუნა გამოსაყენებელი თარგმანი.",
     "missingProviderKey": "დაამატეთ {{provider}} API გასაღები პარამეტრებში.",
+    "exportedComplete": "ექსპორტირებულია სრული JSON {{count}} {{unit}}-ით.",
     "exportedCompressed": "ექსპორტირებულია შეკუმშული სარეზერვო ასლი {{count}} {{unit}}-ით.",
     "exportedImageLess": "ექსპორტირებულია გამოსახულების გარეშე JSON {{count}} {{unit}}-ით.",
     "pdfDownloaded": "PDF ჩამოტვირთულია {{count}} გვერდებით.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API გასაღები",
     "baseUrl": "საბაზისო URL",
+    "category": "კატეგორია",
     "chooseTag": "აირჩიეთ ტეგი",
     "code": "კოდი",
     "cornerLanguages": "კუთხის ენები",
@@ -204,9 +209,13 @@
     "help": "დახმარება",
     "image": "გამოსახულება",
     "imageGeneration": "გამოსახულების გენერაცია",
+    "imageGenerationSources": "გამოსახულების გენერირების წყაროები",
     "imageGenerationPromptTemplate": "გამოსახულების გენერირების სწრაფი შაბლონი",
+    "imageSearch": "სურათის ძებნა",
+    "imageSearchSources": "სურათების ძიების წყაროები",
     "imageSource": "გამოსახულების წყარო",
     "imageSources": "გამოსახულების წყაროები",
+    "imageType": "გამოსახულების ტიპი",
     "managerAndPress": "მენეჯერი და სტამბა",
     "model": "მოდელი",
     "orientation": "ორიენტაცია",
@@ -217,6 +226,7 @@
     "rendering": "რენდერირება",
     "settings": "პარამეტრები",
     "size": "ზომა",
+    "sort": "დალაგება",
     "tags": "ტეგები",
     "translation": "თარგმანი",
     "translationPromptTemplate": "თარგმანის სწრაფი შაბლონი",
@@ -224,8 +234,45 @@
     "verso": "ვერსო"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ან Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ან OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai ან OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay ან Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay ან Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "ყველა კატეგორია",
+    "pixabayTypes": {
+      "all": "ყველა",
+      "photo": "ფოტო",
+      "illustration": "ილუსტრაცია",
+      "vector": "ვექტორი"
+    },
+    "pixabayCategories": {
+      "backgrounds": "ფონები",
+      "fashion": "მოდა",
+      "nature": "ბუნება",
+      "science": "მეცნიერება",
+      "education": "განათლება",
+      "feelings": "გრძნობები",
+      "health": "ჯანმრთელობა",
+      "people": "ხალხი",
+      "religion": "რელიგია",
+      "places": "ადგილები",
+      "animals": "ცხოველები",
+      "industry": "მრეწველობა",
+      "computer": "კომპიუტერი",
+      "food": "საჭმელი",
+      "sports": "სპორტი",
+      "transportation": "ტრანსპორტირება",
+      "travel": "მოგზაურობა",
+      "buildings": "შენობები",
+      "business": "ბიზნესი",
+      "music": "მუსიკა"
+    },
+    "unsplashOrderBy": {
+      "relevant": "შესაბამისი",
+      "latest": "უახლესი"
+    }
   },
   "verbs": {
     "has": "აქვს",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "გამარჯობა",
     "flag": "🇬🇪",
+    "imageGenerationHints": "დამატებითი სტილის, განწყობის ან კომპოზიციის მინიშნებები",
     "imageSearch": "ვაშლის",
     "languageCode": "ka",
     "pasteHere": "ჩასვით აქ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "დახურეთ სურათების ძებნა",
+      "generateTitle": "სურათის გენერირება",
       "title": "სურათის ძიება"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ან",
     "cornerLanguagesRestAfter": "და დაარეგულირეთ ნაჩვენები მარკერი.",
     "imageSourcesLabel": "სურათის წყაროები:",
-    "imageSourcesRest": "დაამატეთ Pexels, Flaticon, Leonardo.Ai ან Pollinations.ai API კლავიშები, რათა ჩართოთ აპში გამოსახულების ძიება და გენერირება.",
+    "imageSourcesRest": "დაამატეთ Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ან OpenAI API კლავიშები, რათა ჩართოთ აპში გამოსახულების ძიება და გენერირება.",
     "translationLabel": "თარგმანი:",
     "translationRest": "აირჩიეთ Gemini, OpenAI, DeepSeek, Z.AI, Groq ან მორგებული OpenAI-თავსებადი პროვაიდერი.",
     "modelBaseUrlLabel": "მოდელი და საბაზისო URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ჩამოტვირთავს ბარათის სრულ ბიბლიოთეკას, სურათების ჩათვლით, შეკუმშული სარეზერვო ასლის სახით.",
     "exportImageLessLabel": "გამოსახულების გარეშე JSON ექსპორტი:",
     "exportImageLessRest": "ჩამოტვირთავს წასაკითხად JSON სურათების გარეშე ხელით რედაქტირებისთვის.",
+    "exportCompleteLabel": "სრული JSON ექსპორტი:",
+    "exportCompleteRest": "ჩამოტვირთავს იკითხებადი JSON ბარათის სრული ბიბლიოთეკით, სურათების ჩათვლით.",
     "managerPressText1": "მენეჯერი არის ბარათების ბიბლიოთეკა. აირჩიეთ ბარათები მონიშვნის ველებით და გამოიყენეთ ფილტრები დაკარგული სურათების, ტექსტის ან სხვა ბმულების მოსაძებნად.",
     "managerPressText2": "გახსენით პრინტერის ხედი, რომ გადახედოთ შერჩეულ ბარათებს, როგორც რექტო და ვერს გვერდებს. აირჩიეთ PDF განლაგება ხელსაწყოთა ზოლში, გადახედეთ ნებისმიერ გაფრთხილებას, შემდეგ ჩამოტვირთეთ PDF და დაბეჭდეთ.",
     "apiCredits": "მხარდაჭერილი API-ები",

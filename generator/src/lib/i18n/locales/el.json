@@ -15,6 +15,8 @@
     "exportCompressed": "Εξαγωγή συμπιεσμένο",
     "exportImageLessJson": "Εξαγωγή JSON χωρίς εικόνα",
     "file": "Αρχείο",
+    "generate": "Παράγω",
+    "generating": "Δημιουργία...",
     "import": "Εισαγωγή",
     "manage": "Διαχείριση",
     "newCard": "Νέα κάρτα",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Φιλτράρισμα συνδέσμων",
     "generatedCardPreview": "Δημιουργήθηκε προεπισκόπηση κάρτας",
     "imageSearchQuery": "Ερώτημα αναζήτησης εικόνων",
+    "imageGenerationHints": "Πρόσθετες συμβουλές για τη δημιουργία εικόνων",
     "loadingApp": "Φόρτωση Toddler Read",
     "manager": "Διευθυντής",
     "managerTags": "Ετικέτες διαχειριστή",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "Το {{provider}} επέστρεψε μια κενή απάντηση.",
     "missingProviderTranslations": "Το {{provider}} δεν επέστρεψε καμία χρησιμοποιήσιμη μετάφραση.",
     "missingProviderKey": "Προσθέστε ένα κλειδί {{provider}} API στις Ρυθμίσεις.",
+    "exportedComplete": "Έγινε εξαγωγή πλήρους JSON με {{count}} {{unit}}.",
     "exportedCompressed": "Έγινε εξαγωγή συμπιεσμένου αντιγράφου ασφαλείας με {{count}} {{unit}}.",
     "exportedImageLess": "Έγινε εξαγωγή του JSON χωρίς εικόνα με το {{count}} {{unit}}.",
     "pdfDownloaded": "Έγινε λήψη του PDF με σελίδες {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Κλειδί API",
     "baseUrl": "Βασική διεύθυνση URL",
+    "category": "Κατηγορία",
     "chooseTag": "Επιλέξτε ετικέτα",
     "code": "Κωδικός",
     "cornerLanguages": "Γωνιακές γλώσσες",
@@ -204,9 +209,13 @@
     "help": "Βοήθεια",
     "image": "Εικόνα",
     "imageGeneration": "Δημιουργία εικόνας",
+    "imageGenerationSources": "Πηγές δημιουργίας εικόνας",
     "imageGenerationPromptTemplate": "Πρότυπο προτροπής δημιουργίας εικόνας",
+    "imageSearch": "Αναζήτηση εικόνων",
+    "imageSearchSources": "Πηγές αναζήτησης εικόνων",
     "imageSource": "Πηγή εικόνας",
     "imageSources": "Πηγές εικόνων",
+    "imageType": "Τύπος εικόνας",
     "managerAndPress": "Διευθυντής και τυπογραφείο",
     "model": "μοντέλο",
     "orientation": "Προσανατολισμός",
@@ -217,6 +226,7 @@
     "rendering": "Απόδοση",
     "settings": "Ρυθμίσεις",
     "size": "Μέγεθος",
+    "sort": "Είδος",
     "tags": "Ετικέτες",
     "translation": "Μετάφραση",
     "translationPromptTemplate": "Πρότυπο προτροπής μετάφρασης",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ή Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ή OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai ή OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay ή Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay ή Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Όλες οι κατηγορίες",
+    "pixabayTypes": {
+      "all": "Ολοι",
+      "photo": "Φωτογραφία",
+      "illustration": "Εικόνα",
+      "vector": "Διάνυσμα"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Φόντο",
+      "fashion": "Μόδα",
+      "nature": "Φύση",
+      "science": "Επιστήμη",
+      "education": "Εκπαίδευση",
+      "feelings": "Συναισθήματα",
+      "health": "Υγεία",
+      "people": "Ανθρωποι",
+      "religion": "Θρησκεία",
+      "places": "Μέρη",
+      "animals": "Ζώα",
+      "industry": "Βιομηχανία",
+      "computer": "Ηλεκτρονικός υπολογιστής",
+      "food": "Τροφή",
+      "sports": "Αθλητισμός",
+      "transportation": "Μεταφορά",
+      "travel": "Ταξίδι",
+      "buildings": "Κτίρια",
+      "business": "Επιχείρηση",
+      "music": "Μουσική"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Σχετικός",
+      "latest": "Αργότερο"
+    }
   },
   "verbs": {
     "has": "έχει",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Γεια σας",
     "flag": "🇬🇷",
+    "imageGenerationHints": "επιπλέον υποδείξεις στυλ, διάθεσης ή σύνθεσης",
     "imageSearch": "μήλο",
     "languageCode": "el",
     "pasteHere": "Επικολλήστε εδώ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Κλείσιμο αναζήτησης εικόνων",
+      "generateTitle": "Δημιουργία εικόνας",
       "title": "Αναζήτηση εικόνας"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ή",
     "cornerLanguagesRestAfter": "και προσαρμόστε τον εμφανιζόμενο δείκτη.",
     "imageSourcesLabel": "Πηγές εικόνων:",
-    "imageSourcesRest": "προσθέστε κλειδιά API Pexels, Flaticon, Leonardo.Ai ή Pollinations.ai για να ενεργοποιήσετε την αναζήτηση και τη δημιουργία εικόνων εντός εφαρμογής.",
+    "imageSourcesRest": "προσθέστε τα κλειδιά Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ή OpenAI API για να ενεργοποιήσετε την αναζήτηση και δημιουργία εικόνων εντός εφαρμογής.",
     "translationLabel": "Μετάφραση:",
     "translationRest": "επιλέξτε Gemini, OpenAI, DeepSeek, Z.AI, Groq ή έναν προσαρμοσμένο πάροχο συμβατό με OpenAI.",
     "modelBaseUrlLabel": "Μοντέλο και διεύθυνση URL βάσης:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "κατεβάζει την πλήρη βιβλιοθήκη καρτών, συμπεριλαμβανομένων των εικόνων, ως συμπιεσμένο αντίγραφο ασφαλείας.",
     "exportImageLessLabel": "Εξαγωγή JSON χωρίς εικόνα:",
     "exportImageLessRest": "κατεβάζει το αναγνώσιμο JSON χωρίς εικόνες για επεξεργασία με το χέρι.",
+    "exportCompleteLabel": "Εξαγωγή πλήρους JSON:",
+    "exportCompleteRest": "κατεβάζει αναγνώσιμο JSON με την πλήρη βιβλιοθήκη καρτών, συμπεριλαμβανομένων εικόνων.",
     "managerPressText1": "Ο διαχειριστής είναι η βιβλιοθήκη καρτών. Επιλέξτε κάρτες με τα πλαίσια ελέγχου και χρησιμοποιήστε φίλτρα για να βρείτε εικόνες, κείμενο ή συνδέσμους που λείπουν.",
     "managerPressText2": "Ανοίξτε την προβολή του εκτυπωτή για να κάνετε προεπισκόπηση των επιλεγμένων καρτών ως recto και verso σελίδες. Επιλέξτε τη διάταξη PDF στη γραμμή εργαλείων, ελέγξτε τυχόν προειδοποιήσεις και, στη συνέχεια, πραγματοποιήστε λήψη του PDF και εκτυπώστε το.",
     "apiCredits": "Υποστηριζόμενα API",

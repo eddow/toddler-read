@@ -15,6 +15,8 @@
     "exportCompressed": "Eksporter komprimert",
     "exportImageLessJson": "Eksporter bildeløs JSON",
     "file": "Fil",
+    "generate": "Generere",
+    "generating": "Genererer...",
     "import": "Importer",
     "manage": "Administrer",
     "newCard": "Nytt kort",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrer verso-lenker",
     "generatedCardPreview": "Generert forhåndsvisning av kort",
     "imageSearchQuery": "Bildesøk",
+    "imageGenerationHints": "Ytterligere bildegenereringstips",
     "loadingApp": "Laster inn Toddler Read",
     "manager": "Manager",
     "managerTags": "Manager-tagger",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} returnerte et tomt svar.",
     "missingProviderTranslations": "{{provider}} returnerte ingen brukbare oversettelser.",
     "missingProviderKey": "Legg til en {{provider}} API-nøkkel i Innstillinger.",
+    "exportedComplete": "Eksporterte komplett JSON med {{count}} {{unit}}.",
     "exportedCompressed": "Eksportert komprimert sikkerhetskopi med {{count}} {{unit}}.",
     "exportedImageLess": "Eksportert bildeløs JSON med {{count}} {{unit}}.",
     "pdfDownloaded": "PDF lastet ned med {{count}}-sider.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API nøkkel",
     "baseUrl": "Base URL",
+    "category": "Kategori",
     "chooseTag": "Velg tag",
     "code": "Kode",
     "cornerLanguages": "Hjørnespråk",
@@ -204,9 +209,13 @@
     "help": "Hjelp",
     "image": "Bilde",
     "imageGeneration": "Bildegenerering",
+    "imageGenerationSources": "Kilder for bildegenerering",
     "imageGenerationPromptTemplate": "Mal for bildegenerering",
+    "imageSearch": "Bildesøk",
+    "imageSearchSources": "Kilder for bildesøk",
     "imageSource": "Bildekilde",
     "imageSources": "Bildekilder",
+    "imageType": "Bildetype",
     "managerAndPress": "Bestyrer og trykkeri",
     "model": "modell",
     "orientation": "Orientering",
@@ -217,6 +226,7 @@
     "rendering": "Gjengivelse",
     "settings": "Innstillinger",
     "size": "Størrelse",
+    "sort": "Sortere",
     "tags": "Tagger",
     "translation": "Oversettelse",
     "translationPromptTemplate": "Oversettelsespromptmal",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eller OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai eller OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay eller Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay eller Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Alle kategorier",
+    "pixabayTypes": {
+      "all": "Alle",
+      "photo": "Foto",
+      "illustration": "Illustrasjon",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Bakgrunner",
+      "fashion": "Mote",
+      "nature": "Natur",
+      "science": "Vitenskap",
+      "education": "Utdannelse",
+      "feelings": "Følelser",
+      "health": "Helse",
+      "people": "Mennesker",
+      "religion": "Religion",
+      "places": "Steder",
+      "animals": "Dyr",
+      "industry": "Industri",
+      "computer": "Computer",
+      "food": "Mat",
+      "sports": "Sport",
+      "transportation": "Transport",
+      "travel": "Reise",
+      "buildings": "Bygninger",
+      "business": "Business",
+      "music": "Musikk"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevant",
+      "latest": "Siste"
+    }
   },
   "verbs": {
     "has": "har",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hei",
     "flag": "🇳🇴",
+    "imageGenerationHints": "ekstra stil-, humør- eller komposisjonstips",
     "imageSearch": "eple",
     "languageCode": "no",
     "pasteHere": "Lim inn her",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Lukk bildesøk",
+      "generateTitle": "Generer bilde",
       "title": "Søk bilde"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "eller",
     "cornerLanguagesRestAfter": "og juster den viste markøren.",
     "imageSourcesLabel": "Bildekilder:",
-    "imageSourcesRest": "legg til Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai API-nøkler for å aktivere bildesøk og generering i appen.",
+    "imageSourcesRest": "legg til Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eller OpenAI API-nøkler for å aktivere bildesøk og generering i appen.",
     "translationLabel": "Oversettelse:",
     "translationRest": "velg Gemini, OpenAI, DeepSeek, Z.AI, Groq eller en tilpasset OpenAI-kompatibel leverandør.",
     "modelBaseUrlLabel": "Modell og basis-URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "laster ned hele kortbiblioteket, inkludert bilder, som en komprimert sikkerhetskopi.",
     "exportImageLessLabel": "Eksporter bildeløs JSON:",
     "exportImageLessRest": "laster ned lesbare JSON uten bilder for håndredigering.",
+    "exportCompleteLabel": "Eksporter komplett JSON:",
+    "exportCompleteRest": "laster ned lesbar JSON med hele kortbiblioteket, inkludert bilder.",
     "managerPressText1": "Leder er kortbiblioteket. Velg kort med avmerkingsboksene og bruk filtre for å finne manglende bilder, tekst eller verso-koblinger.",
     "managerPressText2": "Åpne skrivervisningen for å forhåndsvise valgte kort som recto- og verso-sider. Velg PDF-oppsettet på verktøylinjen, se gjennom eventuelle advarsler, last ned PDF og skriv den ut.",
     "apiCredits": "Støttede APIer",

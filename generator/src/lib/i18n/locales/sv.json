@@ -15,6 +15,8 @@
     "exportCompressed": "Exportera komprimerad",
     "exportImageLessJson": "Exportera bildlös JSON",
     "file": "Arkiv",
+    "generate": "Generera",
+    "generating": "Alstrande...",
     "import": "Importera",
     "manage": "Hantera",
     "newCard": "Nytt kort",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrera verso-länkar",
     "generatedCardPreview": "Genererad förhandsvisning av kort",
     "imageSearchQuery": "Bildsökningsfråga",
+    "imageGenerationHints": "Ytterligare tips om bildgenerering",
     "loadingApp": "Laddar Toddler Read",
     "manager": "Chef",
     "managerTags": "Manager-taggar",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} returnerade ett tomt svar.",
     "missingProviderTranslations": "{{provider}} returnerade inga användbara översättningar.",
     "missingProviderKey": "Lägg till en {{provider}} API-nyckel i Inställningar.",
+    "exportedComplete": "Exporterade komplett JSON med {{count}} {{unit}}.",
     "exportedCompressed": "Exporterad komprimerad säkerhetskopia med {{count}} {{unit}}.",
     "exportedImageLess": "Exporterad bildlös JSON med {{count}} {{unit}}.",
     "pdfDownloaded": "PDF laddas ner med {{count}}-sidor.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API-nyckel",
     "baseUrl": "Bas-URL",
+    "category": "Kategori",
     "chooseTag": "Välj tagg",
     "code": "Kod",
     "cornerLanguages": "Hörnspråk",
@@ -204,9 +209,13 @@
     "help": "Hjälp",
     "image": "Bild",
     "imageGeneration": "Bildgenerering",
+    "imageGenerationSources": "Källor för bildgenerering",
     "imageGenerationPromptTemplate": "Bildgenereringspromptmall",
+    "imageSearch": "Bildsökning",
+    "imageSearchSources": "Källor för bildsökning",
     "imageSource": "Bildkälla",
     "imageSources": "Bildkällor",
+    "imageType": "Bildtyp",
     "managerAndPress": "Chef och tryckpress",
     "model": "modell",
     "orientation": "Orientering",
@@ -217,6 +226,7 @@
     "rendering": "Rendering",
     "settings": "Inställningar",
     "size": "Storlek",
+    "sort": "Sortera",
     "tags": "Taggar",
     "translation": "Översättning",
     "translationPromptTemplate": "Översättningsmall",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eller OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai eller OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay eller Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay eller Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Alla kategorier",
+    "pixabayTypes": {
+      "all": "Alla",
+      "photo": "Bild",
+      "illustration": "Illustration",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Bakgrunder",
+      "fashion": "Mode",
+      "nature": "Natur",
+      "science": "Vetenskap",
+      "education": "Utbildning",
+      "feelings": "Känslor",
+      "health": "Hälsa",
+      "people": "Personer",
+      "religion": "Religion",
+      "places": "Platser",
+      "animals": "Djur",
+      "industry": "Industri",
+      "computer": "Dator",
+      "food": "Mat",
+      "sports": "Sport",
+      "transportation": "Transport",
+      "travel": "Resa",
+      "buildings": "Bebyggelse",
+      "business": "Företag",
+      "music": "Musik"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevant",
+      "latest": "Senast"
+    }
   },
   "verbs": {
     "has": "har",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hej!",
     "flag": "🇸🇪",
+    "imageGenerationHints": "extra tips om stil, stämning eller komposition",
     "imageSearch": "äpple",
     "languageCode": "sv",
     "pasteHere": "Klistra in här",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Stäng bildsökning",
+      "generateTitle": "Skapa bild",
       "title": "Sök bild"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "eller",
     "cornerLanguagesRestAfter": "och justera den visade markören.",
     "imageSourcesLabel": "Bildkällor:",
-    "imageSourcesRest": "lägg till Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai API-nycklar för att möjliggöra bildsökning och generering i appen.",
+    "imageSourcesRest": "lägg till Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eller OpenAI API-nycklar för att möjliggöra bildsökning och generering i appen.",
     "translationLabel": "Översättning:",
     "translationRest": "välj Gemini, OpenAI, DeepSeek, Z.AI, Groq eller en anpassad OpenAI-kompatibel leverantör.",
     "modelBaseUrlLabel": "Modell och basadress:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "laddar ner hela kortbiblioteket, inklusive bilder, som en komprimerad säkerhetskopia.",
     "exportImageLessLabel": "Exportera bildlös JSON:",
     "exportImageLessRest": "laddar ner läsbar JSON utan bilder för handredigering.",
+    "exportCompleteLabel": "Exportera komplett JSON:",
+    "exportCompleteRest": "laddar ner läsbar JSON med hela kortbiblioteket, inklusive bilder.",
     "managerPressText1": "Chefen är kortbiblioteket. Välj kort med kryssrutorna och använd filter för att hitta saknade bilder, text eller verso-länkar.",
     "managerPressText2": "Öppna skrivarvyn för att förhandsgranska valda kort som recto- och verso-sidor. Välj PDF-layouten i verktygsfältet, granska eventuella varningar, ladda sedan ner PDF och skriv ut den.",
     "apiCredits": "API:er som stöds",

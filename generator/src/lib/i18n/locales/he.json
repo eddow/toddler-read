@@ -15,6 +15,8 @@
     "exportCompressed": "ייצוא דחוס",
     "exportImageLessJson": "ייצא JSON ללא תמונה",
     "file": "קובץ",
+    "generate": "לִיצוֹר",
+    "generating": "יוצר...",
     "import": "ייבוא",
     "manage": "נהל",
     "newCard": "כרטיס חדש",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "סינון קישורים הפוך",
     "generatedCardPreview": "תצוגה מקדימה של כרטיס שנוצר",
     "imageSearchQuery": "שאילתת חיפוש תמונות",
+    "imageGenerationHints": "רמזים נוספים ליצירת תמונות",
     "loadingApp": "טוען Toddler Read",
     "manager": "מנהל",
     "managerTags": "תגי מנהל",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} החזיר תגובה ריקה.",
     "missingProviderTranslations": "{{provider}} לא החזיר תרגומים שמיש.",
     "missingProviderKey": "הוסף מפתח {{provider}} API בהגדרות.",
+    "exportedComplete": "ייצא JSON שלם עם {{count}} {{unit}}.",
     "exportedCompressed": "גיבוי דחוס ייצא עם {{count}} {{unit}}.",
     "exportedImageLess": "מיוצא JSON ללא תמונה עם {{count}} {{unit}}.",
     "pdfDownloaded": "הורד PDF עם דפי {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "מפתח API",
     "baseUrl": "כתובת האתר הבסיסית",
+    "category": "קָטֵגוֹרִיָה",
     "chooseTag": "בחר תג",
     "code": "קוד",
     "cornerLanguages": "שפות פינתיות",
@@ -204,9 +209,13 @@
     "help": "עזרה",
     "image": "תמונה",
     "imageGeneration": "יצירת תמונות",
+    "imageGenerationSources": "מקורות ליצירת תמונות",
     "imageGenerationPromptTemplate": "תבנית הנחיה ליצירת תמונה",
+    "imageSearch": "חיפוש תמונות",
+    "imageSearchSources": "מקורות חיפוש תמונות",
     "imageSource": "מקור תמונה",
     "imageSources": "מקורות תמונה",
+    "imageType": "סוג תמונה",
     "managerAndPress": "מנהל ובית דפוס",
     "model": "דגם",
     "orientation": "התמצאות",
@@ -217,6 +226,7 @@
     "rendering": "עיבוד",
     "settings": "הגדרות",
     "size": "גודל",
+    "sort": "סוּג",
     "tags": "תגים",
     "translation": "תרגום",
     "translationPromptTemplate": "תבנית בקשת תרגום",
@@ -224,8 +234,45 @@
     "verso": "הפוך"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai או Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai או OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai או OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay או Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay או Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "כל הקטגוריות",
+    "pixabayTypes": {
+      "all": "כֹּל",
+      "photo": "תַצלוּם",
+      "illustration": "אִיוּר",
+      "vector": "וֶקטוֹר"
+    },
+    "pixabayCategories": {
+      "backgrounds": "רקעים",
+      "fashion": "לְעַצֵב",
+      "nature": "טֶבַע",
+      "science": "מַדָע",
+      "education": "הַשׂכָּלָה",
+      "feelings": "תחושות",
+      "health": "בְּרִיאוּת",
+      "people": "אֲנָשִׁים",
+      "religion": "דָת",
+      "places": "מקומות",
+      "animals": "בַּעֲלֵי חַיִים",
+      "industry": "תַעֲשִׂיָה",
+      "computer": "מַחשֵׁב",
+      "food": "מָזוֹן",
+      "sports": "ספורט",
+      "transportation": "הוֹבָלָה",
+      "travel": "לִנְסוֹעַ",
+      "buildings": "מבנים",
+      "business": "עֵסֶק",
+      "music": "מוּסִיקָה"
+    },
+    "unsplashOrderBy": {
+      "relevant": "רלוונטי",
+      "latest": "אחרון"
+    }
   },
   "verbs": {
     "has": "יש",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "שלום",
     "flag": "🇮🇱",
+    "imageGenerationHints": "רמזים נוספים לסגנון, מצב רוח או קומפוזיציה",
     "imageSearch": "תפוח",
     "languageCode": "he",
     "pasteHere": "הדבק כאן",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "סגור את חיפוש התמונות",
+      "generateTitle": "צור תמונה",
       "title": "חפש תמונה"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "או",
     "cornerLanguagesRestAfter": "והתאם את הסמן המוצג.",
     "imageSourcesLabel": "מקורות תמונה:",
-    "imageSourcesRest": "הוסף מפתחות API של Pexels, Flaticon, Leonardo.Ai או Pollinations.ai כדי לאפשר חיפוש ויצירת תמונות בתוך האפליקציה.",
+    "imageSourcesRest": "הוסף מפתחות Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai או OpenAI API כדי לאפשר חיפוש ויצירת תמונות בתוך האפליקציה.",
     "translationLabel": "תרגום:",
     "translationRest": "בחר Gemini, OpenAI, DeepSeek, Z.AI, Groq, או ספק מותאם אישית תואם OpenAI.",
     "modelBaseUrlLabel": "דגם וכתובת אתר בסיס:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "מוריד את ספריית הכרטיסים המלאה, כולל תמונות, כגיבוי דחוס.",
     "exportImageLessLabel": "ייצוא JSON ללא תמונה:",
     "exportImageLessRest": "מוריד JSON קריא ללא תמונות לעריכה ידנית.",
+    "exportCompleteLabel": "ייצא JSON מלא:",
+    "exportCompleteRest": "מוריד JSON קריא עם ספריית הכרטיסים המלאה, כולל תמונות.",
     "managerPressText1": "המנהל הוא ספריית הכרטיסים. בחר כרטיסים עם תיבות הסימון והשתמש במסננים כדי למצוא תמונות חסרות, טקסט או קישורים הפוך.",
     "managerPressText2": "פתח את תצוגת המדפסת כדי להציג תצוגה מקדימה של כרטיסים שנבחרו כדפים רקטו והפוך. בחר בפריסת PDF בסרגל הכלים, עיין באזהרות כלשהן, ולאחר מכן הורד את ה-PDF והדפיס אותו.",
     "apiCredits": "ממשקי API נתמכים",

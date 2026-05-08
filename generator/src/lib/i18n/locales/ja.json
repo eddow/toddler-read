@@ -15,6 +15,8 @@
     "exportCompressed": "圧縮してエクスポートする",
     "exportImageLessJson": "画像なしの JSON をエクスポート",
     "file": "ファイル",
+    "generate": "生成する",
+    "generating": "生成中...",
     "import": "インポート",
     "manage": "管理する",
     "newCard": "新しいカード",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "逆のリンクをフィルタリングする",
     "generatedCardPreview": "生成されたカードのプレビュー",
     "imageSearchQuery": "画像検索クエリ",
+    "imageGenerationHints": "追加の画像生成のヒント",
     "loadingApp": "Toddler Readをロード中",
     "manager": "マネージャー",
     "managerTags": "マネージャータグ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} は空の応答を返しました。",
     "missingProviderTranslations": "{{provider}} は使用可能な翻訳を返しませんでした。",
     "missingProviderKey": "[設定] に {{provider}} API キーを追加します。",
+    "exportedComplete": "{{count}} {{unit}} を含む完全な JSON をエクスポートしました。",
     "exportedCompressed": "{{count}} {{unit}} で圧縮バックアップをエクスポートしました。",
     "exportedImageLess": "画像なしの JSON を {{count}} {{unit}} でエクスポートしました。",
     "pdfDownloaded": "PDF は {{count}} ページとともにダウンロードされました。",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "APIキー",
     "baseUrl": "ベースURL",
+    "category": "カテゴリ",
     "chooseTag": "タグを選択してください",
     "code": "コード",
     "cornerLanguages": "コーナー言語",
@@ -204,9 +209,13 @@
     "help": "ヘルプ",
     "image": "画像",
     "imageGeneration": "画像生成",
+    "imageGenerationSources": "画像生成ソース",
     "imageGenerationPromptTemplate": "画像生成プロンプトのテンプレート",
+    "imageSearch": "画像検索",
+    "imageSearchSources": "画像検索ソース",
     "imageSource": "画像ソース",
     "imageSources": "画像ソース",
+    "imageType": "画像の種類",
     "managerAndPress": "マネージャーと印刷機",
     "model": "モデル",
     "orientation": "向き",
@@ -217,6 +226,7 @@
     "rendering": "レンダリング",
     "settings": "設定",
     "size": "サイズ",
+    "sort": "選別",
     "tags": "タグ",
     "translation": "翻訳",
     "translationPromptTemplate": "翻訳プロンプトのテンプレート",
@@ -224,8 +234,45 @@
     "verso": "ヴァーソ"
   },
   "providers": {
-    "imageProviderKeys": "Pexels、Flaticon、Leonardo.Ai、または Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels、Flaticon、Pixabay、Unsplash、Leonardo.Ai、Pollinations.ai、または OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai、Pollinations.ai、または OpenAI",
+    "imageSearchProviderKeys": "Pexels、Flaticon、Pixabay、または Unsplash",
+    "pexelsOrFlaticon": "Pexels、Flaticon、Pixabay、または Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "すべてのカテゴリー",
+    "pixabayTypes": {
+      "all": "全て",
+      "photo": "写真",
+      "illustration": "図",
+      "vector": "ベクター"
+    },
+    "pixabayCategories": {
+      "backgrounds": "背景",
+      "fashion": "ファッション",
+      "nature": "自然",
+      "science": "科学",
+      "education": "教育",
+      "feelings": "感情",
+      "health": "健康",
+      "people": "人々",
+      "religion": "宗教",
+      "places": "場所",
+      "animals": "動物",
+      "industry": "業界",
+      "computer": "コンピューター",
+      "food": "食べ物",
+      "sports": "スポーツ",
+      "transportation": "交通機関",
+      "travel": "旅行",
+      "buildings": "建物",
+      "business": "仕事",
+      "music": "音楽"
+    },
+    "unsplashOrderBy": {
+      "relevant": "関連する",
+      "latest": "最新"
+    }
   },
   "verbs": {
     "has": "持っています",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "こんにちは",
     "flag": "🇯🇵",
+    "imageGenerationHints": "追加のスタイル、雰囲気、構成のヒント",
     "imageSearch": "リンゴ",
     "languageCode": "ja",
     "pasteHere": "ここに貼り付けます",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "画像検索を閉じる",
+      "generateTitle": "画像の生成",
       "title": "画像検索"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "または",
     "cornerLanguagesRestAfter": "表示されたマーカーを調整します。",
     "imageSourcesLabel": "画像ソース:",
-    "imageSourcesRest": "Pexels、Flaticon、Leonardo.Ai、または Pollinations.ai API キーを追加して、アプリ内画像の検索と生成を有効にします。",
+    "imageSourcesRest": "Pexels、Flaticon、Pixabay、Unsplash、Leonardo.Ai、Pollinations.ai、または OpenAI API キーを追加して、アプリ内画像の検索と生成を有効にします。",
     "translationLabel": "翻訳:",
     "translationRest": "Gemini、OpenAI、DeepSeek、Z.AI、Groq、またはカスタムの OpenAI 互換プロバイダーを選択します。",
     "modelBaseUrlLabel": "モデルとベース URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "画像を含む完全なカード ライブラリを圧縮バックアップとしてダウンロードします。",
     "exportImageLessLabel": "画像なしの JSON をエクスポート:",
     "exportImageLessRest": "手動編集用に画像なしで読み取り可能な JSON をダウンロードします。",
+    "exportCompleteLabel": "完全な JSON をエクスポートします。",
+    "exportCompleteRest": "画像を含む完全なカード ライブラリを含む読み取り可能な JSON をダウンロードします。",
     "managerPressText1": "管理者はカードライブラリです。チェックボックスを使用してカードを選択し、フィルターを使用して、欠落している画像、テキスト、または反転リンクを見つけます。",
     "managerPressText2": "プリンター ビューを開いて、選択したカードを表ページと裏ページとしてプレビューします。ツールバーで PDF レイアウトを選択し、警告を確認してから、PDF をダウンロードして印刷します。",
     "apiCredits": "サポートされている API",

@@ -15,6 +15,8 @@
     "exportCompressed": "Eksportēt saspiestu",
     "exportImageLessJson": "Eksportējiet bez attēla JSON",
     "file": "Fails",
+    "generate": "Ģenerēt",
+    "generating": "Notiek ģenerēšana...",
     "import": "Importēt",
     "manage": "Pārvaldīt",
     "newCard": "Jauna karte",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrēt otrās saites",
     "generatedCardPreview": "Ģenerēts kartes priekšskatījums",
     "imageSearchQuery": "Attēlu meklēšanas vaicājums",
+    "imageGenerationHints": "Papildu attēlu ģenerēšanas padomi",
     "loadingApp": "Notiek Toddler Read ielāde",
     "manager": "Pārvaldnieks",
     "managerTags": "Pārvaldnieka atzīmes",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} atgrieza tukšu atbildi.",
     "missingProviderTranslations": "{{provider}} neatgrieza nevienu izmantojamu tulkojumu.",
     "missingProviderKey": "Iestatījumos pievienojiet atslēgu {{provider}} API.",
+    "exportedComplete": "Eksportēts pilns JSON ar {{count}} {{unit}}.",
     "exportedCompressed": "Eksportēts saspiests dublējums ar {{count}} {{unit}}.",
     "exportedImageLess": "Eksportēts JSON bez attēliem ar {{count}} {{unit}}.",
     "pdfDownloaded": "PDF lejupielādēts ar {{count}} lapām.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API atslēga",
     "baseUrl": "Pamata URL",
+    "category": "Kategorija",
     "chooseTag": "Izvēlieties tagu",
     "code": "Kods",
     "cornerLanguages": "Stūra valodas",
@@ -204,9 +209,13 @@
     "help": "Palīdzība",
     "image": "Attēls",
     "imageGeneration": "Attēlu ģenerēšana",
+    "imageGenerationSources": "Attēlu ģenerēšanas avoti",
     "imageGenerationPromptTemplate": "Attēlu ģenerēšanas uzvednes veidne",
+    "imageSearch": "Attēlu meklēšana",
+    "imageSearchSources": "Attēlu meklēšanas avoti",
     "imageSource": "Attēla avots",
     "imageSources": "Attēlu avoti",
+    "imageType": "Attēla veids",
     "managerAndPress": "Vadītājs un tipogrāfija",
     "model": "modelis",
     "orientation": "Orientēšanās",
@@ -217,6 +226,7 @@
     "rendering": "Renderēšana",
     "settings": "Iestatījumi",
     "size": "Izmērs",
+    "sort": "Kārtot",
     "tags": "Tagi",
     "translation": "Tulkošana",
     "translationPromptTemplate": "Tulkošanas uzvednes veidne",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai vai Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai vai OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai vai OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay vai Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay vai Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Visas kategorijas",
+    "pixabayTypes": {
+      "all": "Visi",
+      "photo": "Fotoattēls",
+      "illustration": "Ilustrācija",
+      "vector": "Vektors"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Foni",
+      "fashion": "Mode",
+      "nature": "Daba",
+      "science": "Zinātne",
+      "education": "Izglītība",
+      "feelings": "Sajūtas",
+      "health": "Veselība",
+      "people": "Cilvēki",
+      "religion": "Reliģija",
+      "places": "Vietas",
+      "animals": "Dzīvnieki",
+      "industry": "Rūpniecība",
+      "computer": "Dators",
+      "food": "Pārtika",
+      "sports": "Sports",
+      "transportation": "Transports",
+      "travel": "Ceļot",
+      "buildings": "Ēkas",
+      "business": "Bizness",
+      "music": "Mūzika"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Attiecīgi",
+      "latest": "Jaunākais"
+    }
   },
   "verbs": {
     "has": "ir",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Sveiki",
     "flag": "🇱🇻",
+    "imageGenerationHints": "papildu stila, noskaņojuma vai kompozīcijas padomi",
     "imageSearch": "ābolu",
     "languageCode": "lv",
     "pasteHere": "Ielīmējiet šeit",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Aizvērt attēlu meklēšanu",
+      "generateTitle": "Ģenerēt attēlu",
       "title": "Meklēt attēlu"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "vai",
     "cornerLanguagesRestAfter": "un noregulējiet parādīto marķieri.",
     "imageSourcesLabel": "Attēlu avoti:",
-    "imageSourcesRest": "pievienojiet Pexels, Flaticon, Leonardo.Ai vai Pollinations.ai API atslēgas, lai iespējotu attēlu meklēšanu un ģenerēšanu lietotnē.",
+    "imageSourcesRest": "pievienojiet Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai vai OpenAI API atslēgas, lai iespējotu attēlu meklēšanu un ģenerēšanu lietotnē.",
     "translationLabel": "Tulkojums:",
     "translationRest": "izvēlieties Gemini, OpenAI, DeepSeek, Z.AI, Groq vai pielāgotu ar OpenAI saderīgu pakalpojumu sniedzēju.",
     "modelBaseUrlLabel": "Modeļa un bāzes URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "lejupielādē visu karšu bibliotēku, tostarp attēlus, kā saspiestu dublējumu.",
     "exportImageLessLabel": "Eksportēt bez attēla JSON:",
     "exportImageLessRest": "lejupielādē lasāmu JSON bez attēliem manuālai rediģēšanai.",
+    "exportCompleteLabel": "Eksportēt pabeigtu JSON:",
+    "exportCompleteRest": "lejupielādē lasāmu JSON ar pilnu karšu bibliotēku, ieskaitot attēlus.",
     "managerPressText1": "Pārzinis ir karšu bibliotēka. Atlasiet kartītes ar izvēles rūtiņām un izmantojiet filtrus, lai atrastu trūkstošos attēlus, tekstu vai otrās saites.",
     "managerPressText2": "Atveriet printera skatu, lai priekšskatītu atlasītās kartītes kā taisnās un otrās lapas. Rīkjoslā izvēlieties PDF izkārtojumu, pārskatiet visus brīdinājumus, pēc tam lejupielādējiet PDF un izdrukājiet to.",
     "apiCredits": "Atbalstītās API",

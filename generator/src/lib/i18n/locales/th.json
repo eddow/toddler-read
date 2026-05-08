@@ -15,6 +15,8 @@
     "exportCompressed": "ส่งออกบีบอัด",
     "exportImageLessJson": "ส่งออก JSON ที่ไม่มีรูปภาพ",
     "file": "ไฟล์",
+    "generate": "สร้าง",
+    "generating": "กำลังสร้าง...",
     "import": "นำเข้า",
     "manage": "จัดการ",
     "newCard": "การ์ดใหม่",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "กรองลิงก์ในทางกลับกัน",
     "generatedCardPreview": "ดูตัวอย่างการ์ดที่สร้างขึ้น",
     "imageSearchQuery": "คำค้นหารูปภาพ",
+    "imageGenerationHints": "คำแนะนำการสร้างภาพเพิ่มเติม",
     "loadingApp": "กำลังโหลด Toddler Read",
     "manager": "ผู้จัดการ",
     "managerTags": "แท็กผู้จัดการ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ส่งคืนการตอบกลับที่ว่างเปล่า",
     "missingProviderTranslations": "{{provider}} ส่งคืนคำแปลที่ใช้งานได้ไม่",
     "missingProviderKey": "เพิ่มคีย์ {{provider}} API ในการตั้งค่า",
+    "exportedComplete": "ส่งออก JSON ที่สมบูรณ์ด้วย {{count}} {{unit}}",
     "exportedCompressed": "ส่งออกข้อมูลสำรองที่บีบอัดด้วย {{count}} {{unit}}",
     "exportedImageLess": "ส่งออก JSON แบบไม่มีรูปภาพด้วย {{count}} {{unit}}",
     "pdfDownloaded": "ดาวน์โหลด PDF พร้อมกับหน้า {{count}}",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "คีย์ API",
     "baseUrl": "URL ฐาน",
+    "category": "หมวดหมู่",
     "chooseTag": "เลือกแท็ก",
     "code": "รหัส",
     "cornerLanguages": "ภาษามุม",
@@ -204,9 +209,13 @@
     "help": "ช่วยด้วย",
     "image": "รูปภาพ",
     "imageGeneration": "การสร้างภาพ",
+    "imageGenerationSources": "แหล่งที่มาของการสร้างภาพ",
     "imageGenerationPromptTemplate": "เทมเพลตพรอมต์การสร้างรูปภาพ",
+    "imageSearch": "ค้นหารูปภาพ",
+    "imageSearchSources": "แหล่งค้นหารูปภาพ",
     "imageSource": "แหล่งที่มาของภาพ",
     "imageSources": "แหล่งที่มาของภาพ",
+    "imageType": "ประเภทรูปภาพ",
     "managerAndPress": "ผู้จัดการและสำนักพิมพ์",
     "model": "โมเดล",
     "orientation": "ปฐมนิเทศ",
@@ -217,6 +226,7 @@
     "rendering": "กำลังเรนเดอร์",
     "settings": "การตั้งค่า",
     "size": "ขนาด",
+    "sort": "เรียงลำดับ",
     "tags": "แท็ก",
     "translation": "การแปล",
     "translationPromptTemplate": "เทมเพลตพร้อมท์การแปล",
@@ -224,8 +234,45 @@
     "verso": "เวอร์โซ"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai หรือ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai หรือ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai หรือ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay หรือ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay หรือ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "ทุกหมวดหมู่",
+    "pixabayTypes": {
+      "all": "ทั้งหมด",
+      "photo": "รูปถ่าย",
+      "illustration": "ภาพประกอบ",
+      "vector": "เวกเตอร์"
+    },
+    "pixabayCategories": {
+      "backgrounds": "พื้นหลัง",
+      "fashion": "แฟชั่น",
+      "nature": "ธรรมชาติ",
+      "science": "ศาสตร์",
+      "education": "การศึกษา",
+      "feelings": "ความรู้สึก",
+      "health": "สุขภาพ",
+      "people": "ประชากร",
+      "religion": "ศาสนา",
+      "places": "สถานที่",
+      "animals": "สัตว์",
+      "industry": "อุตสาหกรรม",
+      "computer": "คอมพิวเตอร์",
+      "food": "อาหาร",
+      "sports": "กีฬา",
+      "transportation": "การขนส่ง",
+      "travel": "การท่องเที่ยว",
+      "buildings": "อาคาร",
+      "business": "ธุรกิจ",
+      "music": "ดนตรี"
+    },
+    "unsplashOrderBy": {
+      "relevant": "ที่เกี่ยวข้อง",
+      "latest": "ล่าสุด"
+    }
   },
   "verbs": {
     "has": "มี",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "สวัสดี",
     "flag": "🇹🇭",
+    "imageGenerationHints": "คำแนะนำเกี่ยวกับสไตล์ อารมณ์ หรือองค์ประกอบเพิ่มเติม",
     "imageSearch": "แอปเปิ้ล",
     "languageCode": "th",
     "pasteHere": "วางที่นี่",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ปิดการค้นหารูปภาพ",
+      "generateTitle": "สร้างภาพ",
       "title": "ค้นหารูปภาพ"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "หรือ",
     "cornerLanguagesRestAfter": "และปรับเครื่องหมายที่แสดง",
     "imageSourcesLabel": "แหล่งที่มาของภาพ:",
-    "imageSourcesRest": "เพิ่มคีย์ API Pexels, Flaticon, Leonardo.Ai หรือ Pollinations.ai เพื่อเปิดใช้งานการค้นหาและสร้างรูปภาพในแอป",
+    "imageSourcesRest": "เพิ่มคีย์ Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai หรือ OpenAI API เพื่อเปิดใช้งานการค้นหาและสร้างรูปภาพในแอป",
     "translationLabel": "การแปล:",
     "translationRest": "เลือก Gemini, OpenAI, DeepSeek, Z.AI, Groq หรือผู้ให้บริการที่เข้ากันได้กับ OpenAI แบบกำหนดเอง",
     "modelBaseUrlLabel": "โมเดลและ URL พื้นฐาน:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ดาวน์โหลดไลบรารีการ์ดแบบเต็ม รวมถึงรูปภาพ เป็นข้อมูลสำรองแบบบีบอัด",
     "exportImageLessLabel": "ส่งออก JSON ที่ไม่มีรูปภาพ:",
     "exportImageLessRest": "ดาวน์โหลด JSON ที่อ่านได้โดยไม่ต้องใช้รูปภาพสำหรับการแก้ไขด้วยมือ",
+    "exportCompleteLabel": "ส่งออก JSON ที่สมบูรณ์:",
+    "exportCompleteRest": "ดาวน์โหลด JSON ที่อ่านได้พร้อมไลบรารีการ์ดแบบเต็ม รวมถึงรูปภาพ",
     "managerPressText1": "ผู้จัดการคือห้องสมุดการ์ด เลือกการ์ดที่มีช่องทำเครื่องหมายและใช้ตัวกรองเพื่อค้นหารูปภาพ ข้อความ หรือลิงก์ในทางกลับกัน",
     "managerPressText2": "เปิดมุมมองเครื่องพิมพ์เพื่อดูตัวอย่างการ์ดที่เลือกเป็นหน้า Recto และ Verso เลือกเค้าโครง PDF ในแถบเครื่องมือ ตรวจสอบคำเตือน จากนั้นดาวน์โหลด PDF และพิมพ์ออกมา",
     "apiCredits": "API ที่รองรับ",

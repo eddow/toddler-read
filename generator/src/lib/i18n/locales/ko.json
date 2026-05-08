@@ -15,6 +15,8 @@
     "exportCompressed": "압축하여 내보내기",
     "exportImageLessJson": "이미지 없는 JSON 내보내기",
     "file": "파일",
+    "generate": "생성하다",
+    "generating": "생성 중...",
     "import": "가져오기",
     "manage": "관리하다",
     "newCard": "새 카드",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Verso 링크 필터링",
     "generatedCardPreview": "생성된 카드 미리보기",
     "imageSearchQuery": "이미지 검색어",
+    "imageGenerationHints": "추가 이미지 생성 힌트",
     "loadingApp": "Toddler Read 로드 중",
     "manager": "관리자",
     "managerTags": "관리자 태그",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}}가 빈 응답을 반환했습니다.",
     "missingProviderTranslations": "{{provider}}는 사용 가능한 번역을 반환하지 않았습니다.",
     "missingProviderKey": "설정에서 {{provider}} API 키를 추가하세요.",
+    "exportedComplete": "{{count}} {{unit}}을(를) 사용하여 전체 JSON을 내보냈습니다.",
     "exportedCompressed": "{{count}} {{unit}}를 사용하여 압축된 백업을 내보냈습니다.",
     "exportedImageLess": "{{count}} {{unit}}를 사용하여 이미지 없는 JSON를 내보냈습니다.",
     "pdfDownloaded": "{{count}} 페이지와 함께 다운로드된 PDF.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API 키",
     "baseUrl": "기본 URL",
+    "category": "범주",
     "chooseTag": "태그 선택",
     "code": "코드",
     "cornerLanguages": "코너 언어",
@@ -204,9 +209,13 @@
     "help": "도움말",
     "image": "이미지",
     "imageGeneration": "이미지 생성",
+    "imageGenerationSources": "이미지 생성 소스",
     "imageGenerationPromptTemplate": "이미지 생성 프롬프트 템플릿",
+    "imageSearch": "이미지 검색",
+    "imageSearchSources": "이미지 검색 소스",
     "imageSource": "이미지 출처",
     "imageSources": "이미지 출처",
+    "imageType": "이미지 유형",
     "managerAndPress": "관리자 및 인쇄기",
     "model": "모델",
     "orientation": "오리엔테이션",
@@ -217,6 +226,7 @@
     "rendering": "렌더링",
     "settings": "설정",
     "size": "크기",
+    "sort": "종류",
     "tags": "태그",
     "translation": "번역",
     "translationPromptTemplate": "번역 프롬프트 템플릿",
@@ -224,8 +234,45 @@
     "verso": "베르소"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai 또는 Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai 또는 OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai 또는 OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay 또는 Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay 또는 Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "모든 카테고리",
+    "pixabayTypes": {
+      "all": "모두",
+      "photo": "사진",
+      "illustration": "삽화",
+      "vector": "벡터"
+    },
+    "pixabayCategories": {
+      "backgrounds": "배경",
+      "fashion": "패션",
+      "nature": "자연",
+      "science": "과학",
+      "education": "교육",
+      "feelings": "감정",
+      "health": "건강",
+      "people": "사람들",
+      "religion": "종교",
+      "places": "장소",
+      "animals": "동물",
+      "industry": "산업",
+      "computer": "컴퓨터",
+      "food": "음식",
+      "sports": "스포츠",
+      "transportation": "운송",
+      "travel": "여행하다",
+      "buildings": "건물",
+      "business": "사업",
+      "music": "음악"
+    },
+    "unsplashOrderBy": {
+      "relevant": "관련 있는",
+      "latest": "최신"
+    }
   },
   "verbs": {
     "has": "있다",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "안녕하세요",
     "flag": "🇰🇷",
+    "imageGenerationHints": "추가 스타일, 분위기 또는 구성 힌트",
     "imageSearch": "사과",
     "languageCode": "ko",
     "pasteHere": "여기에 붙여넣으세요",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "이미지 검색 닫기",
+      "generateTitle": "이미지 생성",
       "title": "이미지 검색"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "또는",
     "cornerLanguagesRestAfter": "표시된 마커를 조정합니다.",
     "imageSourcesLabel": "이미지 출처:",
-    "imageSourcesRest": "인앱 이미지 검색 및 생성을 활성화하려면 Pexels, Flaticon, Leonardo.Ai 또는 Pollinations.ai API 키를 추가하세요.",
+    "imageSourcesRest": "인앱 이미지 검색 및 생성을 활성화하려면 Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai 또는 OpenAI API 키를 추가하세요.",
     "translationLabel": "번역:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq 또는 맞춤 OpenAI 호환 공급자를 선택하세요.",
     "modelBaseUrlLabel": "모델 및 기본 URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "이미지를 포함한 전체 카드 라이브러리를 압축된 백업으로 다운로드합니다.",
     "exportImageLessLabel": "이미지 없는 JSON 내보내기:",
     "exportImageLessRest": "수동 편집을 위해 이미지 없이 읽을 수 있는 JSON를 다운로드합니다.",
+    "exportCompleteLabel": "완전한 JSON 내보내기:",
+    "exportCompleteRest": "이미지를 포함한 전체 카드 라이브러리와 함께 읽을 수 있는 JSON을 다운로드합니다.",
     "managerPressText1": "관리자는 카드 라이브러리입니다. 체크박스가 있는 카드를 선택하고 필터를 사용하여 누락된 이미지, 텍스트 또는 링크를 찾으세요.",
     "managerPressText2": "선택한 카드를 가로 및 세로 페이지로 미리 보려면 프린터 보기를 엽니다. 도구 모음에서 PDF 레이아웃을 선택하고 경고를 검토한 다음 PDF를 다운로드하여 인쇄하세요.",
     "apiCredits": "지원되는 API",

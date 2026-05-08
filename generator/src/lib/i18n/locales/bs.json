@@ -15,6 +15,8 @@
     "exportCompressed": "Izvoz komprimiran",
     "exportImageLessJson": "Izvezi JSON bez slike",
     "file": "File",
+    "generate": "Generiraj",
+    "generating": "Generiranje...",
     "import": "Uvoz",
     "manage": "Upravljaj",
     "newCard": "Nova kartica",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrirajte verso linkove",
     "generatedCardPreview": "Generirani pregled kartice",
     "imageSearchQuery": "Upit za pretragu slika",
+    "imageGenerationHints": "Dodatni savjeti za generiranje slika",
     "loadingApp": "Učitavanje Toddler Read",
     "manager": "Menadžer",
     "managerTags": "Oznake menadžera",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} je vratio prazan odgovor.",
     "missingProviderTranslations": "{{provider}} nije vratio nijedan upotrebljiv prijevod.",
     "missingProviderKey": "Dodajte ključ {{provider}} API u Postavkama.",
+    "exportedComplete": "Izvezen kompletan JSON sa {{count}} {{unit}}.",
     "exportedCompressed": "Izvezena komprimirana sigurnosna kopija sa {{count}} {{unit}}.",
     "exportedImageLess": "Izvezen JSON bez slike sa {{count}} {{unit}}.",
     "pdfDownloaded": "PDF preuzet sa {{count}} stranicama.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Ključ API",
     "baseUrl": "Osnovni URL",
+    "category": "Kategorija",
     "chooseTag": "Odaberite oznaku",
     "code": "Kod",
     "cornerLanguages": "Corner languages",
@@ -204,9 +209,13 @@
     "help": "Upomoć",
     "image": "Slika",
     "imageGeneration": "Generisanje slike",
+    "imageGenerationSources": "Izvori generiranja slike",
     "imageGenerationPromptTemplate": "Predložak upita za generiranje slike",
+    "imageSearch": "Pretraživanje slika",
+    "imageSearchSources": "Izvori pretraživanja slika",
     "imageSource": "Izvor slike",
     "imageSources": "Izvori slika",
+    "imageType": "Vrsta slike",
     "managerAndPress": "Menadžer i štamparija",
     "model": "model",
     "orientation": "Orijentacija",
@@ -217,6 +226,7 @@
     "rendering": "Rendering",
     "settings": "Postavke",
     "size": "Veličina",
+    "sort": "Sortiraj",
     "tags": "Oznake",
     "translation": "Prevod",
     "translationPromptTemplate": "Predložak upita za prijevod",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ili Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ili OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai ili OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay ili Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay ili Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Sve kategorije",
+    "pixabayTypes": {
+      "all": "Sve",
+      "photo": "Fotografija",
+      "illustration": "Ilustracija",
+      "vector": "Vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Pozadine",
+      "fashion": "Moda",
+      "nature": "Priroda",
+      "science": "Nauka",
+      "education": "Obrazovanje",
+      "feelings": "Osećanja",
+      "health": "Zdravlje",
+      "people": "Ljudi",
+      "religion": "Religija",
+      "places": "Mjesta",
+      "animals": "Životinje",
+      "industry": "Industrija",
+      "computer": "Računar",
+      "food": "Hrana",
+      "sports": "Sports",
+      "transportation": "Prijevoz",
+      "travel": "Putovanja",
+      "buildings": "Zgrade",
+      "business": "Posao",
+      "music": "Muzika"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevantno",
+      "latest": "Najnovije"
+    }
   },
   "verbs": {
     "has": "ima",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Zdravo",
     "flag": "🇧🇦",
+    "imageGenerationHints": "dodatni nagoveštaji stila, raspoloženja ili kompozicije",
     "imageSearch": "jabuka",
     "languageCode": "bs",
     "pasteHere": "Zalijepite ovdje",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Zatvorite pretragu slika",
+      "generateTitle": "Generiraj sliku",
       "title": "Pretraži sliku"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ili",
     "cornerLanguagesRestAfter": "i podesite prikazani marker.",
     "imageSourcesLabel": "Izvori slika:",
-    "imageSourcesRest": "dodajte Pexels, Flaticon, Leonardo.Ai ili Pollinations.ai API ključeve kako biste omogućili pretraživanje i generiranje slika u aplikaciji.",
+    "imageSourcesRest": "dodajte Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ili OpenAI API ključeve kako biste omogućili pretraživanje i generiranje slika u aplikaciji.",
     "translationLabel": "prijevod:",
     "translationRest": "odaberite Gemini, OpenAI, DeepSeek, Z.AI, Groq ili prilagođenog OpenAI kompatibilnog provajdera.",
     "modelBaseUrlLabel": "Model i osnovni URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "preuzima punu biblioteku kartica, uključujući slike, kao komprimiranu sigurnosnu kopiju.",
     "exportImageLessLabel": "Izvezi JSON bez slike:",
     "exportImageLessRest": "preuzima čitljiv JSON bez slika za ručno uređivanje.",
+    "exportCompleteLabel": "Izvezi kompletan JSON:",
+    "exportCompleteRest": "preuzima čitljiv JSON sa kompletnom bibliotekom kartica, uključujući slike.",
     "managerPressText1": "Upravitelj je kartoteka. Odaberite kartice sa potvrdnim okvirima i koristite filtere da pronađete slike, tekst ili linkove koji nedostaju.",
     "managerPressText2": "Otvorite prikaz štampača da pregledate odabrane kartice kao recto i verso stranice. Odaberite PDF izgled na traci sa alatkama, pregledajte sva upozorenja, zatim preuzmite PDF i odštampajte ga.",
     "apiCredits": "Podržani API-ji",

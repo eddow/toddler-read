@@ -15,6 +15,8 @@
     "exportCompressed": "Esportazzjoni kompressata",
     "exportImageLessJson": "Esportazzjoni JSON mingħajr immaġini",
     "file": "Fajl",
+    "generate": "Iġġenera",
+    "generating": "Ġenerazzjoni...",
     "import": "Importazzjoni",
     "manage": "Immaniġġja",
     "newCard": "Karta ġdida",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Iffiltra links verso",
     "generatedCardPreview": "Preview tal-kard iġġenerat",
     "imageSearchQuery": "Mistoqsija ta' tfittxija ta' immaġni",
+    "imageGenerationHints": "Ħjiel addizzjonali għall-ġenerazzjoni tal-immaġni",
     "loadingApp": "Tagħbija Toddler Read",
     "manager": "Maniġer",
     "managerTags": "Tikketti tal-maniġer",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} irritorna tweġiba vojta.",
     "missingProviderTranslations": "{{provider}} ma rritorna l-ebda traduzzjoni li tista' tintuża.",
     "missingProviderKey": "Żid ċavetta {{provider}} API fis-Settings.",
+    "exportedComplete": "JSON komplut esportat bi {{count}} {{unit}}.",
     "exportedCompressed": "Backup ikkompressat esportat b'{{count}} {{unit}}.",
     "exportedImageLess": "Esportat JSON mingħajr immaġini b'{{count}} {{unit}}.",
     "pdfDownloaded": "PDF jitniżżel bil-paġni {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Ċavetta API",
     "baseUrl": "URL bażi",
+    "category": "Kategorija",
     "chooseTag": "Agħżel it-tikketta",
     "code": "Kodiċi",
     "cornerLanguages": "Lingwi tal-kantunieri",
@@ -204,9 +209,13 @@
     "help": "Għajnuna",
     "image": "Immaġni",
     "imageGeneration": "Ġenerazzjoni tal-immaġni",
+    "imageGenerationSources": "Sorsi ta 'ġenerazzjoni ta' immaġni",
     "imageGenerationPromptTemplate": "Mudell fil-pront tal-ġenerazzjoni tal-immaġni",
+    "imageSearch": "Tfittxija tal-immaġni",
+    "imageSearchSources": "Sorsi ta' tfittxija ta' immaġni",
     "imageSource": "Sors tal-immaġni",
     "imageSources": "Sorsi tal-immaġni",
+    "imageType": "Tip ta 'immaġni",
     "managerAndPress": "Maniġer U Stampar",
     "model": "mudell",
     "orientation": "Orjentazzjoni",
@@ -217,6 +226,7 @@
     "rendering": "Rendering",
     "settings": "Settings",
     "size": "Daqs",
+    "sort": "Issortja",
     "tags": "Tikketti",
     "translation": "Traduzzjoni",
     "translationPromptTemplate": "Mudell fil-pront tat-traduzzjoni",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, jew Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, jew OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, jew OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, jew Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, jew Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Il-kategoriji kollha",
+    "pixabayTypes": {
+      "all": "Kollha",
+      "photo": "Ritratt",
+      "illustration": "Illustrazzjoni",
+      "vector": "Vettore"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Sfondi",
+      "fashion": "Moda",
+      "nature": "Natura",
+      "science": "Xjenza",
+      "education": "Edukazzjoni",
+      "feelings": "Sentimenti",
+      "health": "Saħħa",
+      "people": "Nies",
+      "religion": "Reliġjon",
+      "places": "Postijiet",
+      "animals": "Annimali",
+      "industry": "Industrija",
+      "computer": "Kompjuter",
+      "food": "Ikel",
+      "sports": "Sports",
+      "transportation": "Trasport",
+      "travel": "Ivvjaġġar",
+      "buildings": "Bini",
+      "business": "Negozju",
+      "music": "Mużika"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Rilevanti",
+      "latest": "Latest"
+    }
   },
   "verbs": {
     "has": "għandha",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hello",
     "flag": "🇲🇹",
+    "imageGenerationHints": "stil, burdata, jew ħjiel ta 'kompożizzjoni żejda",
     "imageSearch": "tuffieħ",
     "languageCode": "mt",
     "pasteHere": "Paste hawn",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Agħlaq it-tfittxija tal-immaġni",
+      "generateTitle": "Iġġenera immaġni",
       "title": "Fittex immaġni"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "jew",
     "cornerLanguagesRestAfter": "u aġġusta l-markatur murija.",
     "imageSourcesLabel": "Sorsi tal-immaġni:",
-    "imageSourcesRest": "żid Pexels, Flaticon, Leonardo.Ai, jew Pollinations.ai API keys biex tippermetti t-tfittxija u l-ġenerazzjoni tal-immaġni fl-app.",
+    "imageSourcesRest": "żid Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, jew ċwievet tal-API OpenAI biex tippermetti t-tfittxija u l-ġenerazzjoni tal-immaġni fl-app.",
     "translationLabel": "Traduzzjoni:",
     "translationRest": "agħżel Gemini, OpenAI, DeepSeek, Z.AI, Groq, jew fornitur tad-dwana kompatibbli ma 'OpenAI.",
     "modelBaseUrlLabel": "Mudell u URL bażi:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "tniżżel il-librerija sħiħa tal-karti, inklużi l-immaġini, bħala backup kompressat.",
     "exportImageLessLabel": "Esportazzjoni JSON mingħajr immaġini:",
     "exportImageLessRest": "downloads JSON li jistgħu jinqraw mingħajr immaġini għall-editjar bl-idejn.",
+    "exportCompleteLabel": "Esportazzjoni JSON komplut:",
+    "exportCompleteRest": "jniżżel JSON li jinqara bil-librerija sħiħa tal-kards, inklużi l-immaġini.",
     "managerPressText1": "Il-maniġer huwa l-librerija tal-karti. Agħżel kards bil-kaxxi ta' kontroll u uża filtri biex issib immaġini, test jew links neqsin.",
     "managerPressText2": "Iftaħ il-veduta tal-istampatur biex tipprevedi l-karti magħżula bħala paġni recto u verso. Agħżel it-tqassim PDF fil-toolbar, irrevedi kwalunkwe twissijiet, imbagħad niżżel iż-PDF u ipprintjah.",
     "apiCredits": "APIs appoġġjati",

@@ -15,6 +15,8 @@
     "exportCompressed": "Gecomprimeerd exporteren",
     "exportImageLessJson": "Exporteer afbeeldingsloze JSON",
     "file": "Bestand",
+    "generate": "Genereer",
+    "generating": "Genereren...",
     "import": "Importeren",
     "manage": "Beheer",
     "newCard": "Nieuwe kaart",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filter verso-links",
     "generatedCardPreview": "Gegenereerd kaartvoorbeeld",
     "imageSearchQuery": "Zoekopdracht voor afbeeldingen",
+    "imageGenerationHints": "Aanvullende tips voor het genereren van afbeeldingen",
     "loadingApp": "Toddler Read aan het laden",
     "manager": "Beheerder",
     "managerTags": "Managertags",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} heeft een leeg antwoord geretourneerd.",
     "missingProviderTranslations": "{{provider}} heeft geen bruikbare vertalingen geretourneerd.",
     "missingProviderKey": "Voeg een {{provider}} API-sleutel toe in Instellingen.",
+    "exportedComplete": "Volledige JSON geëxporteerd met {{count}} {{unit}}.",
     "exportedCompressed": "Gecomprimeerde back-up geëxporteerd met {{count}} {{unit}}.",
     "exportedImageLess": "Geëxporteerde afbeeldingsloze JSON met {{count}} {{unit}}.",
     "pdfDownloaded": "PDF gedownload met {{count}}-pagina's.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API-sleutel",
     "baseUrl": "Basis-URL",
+    "category": "Categorie",
     "chooseTag": "Kies label",
     "code": "Codeer",
     "cornerLanguages": "Hoektalen",
@@ -204,9 +209,13 @@
     "help": "Hulp",
     "image": "Afbeelding",
     "imageGeneration": "Beeldgeneratie",
+    "imageGenerationSources": "Bronnen voor het genereren van afbeeldingen",
     "imageGenerationPromptTemplate": "Sjabloon voor prompt voor het genereren van afbeeldingen",
+    "imageSearch": "Zoeken naar afbeeldingen",
+    "imageSearchSources": "Bronnen voor het zoeken naar afbeeldingen",
     "imageSource": "Afbeeldingsbron",
     "imageSources": "Beeldbronnen",
+    "imageType": "Afbeeldingstype",
     "managerAndPress": "Manager En Drukpers",
     "model": "model",
     "orientation": "Oriëntatie",
@@ -217,6 +226,7 @@
     "rendering": "Weergave",
     "settings": "Instellingen",
     "size": "Grootte",
+    "sort": "Soort",
     "tags": "Labels",
     "translation": "Vertaling",
     "translationPromptTemplate": "Sjabloon voor vertaalprompts",
@@ -224,8 +234,45 @@
     "verso": "Anders"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai of Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai of OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai of OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay of Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay of Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Alle categorieën",
+    "pixabayTypes": {
+      "all": "Alle",
+      "photo": "Foto",
+      "illustration": "Illustratie",
+      "vector": "Vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Achtergronden",
+      "fashion": "Mode",
+      "nature": "Natuur",
+      "science": "Wetenschap",
+      "education": "Onderwijs",
+      "feelings": "Gevoelens",
+      "health": "Gezondheid",
+      "people": "Mensen",
+      "religion": "Religie",
+      "places": "Plaatsen",
+      "animals": "Dieren",
+      "industry": "Industrie",
+      "computer": "Computer",
+      "food": "Voedsel",
+      "sports": "Sport",
+      "transportation": "Vervoer",
+      "travel": "Reis",
+      "buildings": "Gebouwen",
+      "business": "Bedrijf",
+      "music": "Muziek"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevant",
+      "latest": "Nieuwste"
+    }
   },
   "verbs": {
     "has": "heeft",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hallo",
     "flag": "🇳🇱",
+    "imageGenerationHints": "extra stijl-, stemmings- of compositiehints",
     "imageSearch": "appel",
     "languageCode": "nl",
     "pasteHere": "Plak hier",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Sluit het zoeken naar afbeeldingen",
+      "generateTitle": "Afbeelding genereren",
       "title": "Zoek afbeelding"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "of",
     "cornerLanguagesRestAfter": "en pas de weergegeven markering aan.",
     "imageSourcesLabel": "Beeldbronnen:",
-    "imageSourcesRest": "voeg API-sleutels van Pexels, Flaticon, Leonardo.Ai of Pollinations.ai toe om het zoeken en genereren van afbeeldingen in de app mogelijk te maken.",
+    "imageSourcesRest": "voeg Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai of OpenAI API-sleutels toe om het zoeken en genereren van afbeeldingen in de app mogelijk te maken.",
     "translationLabel": "Vertaling:",
     "translationRest": "kies Gemini, OpenAI, DeepSeek, Z.AI, Groq of een aangepaste OpenAI-compatibele provider.",
     "modelBaseUrlLabel": "Model- en basis-URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "downloadt de volledige kaartbibliotheek, inclusief afbeeldingen, als een gecomprimeerde back-up.",
     "exportImageLessLabel": "Afbeeldingsloze JSON exporteren:",
     "exportImageLessRest": "downloadt leesbare JSON zonder afbeeldingen voor handmatige bewerking.",
+    "exportCompleteLabel": "Volledige JSON exporteren:",
+    "exportCompleteRest": "downloadt leesbare JSON met de volledige kaartbibliotheek, inclusief afbeeldingen.",
     "managerPressText1": "De beheerder is de kaartbibliotheek. Selecteer kaarten met de selectievakjes en gebruik filters om ontbrekende afbeeldingen, tekst of versolinks te vinden.",
     "managerPressText2": "Open de printerweergave om geselecteerde kaarten als recto- en verso-pagina's te bekijken. Kies de PDF-indeling in de werkbalk, bekijk eventuele waarschuwingen, download vervolgens de PDF en druk deze af.",
     "apiCredits": "Ondersteunde API's",

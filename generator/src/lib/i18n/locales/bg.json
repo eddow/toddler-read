@@ -15,6 +15,8 @@
     "exportCompressed": "Експортирайте компресиран",
     "exportImageLessJson": "Експортирайте JSON без изображения",
     "file": "Файл",
+    "generate": "Генерирай",
+    "generating": "Генериране...",
     "import": "Импортиране",
     "manage": "Управлявайте",
     "newCard": "Нова карта",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Филтриране на обратни връзки",
     "generatedCardPreview": "Визуализация на генерирана карта",
     "imageSearchQuery": "Заявка за търсене на изображение",
+    "imageGenerationHints": "Допълнителни съвети за генериране на изображения",
     "loadingApp": "Зарежда се Toddler Read",
     "manager": "Управител",
     "managerTags": "Мениджър тагове",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} върна празен отговор.",
     "missingProviderTranslations": "{{provider}} не върна използваеми преводи.",
     "missingProviderKey": "Добавете ключ {{provider}} API в Настройки.",
+    "exportedComplete": "Експортиран пълен JSON с {{count}} {{unit}}.",
     "exportedCompressed": "Експортирано компресирано архивиране с {{count}} {{unit}}.",
     "exportedImageLess": "Експортиран JSON без изображение с {{count}} {{unit}}.",
     "pdfDownloaded": "PDF изтеглен със {{count}} страници.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Ключ API",
     "baseUrl": "Основен URL адрес",
+    "category": "Категория",
     "chooseTag": "Изберете етикет",
     "code": "Код",
     "cornerLanguages": "Ъглови езици",
@@ -204,9 +209,13 @@
     "help": "Помощ",
     "image": "Изображение",
     "imageGeneration": "Генериране на изображения",
+    "imageGenerationSources": "Източници за генериране на изображения",
     "imageGenerationPromptTemplate": "Шаблон за подкана за генериране на изображение",
+    "imageSearch": "Търсене на изображения",
+    "imageSearchSources": "Източници за търсене на изображения",
     "imageSource": "Източник на изображението",
     "imageSources": "Източници на изображения",
+    "imageType": "Тип изображение",
     "managerAndPress": "Управител и печатница",
     "model": "модел",
     "orientation": "Ориентация",
@@ -217,6 +226,7 @@
     "rendering": "Изобразяване",
     "settings": "Настройки",
     "size": "Размер",
+    "sort": "Сортиране",
     "tags": "Етикети",
     "translation": "Превод",
     "translationPromptTemplate": "Шаблон за подкана за превод",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai или Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai или OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai или OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay или Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay или Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Всички категории",
+    "pixabayTypes": {
+      "all": "Всички",
+      "photo": "снимка",
+      "illustration": "Илюстрация",
+      "vector": "вектор"
+    },
+    "pixabayCategories": {
+      "backgrounds": "фонове",
+      "fashion": "Мода",
+      "nature": "Природата",
+      "science": "Наука",
+      "education": "образование",
+      "feelings": "чувства",
+      "health": "здраве",
+      "people": "хора",
+      "religion": "Религия",
+      "places": "Места",
+      "animals": "животни",
+      "industry": "Индустрия",
+      "computer": "компютър",
+      "food": "храна",
+      "sports": "Спорт",
+      "transportation": "Транспорт",
+      "travel": "Пътуване",
+      "buildings": "Сгради",
+      "business": "Бизнес",
+      "music": "Музика"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Уместно",
+      "latest": "Последни"
+    }
   },
   "verbs": {
     "has": "има",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "здравей",
     "flag": "🇧🇬",
+    "imageGenerationHints": "допълнителен съвет за стил, настроение или композиция",
     "imageSearch": "ябълка",
     "languageCode": "bg",
     "pasteHere": "Поставете тук",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Затворете търсенето на изображения",
+      "generateTitle": "Генериране на изображение",
       "title": "Търсене на изображение"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "или",
     "cornerLanguagesRestAfter": "и коригирайте показания маркер.",
     "imageSourcesLabel": "Източници на изображения:",
-    "imageSourcesRest": "добавете API ключове на Pexels, Flaticon, Leonardo.Ai или Pollinations.ai, за да активирате търсене и генериране на изображения в приложението.",
+    "imageSourcesRest": "добавете API ключове за Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai или OpenAI, за да активирате търсене и генериране на изображения в приложението.",
     "translationLabel": "Превод:",
     "translationRest": "изберете Gemini, OpenAI, DeepSeek, Z.AI, Groq или персонализиран доставчик, съвместим с OpenAI.",
     "modelBaseUrlLabel": "Модел и основен URL адрес:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "изтегля пълната библиотека с карти, включително изображения, като компресиран архив.",
     "exportImageLessLabel": "Експортиране без изображение JSON:",
     "exportImageLessRest": "изтегля четлив JSON без изображения за редактиране на ръка.",
+    "exportCompleteLabel": "Експортирайте целия JSON:",
+    "exportCompleteRest": "изтегля четлив JSON с пълната библиотека с карти, включително изображения.",
     "managerPressText1": "Управител е картотеката. Изберете карти с квадратчетата за отметка и използвайте филтри, за да намерите липсващи изображения, текст или обратни връзки.",
     "managerPressText2": "Отворете изгледа на принтера, за да прегледате избраните карти като ректото и обратната страница. Изберете оформлението PDF в лентата с инструменти, прегледайте всички предупреждения, след това изтеглете PDF и го отпечатайте.",
     "apiCredits": "Поддържани API",

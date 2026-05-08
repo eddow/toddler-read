@@ -15,6 +15,8 @@
     "exportCompressed": "Sıxılmış ixrac",
     "exportImageLessJson": "Şəkilsiz JSON ixrac edin",
     "file": "Fayl",
+    "generate": "Yaratmaq",
+    "generating": "Yaradılır...",
     "import": "İdxal",
     "manage": "İdarə et",
     "newCard": "Yeni kart",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Bağlantıları süzün",
     "generatedCardPreview": "Yaradılmış kartın önizləməsi",
     "imageSearchQuery": "Şəkil axtarış sorğusu",
+    "imageGenerationHints": "Əlavə şəkil yaratmaq göstərişləri",
     "loadingApp": "Toddler Read yüklənir",
     "manager": "menecer",
     "managerTags": "Menecer etiketləri",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} boş cavab verdi.",
     "missingProviderTranslations": "{{provider}} istifadə edilə bilən tərcümələri qaytarmadı.",
     "missingProviderKey": "Parametrlərdə {{provider}} API açarını əlavə edin.",
+    "exportedComplete": "{{count}} {{unit}} ilə tam JSON eksport edildi.",
     "exportedCompressed": "{{count}} {{unit}} ilə sıxılmış ehtiyat nüsxə ixrac edildi.",
     "exportedImageLess": "{{count}} {{unit}} ilə ixrac edilmiş şəkilsiz JSON.",
     "pdfDownloaded": "PDF {{count}} səhifələri ilə endirildi.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API açarı",
     "baseUrl": "Əsas URL",
+    "category": "Kateqoriya",
     "chooseTag": "Etiket seçin",
     "code": "Kod",
     "cornerLanguages": "Künc dilləri",
@@ -204,9 +209,13 @@
     "help": "Kömək edin",
     "image": "Şəkil",
     "imageGeneration": "Şəkil generasiyası",
+    "imageGenerationSources": "Şəkil yaratma mənbələri",
     "imageGenerationPromptTemplate": "Şəkil yaratma əmri şablonu",
+    "imageSearch": "Şəkil axtarışı",
+    "imageSearchSources": "Şəkil axtarış mənbələri",
     "imageSource": "Şəkil mənbəyi",
     "imageSources": "Şəkil mənbələri",
+    "imageType": "Şəkil növü",
     "managerAndPress": "Menecer və mətbəə",
     "model": "model",
     "orientation": "Orientasiya",
@@ -217,6 +226,7 @@
     "rendering": "Rendering",
     "settings": "Parametrlər",
     "size": "Ölçü",
+    "sort": "Sırala",
     "tags": "Teqlər",
     "translation": "Tərcümə",
     "translationPromptTemplate": "Tərcümə xəbərdarlığı şablonu",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai və ya Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai və ya OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai və ya OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay və ya Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay və ya Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Bütün kateqoriyalar",
+    "pixabayTypes": {
+      "all": "Hamısı",
+      "photo": "Foto",
+      "illustration": "İllüstrasiya",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Fonlar",
+      "fashion": "Moda",
+      "nature": "Təbiət",
+      "science": "Elm",
+      "education": "Təhsil",
+      "feelings": "Hisslər",
+      "health": "Sağlamlıq",
+      "people": "İnsanlar",
+      "religion": "din",
+      "places": "yerlər",
+      "animals": "Heyvanlar",
+      "industry": "sənaye",
+      "computer": "Kompüter",
+      "food": "Qida",
+      "sports": "İdman",
+      "transportation": "Nəqliyyat",
+      "travel": "Səyahət",
+      "buildings": "Binalar",
+      "business": "Biznes",
+      "music": "Musiqi"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Müvafiq",
+      "latest": "Ən son"
+    }
   },
   "verbs": {
     "has": "var",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "salam",
     "flag": "🇦🇿",
+    "imageGenerationHints": "əlavə üslub, əhval və ya kompozisiya göstərişləri",
     "imageSearch": "alma",
     "languageCode": "az",
     "pasteHere": "Bura yapışdırın",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Şəkil axtarışını bağlayın",
+      "generateTitle": "Şəkil yaradın",
       "title": "Şəkil axtarın"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "və ya",
     "cornerLanguagesRestAfter": "və göstərilən markeri tənzimləyin.",
     "imageSourcesLabel": "Şəkil mənbələri:",
-    "imageSourcesRest": "tətbiqdaxili şəkil axtarışını və yaradılmasını aktivləşdirmək üçün Pexels, Flaticon, Leonardo.Ai və ya Pollinations.ai API açarlarını əlavə edin.",
+    "imageSourcesRest": "tətbiqdaxili şəkil axtarışını və yaradılmasını aktivləşdirmək üçün Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai və ya OpenAI API düymələrini əlavə edin.",
     "translationLabel": "Tərcümə:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq və ya fərdi OpenAI uyğun provayderi seçin.",
     "modelBaseUrlLabel": "Model və əsas URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "tam kart kitabxanasını, o cümlədən şəkilləri sıxılmış ehtiyat nüsxəsi kimi yükləyir.",
     "exportImageLessLabel": "Şəkilsiz JSON ixrac edin:",
     "exportImageLessRest": "əl ilə redaktə etmək üçün şəkillər olmadan oxunaqlı JSON yükləyir.",
+    "exportCompleteLabel": "Tamamlanmış JSON-u ixrac edin:",
+    "exportCompleteRest": "şəkillər daxil olmaqla tam kart kitabxanası ilə oxuna bilən JSON yükləyir.",
     "managerPressText1": "Menecer kart kitabxanasıdır. Onay qutuları olan kartları seçin və çatışmayan şəkilləri, mətnləri və ya əksinə bağlantıları tapmaq üçün filtrlərdən istifadə edin.",
     "managerPressText2": "Seçilmiş kartları düz və əks səhifələr kimi önizləmək üçün printer görünüşünü açın. Alətlər panelində PDF tərtibatını seçin, istənilən xəbərdarlıqları nəzərdən keçirin, sonra PDF-i endirin və çap edin.",
     "apiCredits": "Dəstəklənən API-lər",

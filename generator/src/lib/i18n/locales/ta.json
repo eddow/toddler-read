@@ -15,6 +15,8 @@
     "exportCompressed": "ஏற்றுமதி சுருக்கப்பட்டது",
     "exportImageLessJson": "படமில்லாத JSON ஏற்றுமதி",
     "file": "கோப்பு",
+    "generate": "உருவாக்கு",
+    "generating": "உருவாக்குகிறது...",
     "import": "இறக்குமதி",
     "manage": "நிர்வகிக்கவும்",
     "newCard": "புதிய அட்டை",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "இணைப்புகளை வடிகட்டவும்",
     "generatedCardPreview": "உருவாக்கப்பட்ட அட்டை மாதிரிக்காட்சி",
     "imageSearchQuery": "படத் தேடல் வினவல்",
+    "imageGenerationHints": "கூடுதல் பட உருவாக்க குறிப்புகள்",
     "loadingApp": "Toddler Read ஐ ஏற்றுகிறது",
     "manager": "மேலாளர்",
     "managerTags": "மேலாளர் குறிச்சொற்கள்",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ஒரு வெற்று பதிலை வழங்கியது.",
     "missingProviderTranslations": "{{provider}} பயன்படுத்தக்கூடிய எந்த மொழிபெயர்ப்புகளையும் வழங்கவில்லை.",
     "missingProviderKey": "அமைப்புகளில் {{provider}} API விசையைச் சேர்க்கவும்.",
+    "exportedComplete": "{{count}} {{unit}} உடன் முழுமையான JSON ஏற்றுமதி செய்யப்பட்டது.",
     "exportedCompressed": "{{count}} {{unit}} உடன் சுருக்கப்பட்ட காப்புப்பிரதி ஏற்றுமதி செய்யப்பட்டது.",
     "exportedImageLess": "{{count}} {{unit}} உடன் படமில்லாத JSON ஏற்றுமதி செய்யப்பட்டது.",
     "pdfDownloaded": "{{count}} பக்கங்களுடன் PDF பதிவிறக்கப்பட்டது.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API விசை",
     "baseUrl": "அடிப்படை URL",
+    "category": "வகை",
     "chooseTag": "குறிச்சொல்லைத் தேர்ந்தெடுக்கவும்",
     "code": "குறியீடு",
     "cornerLanguages": "மூலை மொழிகள்",
@@ -204,9 +209,13 @@
     "help": "உதவி",
     "image": "படம்",
     "imageGeneration": "பட உருவாக்கம்",
+    "imageGenerationSources": "பட உருவாக்க ஆதாரங்கள்",
     "imageGenerationPromptTemplate": "படத்தை உருவாக்கும் உடனடி டெம்ப்ளேட்",
+    "imageSearch": "படத் தேடல்",
+    "imageSearchSources": "படத் தேடல் ஆதாரங்கள்",
     "imageSource": "படத்தின் ஆதாரம்",
     "imageSources": "பட ஆதாரங்கள்",
+    "imageType": "பட வகை",
     "managerAndPress": "மேலாளர் மற்றும் அச்சகம்",
     "model": "மாதிரி",
     "orientation": "நோக்குநிலை",
@@ -217,6 +226,7 @@
     "rendering": "வழங்குதல்",
     "settings": "அமைப்புகள்",
     "size": "அளவு",
+    "sort": "வரிசைப்படுத்து",
     "tags": "குறிச்சொற்கள்",
     "translation": "மொழிபெயர்ப்பு",
     "translationPromptTemplate": "மொழிபெயர்ப்பு உடனடி டெம்ப்ளேட்",
@@ -224,8 +234,45 @@
     "verso": "மாறாக"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai அல்லது Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai அல்லது OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, அல்லது OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay அல்லது Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay அல்லது Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "அனைத்து வகைகளும்",
+    "pixabayTypes": {
+      "all": "அனைத்து",
+      "photo": "புகைப்படம்",
+      "illustration": "விளக்கம்",
+      "vector": "திசையன்"
+    },
+    "pixabayCategories": {
+      "backgrounds": "பின்னணிகள்",
+      "fashion": "ஃபேஷன்",
+      "nature": "இயற்கை",
+      "science": "அறிவியல்",
+      "education": "கல்வி",
+      "feelings": "உணர்வுகள்",
+      "health": "ஆரோக்கியம்",
+      "people": "மக்கள்",
+      "religion": "மதம்",
+      "places": "இடங்கள்",
+      "animals": "விலங்குகள்",
+      "industry": "தொழில்",
+      "computer": "கணினி",
+      "food": "உணவு",
+      "sports": "விளையாட்டு",
+      "transportation": "போக்குவரத்து",
+      "travel": "பயணம்",
+      "buildings": "கட்டிடங்கள்",
+      "business": "வணிகம்",
+      "music": "இசை"
+    },
+    "unsplashOrderBy": {
+      "relevant": "தொடர்புடையது",
+      "latest": "சமீபத்திய"
+    }
   },
   "verbs": {
     "has": "உள்ளது",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "வணக்கம்",
     "flag": "🇮🇳",
+    "imageGenerationHints": "கூடுதல் நடை, மனநிலை அல்லது கலவை குறிப்புகள்",
     "imageSearch": "ஆப்பிள்",
     "languageCode": "ta",
     "pasteHere": "இங்கே ஒட்டவும்",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "படத் தேடலை மூடு",
+      "generateTitle": "படத்தை உருவாக்கவும்",
       "title": "படத்தைத் தேடுங்கள்"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "அல்லது",
     "cornerLanguagesRestAfter": "மற்றும் காட்டப்படும் மார்க்கரை சரிசெய்யவும்.",
     "imageSourcesLabel": "பட ஆதாரங்கள்:",
-    "imageSourcesRest": "பயன்பாட்டில் உள்ள படத் தேடல் மற்றும் உருவாக்கத்தை இயக்க Pexels, Flaticon, Leonardo.Ai அல்லது Pollinations.ai API விசைகளைச் சேர்க்கவும்.",
+    "imageSourcesRest": "பயன்பாட்டில் உள்ள படத் தேடல் மற்றும் உருவாக்கத்தை இயக்க Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai அல்லது OpenAI API விசைகளைச் சேர்க்கவும்.",
     "translationLabel": "மொழிபெயர்ப்பு:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq அல்லது தனிப்பயன் OpenAI-இணக்கமான வழங்குநரைத் தேர்வு செய்யவும்.",
     "modelBaseUrlLabel": "மாதிரி மற்றும் அடிப்படை URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "படங்கள் உட்பட முழு அட்டை நூலகத்தையும் சுருக்கப்பட்ட காப்புப்பிரதியாகப் பதிவிறக்குகிறது.",
     "exportImageLessLabel": "படமில்லாத JSON ஏற்றுமதி:",
     "exportImageLessRest": "கையால் எடிட்டிங் செய்ய படங்கள் இல்லாமல் படிக்கக்கூடிய JSON ஐ பதிவிறக்குகிறது.",
+    "exportCompleteLabel": "JSON ஏற்றுமதி முடிந்தது:",
+    "exportCompleteRest": "படங்கள் உட்பட முழு அட்டை நூலகத்துடன் படிக்கக்கூடிய JSON ஐ பதிவிறக்குகிறது.",
     "managerPressText1": "மேலாளர் அட்டை நூலகம். தேர்வுப்பெட்டிகள் உள்ள கார்டுகளைத் தேர்ந்தெடுத்து, விடுபட்ட படங்கள், உரை அல்லது வெர்சோ இணைப்புகளைக் கண்டறிய வடிப்பான்களைப் பயன்படுத்தவும்.",
     "managerPressText2": "தேர்ந்தெடுக்கப்பட்ட கார்டுகளை ரெக்டோ மற்றும் வெர்சோ பக்கங்களாக முன்னோட்டம் பார்க்க பிரிண்டர் காட்சியைத் திறக்கவும். கருவிப்பட்டியில் PDF தளவமைப்பைத் தேர்வுசெய்து, ஏதேனும் எச்சரிக்கைகளை மதிப்பாய்வு செய்து, PDF ஐப் பதிவிறக்கி அச்சிடவும்.",
     "apiCredits": "ஆதரிக்கப்படும் APIகள்",

@@ -15,6 +15,8 @@
     "exportCompressed": "Export comprimat",
     "exportImageLessJson": "Exportați JSON fără imagini",
     "file": "Fișier",
+    "generate": "Genera",
+    "generating": "Se generează...",
     "import": "Import",
     "manage": "Gestionează",
     "newCard": "Card nou",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrați legăturile verso",
     "generatedCardPreview": "Previzualizare card generată",
     "imageSearchQuery": "Interogare de căutare de imagini",
+    "imageGenerationHints": "Sugestii suplimentare pentru generarea de imagini",
     "loadingApp": "Se încarcă Toddler Read",
     "manager": "Manager",
     "managerTags": "Etichetele managerului",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} a returnat un răspuns gol.",
     "missingProviderTranslations": "{{provider}} nu a returnat nicio traducere utilizabilă.",
     "missingProviderKey": "Adăugați o cheie {{provider}} API în Setări.",
+    "exportedComplete": "JSON complet exportat cu {{count}} {{unit}}.",
     "exportedCompressed": "Backup comprimat exportat cu {{count}} {{unit}}.",
     "exportedImageLess": "Exportat JSON fără imagini cu {{count}} {{unit}}.",
     "pdfDownloaded": "PDF descărcat cu pagini {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Cheia API",
     "baseUrl": "Adresa URL de bază",
+    "category": "Categorie",
     "chooseTag": "Alegeți eticheta",
     "code": "Cod",
     "cornerLanguages": "Limbi de colț",
@@ -204,9 +209,13 @@
     "help": "Ajutor",
     "image": "Imagine",
     "imageGeneration": "Generarea imaginii",
+    "imageGenerationSources": "Surse de generare a imaginilor",
     "imageGenerationPromptTemplate": "Șablon de prompt pentru generarea imaginii",
+    "imageSearch": "Căutare de imagini",
+    "imageSearchSources": "Surse de căutare de imagini",
     "imageSource": "Sursa imaginii",
     "imageSources": "Surse de imagine",
+    "imageType": "Tipul imaginii",
     "managerAndPress": "Manager și tipar",
     "model": "model",
     "orientation": "Orientare",
@@ -217,6 +226,7 @@
     "rendering": "Redare",
     "settings": "Setări",
     "size": "Dimensiune",
+    "sort": "Sorta",
     "tags": "Etichete",
     "translation": "Traducere",
     "translationPromptTemplate": "Șablon prompt de traducere",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai sau Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai sau OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai sau OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay sau Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay sau Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Toate categoriile",
+    "pixabayTypes": {
+      "all": "Toate",
+      "photo": "Fotografie",
+      "illustration": "Ilustrare",
+      "vector": "Vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Fundaluri",
+      "fashion": "Modă",
+      "nature": "Natură",
+      "science": "Ştiinţă",
+      "education": "Educaţie",
+      "feelings": "Sentimente",
+      "health": "Sănătate",
+      "people": "Oameni",
+      "religion": "Religie",
+      "places": "Locuri",
+      "animals": "Animale",
+      "industry": "Industrie",
+      "computer": "Calculator",
+      "food": "Mâncare",
+      "sports": "Sport",
+      "transportation": "Transport",
+      "travel": "Voiaj",
+      "buildings": "Clădiri",
+      "business": "Afaceri",
+      "music": "Muzică"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevant",
+      "latest": "Mai recent"
+    }
   },
   "verbs": {
     "has": "are",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Bună ziua",
     "flag": "🇷🇴",
+    "imageGenerationHints": "indicii suplimentare de stil, stare de spirit sau compoziție",
     "imageSearch": "măr",
     "languageCode": "ro",
     "pasteHere": "Lipiți aici",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Închideți căutarea imaginilor",
+      "generateTitle": "Generați imaginea",
       "title": "Căutați imaginea"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "sau",
     "cornerLanguagesRestAfter": "și ajustați marcatorul afișat.",
     "imageSourcesLabel": "Surse imagini:",
-    "imageSourcesRest": "adăugați chei API Pexels, Flaticon, Leonardo.Ai sau Pollinations.ai pentru a activa căutarea și generarea de imagini în aplicație.",
+    "imageSourcesRest": "adăugați chei API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai sau OpenAI pentru a activa căutarea și generarea de imagini în aplicație.",
     "translationLabel": "Traducere:",
     "translationRest": "alegeți Gemini, OpenAI, DeepSeek, Z.AI, Groq sau un furnizor personalizat compatibil cu OpenAI.",
     "modelBaseUrlLabel": "Model și URL de bază:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "descarcă biblioteca completă de carduri, inclusiv imagini, ca backup comprimat.",
     "exportImageLessLabel": "Exportați JSON fără imagini:",
     "exportImageLessRest": "descarcă JSON care poate fi citit fără imagini pentru editare manuală.",
+    "exportCompleteLabel": "Export JSON complet:",
+    "exportCompleteRest": "descarcă JSON care poate fi citit cu biblioteca completă de carduri, inclusiv imagini.",
     "managerPressText1": "Managerul este biblioteca de carduri. Selectați cardurile cu casetele de selectare și utilizați filtre pentru a găsi imagini, text sau link-uri verso care lipsesc.",
     "managerPressText2": "Deschideți vizualizarea imprimantei pentru a previzualiza cardurile selectate ca pagini recto și verso. Alegeți aspectul PDF din bara de instrumente, examinați orice avertismente, apoi descărcați PDF și imprimați-l.",
     "apiCredits": "API-uri acceptate",

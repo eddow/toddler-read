@@ -15,6 +15,8 @@
     "exportCompressed": "صادرات فشرده",
     "exportImageLessJson": "JSON بدون تصویر را صادر کنید",
     "file": "فایل",
+    "generate": "ایجاد کنید",
+    "generating": "در حال تولید...",
     "import": "واردات",
     "manage": "مدیریت کنید",
     "newCard": "کارت جدید",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "لینک ها را فیلتر کنید",
     "generatedCardPreview": "پیش نمایش کارت ایجاد شد",
     "imageSearchQuery": "پرس و جو جستجوی تصویر",
+    "imageGenerationHints": "نکات اضافی برای تولید تصویر",
     "loadingApp": "در حال بارگیری Toddler Read",
     "manager": "مدیر",
     "managerTags": "تگ های مدیر",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} یک پاسخ خالی برگرداند.",
     "missingProviderTranslations": "{{provider}} هیچ ترجمه قابل استفاده ای برگرداند.",
     "missingProviderKey": "یک کلید {{provider}} API در تنظیمات اضافه کنید.",
+    "exportedComplete": "JSON کامل با {{count}} {{unit}} صادر شد.",
     "exportedCompressed": "نسخه پشتیبان فشرده با {{count}} {{unit}} صادر شد.",
     "exportedImageLess": "JSON بدون تصویر با {{count}} {{unit}} صادر شد.",
     "pdfDownloaded": "PDF با صفحات {{count}} دانلود شد.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "کلید API",
     "baseUrl": "URL پایه",
+    "category": "دسته بندی",
     "chooseTag": "برچسب را انتخاب کنید",
     "code": "کد",
     "cornerLanguages": "زبان های گوشه ای",
@@ -204,9 +209,13 @@
     "help": "کمک کنید",
     "image": "تصویر",
     "imageGeneration": "تولید تصویر",
+    "imageGenerationSources": "منابع تولید تصویر",
     "imageGenerationPromptTemplate": "الگوی سریع تولید تصویر",
+    "imageSearch": "جستجوی تصویر",
+    "imageSearchSources": "منابع جستجوی تصویر",
     "imageSource": "منبع تصویر",
     "imageSources": "منابع تصویر",
+    "imageType": "نوع تصویر",
     "managerAndPress": "مدیر و چاپخانه",
     "model": "مدل",
     "orientation": "جهت گیری",
@@ -217,6 +226,7 @@
     "rendering": "رندرینگ",
     "settings": "تنظیمات",
     "size": "اندازه",
+    "sort": "مرتب کردن",
     "tags": "برچسب ها",
     "translation": "ترجمه",
     "translationPromptTemplate": "الگوی درخواست ترجمه",
@@ -224,8 +234,45 @@
     "verso": "نسخه"
   },
   "providers": {
-    "imageProviderKeys": "Pexels، Flaticon، Leonardo.Ai یا Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels، Flaticon، Pixabay، Unsplash، Leonardo.Ai، Pollinations.ai، یا OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai، Pollinations.ai یا OpenAI",
+    "imageSearchProviderKeys": "Pexels، Flaticon، Pixabay یا Unsplash",
+    "pexelsOrFlaticon": "Pexels، Flaticon، Pixabay یا Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "همه دسته ها",
+    "pixabayTypes": {
+      "all": "همه",
+      "photo": "عکس",
+      "illustration": "تصویرسازی",
+      "vector": "بردار"
+    },
+    "pixabayCategories": {
+      "backgrounds": "پس زمینه ها",
+      "fashion": "مد",
+      "nature": "طبیعت",
+      "science": "علم",
+      "education": "آموزش و پرورش",
+      "feelings": "احساسات",
+      "health": "سلامتی",
+      "people": "مردم",
+      "religion": "دین",
+      "places": "مکان ها",
+      "animals": "حیوانات",
+      "industry": "صنعت",
+      "computer": "کامپیوتر",
+      "food": "غذا",
+      "sports": "ورزش",
+      "transportation": "حمل و نقل",
+      "travel": "سفر کنید",
+      "buildings": "ساختمان ها",
+      "business": "تجارت",
+      "music": "موسیقی"
+    },
+    "unsplashOrderBy": {
+      "relevant": "مربوطه",
+      "latest": "آخرین"
+    }
   },
   "verbs": {
     "has": "دارد",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "سلام",
     "flag": "🇮🇷",
+    "imageGenerationHints": "نکاتی درباره سبک، حالت یا ترکیب اضافی",
     "imageSearch": "سیب",
     "languageCode": "fa",
     "pasteHere": "اینجا بچسبانید",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "جستجوی تصویر را ببندید",
+      "generateTitle": "ایجاد تصویر",
       "title": "جستجوی تصویر"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "یا",
     "cornerLanguagesRestAfter": "و نشانگر نمایش داده شده را تنظیم کنید.",
     "imageSourcesLabel": "منابع تصویر:",
-    "imageSourcesRest": "کلیدهای API Pexels، Flaticon، Leonardo.Ai یا Pollinations.ai را اضافه کنید تا جستجو و تولید تصویر درون برنامه را فعال کنید.",
+    "imageSourcesRest": "کلیدهای Pexels، Flaticon، Pixabay، Unsplash، Leonardo.Ai، Pollinations.ai، یا OpenAI API را اضافه کنید تا جستجو و تولید تصویر درون برنامه را فعال کنید.",
     "translationLabel": "ترجمه:",
     "translationRest": "Gemini، OpenAI، DeepSeek، Z.AI، Groq، یا یک ارائه دهنده سفارشی سازگار با OpenAI را انتخاب کنید.",
     "modelBaseUrlLabel": "مدل و URL پایه:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "کتابخانه کامل کارت، از جمله تصاویر را به عنوان یک نسخه پشتیبان فشرده دانلود می کند.",
     "exportImageLessLabel": "صادر کردن JSON بدون تصویر:",
     "exportImageLessRest": "JSON قابل خواندن را بدون تصاویر برای ویرایش دستی دانلود می کند.",
+    "exportCompleteLabel": "صادر کردن JSON کامل:",
+    "exportCompleteRest": "JSON قابل خواندن را با کتابخانه کامل کارت، از جمله تصاویر، دانلود می کند.",
     "managerPressText1": "مدیر کتابخانه کارت است. کارت‌هایی را با کادرهای تأیید انتخاب کنید و از فیلترها برای یافتن تصاویر، متن یا پیوندهای از دست رفته استفاده کنید.",
     "managerPressText2": "نمای چاپگر را باز کنید تا کارت‌های انتخابی را به‌عنوان صفحه‌های recto و verso پیش‌نمایش کنید. طرح بندی PDF را در نوار ابزار انتخاب کنید، اخطارها را بررسی کنید، سپس PDF را دانلود کرده و آن را چاپ کنید.",
     "apiCredits": "API های پشتیبانی شده",

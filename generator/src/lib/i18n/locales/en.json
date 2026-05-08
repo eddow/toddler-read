@@ -179,6 +179,7 @@
   "labels": {
     "apiKey": "API key",
     "baseUrl": "Base URL",
+    "category": "Category",
     "chooseTag": "Choose tag",
     "code": "Code",
     "cornerLanguages": "Corner languages",
@@ -196,6 +197,7 @@
     "imageSearchSources": "Image search sources",
     "imageSource": "Image source",
     "imageSources": "Image sources",
+    "imageType": "Image type",
     "managerAndPress": "Manager And Printing Press",
     "model": "model",
     "orientation": "Orientation",
@@ -206,6 +208,7 @@
     "rendering": "Rendering",
     "settings": "Settings",
     "size": "Size",
+    "sort": "Sort",
     "tags": "Tags",
     "translation": "Translation",
     "translationPromptTemplate": "Translation prompt template",
@@ -213,10 +216,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageGenerationProviderKeys": "Leonardo.Ai or Pollinations.ai",
-    "imageSearchProviderKeys": "Pexels or Flaticon",
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, or Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, or OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, or Unsplash",
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, or OpenAI",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, or Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "All categories",
+    "pixabayTypes": {
+      "all": "All",
+      "photo": "Photo",
+      "illustration": "Illustration",
+      "vector": "Vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Backgrounds",
+      "fashion": "Fashion",
+      "nature": "Nature",
+      "science": "Science",
+      "education": "Education",
+      "feelings": "Feelings",
+      "health": "Health",
+      "people": "People",
+      "religion": "Religion",
+      "places": "Places",
+      "animals": "Animals",
+      "industry": "Industry",
+      "computer": "Computer",
+      "food": "Food",
+      "sports": "Sports",
+      "transportation": "Transportation",
+      "travel": "Travel",
+      "buildings": "Buildings",
+      "business": "Business",
+      "music": "Music"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevant",
+      "latest": "Latest"
+    }
   },
   "verbs": {
     "has": "has",
@@ -302,7 +340,7 @@
     "cornerLanguagesExamplesRest": "or",
     "cornerLanguagesRestAfter": "and adjust the displayed marker.",
     "imageSourcesLabel": "Image sources:",
-    "imageSourcesRest": "add Pexels, Flaticon, Leonardo.Ai, or Pollinations.ai API keys to enable in-app image search and generation.",
+    "imageSourcesRest": "add Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, or OpenAI API keys to enable in-app image search and generation.",
     "translationLabel": "Translation:",
     "translationRest": "choose Gemini, OpenAI, DeepSeek, Z.AI, Groq, or a custom OpenAI-compatible provider.",
     "modelBaseUrlLabel": "Model and base URL:",

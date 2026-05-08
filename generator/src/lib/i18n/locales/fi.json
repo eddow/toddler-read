@@ -15,6 +15,8 @@
     "exportCompressed": "Vie pakattu",
     "exportImageLessJson": "Vie ilman kuvia JSON",
     "file": "Tiedosto",
+    "generate": "Luo",
+    "generating": "Luodaan...",
     "import": "Tuo",
     "manage": "Hallitse",
     "newCard": "Uusi kortti",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Suodata verso-linkit",
     "generatedCardPreview": "Luotu kortin esikatselu",
     "imageSearchQuery": "Kuvahakukysely",
+    "imageGenerationHints": "Lisävinkkejä kuvan luomiseen",
     "loadingApp": "Ladataan Toddler Read",
     "manager": "johtaja",
     "managerTags": "Managerin tunnisteet",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} palautti tyhjän vastauksen.",
     "missingProviderTranslations": "{{provider}} ei palauttanut käyttökelpoisia käännöksiä.",
     "missingProviderKey": "Lisää avain {{provider}} API asetuksiin.",
+    "exportedComplete": "Täydellinen JSON vietiin osoitteella {{count}} {{unit}}.",
     "exportedCompressed": "Pakattu varmuuskopio vietiin {{count}} {{unit}}:llä.",
     "exportedImageLess": "Vietiin ilman kuvia JSON ja {{count}} {{unit}}.",
     "pdfDownloaded": "PDF ladattu {{count}}-sivuilla.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API avain",
     "baseUrl": "Perus-URL-osoite",
+    "category": "Luokka",
     "chooseTag": "Valitse tunniste",
     "code": "Koodi",
     "cornerLanguages": "Kulman kielet",
@@ -204,9 +209,13 @@
     "help": "Apua",
     "image": "Kuva",
     "imageGeneration": "Kuvan luominen",
+    "imageGenerationSources": "Kuvanluontilähteet",
     "imageGenerationPromptTemplate": "Kuvan luontikehotemalli",
+    "imageSearch": "Kuvahaku",
+    "imageSearchSources": "Kuvahaun lähteet",
     "imageSource": "Kuvan lähde",
     "imageSources": "Kuvan lähteet",
+    "imageType": "Kuvan tyyppi",
     "managerAndPress": "Johtaja ja painokone",
     "model": "malli",
     "orientation": "Suuntautuminen",
@@ -217,6 +226,7 @@
     "rendering": "Renderöinti",
     "settings": "Asetukset",
     "size": "Koko",
+    "sort": "Järjestellä",
     "tags": "Tunnisteet",
     "translation": "Käännös",
     "translationPromptTemplate": "Käännöskehotemalli",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai tai Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai tai OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai tai OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay tai Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay tai Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Kaikki luokat",
+    "pixabayTypes": {
+      "all": "Kaikki",
+      "photo": "Kuva",
+      "illustration": "Kuva",
+      "vector": "Vektori"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Taustat",
+      "fashion": "Muoti",
+      "nature": "Luonto",
+      "science": "Tiede",
+      "education": "koulutus",
+      "feelings": "Tunteet",
+      "health": "Terveys",
+      "people": "Ihmiset",
+      "religion": "Uskonto",
+      "places": "Paikat",
+      "animals": "Eläimet",
+      "industry": "Teollisuus",
+      "computer": "Tietokone",
+      "food": "Ruokaa",
+      "sports": "Urheilu",
+      "transportation": "Kuljetus",
+      "travel": "Matkustaa",
+      "buildings": "Rakennukset",
+      "business": "Liiketoimintaa",
+      "music": "Musiikki"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Asiaankuuluva",
+      "latest": "Viimeisin"
+    }
   },
   "verbs": {
     "has": "on",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hei",
     "flag": "🇫🇮",
+    "imageGenerationHints": "ylimääräisiä tyyli-, tunnelma- tai sommitteluvinkkejä",
     "imageSearch": "omena",
     "languageCode": "fi",
     "pasteHere": "Liitä tähän",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Sulje kuvahaku",
+      "generateTitle": "Luo kuva",
       "title": "Hae kuva"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "tai",
     "cornerLanguagesRestAfter": "ja säädä näytössä olevaa merkkiä.",
     "imageSourcesLabel": "Kuvalähteet:",
-    "imageSourcesRest": "lisää Pexels-, Flaticon-, Leonardo.Ai- tai Pollinations.ai API-avaimet mahdollistaaksesi sovelluksen sisäisen kuvahaun ja -luonnin.",
+    "imageSourcesRest": "lisää Pexels-, Flaticon-, Pixabay-, Unsplash-, Leonardo.Ai-, Pollinations.ai- tai OpenAI-sovellusliittymäavaimet mahdollistaaksesi sovelluksen sisäisen kuvahaun ja -luonnin.",
     "translationLabel": "Käännös:",
     "translationRest": "valitse Gemini, OpenAI, DeepSeek, Z.AI, Groq tai mukautettu OpenAI-yhteensopiva toimittaja.",
     "modelBaseUrlLabel": "Malli ja perus-URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "lataa koko korttikirjaston, mukaan lukien kuvat, pakattuna varmuuskopiona.",
     "exportImageLessLabel": "Vie ilman kuvia JSON:",
     "exportImageLessRest": "lataa luettavan JSON:n ilman kuvia käsin muokattavaksi.",
+    "exportCompleteLabel": "Vie täydellinen JSON:",
+    "exportCompleteRest": "lataa luettavan JSON:n täydellä korttikirjastolla, mukaan lukien kuvat.",
     "managerPressText1": "Johtaja on korttikirjasto. Valitse kortit valintaruuduilla ja käytä suodattimia löytääksesi puuttuvia kuvia, tekstiä tai käänteisiä linkkejä.",
     "managerPressText2": "Avaa tulostinnäkymä esikatsellaksesi valittuja kortteja suora- ja käänteissivuina. Valitse työkalupalkista PDF-asettelu, tarkista mahdolliset varoitukset, lataa sitten PDF ja tulosta se.",
     "apiCredits": "Tuetut API:t",

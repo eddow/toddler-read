@@ -15,6 +15,8 @@
     "exportCompressed": "Eksporter komprimeret",
     "exportImageLessJson": "Eksporter billedfri JSON",
     "file": "Fil",
+    "generate": "Frembringe",
+    "generating": "Genererer...",
     "import": "Importer",
     "manage": "Administrer",
     "newCard": "Nyt kort",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrer verso-links",
     "generatedCardPreview": "Genereret kort forhåndsvisning",
     "imageSearchQuery": "Billedsøgning",
+    "imageGenerationHints": "Yderligere tip til billedgenerering",
     "loadingApp": "Indlæser Toddler Read",
     "manager": "Manager",
     "managerTags": "Manager tags",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} returnerede et tomt svar.",
     "missingProviderTranslations": "{{provider}} returnerede ingen brugbare oversættelser.",
     "missingProviderKey": "Tilføj en {{provider}} API nøgle i Indstillinger.",
+    "exportedComplete": "Eksporteret komplet JSON med {{count}} {{unit}}.",
     "exportedCompressed": "Eksporteret komprimeret backup med {{count}} {{unit}}.",
     "exportedImageLess": "Eksporteret billedfri JSON med {{count}} {{unit}}.",
     "pdfDownloaded": "PDF downloadet med {{count}} sider.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API nøgle",
     "baseUrl": "Basis URL",
+    "category": "Kategori",
     "chooseTag": "Vælg tag",
     "code": "Kode",
     "cornerLanguages": "Hjørnesprog",
@@ -204,9 +209,13 @@
     "help": "Hjælp",
     "image": "Billede",
     "imageGeneration": "Billedgenerering",
+    "imageGenerationSources": "Kilder til billedgenerering",
     "imageGenerationPromptTemplate": "Billedgenereringspromptskabelon",
+    "imageSearch": "Billedsøgning",
+    "imageSearchSources": "Kilder til billedsøgning",
     "imageSource": "Billedkilde",
     "imageSources": "Billedkilder",
+    "imageType": "Billedtype",
     "managerAndPress": "Bestyrer og trykkeri",
     "model": "model",
     "orientation": "Orientering",
@@ -217,6 +226,7 @@
     "rendering": "Gengivelse",
     "settings": "Indstillinger",
     "size": "Størrelse",
+    "sort": "Sortere",
     "tags": "Tags",
     "translation": "Oversættelse",
     "translationPromptTemplate": "Oversættelsespromptskabelon",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eller OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai eller OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay eller Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay eller Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Alle kategorier",
+    "pixabayTypes": {
+      "all": "Alle",
+      "photo": "Foto",
+      "illustration": "Illustration",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Baggrunde",
+      "fashion": "Mode",
+      "nature": "Natur",
+      "science": "Videnskab",
+      "education": "Undervisning",
+      "feelings": "Følelser",
+      "health": "Sundhed",
+      "people": "Mennesker",
+      "religion": "Religion",
+      "places": "Steder",
+      "animals": "Dyr",
+      "industry": "Industri",
+      "computer": "Computer",
+      "food": "Mad",
+      "sports": "Sport",
+      "transportation": "Transport",
+      "travel": "Rejse",
+      "buildings": "Bygninger",
+      "business": "Forretning",
+      "music": "Musik"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevant",
+      "latest": "Seneste"
+    }
   },
   "verbs": {
     "has": "har",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Hej",
     "flag": "🇩🇰",
+    "imageGenerationHints": "ekstra stil-, humør- eller kompositionstip",
     "imageSearch": "æble",
     "languageCode": "da",
     "pasteHere": "Indsæt her",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Luk billedsøgning",
+      "generateTitle": "Generer billede",
       "title": "Søg billede"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "eller",
     "cornerLanguagesRestAfter": "og juster den viste markør.",
     "imageSourcesLabel": "Billedkilder:",
-    "imageSourcesRest": "tilføje Pexels, Flaticon, Leonardo.Ai eller Pollinations.ai API-nøgler for at aktivere billedsøgning og generering i appen.",
+    "imageSourcesRest": "tilføj Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eller OpenAI API-nøgler for at aktivere billedsøgning og generering i appen.",
     "translationLabel": "Oversættelse:",
     "translationRest": "vælg Gemini, OpenAI, DeepSeek, Z.AI, Groq eller en brugerdefineret OpenAI-kompatibel udbyder.",
     "modelBaseUrlLabel": "Model og basis-URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "downloader det fulde kortbibliotek, inklusive billeder, som en komprimeret backup.",
     "exportImageLessLabel": "Eksporter billedfri JSON:",
     "exportImageLessRest": "downloader den læsbare JSON uden billeder til håndredigering.",
+    "exportCompleteLabel": "Eksporter komplet JSON:",
+    "exportCompleteRest": "downloader læsbar JSON med det fulde kortbibliotek, inklusive billeder.",
     "managerPressText1": "Lederen er kortbiblioteket. Vælg kort med afkrydsningsfelterne, og brug filtre til at finde manglende billeder, tekst eller verso-links.",
     "managerPressText2": "Åbn printervisningen for at få vist udvalgte kort som recto- og verso-sider. Vælg PDF-layoutet på værktøjslinjen, gennemgå eventuelle advarsler, download derefter PDF og udskriv den.",
     "apiCredits": "Understøttede API'er",

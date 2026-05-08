@@ -15,6 +15,8 @@
     "exportCompressed": "संकुचित निर्यात गर्नुहोस्",
     "exportImageLessJson": "छवि-रहित JSON निर्यात गर्नुहोस्",
     "file": "फाइल",
+    "generate": "उत्पन्न गर्नुहोस्",
+    "generating": "उत्पन्न गर्दै...",
     "import": "आयात गर्नुहोस्",
     "manage": "व्यवस्थापन गर्नुहोस्",
     "newCard": "नयाँ कार्ड",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "लिङ्कहरू फिल्टर गर्नुहोस्",
     "generatedCardPreview": "उत्पन्न कार्ड पूर्वावलोकन",
     "imageSearchQuery": "छवि खोज क्वेरी",
+    "imageGenerationHints": "अतिरिक्त छवि उत्पादन संकेत",
     "loadingApp": "Toddler Read लोड गर्दै",
     "manager": "प्रबन्धक",
     "managerTags": "प्रबन्धक ट्यागहरू",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ले खाली जवाफ फर्कायो।",
     "missingProviderTranslations": "{{provider}} ले कुनै प्रयोगयोग्य अनुवाद फिर्ता गरेन।",
     "missingProviderKey": "सेटिङहरूमा {{provider}} API कुञ्जी थप्नुहोस्।",
+    "exportedComplete": "{{count}} {{unit}} सँग पूरा JSON निर्यात गरियो।",
     "exportedCompressed": "{{count}} {{unit}} सँग संकुचित ब्याकअप निर्यात गरियो।",
     "exportedImageLess": "{{count}} {{unit}} सँग छवि-रहित JSON निर्यात गरियो।",
     "pdfDownloaded": "PDF {{count}} पृष्ठहरूसँग डाउनलोड गरियो।",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API कुञ्जी",
     "baseUrl": "आधार URL",
+    "category": "श्रेणी",
     "chooseTag": "ट्याग छान्नुहोस्",
     "code": "कोड",
     "cornerLanguages": "कुना भाषाहरू",
@@ -204,9 +209,13 @@
     "help": "मद्दत गर्नुहोस्",
     "image": "छवि",
     "imageGeneration": "छवि उत्पादन",
+    "imageGenerationSources": "छवि उत्पादन स्रोतहरू",
     "imageGenerationPromptTemplate": "छवि उत्पादन प्रम्प्ट टेम्प्लेट",
+    "imageSearch": "छवि खोज",
+    "imageSearchSources": "छवि खोज स्रोतहरू",
     "imageSource": "छवि स्रोत",
     "imageSources": "छवि स्रोतहरू",
+    "imageType": "छवि प्रकार",
     "managerAndPress": "प्रबन्धक र छापाखाना",
     "model": "मोडेल",
     "orientation": "अभिमुखीकरण",
@@ -217,6 +226,7 @@
     "rendering": "प्रतिपादन",
     "settings": "सेटिङहरू",
     "size": "साइज",
+    "sort": "क्रमबद्ध गर्नुहोस्",
     "tags": "ट्यागहरू",
     "translation": "अनुवाद",
     "translationPromptTemplate": "अनुवाद प्रम्प्ट टेम्प्लेट",
@@ -224,8 +234,45 @@
     "verso": "उल्टो"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, वा Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, वा OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, वा OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, वा Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, वा Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "सबै वर्गहरू",
+    "pixabayTypes": {
+      "all": "सबै",
+      "photo": "फोटो",
+      "illustration": "दृष्टान्त",
+      "vector": "भेक्टर"
+    },
+    "pixabayCategories": {
+      "backgrounds": "पृष्ठभूमिहरू",
+      "fashion": "फेसन",
+      "nature": "प्रकृति",
+      "science": "विज्ञान",
+      "education": "शिक्षा",
+      "feelings": "भावनाहरू",
+      "health": "स्वास्थ्य",
+      "people": "मानिसहरू",
+      "religion": "धर्म",
+      "places": "ठाउँहरू",
+      "animals": "जनावरहरू",
+      "industry": "उद्योग",
+      "computer": "कम्प्युटर",
+      "food": "खाना",
+      "sports": "खेलकुद",
+      "transportation": "यातायात",
+      "travel": "यात्रा",
+      "buildings": "भवनहरू",
+      "business": "व्यापार",
+      "music": "संगीत"
+    },
+    "unsplashOrderBy": {
+      "relevant": "सान्दर्भिक",
+      "latest": "पछिल्लो"
+    }
   },
   "verbs": {
     "has": "छ",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "नमस्ते",
     "flag": "🇳🇵",
+    "imageGenerationHints": "अतिरिक्त शैली, मुड, वा रचना संकेतहरू",
     "imageSearch": "स्याउ",
     "languageCode": "ne",
     "pasteHere": "यहाँ टाँस्नुहोस्",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "छवि खोज बन्द गर्नुहोस्",
+      "generateTitle": "छवि उत्पन्न गर्नुहोस्",
       "title": "छवि खोज्नुहोस्"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "वा",
     "cornerLanguagesRestAfter": "र प्रदर्शित मार्कर समायोजन गर्नुहोस्।",
     "imageSourcesLabel": "छवि स्रोतहरू:",
-    "imageSourcesRest": "इन-एप छवि खोज र उत्पादन सक्षम गर्न Pexels, Flaticon, Leonardo.Ai, वा Pollinations.ai API कुञ्जीहरू थप्नुहोस्।",
+    "imageSourcesRest": "इन-एप छवि खोज र उत्पादन सक्षम गर्न Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, वा OpenAI API कुञ्जीहरू थप्नुहोस्।",
     "translationLabel": "अनुवाद:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, वा आफू अनुकूल OpenAI-कम्प्याटिबल प्रदायक छान्नुहोस्।",
     "modelBaseUrlLabel": "मोडेल र आधार URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "संकुचित ब्याकअपको रूपमा छविहरू सहित पूर्ण कार्ड लाइब्रेरी डाउनलोड गर्दछ।",
     "exportImageLessLabel": "छवि-रहित JSON निर्यात गर्नुहोस्:",
     "exportImageLessRest": "हात सम्पादनको लागि छविहरू बिना पढ्न योग्य JSON डाउनलोड गर्दछ।",
+    "exportCompleteLabel": "निर्यात पूरा JSON:",
+    "exportCompleteRest": "छविहरू सहित पूर्ण कार्ड लाइब्रेरीको साथ पढ्न योग्य JSON डाउनलोड गर्दछ।",
     "managerPressText1": "प्रबन्धक कार्ड पुस्तकालय हो। चेकबक्सहरू भएका कार्डहरू चयन गर्नुहोस् र छुटेका छविहरू, पाठ, वा verso लिङ्कहरू फेला पार्न फिल्टरहरू प्रयोग गर्नुहोस्।",
     "managerPressText2": "चयन गरिएका कार्डहरूलाई recto र verso पृष्ठहरूको रूपमा पूर्वावलोकन गर्न प्रिन्टर दृश्य खोल्नुहोस्। उपकरणपट्टीमा PDF लेआउट छान्नुहोस्, कुनै पनि चेतावनीहरूको समीक्षा गर्नुहोस्, त्यसपछि PDF डाउनलोड गर्नुहोस् र यसलाई छाप्नुहोस्।",
     "apiCredits": "समर्थित API हरू",

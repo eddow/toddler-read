@@ -15,6 +15,8 @@
     "exportCompressed": "ਸੰਕੁਚਿਤ ਨਿਰਯਾਤ",
     "exportImageLessJson": "ਚਿੱਤਰ-ਰਹਿਤ JSON ਨਿਰਯਾਤ ਕਰੋ",
     "file": "ਫਾਈਲ",
+    "generate": "ਪੈਦਾ ਕਰੋ",
+    "generating": "ਤਿਆਰ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...",
     "import": "ਆਯਾਤ ਕਰੋ",
     "manage": "ਪ੍ਰਬੰਧਿਤ ਕਰੋ",
     "newCard": "ਨਵਾਂ ਕਾਰਡ",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "ਫਿਲਟਰ ਵਰਸੋ ਲਿੰਕ",
     "generatedCardPreview": "ਤਿਆਰ ਕਾਰਡ ਪੂਰਵਦਰਸ਼ਨ",
     "imageSearchQuery": "ਚਿੱਤਰ ਖੋਜ ਪੁੱਛਗਿੱਛ",
+    "imageGenerationHints": "ਵਾਧੂ ਚਿੱਤਰ ਬਣਾਉਣ ਦੇ ਸੰਕੇਤ",
     "loadingApp": "Toddler Read ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ",
     "manager": "ਮੈਨੇਜਰ",
     "managerTags": "ਮੈਨੇਜਰ ਟੈਗਸ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ਨੇ ਇੱਕ ਖਾਲੀ ਜਵਾਬ ਵਾਪਸ ਕੀਤਾ।",
     "missingProviderTranslations": "{{provider}} ਨੇ ਕੋਈ ਵਰਤੋਂ ਯੋਗ ਅਨੁਵਾਦ ਵਾਪਸ ਨਹੀਂ ਕੀਤੇ।",
     "missingProviderKey": "ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਇੱਕ {{provider}} API ਕੁੰਜੀ ਸ਼ਾਮਲ ਕਰੋ।",
+    "exportedComplete": "{{count}} {{unit}} ਨਾਲ ਪੂਰਾ JSON ਨਿਰਯਾਤ ਕੀਤਾ ਗਿਆ।",
     "exportedCompressed": "{{count}} {{unit}} ਨਾਲ ਸੰਕੁਚਿਤ ਬੈਕਅੱਪ ਨਿਰਯਾਤ ਕੀਤਾ ਗਿਆ।",
     "exportedImageLess": "{{count}} {{unit}} ਨਾਲ ਚਿੱਤਰ-ਰਹਿਤ JSON ਨਿਰਯਾਤ ਕੀਤਾ ਗਿਆ।",
     "pdfDownloaded": "PDF {{count}} ਪੰਨਿਆਂ ਨਾਲ ਡਾਊਨਲੋਡ ਕੀਤਾ ਗਿਆ।",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API ਕੁੰਜੀ",
     "baseUrl": "ਬੇਸ URL",
+    "category": "ਸ਼੍ਰੇਣੀ",
     "chooseTag": "ਟੈਗ ਚੁਣੋ",
     "code": "ਕੋਡ",
     "cornerLanguages": "ਕੋਨੇ ਭਾਸ਼ਾਵਾਂ",
@@ -204,9 +209,13 @@
     "help": "ਮਦਦ",
     "image": "ਚਿੱਤਰ",
     "imageGeneration": "ਚਿੱਤਰ ਬਣਾਉਣਾ",
+    "imageGenerationSources": "ਚਿੱਤਰ ਬਣਾਉਣ ਦੇ ਸਰੋਤ",
     "imageGenerationPromptTemplate": "ਚਿੱਤਰ ਜਨਰੇਸ਼ਨ ਪ੍ਰੋਂਪਟ ਟੈਮਪਲੇਟ",
+    "imageSearch": "ਚਿੱਤਰ ਖੋਜ",
+    "imageSearchSources": "ਚਿੱਤਰ ਖੋਜ ਸਰੋਤ",
     "imageSource": "ਚਿੱਤਰ ਸਰੋਤ",
     "imageSources": "ਚਿੱਤਰ ਸਰੋਤ",
+    "imageType": "ਚਿੱਤਰ ਦੀ ਕਿਸਮ",
     "managerAndPress": "ਮੈਨੇਜਰ ਅਤੇ ਪ੍ਰਿੰਟਿੰਗ ਪ੍ਰੈਸ",
     "model": "ਮਾਡਲ",
     "orientation": "ਸਥਿਤੀ",
@@ -217,6 +226,7 @@
     "rendering": "ਰੈਂਡਰਿੰਗ",
     "settings": "ਸੈਟਿੰਗਾਂ",
     "size": "ਆਕਾਰ",
+    "sort": "ਲੜੀਬੱਧ",
     "tags": "ਟੈਗਸ",
     "translation": "ਅਨੁਵਾਦ",
     "translationPromptTemplate": "ਅਨੁਵਾਦ ਪ੍ਰੋਂਪਟ ਟੈਮਪਲੇਟ",
@@ -224,8 +234,45 @@
     "verso": "ਵਰਸੋ"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, ਜਾਂ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ਜਾਂ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, ਜਾਂ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, ਜਾਂ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, ਜਾਂ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "ਸਾਰੀਆਂ ਸ਼੍ਰੇਣੀਆਂ",
+    "pixabayTypes": {
+      "all": "ਸਾਰੇ",
+      "photo": "ਫੋਟੋ",
+      "illustration": "ਦ੍ਰਿਸ਼ਟਾਂਤ",
+      "vector": "ਵੈਕਟਰ"
+    },
+    "pixabayCategories": {
+      "backgrounds": "ਪਿਛੋਕੜ",
+      "fashion": "ਫੈਸ਼ਨ",
+      "nature": "ਕੁਦਰਤ",
+      "science": "ਵਿਗਿਆਨ",
+      "education": "ਸਿੱਖਿਆ",
+      "feelings": "ਭਾਵਨਾਵਾਂ",
+      "health": "ਸਿਹਤ",
+      "people": "ਲੋਕ",
+      "religion": "ਧਰਮ",
+      "places": "ਸਥਾਨ",
+      "animals": "ਜਾਨਵਰ",
+      "industry": "ਉਦਯੋਗ",
+      "computer": "ਕੰਪਿਊਟਰ",
+      "food": "ਭੋਜਨ",
+      "sports": "ਖੇਡਾਂ",
+      "transportation": "ਆਵਾਜਾਈ",
+      "travel": "ਯਾਤਰਾ",
+      "buildings": "ਇਮਾਰਤਾਂ",
+      "business": "ਵਪਾਰ",
+      "music": "ਸੰਗੀਤ"
+    },
+    "unsplashOrderBy": {
+      "relevant": "ਸੰਬੰਧਿਤ",
+      "latest": "ਨਵੀਨਤਮ"
+    }
   },
   "verbs": {
     "has": "ਕੋਲ ਹੈ",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ਹੈਲੋ",
     "flag": "🇮🇳",
+    "imageGenerationHints": "ਵਾਧੂ ਸ਼ੈਲੀ, ਮੂਡ, ਜਾਂ ਰਚਨਾ ਦੇ ਸੰਕੇਤ",
     "imageSearch": "ਸੇਬ",
     "languageCode": "pa",
     "pasteHere": "ਇੱਥੇ ਪੇਸਟ ਕਰੋ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ਚਿੱਤਰ ਖੋਜ ਬੰਦ ਕਰੋ",
+      "generateTitle": "ਚਿੱਤਰ ਬਣਾਓ",
       "title": "ਚਿੱਤਰ ਖੋਜੋ"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ਜਾਂ",
     "cornerLanguagesRestAfter": "ਅਤੇ ਪ੍ਰਦਰਸ਼ਿਤ ਮਾਰਕਰ ਨੂੰ ਵਿਵਸਥਿਤ ਕਰੋ।",
     "imageSourcesLabel": "ਚਿੱਤਰ ਸਰੋਤ:",
-    "imageSourcesRest": "ਇਨ-ਐਪ ਚਿੱਤਰ ਖੋਜ ਅਤੇ ਪੀੜ੍ਹੀ ਨੂੰ ਸਮਰੱਥ ਬਣਾਉਣ ਲਈ Pexels, Flaticon, Leonardo.Ai, ਜਾਂ Pollinations.ai API ਕੁੰਜੀਆਂ ਸ਼ਾਮਲ ਕਰੋ।",
+    "imageSourcesRest": "ਇਨ-ਐਪ ਚਿੱਤਰ ਖੋਜ ਅਤੇ ਪੀੜ੍ਹੀ ਨੂੰ ਸਮਰੱਥ ਬਣਾਉਣ ਲਈ Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ਜਾਂ OpenAI API ਕੁੰਜੀਆਂ ਸ਼ਾਮਲ ਕਰੋ।",
     "translationLabel": "ਅਨੁਵਾਦ:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, ਜਾਂ ਇੱਕ ਕਸਟਮ OpenAI-ਅਨੁਕੂਲ ਪ੍ਰਦਾਤਾ ਚੁਣੋ।",
     "modelBaseUrlLabel": "ਮਾਡਲ ਅਤੇ ਅਧਾਰ URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ਸੰਕੁਚਿਤ ਬੈਕਅੱਪ ਦੇ ਤੌਰ 'ਤੇ ਚਿੱਤਰਾਂ ਸਮੇਤ ਪੂਰੀ ਕਾਰਡ ਲਾਇਬ੍ਰੇਰੀ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਦਾ ਹੈ।",
     "exportImageLessLabel": "ਨਿਰਯਾਤ ਚਿੱਤਰ-ਰਹਿਤ JSON:",
     "exportImageLessRest": "ਹੱਥਾਂ ਦੇ ਸੰਪਾਦਨ ਲਈ ਚਿੱਤਰਾਂ ਤੋਂ ਬਿਨਾਂ ਪੜ੍ਹਨਯੋਗ JSON ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਦਾ ਹੈ।",
+    "exportCompleteLabel": "ਪੂਰਾ JSON ਨਿਰਯਾਤ ਕਰੋ:",
+    "exportCompleteRest": "ਚਿੱਤਰਾਂ ਸਮੇਤ ਪੂਰੀ ਕਾਰਡ ਲਾਇਬ੍ਰੇਰੀ ਦੇ ਨਾਲ ਪੜ੍ਹਨਯੋਗ JSON ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਦਾ ਹੈ।",
     "managerPressText1": "ਮੈਨੇਜਰ ਕਾਰਡ ਲਾਇਬ੍ਰੇਰੀ ਹੈ। ਚੈਕਬਾਕਸ ਵਾਲੇ ਕਾਰਡ ਚੁਣੋ ਅਤੇ ਗੁੰਮ ਹੋਈਆਂ ਤਸਵੀਰਾਂ, ਟੈਕਸਟ ਜਾਂ ਵਰਸੋ ਲਿੰਕ ਲੱਭਣ ਲਈ ਫਿਲਟਰਾਂ ਦੀ ਵਰਤੋਂ ਕਰੋ।",
     "managerPressText2": "ਰੀਕਟੋ ਅਤੇ ਵਰਸੋ ਪੰਨਿਆਂ ਦੇ ਤੌਰ 'ਤੇ ਚੁਣੇ ਹੋਏ ਕਾਰਡਾਂ ਦੀ ਪੂਰਵਦਰਸ਼ਨ ਕਰਨ ਲਈ ਪ੍ਰਿੰਟਰ ਦ੍ਰਿਸ਼ ਨੂੰ ਖੋਲ੍ਹੋ। ਟੂਲਬਾਰ ਵਿੱਚ PDF ਖਾਕਾ ਚੁਣੋ, ਕਿਸੇ ਵੀ ਚੇਤਾਵਨੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ, ਫਿਰ PDF ਨੂੰ ਡਾਊਨਲੋਡ ਕਰੋ ਅਤੇ ਇਸਨੂੰ ਪ੍ਰਿੰਟ ਕਰੋ।",
     "apiCredits": "ਸਮਰਥਿਤ APIs",

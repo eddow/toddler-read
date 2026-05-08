@@ -39,6 +39,7 @@
 	}
 
 	const DEFAULT_POLLINATIONS_MODEL = 'flux'
+	const DEFAULT_OPENAI_IMAGE_MODEL = 'gpt-image-2'
 	const LEONARDO_DEFAULT_MODEL = ''
 
 	export let imageProviders: readonly ImageProvider[] = []
@@ -61,10 +62,13 @@
 	let pollinationsImageModels: PollinationsImageModel[] = []
 
 	$: imageSearchProviders = imageProviders.filter((provider) =>
-		provider.id === 'pexels' || provider.id === 'flaticon'
+		provider.id === 'pexels' ||
+		provider.id === 'flaticon' ||
+		provider.id === 'pixabay' ||
+		provider.id === 'unsplash'
 	)
 	$: imageGenerationProviders = imageProviders.filter((provider) =>
-		provider.id === 'leonardo' || provider.id === 'pollinations'
+		provider.id === 'leonardo' || provider.id === 'pollinations' || provider.id === 'openai'
 	)
 	$: leonardoModelOptions = buildLeonardoModelOptions(
 		leonardoPlatformModels,
@@ -262,6 +266,23 @@
 						<option value={model.name}>{pollinationsModelLabel(model)}</option>
 					{/each}
 				</select>
+			</label>
+		{/if}
+		{#if provider.id === 'openai'}
+			<label class="api-key-field">
+				{provider.label} {T.labels.model}
+				<input
+					value={imageProviderConfigs[provider.id]?.model ?? DEFAULT_OPENAI_IMAGE_MODEL}
+					placeholder={DEFAULT_OPENAI_IMAGE_MODEL}
+					spellcheck="false"
+					autocomplete="off"
+					on:input={(event) =>
+						onImageConfigChange({
+							provider: provider.id,
+							field: 'model',
+							value: event.currentTarget.value
+						})}
+				/>
 			</label>
 		{/if}
 	{/each}

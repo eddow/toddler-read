@@ -15,6 +15,8 @@
     "exportCompressed": "අපනයනය සම්පීඩිත",
     "exportImageLessJson": "රූප රහිත JSON අපනයනය කරන්න",
     "file": "ගොනුව",
+    "generate": "උත්පාදනය කරන්න",
+    "generating": "උත්පාදනය කරමින්...",
     "import": "ආනයනය කරන්න",
     "manage": "කළමනාකරණය කරන්න",
     "newCard": "නව කාඩ්පත",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "පෙරහන් පෙරහන් සබැඳි",
     "generatedCardPreview": "උත්පාදනය කරන ලද කාඩ්පත් පෙරදසුන",
     "imageSearchQuery": "රූප සෙවුම් විමසුම",
+    "imageGenerationHints": "අතිරේක රූප උත්පාදන ඉඟි",
     "loadingApp": "Toddler Read පූරණය වේ",
     "manager": "කළමනාකරු",
     "managerTags": "කළමනාකරු ටැග්",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} හිස් ප්‍රතිචාරයක් ලබා දුන්නේය.",
     "missingProviderTranslations": "{{provider}} භාවිත කළ හැකි පරිවර්තන කිසිවක් ආපසු ලබා දුන්නේ නැත.",
     "missingProviderKey": "සැකසීම් තුළ {{provider}} API යතුරක් එක් කරන්න.",
+    "exportedComplete": "{{count}} {{unit}} සමඟ සම්පූර්ණ JSON අපනයනය කරන ලදී.",
     "exportedCompressed": "{{count}} {{unit}} සමඟ සම්පීඩිත උපස්ථය අපනයනය කරන ලදී.",
     "exportedImageLess": "{{count}} {{unit}} සමඟින් රූප රහිත JSON අපනයනය කරන ලදී.",
     "pdfDownloaded": "PDF {{count}} පිටු සමඟ බාගත කර ඇත.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API යතුර",
     "baseUrl": "මූලික URL",
+    "category": "ප්රවර්ගය",
     "chooseTag": "ටැගය තෝරන්න",
     "code": "කේතය",
     "cornerLanguages": "කෝනර් භාෂා",
@@ -204,9 +209,13 @@
     "help": "උදව් කරන්න",
     "image": "රූපය",
     "imageGeneration": "රූප උත්පාදනය",
+    "imageGenerationSources": "රූප උත්පාදන මූලාශ්‍ර",
     "imageGenerationPromptTemplate": "රූප උත්පාදන කඩිනම් අච්චුව",
+    "imageSearch": "රූප සෙවීම",
+    "imageSearchSources": "රූප සෙවුම් මූලාශ්‍ර",
     "imageSource": "රූප මූලාශ්රය",
     "imageSources": "රූප මූලාශ්ර",
+    "imageType": "රූප වර්ගය",
     "managerAndPress": "කළමනාකරු සහ මුද්‍රණාලය",
     "model": "ආකෘතිය",
     "orientation": "දිශානතිය",
@@ -217,6 +226,7 @@
     "rendering": "විදැහුම්කරණය",
     "settings": "සැකසීම්",
     "size": "ප්රමාණය",
+    "sort": "වර්ග කරන්න",
     "tags": "ටැග්",
     "translation": "පරිවර්තනය",
     "translationPromptTemplate": "පරිවර්තන කඩිනම් අච්චුව",
@@ -224,8 +234,45 @@
     "verso": "වර්සෝ"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, හෝ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, හෝ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, හෝ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, හෝ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, හෝ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "සියලුම කාණ්ඩ",
+    "pixabayTypes": {
+      "all": "සියල්ල",
+      "photo": "ඡායාරූපය",
+      "illustration": "නිදර්ශනය",
+      "vector": "දෛශිකය"
+    },
+    "pixabayCategories": {
+      "backgrounds": "පසුබිම්",
+      "fashion": "විලාසිතා",
+      "nature": "ස්වභාවය",
+      "science": "විද්‍යාව",
+      "education": "අධ්යාපනය",
+      "feelings": "හැඟීම්",
+      "health": "සෞඛ්යය",
+      "people": "මිනිස්සු",
+      "religion": "ආගම",
+      "places": "ස්ථාන",
+      "animals": "සතුන්",
+      "industry": "කර්මාන්තය",
+      "computer": "පරිගණකය",
+      "food": "ආහාර",
+      "sports": "ක්රීඩා",
+      "transportation": "ප්රවාහන",
+      "travel": "සංචාරය කරන්න",
+      "buildings": "ගොඩනැගිලි",
+      "business": "ව්යාපාර",
+      "music": "සංගීතය"
+    },
+    "unsplashOrderBy": {
+      "relevant": "අදාළ",
+      "latest": "නවතම"
+    }
   },
   "verbs": {
     "has": "ඇත",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ආයුබෝවන්",
     "flag": "🇱🇰",
+    "imageGenerationHints": "අමතර ශෛලිය, මනෝභාවය, හෝ සංයුතිය ඉඟි",
     "imageSearch": "ඇපල්",
     "languageCode": "si",
     "pasteHere": "මෙහි අලවන්න",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "පින්තූර සෙවීම වසන්න",
+      "generateTitle": "රූපය ජනනය කරන්න",
       "title": "රූපය සොයන්න"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "හෝ",
     "cornerLanguagesRestAfter": "සහ දර්ශණය වන සලකුණු සකසන්න.",
     "imageSourcesLabel": "රූප මූලාශ්‍ර:",
-    "imageSourcesRest": "යෙදුම තුළ රූප සෙවීම සහ උත්පාදනය සබල කිරීමට Pexels, Flaticon, Leonardo.Ai, හෝ Pollinations.ai API යතුරු එක් කරන්න.",
+    "imageSourcesRest": "යෙදුම තුළ රූප සෙවීම සහ උත්පාදනය සබල කිරීමට Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, හෝ OpenAI API යතුරු එක් කරන්න.",
     "translationLabel": "පරිවර්තනය:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, හෝ අභිරුචි OpenAI-අනුකූල සැපයුම්කරුවෙකු තෝරන්න.",
     "modelBaseUrlLabel": "ආකෘතිය සහ මූලික URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "සම්පීඩිත උපස්ථයක් ලෙස පින්තූර ඇතුළුව සම්පූර්ණ කාඩ්පත් පුස්තකාලය බාගත කරයි.",
     "exportImageLessLabel": "රූප රහිත JSON අපනයනය කරන්න:",
     "exportImageLessRest": "අතින් සංස්කරණය කිරීම සඳහා පින්තූර නොමැතිව කියවිය හැකි JSON බාගත කරයි.",
+    "exportCompleteLabel": "JSON අපනයනය සම්පූර්ණයි:",
+    "exportCompleteRest": "පින්තූර ඇතුළුව සම්පූර්ණ කාඩ්පත් පුස්තකාලය සමඟ කියවිය හැකි JSON බාගන්න.",
     "managerPressText1": "කළමනාකරු යනු කාඩ්පත් පුස්තකාලයයි. පිරික්සුම් කොටු සහිත කාඩ්පත් තෝරන්න සහ නැතිවූ පින්තූර, පෙළ, හෝ වෙනත් සබැඳි සොයා ගැනීමට පෙරහන් භාවිතා කරන්න.",
     "managerPressText2": "තෝරාගත් කාඩ්පත් රෙක්ටෝ සහ වර්සෝ පිටු ලෙස පෙරදසුන් කිරීමට මුද්‍රණ දසුන විවෘත කරන්න. මෙවලම් තීරුවේ PDF පිරිසැලසුම තෝරන්න, ඕනෑම අනතුරු ඇඟවීමක් සමාලෝචනය කරන්න, ඉන්පසු PDF බාගත කර එය මුද්‍රණය කරන්න.",
     "apiCredits": "සහය දක්වන API",

@@ -15,6 +15,8 @@
     "exportCompressed": "Easpórtáil comhbhrúite",
     "exportImageLessJson": "Easpórtáil JSON gan íomhá",
     "file": "Comhad",
+    "generate": "Gin",
+    "generating": "Ag giniúint...",
     "import": "Iompórtáil",
     "manage": "Bainistigh",
     "newCard": "Cárta nua",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Scag naisc verso",
     "generatedCardPreview": "Réamhamharc cárta ginte",
     "imageSearchQuery": "Iarratas cuardaigh íomhánna",
+    "imageGenerationHints": "Leideanna giniúna íomhá breise",
     "loadingApp": "Toddler Read á lódáil",
     "manager": "Bainisteoir",
     "managerTags": "Clibeanna bainisteoir",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "Chuir {{provider}} freagra folamh ar ais.",
     "missingProviderTranslations": "Níor chuir {{provider}} aon aistriúchán inúsáidte ar ais.",
     "missingProviderKey": "Cuir eochair {{provider}} API leis sna Socruithe.",
+    "exportedComplete": "Onnmhairíodh JSON iomlán le {{count}} {{unit}}.",
     "exportedCompressed": "Easpórtáil cúltaca comhbhrúite le {{count}} {{unit}}.",
     "exportedImageLess": "Onnmhairíodh JSON gan íomhá le {{count}} {{unit}}.",
     "pdfDownloaded": "PDF íosluchtaithe le leathanaigh {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Eochair API",
     "baseUrl": "Bun-URL",
+    "category": "Catagóir",
     "chooseTag": "Roghnaigh clib",
     "code": "Cód",
     "cornerLanguages": "Teangacha cúinne",
@@ -204,9 +209,13 @@
     "help": "Cabhrú",
     "image": "Íomhá",
     "imageGeneration": "Giniúint íomhá",
+    "imageGenerationSources": "Foinsí giniúna íomhá",
     "imageGenerationPromptTemplate": "Teimpléad leideanna giniúna íomhá",
+    "imageSearch": "Cuardach íomhá",
+    "imageSearchSources": "Foinsí cuardaigh íomhánna",
     "imageSource": "Foinse íomhá",
     "imageSources": "Foinsí íomhá",
+    "imageType": "Cineál íomhá",
     "managerAndPress": "Bainisteoir Agus Preas Priontála",
     "model": "samhail",
     "orientation": "Treoshuíomh",
@@ -217,6 +226,7 @@
     "rendering": "Rindreáil",
     "settings": "Socruithe",
     "size": "Méid",
+    "sort": "Sórtáil",
     "tags": "Clibeanna",
     "translation": "Aistriúchán",
     "translationPromptTemplate": "Teimpléad leid aistriúcháin",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, nó Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, nó OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Polinations.ai, nó OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, nó Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, nó Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Gach catagóir",
+    "pixabayTypes": {
+      "all": "Gach",
+      "photo": "Grianghraf",
+      "illustration": "Léiriú",
+      "vector": "Veicteoir"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Cúlra",
+      "fashion": "Faisean",
+      "nature": "Dúlra",
+      "science": "Eolaíocht",
+      "education": "Oideachas",
+      "feelings": "Mothúcháin",
+      "health": "Sláinte",
+      "people": "Daoine",
+      "religion": "Creideamh",
+      "places": "Áiteanna",
+      "animals": "Ainmhithe",
+      "industry": "Tionscal",
+      "computer": "Ríomhaire",
+      "food": "Bia",
+      "sports": "Spóirt",
+      "transportation": "Iompar",
+      "travel": "Taisteal",
+      "buildings": "Foirgnimh",
+      "business": "Gnó",
+      "music": "Ceol"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Ábhartha",
+      "latest": "is déanaí"
+    }
   },
   "verbs": {
     "has": "tá",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Dia duit",
     "flag": "🇮🇪",
+    "imageGenerationHints": "leideanna breise maidir le stíl, giúmar nó comhdhéanamh",
     "imageSearch": "úll",
     "languageCode": "ga",
     "pasteHere": "Greamaigh anseo",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Dún cuardach íomhá",
+      "generateTitle": "Gin íomhá",
       "title": "Cuardaigh íomhá"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "nó",
     "cornerLanguagesRestAfter": "agus an marcóir ar taispeáint a choigeartú.",
     "imageSourcesLabel": "Foinsí íomhánna:",
-    "imageSourcesRest": "cuir eochracha Pexels, Flaticon, Leonardo.Ai, nó Pollinations.ai API chun cuardach agus giniúint íomhá in-app a chumasú.",
+    "imageSourcesRest": "cuir eochracha Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, nó OpenAI API chun cuardach agus giniúint íomhá in-app a chumasú.",
     "translationLabel": "Aistriúchán:",
     "translationRest": "roghnaigh Gemini, OpenAI, DeepSeek, Z.AI, Groq, nó soláthraí saincheaptha OpenAI-comhoiriúnach.",
     "modelBaseUrlLabel": "URL múnla agus bonn:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "íoslódáil an leabharlann chárta iomlán, lena n-áirítear íomhánna, mar chúltaca comhbhrúite.",
     "exportImageLessLabel": "Easpórtáil JSON gan íomhá:",
     "exportImageLessRest": "íoslódálacha JSON inléite gan íomhánna le haghaidh eagarthóireacht láimhe.",
+    "exportCompleteLabel": "Easpórtáil JSON iomlán:",
+    "exportCompleteRest": "íoslódáil JSON inléite leis an leabharlann iomlán cártaí, lena n-áirítear íomhánna.",
     "managerPressText1": "Is é an bainisteoir leabharlann na gcártaí. Roghnaigh cártaí leis na ticbhoscaí agus bain úsáid as scagairí chun íomhánna, téacs nó naisc verso atá in easnamh a fháil.",
     "managerPressText2": "Oscail an t-amharc printéir chun réamhamharc a dhéanamh ar chártaí roghnaithe mar leathanaigh ceart agus verso. Roghnaigh leagan amach PDF sa bharra uirlisí, athbhreithnigh aon rabhadh, ansin íoslódáil an PDF agus priontáil é.",
     "apiCredits": "APIanna tacaithe",

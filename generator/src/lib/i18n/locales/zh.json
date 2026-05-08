@@ -15,6 +15,8 @@
     "exportCompressed": "导出压缩",
     "exportImageLessJson": "导出无图像 JSON",
     "file": "文件",
+    "generate": "产生",
+    "generating": "生成...",
     "import": "进口",
     "manage": "管理",
     "newCard": "新卡",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "过滤反面链接",
     "generatedCardPreview": "生成的卡片预览",
     "imageSearchQuery": "图片搜索查询",
+    "imageGenerationHints": "附加图像生成提示",
     "loadingApp": "正在加载Toddler Read",
     "manager": "经理",
     "managerTags": "经理标签",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} 返回空响应。",
     "missingProviderTranslations": "{{provider}} 没有返回可用的翻译。",
     "missingProviderKey": "在“设置”中添加 {{provider}} API 密钥。",
+    "exportedComplete": "使用 {{count}} {{unit}} 导出完整的 JSON。",
     "exportedCompressed": "使用 {{count}} {{unit}} 导出压缩备份。",
     "exportedImageLess": "导出无图像 JSON 和 {{count}} {{unit}}。",
     "pdfDownloaded": "PDF与{{count}}页面一起下载。",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API 密钥",
     "baseUrl": "基本网址",
+    "category": "类别",
     "chooseTag": "选择标签",
     "code": "代码",
     "cornerLanguages": "角落语言",
@@ -204,9 +209,13 @@
     "help": "帮助",
     "image": "图片",
     "imageGeneration": "图像生成",
+    "imageGenerationSources": "图像生成源",
     "imageGenerationPromptTemplate": "图片生成提示模板",
+    "imageSearch": "图片搜索",
+    "imageSearchSources": "图片搜索来源",
     "imageSource": "图片来源",
     "imageSources": "图片来源",
+    "imageType": "图片类型",
     "managerAndPress": "经理和印刷厂",
     "model": "型号",
     "orientation": "方向",
@@ -217,6 +226,7 @@
     "rendering": "渲染",
     "settings": "设置",
     "size": "尺寸",
+    "sort": "种类",
     "tags": "标签",
     "translation": "翻译",
     "translationPromptTemplate": "翻译提示模板",
@@ -224,8 +234,45 @@
     "verso": "维索"
   },
   "providers": {
-    "imageProviderKeys": "Pexels、Flaticon、Leonardo.Ai 或 Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels、Flaticon、Pixabay、Unsplash、Leonardo.Ai、Pollinations.ai 或 OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai、Polminations.ai 或 OpenAI",
+    "imageSearchProviderKeys": "Pexels、Flaticon、Pixabay 或 Unsplash",
+    "pexelsOrFlaticon": "Pexels、Flaticon、Pixabay 或 Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "所有类别",
+    "pixabayTypes": {
+      "all": "全部",
+      "photo": "照片",
+      "illustration": "插图",
+      "vector": "向量"
+    },
+    "pixabayCategories": {
+      "backgrounds": "背景",
+      "fashion": "时尚",
+      "nature": "自然",
+      "science": "科学",
+      "education": "教育",
+      "feelings": "情怀",
+      "health": "健康",
+      "people": "人们",
+      "religion": "宗教",
+      "places": "地点",
+      "animals": "动物",
+      "industry": "行业",
+      "computer": "电脑",
+      "food": "食物",
+      "sports": "运动的",
+      "transportation": "运输",
+      "travel": "旅行",
+      "buildings": "建筑物",
+      "business": "商业",
+      "music": "音乐"
+    },
+    "unsplashOrderBy": {
+      "relevant": "相关的",
+      "latest": "最新的"
+    }
   },
   "verbs": {
     "has": "有",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "你好",
     "flag": "🇨🇳",
+    "imageGenerationHints": "额外的风格、情绪或构图提示",
     "imageSearch": "苹果",
     "languageCode": "zh",
     "pasteHere": "粘贴在这里",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "关闭图片搜索",
+      "generateTitle": "生成图像",
       "title": "搜索图片"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "或",
     "cornerLanguagesRestAfter": "并调整显示的标记。",
     "imageSourcesLabel": "图片来源：",
-    "imageSourcesRest": "添加 Pexels、Flaticon、Leonardo.Ai 或 Pollinations.ai API 密钥以启用应用内图像搜索和生成。",
+    "imageSourcesRest": "添加 Pexels、Flaticon、Pixabay、Unsplash、Leonardo.Ai、Pollinations.ai 或 OpenAI API 密钥以启用应用内图像搜索和生成。",
     "translationLabel": "翻译：",
     "translationRest": "选择 Gemini、OpenAI、DeepSeek、Z.AI、Groq 或自定义 OpenAI 兼容提供程序。",
     "modelBaseUrlLabel": "型号和基本 URL：",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "下载完整的卡片库（包括图像）作为压缩备份。",
     "exportImageLessLabel": "导出无图像 JSON：",
     "exportImageLessRest": "下载可读的 JSON，无需手动编辑图像。",
+    "exportCompleteLabel": "导出完整的 JSON：",
+    "exportCompleteRest": "下载包含完整卡片库（包括图像）的可读 JSON。",
     "managerPressText1": "管理者就是卡库。选择带有复选框的卡片并使用过滤器查找丢失的图像、文本或反面链接。",
     "managerPressText2": "打开打印机视图以预览所选卡片的正面和反面页面。在工具栏中选择 PDF 布局，查看所有警告，然后下载 PDF 并打印。",
     "apiCredits": "支持的API",

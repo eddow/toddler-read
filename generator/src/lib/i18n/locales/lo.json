@@ -15,6 +15,8 @@
     "exportCompressed": "ບີບອັດສົ່ງອອກ",
     "exportImageLessJson": "ສົ່ງອອກ JSON ທີ່ບໍ່ມີຮູບພາບ",
     "file": "ໄຟລ໌",
+    "generate": "ສ້າງ",
+    "generating": "ກຳລັງສ້າງ...",
     "import": "ນໍາເຂົ້າ",
     "manage": "ຈັດການ",
     "newCard": "ບັດໃໝ່",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "ການກັ່ນຕອງກັບການເຊື່ອມຕໍ່",
     "generatedCardPreview": "ຕົວຢ່າງບັດທີ່ສ້າງຂຶ້ນ",
     "imageSearchQuery": "ຄໍາຖາມຄົ້ນຫາຮູບພາບ",
+    "imageGenerationHints": "ຄໍາແນະນໍາການສ້າງຮູບພາບເພີ່ມເຕີມ",
     "loadingApp": "ກຳລັງໂຫລດ Toddler Read",
     "manager": "ຜູ້ຈັດການ",
     "managerTags": "ແທັກຜູ້ຈັດການ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ກັບຄືນຄໍາຕອບທີ່ຫວ່າງເປົ່າ.",
     "missingProviderTranslations": "{{provider}} ກັບຄືນມາບໍ່ມີການແປທີ່ສາມາດໃຊ້ໄດ້.",
     "missingProviderKey": "ເພີ່ມກະແຈ {{provider}} API ໃນການຕັ້ງຄ່າ.",
+    "exportedComplete": "ສົ່ງອອກ JSON ທີ່ສົມບູນດ້ວຍ {{count}} {{unit}}.",
     "exportedCompressed": "ສົ່ງອອກສຳຮອງທີ່ຖືກບີບອັດດ້ວຍ {{count}} {{unit}}.",
     "exportedImageLess": "ສົ່ງອອກ JSON ໜ້ອຍລົງດ້ວຍ {{count}} {{unit}}.",
     "pdfDownloaded": "PDF ດາວໂຫຼດດ້ວຍໜ້າ {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "ກະແຈ API",
     "baseUrl": "URL ພື້ນຖານ",
+    "category": "ປະເພດ",
     "chooseTag": "ເລືອກແທັກ",
     "code": "ລະຫັດ",
     "cornerLanguages": "ພາສາມຸມ",
@@ -204,9 +209,13 @@
     "help": "ຊ່ວຍເຫຼືອ",
     "image": "ຮູບພາບ",
     "imageGeneration": "ການຜະລິດຮູບພາບ",
+    "imageGenerationSources": "ແຫຼ່ງສ້າງຮູບພາບ",
     "imageGenerationPromptTemplate": "ແມ່ແບບການກະຕຸ້ນການສ້າງຮູບພາບ",
+    "imageSearch": "ຄົ້ນຫາຮູບພາບ",
+    "imageSearchSources": "ແຫຼ່ງຄົ້ນຫາຮູບພາບ",
     "imageSource": "ແຫຼ່ງຮູບພາບ",
     "imageSources": "ແຫຼ່ງຮູບພາບ",
+    "imageType": "ປະເພດຮູບພາບ",
     "managerAndPress": "ຜູ້ຈັດການແລະຫນັງສືພິມ",
     "model": "ຕົວແບບ",
     "orientation": "ປະຖົມນິເທດ",
@@ -217,6 +226,7 @@
     "rendering": "ກຳລັງສະແດງຜົນ",
     "settings": "ການຕັ້ງຄ່າ",
     "size": "ຂະໜາດ",
+    "sort": "ຄັດ",
     "tags": "ປ້າຍກຳກັບ",
     "translation": "ການແປ",
     "translationPromptTemplate": "ແມ່ແບບກະຕຸ້ນການແປພາສາ",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, ຫຼື Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ຫຼື OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, ຫຼື OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, ຫຼື Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, ຫຼື Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "ໝວດໝູ່ທັງໝົດ",
+    "pixabayTypes": {
+      "all": "ທັງໝົດ",
+      "photo": "ຮູບ",
+      "illustration": "ຮູບປະກອບ",
+      "vector": "vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "ຄວາມເປັນມາ",
+      "fashion": "ແຟຊັ່ນ",
+      "nature": "ທໍາມະຊາດ",
+      "science": "ວິທະຍາສາດ",
+      "education": "ການສຶກສາ",
+      "feelings": "ຄວາມຮູ້ສຶກ",
+      "health": "ສຸຂະພາບ",
+      "people": "ຄົນ",
+      "religion": "ສາດສະໜາ",
+      "places": "ສະຖານທີ່",
+      "animals": "ສັດ",
+      "industry": "ອຸດສາຫະກໍາ",
+      "computer": "ຄອມພິວເຕີ",
+      "food": "ອາຫານ",
+      "sports": "ກິລາ",
+      "transportation": "ການຂົນສົ່ງ",
+      "travel": "ການເດີນທາງ",
+      "buildings": "ອາຄານ",
+      "business": "ທຸລະກິດ",
+      "music": "ດົນຕີ"
+    },
+    "unsplashOrderBy": {
+      "relevant": "ທີ່ກ່ຽວຂ້ອງ",
+      "latest": "ລ່າສຸດ"
+    }
   },
   "verbs": {
     "has": "ມີ",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ສະບາຍດີ",
     "flag": "🇱🇦",
+    "imageGenerationHints": "ແບບພິເສດ, ອາລົມ, ຫຼືຄໍາແນະນໍາອົງປະກອບ",
     "imageSearch": "ໝາກໂປມ",
     "languageCode": "lo",
     "pasteHere": "ວາງໃສ່ບ່ອນນີ້",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ປິດການຊອກຫາຮູບພາບ",
+      "generateTitle": "ສ້າງຮູບພາບ",
       "title": "ຊອກຫາຮູບພາບ"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ຫຼື",
     "cornerLanguagesRestAfter": "ແລະປັບຕົວເຄື່ອງໝາຍທີ່ສະແດງ.",
     "imageSourcesLabel": "ແຫຼ່ງຮູບພາບ:",
-    "imageSourcesRest": "ເພີ່ມ Pexels, Flaticon, Leonardo.Ai, ຫຼືກະແຈ API Pollinations.ai ເພື່ອເປີດໃຊ້ການຊອກຫາຮູບພາບໃນແອັບ ແລະການຜະລິດ.",
+    "imageSourcesRest": "ເພີ່ມປຸ່ມ Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ຫຼື OpenAI API ເພື່ອເປີດໃຊ້ການຊອກຫາຮູບພາບໃນແອັບ ແລະການຜະລິດ.",
     "translationLabel": "ການແປ:",
     "translationRest": "ເລືອກ Gemini, OpenAI, DeepSeek, Z.AI, Groq, ຫຼືຜູ້ໃຫ້ບໍລິການທີ່ເຂົ້າກັນໄດ້ OpenAI ແບບກຳນົດເອງ.",
     "modelBaseUrlLabel": "ຕົວແບບ ແລະ URL ພື້ນຖານ:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ດາວໂຫຼດຫ້ອງສະໝຸດບັດເຕັມ, ລວມທັງຮູບພາບ, ເປັນການສໍາຮອງທີ່ບີບອັດ.",
     "exportImageLessLabel": "ສົ່ງອອກ JSON ໜ້ອຍຮູບ:",
     "exportImageLessRest": "ດາວໂຫລດ JSON ທີ່ສາມາດອ່ານໄດ້ໂດຍບໍ່ມີຮູບພາບສໍາລັບການດັດແກ້ດ້ວຍມື.",
+    "exportCompleteLabel": "ສົ່ງອອກ JSON ສໍາເລັດ:",
+    "exportCompleteRest": "ດາວໂຫຼດ JSON ທີ່ອ່ານໄດ້ດ້ວຍຫ້ອງສະໝຸດບັດເຕັມ, ລວມທັງຮູບພາບ.",
     "managerPressText1": "ຜູ້ຈັດການແມ່ນຫ້ອງສະຫມຸດບັດ. ເລືອກບັດທີ່ມີກ່ອງກາເຄື່ອງຫມາຍແລະໃຊ້ຕົວກອງເພື່ອຊອກຫາຮູບພາບ, ຂໍ້ຄວາມ, ຫຼືການເຊື່ອມຕໍ່ທີ່ຂາດຫາຍໄປ.",
     "managerPressText2": "ເປີດມຸມມອງເຄື່ອງພິມເພື່ອເບິ່ງຕົວຢ່າງບັດທີ່ເລືອກເປັນໜ້າ recto ແລະ verso. ເລືອກຮູບແບບ PDF ໃນແຖບເຄື່ອງມື, ກວດເບິ່ງຄຳເຕືອນໃດໆກໍຕາມ, ຈາກນັ້ນດາວໂຫຼດ PDF ແລະພິມມັນ.",
     "apiCredits": "API ທີ່ຮອງຮັບ",

@@ -15,6 +15,8 @@
     "exportCompressed": "Ekspor terkompresi",
     "exportImageLessJson": "Ekspor JSON tanpa gambar",
     "file": "Mengajukan",
+    "generate": "Menghasilkan",
+    "generating": "Menghasilkan...",
     "import": "Impor",
     "manage": "Kelola",
     "newCard": "Kartu baru",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filter tautan sebaliknya",
     "generatedCardPreview": "Pratinjau kartu yang dihasilkan",
     "imageSearchQuery": "Permintaan pencarian gambar",
+    "imageGenerationHints": "Petunjuk pembuatan gambar tambahan",
     "loadingApp": "Memuat Toddler Read",
     "manager": "Manajer",
     "managerTags": "Tag manajer",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} mengembalikan respons kosong.",
     "missingProviderTranslations": "{{provider}} tidak menghasilkan terjemahan yang dapat digunakan.",
     "missingProviderKey": "Tambahkan kunci {{provider}} API di Pengaturan.",
+    "exportedComplete": "Mengekspor JSON lengkap dengan {{count}} {{unit}}.",
     "exportedCompressed": "Mengekspor cadangan terkompresi dengan {{count}} {{unit}}.",
     "exportedImageLess": "JSON tanpa gambar yang diekspor dengan {{count}} {{unit}}.",
     "pdfDownloaded": "PDF diunduh dengan halaman {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Kunci API",
     "baseUrl": "URL dasar",
+    "category": "Kategori",
     "chooseTag": "Pilih tanda",
     "code": "Kode",
     "cornerLanguages": "Bahasa sudut",
@@ -204,9 +209,13 @@
     "help": "Bantuan",
     "image": "Gambar",
     "imageGeneration": "Pembuatan gambar",
+    "imageGenerationSources": "Sumber pembuatan gambar",
     "imageGenerationPromptTemplate": "Templat prompt pembuatan gambar",
+    "imageSearch": "Pencarian gambar",
+    "imageSearchSources": "Sumber pencarian gambar",
     "imageSource": "Sumber gambar",
     "imageSources": "Sumber gambar",
+    "imageType": "Jenis gambar",
     "managerAndPress": "Manajer Dan Percetakan",
     "model": "model",
     "orientation": "Orientasi",
@@ -217,6 +226,7 @@
     "rendering": "Render",
     "settings": "Pengaturan",
     "size": "Ukuran",
+    "sort": "Menyortir",
     "tags": "Tag",
     "translation": "Terjemahan",
     "translationPromptTemplate": "Templat perintah terjemahan",
@@ -224,8 +234,45 @@
     "verso": "Sebaliknya"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, atau Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, atau OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, atau OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, atau Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, atau Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Semua kategori",
+    "pixabayTypes": {
+      "all": "Semua",
+      "photo": "Foto",
+      "illustration": "Ilustrasi",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Latar Belakang",
+      "fashion": "Mode",
+      "nature": "Alam",
+      "science": "Sains",
+      "education": "Pendidikan",
+      "feelings": "Perasaan",
+      "health": "Kesehatan",
+      "people": "Rakyat",
+      "religion": "Agama",
+      "places": "Tempat",
+      "animals": "Hewan",
+      "industry": "Industri",
+      "computer": "Komputer",
+      "food": "Makanan",
+      "sports": "Olahraga",
+      "transportation": "Angkutan",
+      "travel": "Bepergian",
+      "buildings": "Bangunan",
+      "business": "Bisnis",
+      "music": "Musik"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevan",
+      "latest": "Terbaru"
+    }
   },
   "verbs": {
     "has": "memiliki",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Halo",
     "flag": "🇮🇩",
+    "imageGenerationHints": "petunjuk gaya, suasana hati, atau komposisi ekstra",
     "imageSearch": "apel",
     "languageCode": "id",
     "pasteHere": "Tempel di sini",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Tutup pencarian gambar",
+      "generateTitle": "Hasilkan gambar",
       "title": "Cari gambar"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "atau",
     "cornerLanguagesRestAfter": "dan sesuaikan penanda yang ditampilkan.",
     "imageSourcesLabel": "Sumber gambar:",
-    "imageSourcesRest": "tambahkan kunci API Pexels, Flaticon, Leonardo.Ai, atau Pollinations.ai untuk mengaktifkan pencarian dan pembuatan gambar dalam aplikasi.",
+    "imageSourcesRest": "tambahkan kunci API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, atau OpenAI untuk mengaktifkan pencarian dan pembuatan gambar dalam aplikasi.",
     "translationLabel": "Terjemahan:",
     "translationRest": "pilih Gemini, OpenAI, DeepSeek, Z.AI, Groq, atau penyedia khusus yang kompatibel dengan OpenAI.",
     "modelBaseUrlLabel": "URL model dan dasar:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "mengunduh perpustakaan kartu lengkap, termasuk gambar, sebagai cadangan terkompresi.",
     "exportImageLessLabel": "Ekspor JSON tanpa gambar:",
     "exportImageLessRest": "mengunduh JSON yang dapat dibaca tanpa gambar untuk diedit dengan tangan.",
+    "exportCompleteLabel": "Ekspor JSON lengkap:",
+    "exportCompleteRest": "mengunduh JSON yang dapat dibaca dengan pustaka kartu lengkap, termasuk gambar.",
     "managerPressText1": "Manajernya adalah perpustakaan kartu. Pilih kartu dengan kotak centang dan gunakan filter untuk menemukan gambar, teks, atau tautan sebaliknya yang hilang.",
     "managerPressText2": "Buka tampilan printer untuk melihat pratinjau kartu yang dipilih sebagai halaman recto dan verso. Pilih tata letak PDF di toolbar, tinjau peringatan apa pun, lalu unduh PDF dan cetak.",
     "apiCredits": "API yang didukung",

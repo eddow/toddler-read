@@ -15,6 +15,8 @@
     "exportCompressed": "Eksportuj skompresowany",
     "exportImageLessJson": "Eksportuj JSON bez obrazu",
     "file": "Plik",
+    "generate": "Spowodować",
+    "generating": "Generowanie...",
     "import": "Importuj",
     "manage": "Zarządzaj",
     "newCard": "Nowa karta",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtruj linki verso",
     "generatedCardPreview": "Wygenerowany podgląd karty",
     "imageSearchQuery": "Zapytanie wyszukiwania obrazu",
+    "imageGenerationHints": "Dodatkowe wskazówki dotyczące generowania obrazu",
     "loadingApp": "Ładowanie Toddler Read",
     "manager": "Menedżer",
     "managerTags": "Tagi menedżera",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} zwrócił pustą odpowiedź.",
     "missingProviderTranslations": "{{provider}} nie zwrócił żadnych użytecznych tłumaczeń.",
     "missingProviderKey": "Dodaj klucz {{provider}} API w Ustawieniach.",
+    "exportedComplete": "Wyeksportowano cały plik JSON z {{count}} {{unit}}.",
     "exportedCompressed": "Wyeksportowano skompresowaną kopię zapasową za pomocą {{count}} {{unit}}.",
     "exportedImageLess": "Wyeksportowano JSON bez obrazu z {{count}} {{unit}}.",
     "pdfDownloaded": "PDF pobrany ze stronami {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Klucz API",
     "baseUrl": "Bazowy adres URL",
+    "category": "Kategoria",
     "chooseTag": "Wybierz znacznik",
     "code": "Kod",
     "cornerLanguages": "Języki narożne",
@@ -204,9 +209,13 @@
     "help": "Pomoc",
     "image": "Obraz",
     "imageGeneration": "Generowanie obrazu",
+    "imageGenerationSources": "Źródła generowania obrazu",
     "imageGenerationPromptTemplate": "Szablon monitu o generowanie obrazu",
+    "imageSearch": "Wyszukiwanie obrazu",
+    "imageSearchSources": "Źródła wyszukiwania obrazów",
     "imageSource": "Źródło obrazu",
     "imageSources": "Źródła obrazów",
+    "imageType": "Typ obrazu",
     "managerAndPress": "Menedżer i prasa drukarska",
     "model": "modelka",
     "orientation": "Orientacja",
@@ -217,6 +226,7 @@
     "rendering": "Renderowanie",
     "settings": "Ustawienia",
     "size": "Rozmiar",
+    "sort": "Sortować",
     "tags": "Tagi",
     "translation": "Tłumaczenie",
     "translationPromptTemplate": "Szablon monitu o tłumaczenie",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai lub Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai lub OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai lub OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay lub Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay lub Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Wszystkie kategorie",
+    "pixabayTypes": {
+      "all": "Wszystko",
+      "photo": "Zdjęcie",
+      "illustration": "Ilustracja",
+      "vector": "Wektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Tła",
+      "fashion": "Moda",
+      "nature": "Natura",
+      "science": "Nauka",
+      "education": "Edukacja",
+      "feelings": "Uczucia",
+      "health": "Zdrowie",
+      "people": "Ludzie",
+      "religion": "Religia",
+      "places": "Miejsca",
+      "animals": "Zwierzęta",
+      "industry": "Przemysł",
+      "computer": "Komputer",
+      "food": "Żywność",
+      "sports": "Lekkoatletyka",
+      "transportation": "Transport",
+      "travel": "Podróż",
+      "buildings": "Zabudowania",
+      "business": "Biznes",
+      "music": "Muzyka"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Odpowiedni",
+      "latest": "Najnowszy"
+    }
   },
   "verbs": {
     "has": "ma",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Witam",
     "flag": "🇵🇱",
+    "imageGenerationHints": "dodatkowe wskazówki dotyczące stylu, nastroju lub kompozycji",
     "imageSearch": "jabłko",
     "languageCode": "pl",
     "pasteHere": "Wklej tutaj",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Zamknij wyszukiwanie obrazów",
+      "generateTitle": "Wygeneruj obraz",
       "title": "Wyszukaj obraz"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "lub",
     "cornerLanguagesRestAfter": "i dostosuj wyświetlany znacznik.",
     "imageSourcesLabel": "Źródła obrazu:",
-    "imageSourcesRest": "dodaj klucze API Pexels, Flaticon, Leonardo.Ai lub Pollinations.ai, aby umożliwić wyszukiwanie i generowanie obrazów w aplikacji.",
+    "imageSourcesRest": "dodaj klucze Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai lub OpenAI API, aby umożliwić wyszukiwanie i generowanie obrazów w aplikacji.",
     "translationLabel": "Tłumaczenie:",
     "translationRest": "wybierz Gemini, OpenAI, DeepSeek, Z.AI, Groq lub niestandardowego dostawcę kompatybilnego z OpenAI.",
     "modelBaseUrlLabel": "Model i podstawowy adres URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "pobiera pełną bibliotekę kart, w tym obrazy, jako skompresowaną kopię zapasową.",
     "exportImageLessLabel": "Eksportuj JSON bez obrazu:",
     "exportImageLessRest": "pobiera czytelny JSON bez obrazów do ręcznej edycji.",
+    "exportCompleteLabel": "Eksportuj cały JSON:",
+    "exportCompleteRest": "pobiera czytelny JSON z pełną biblioteką kart, w tym obrazami.",
     "managerPressText1": "Menedżerem jest biblioteka kart. Zaznacz karty z polami wyboru i użyj filtrów, aby znaleźć brakujące obrazy, tekst lub linki na odwrocie.",
     "managerPressText2": "Otwórz widok drukarki, aby wyświetlić podgląd wybranych kart w formie stron recto i verso. Wybierz układ PDF na pasku narzędzi, przejrzyj wszelkie ostrzeżenia, a następnie pobierz PDF i wydrukuj go.",
     "apiCredits": "Obsługiwane interfejsy API",

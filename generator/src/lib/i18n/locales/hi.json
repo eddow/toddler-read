@@ -15,6 +15,8 @@
     "exportCompressed": "संपीड़ित निर्यात करें",
     "exportImageLessJson": "छवि-रहित JSON निर्यात करें",
     "file": "फ़ाइल",
+    "generate": "उत्पन्न",
+    "generating": "उत्पन्न हो रहा है...",
     "import": "आयात करें",
     "manage": "प्रबंधित करें",
     "newCard": "नया कार्ड",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "वर्सो लिंक फ़िल्टर करें",
     "generatedCardPreview": "जनरेट किया गया कार्ड पूर्वावलोकन",
     "imageSearchQuery": "छवि खोज क्वेरी",
+    "imageGenerationHints": "अतिरिक्त छवि निर्माण संकेत",
     "loadingApp": "Toddler Read लोड हो रहा है",
     "manager": "मैनेजर",
     "managerTags": "प्रबंधक टैग",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ने एक खाली प्रत्युत्तर दिया।",
     "missingProviderTranslations": "{{provider}} ने कोई उपयोगी अनुवाद नहीं लौटाया।",
     "missingProviderKey": "सेटिंग्स में एक {{provider}} API कुंजी जोड़ें।",
+    "exportedComplete": "{{count}} {{unit}} के साथ संपूर्ण JSON निर्यात किया गया।",
     "exportedCompressed": "{{count}} {{unit}} के साथ संपीड़ित बैकअप निर्यात किया गया।",
     "exportedImageLess": "{{count}} {{unit}} के साथ छवि-रहित JSON निर्यात किया गया।",
     "pdfDownloaded": "PDF को {{count}} पृष्ठों के साथ डाउनलोड किया गया।",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API कुंजी",
     "baseUrl": "आधार यूआरएल",
+    "category": "वर्ग",
     "chooseTag": "टैग चुनें",
     "code": "कोड",
     "cornerLanguages": "कोने की भाषाएँ",
@@ -204,9 +209,13 @@
     "help": "मदद",
     "image": "छवि",
     "imageGeneration": "छवि निर्माण",
+    "imageGenerationSources": "छवि निर्माण स्रोत",
     "imageGenerationPromptTemplate": "छवि निर्माण शीघ्र टेम्पलेट",
+    "imageSearch": "छवि खोजो",
+    "imageSearchSources": "छवि खोज स्रोत",
     "imageSource": "छवि स्रोत",
     "imageSources": "छवि स्रोत",
+    "imageType": "छवि प्रकार",
     "managerAndPress": "मैनेजर एवं प्रिंटिंग प्रेस",
     "model": "मॉडल",
     "orientation": "अभिमुखीकरण",
@@ -217,6 +226,7 @@
     "rendering": "प्रतिपादन",
     "settings": "सेटिंग्स",
     "size": "आकार",
+    "sort": "क्रम से लगाना",
     "tags": "टैग",
     "translation": "अनुवाद",
     "translationPromptTemplate": "अनुवाद शीघ्र टेम्पलेट",
@@ -224,8 +234,45 @@
     "verso": "वर्सो"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, फ़्लैटिकॉन, लियोनार्डो.एआई, या पोलिनेशन्स.एआई",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, फ़्लैटिकॉन, पिक्साबे, अनस्प्लैश, लियोनार्डो.एआई, पोलिनेशन्स.एआई, या ओपनएआई",
+    "imageGenerationProviderKeys": "लियोनार्डो.एआई, पोलिनेशन्स.एआई, या ओपनएआई",
+    "imageSearchProviderKeys": "Pexels, फ़्लैटिकॉन, पिक्साबे, या अनस्प्लैश",
+    "pexelsOrFlaticon": "Pexels, फ़्लैटिकॉन, पिक्साबे, या अनस्प्लैश"
+  },
+  "imageSearchFilters": {
+    "allCategories": "सभी श्रेणियां",
+    "pixabayTypes": {
+      "all": "सभी",
+      "photo": "तस्वीर",
+      "illustration": "चित्रण",
+      "vector": "वेक्टर"
+    },
+    "pixabayCategories": {
+      "backgrounds": "पृष्ठभूमि",
+      "fashion": "पहनावा",
+      "nature": "प्रकृति",
+      "science": "विज्ञान",
+      "education": "शिक्षा",
+      "feelings": "भावनाएँ",
+      "health": "स्वास्थ्य",
+      "people": "लोग",
+      "religion": "धर्म",
+      "places": "स्थानों",
+      "animals": "पशु",
+      "industry": "उद्योग",
+      "computer": "कंप्यूटर",
+      "food": "खाना",
+      "sports": "खेल",
+      "transportation": "परिवहन",
+      "travel": "यात्रा",
+      "buildings": "इमारतों",
+      "business": "व्यापार",
+      "music": "संगीत"
+    },
+    "unsplashOrderBy": {
+      "relevant": "उपयुक्त",
+      "latest": "नवीनतम"
+    }
   },
   "verbs": {
     "has": "है",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "नमस्ते",
     "flag": "🇮🇳",
+    "imageGenerationHints": "अतिरिक्त शैली, मनोदशा, या रचना संकेत",
     "imageSearch": "सेब",
     "languageCode": "hi",
     "pasteHere": "यहाँ चिपकाएँ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "छवि खोज बंद करें",
+      "generateTitle": "छवि उत्पन्न करें",
       "title": "छवि खोजें"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "या",
     "cornerLanguagesRestAfter": "और प्रदर्शित मार्कर को समायोजित करें।",
     "imageSourcesLabel": "छवि स्रोत:",
-    "imageSourcesRest": "इन-ऐप छवि खोज और निर्माण को सक्षम करने के लिए Pexels, फ़्लैटिकॉन, लियोनार्डो.एआई, या पोलिनेशन्स.एआई एपीआई कुंजियाँ जोड़ें।",
+    "imageSourcesRest": "इन-ऐप छवि खोज और निर्माण को सक्षम करने के लिए Pexels, फ़्लैटिकॉन, पिक्साबे, अनस्प्लैश, लियोनार्डो.एआई, पोलिनेशन्स.एआई, या ओपनएआई एपीआई कुंजियाँ जोड़ें।",
     "translationLabel": "अनुवाद:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq, या एक कस्टम OpenAI-संगत प्रदाता चुनें।",
     "modelBaseUrlLabel": "मॉडल और आधार यूआरएल:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "संपीड़ित बैकअप के रूप में छवियों सहित संपूर्ण कार्ड लाइब्रेरी डाउनलोड करता है।",
     "exportImageLessLabel": "छवि-रहित JSON निर्यात करें:",
     "exportImageLessRest": "हाथ से संपादन के लिए छवियों के बिना पढ़ने योग्य JSON डाउनलोड करें।",
+    "exportCompleteLabel": "संपूर्ण JSON निर्यात करें:",
+    "exportCompleteRest": "छवियों सहित पूर्ण कार्ड लाइब्रेरी के साथ पठनीय JSON डाउनलोड करता है।",
     "managerPressText1": "प्रबंधक कार्ड लाइब्रेरी है. चेकबॉक्स वाले कार्ड चुनें और गुम छवियों, टेक्स्ट या वर्सो लिंक को ढूंढने के लिए फ़िल्टर का उपयोग करें।",
     "managerPressText2": "चयनित कार्डों का रेक्टो और वर्सो पृष्ठों के रूप में पूर्वावलोकन करने के लिए प्रिंटर दृश्य खोलें। टूलबार में PDF लेआउट चुनें, किसी भी चेतावनी की समीक्षा करें, फिर PDF डाउनलोड करें और इसे प्रिंट करें।",
     "apiCredits": "समर्थित एपीआई",

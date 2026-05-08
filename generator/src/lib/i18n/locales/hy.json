@@ -15,6 +15,8 @@
     "exportCompressed": "Արտահանել սեղմված",
     "exportImageLessJson": "Արտահանել առանց պատկերի JSON",
     "file": "Ֆայլ",
+    "generate": "Ստեղծել",
+    "generating": "Ստեղծվում է...",
     "import": "Ներմուծում",
     "manage": "Կառավարել",
     "newCard": "Նոր քարտ",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Զտել հակառակ հղումները",
     "generatedCardPreview": "Ստեղծված քարտի նախադիտում",
     "imageSearchQuery": "Պատկերի որոնման հարցում",
+    "imageGenerationHints": "Պատկերի ստեղծման լրացուցիչ հուշումներ",
     "loadingApp": "Բեռնվում է Toddler Read",
     "manager": "Կառավարիչ",
     "managerTags": "Մենեջերի պիտակներ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}}-ը վերադարձրեց դատարկ պատասխան:",
     "missingProviderTranslations": "{{provider}}-ը օգտագործելի թարգմանություններ չի վերադարձրել:",
     "missingProviderKey": "Կարգավորումներում ավելացրեք {{provider}} API բանալի:",
+    "exportedComplete": "Արտահանվել է ամբողջական JSON {{count}} {{unit}}-ով:",
     "exportedCompressed": "Արտահանվել է սեղմված պահուստավորում {{count}} {{unit}}-ով:",
     "exportedImageLess": "Արտահանվել է առանց պատկերի JSON {{count}} {{unit}}-ով:",
     "pdfDownloaded": "PDF-ը ներբեռնվել է {{count}} էջերով:",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API բանալի",
     "baseUrl": "Հիմնական URL",
+    "category": "Կարգավիճակ",
     "chooseTag": "Ընտրեք պիտակ",
     "code": "Կոդ",
     "cornerLanguages": "Անկյունային լեզուներ",
@@ -204,9 +209,13 @@
     "help": "Օգնություն",
     "image": "Պատկեր",
     "imageGeneration": "Պատկերի գեներացիա",
+    "imageGenerationSources": "Պատկերի ստեղծման աղբյուրներ",
     "imageGenerationPromptTemplate": "Պատկերի ստեղծման հուշման ձևանմուշ",
+    "imageSearch": "Պատկերի որոնում",
+    "imageSearchSources": "Պատկերների որոնման աղբյուրներ",
     "imageSource": "Պատկերի աղբյուր",
     "imageSources": "Պատկերի աղբյուրներ",
+    "imageType": "Պատկերի տեսակը",
     "managerAndPress": "Կառավարիչ և տպագրական մամուլ",
     "model": "մոդել",
     "orientation": "Կողմնորոշում",
@@ -217,6 +226,7 @@
     "rendering": "Ներկայացում",
     "settings": "Կարգավորումներ",
     "size": "Չափը",
+    "sort": "Տեսակավորել",
     "tags": "Պիտակներ",
     "translation": "Թարգմանություն",
     "translationPromptTemplate": "Թարգմանության հուշման ձևանմուշ",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai կամ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai կամ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai կամ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay կամ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay կամ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Բոլոր կատեգորիաները",
+    "pixabayTypes": {
+      "all": "Բոլորը",
+      "photo": "Լուսանկարը",
+      "illustration": "Նկարազարդում",
+      "vector": "Վեկտոր"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Նախապատմություններ",
+      "fashion": "Նորաձևություն",
+      "nature": "Բնություն",
+      "science": "Գիտություն",
+      "education": "Կրթություն",
+      "feelings": "Զգացմունքներ",
+      "health": "Առողջություն",
+      "people": "Մարդիկ",
+      "religion": "Կրոն",
+      "places": "Վայրեր",
+      "animals": "Կենդանիներ",
+      "industry": "Արդյունաբերություն",
+      "computer": "Համակարգիչ",
+      "food": "Սնունդ",
+      "sports": "Սպորտ",
+      "transportation": "Տրանսպորտ",
+      "travel": "Ճամփորդություն",
+      "buildings": "Շենքեր",
+      "business": "Բիզնես",
+      "music": "Երաժշտություն"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Համապատասխան",
+      "latest": "Վերջին"
+    }
   },
   "verbs": {
     "has": "ունի",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Ողջույն",
     "flag": "🇦🇲",
+    "imageGenerationHints": "լրացուցիչ ոճի, տրամադրության կամ կոմպոզիցիայի հուշումներ",
     "imageSearch": "խնձոր",
     "languageCode": "hy",
     "pasteHere": "Տեղադրեք այստեղ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Փակել պատկերների որոնումը",
+      "generateTitle": "Ստեղծեք պատկեր",
       "title": "Որոնել պատկեր"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "կամ",
     "cornerLanguagesRestAfter": "և կարգավորեք ցուցադրվող նշիչը:",
     "imageSourcesLabel": "Պատկերի աղբյուրներ.",
-    "imageSourcesRest": "ավելացրեք Pexels, Flaticon, Leonardo.Ai կամ Pollinations.ai API ստեղները՝ հավելվածում պատկերների որոնումը և ստեղծումը միացնելու համար:",
+    "imageSourcesRest": "ավելացրեք Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai կամ OpenAI API ստեղները՝ հավելվածում պատկերների որոնումն ու ստեղծումը միացնելու համար:",
     "translationLabel": "Թարգմանություն:",
     "translationRest": "ընտրեք Gemini, OpenAI, DeepSeek, Z.AI, Groq կամ հատուկ OpenAI-ի հետ համատեղելի մատակարար:",
     "modelBaseUrlLabel": "Մոդել և բազային URL.",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ներբեռնում է քարտի ամբողջական գրադարանը, ներառյալ պատկերները, որպես սեղմված կրկնօրինակում:",
     "exportImageLessLabel": "Արտահանել առանց պատկերի JSON՝",
     "exportImageLessRest": "ներբեռնում է ընթեռնելի JSON առանց պատկերների՝ ձեռքով խմբագրելու համար:",
+    "exportCompleteLabel": "Արտահանել ամբողջական JSON:",
+    "exportCompleteRest": "ներբեռնում է ընթեռնելի JSON՝ ամբողջական քարտադարանով, ներառյալ պատկերները:",
     "managerPressText1": "Կառավարիչը քարտադարանն է: Ընտրեք քարտեր վանդակներով և օգտագործեք զտիչներ՝ բացակայող պատկերները, տեքստը կամ հակառակ հղումները գտնելու համար:",
     "managerPressText2": "Բացեք տպիչի տեսքը՝ ընտրված քարտերը որպես ուղիղ և հակառակ էջեր նախադիտելու համար: Գործիքագոտում ընտրեք PDF դասավորությունը, դիտեք ցանկացած նախազգուշացում, այնուհետև ներբեռնեք PDF-ը և տպեք այն:",
     "apiCredits": "Աջակցվող API-ներ",

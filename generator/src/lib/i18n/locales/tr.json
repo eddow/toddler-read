@@ -15,6 +15,8 @@
     "exportCompressed": "Sıkıştırılmış dışa aktar",
     "exportImageLessJson": "Resimsiz dışa aktar JSON",
     "file": "Dosya",
+    "generate": "Oluştur",
+    "generating": "Oluşturuluyor...",
     "import": "İthalat",
     "manage": "Yönet",
     "newCard": "Yeni kart",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Verso bağlantılarını filtrele",
     "generatedCardPreview": "Oluşturulan kart önizlemesi",
     "imageSearchQuery": "Resim arama sorgusu",
+    "imageGenerationHints": "Ek görüntü oluşturma ipuçları",
     "loadingApp": "Toddler Read yükleniyor",
     "manager": "Yönetici",
     "managerTags": "Yönetici etiketleri",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} boş bir yanıt döndürdü.",
     "missingProviderTranslations": "{{provider}} kullanılabilir bir çeviri döndürmedi.",
     "missingProviderKey": "Ayarlar'a bir {{provider}} API anahtarı ekleyin.",
+    "exportedComplete": "{{count}} {{unit}} ile JSON'un tamamı dışa aktarıldı.",
     "exportedCompressed": "{{count}} {{unit}} ile sıkıştırılmış yedekleme dışa aktarıldı.",
     "exportedImageLess": "{{count}} {{unit}} ile görüntüsüz JSON dışa aktarıldı.",
     "pdfDownloaded": "PDF, {{count}} sayfalarıyla birlikte indirildi.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API anahtarı",
     "baseUrl": "Temel URL",
+    "category": "Kategori",
     "chooseTag": "Etiket seçin",
     "code": "Kod",
     "cornerLanguages": "Köşe dilleri",
@@ -204,9 +209,13 @@
     "help": "Yardım",
     "image": "Resim",
     "imageGeneration": "Görüntü oluşturma",
+    "imageGenerationSources": "Görüntü oluşturma kaynakları",
     "imageGenerationPromptTemplate": "Görüntü oluşturma istemi şablonu",
+    "imageSearch": "Görsel arama",
+    "imageSearchSources": "Görsel arama kaynakları",
     "imageSource": "Resim kaynağı",
     "imageSources": "Resim kaynakları",
+    "imageType": "Resim türü",
     "managerAndPress": "Yönetici ve Matbaa",
     "model": "modeli",
     "orientation": "Oryantasyon",
@@ -217,6 +226,7 @@
     "rendering": "İşleme",
     "settings": "Ayarlar",
     "size": "Boyut",
+    "sort": "Düzenlemek",
     "tags": "Etiketler",
     "translation": "Çeviri",
     "translationPromptTemplate": "Çeviri istemi şablonu",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai veya Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai veya OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai veya OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay veya Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay veya Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Tüm kategoriler",
+    "pixabayTypes": {
+      "all": "Tüm",
+      "photo": "Fotoğraf",
+      "illustration": "İllüstrasyon",
+      "vector": "Vektör"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Arka planlar",
+      "fashion": "Moda",
+      "nature": "Doğa",
+      "science": "Bilim",
+      "education": "Eğitim",
+      "feelings": "Duygular",
+      "health": "Sağlık",
+      "people": "İnsanlar",
+      "religion": "Din",
+      "places": "Yer",
+      "animals": "Hayvanlar",
+      "industry": "Endüstri",
+      "computer": "Bilgisayar",
+      "food": "Yiyecek",
+      "sports": "Spor",
+      "transportation": "Toplu taşıma",
+      "travel": "Seyahat",
+      "buildings": "Binalar",
+      "business": "İşletme",
+      "music": "Müzik"
+    },
+    "unsplashOrderBy": {
+      "relevant": "İlgili",
+      "latest": "En sonuncu"
+    }
   },
   "verbs": {
     "has": "var",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Merhaba",
     "flag": "🇹🇷",
+    "imageGenerationHints": "ekstra stil, ruh hali veya kompozisyon ipuçları",
     "imageSearch": "elma",
     "languageCode": "tr",
     "pasteHere": "Buraya yapıştır",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Görsel aramayı kapat",
+      "generateTitle": "Resim oluştur",
       "title": "Resim ara"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "veya",
     "cornerLanguagesRestAfter": "ve görüntülenen işaretçiyi ayarlayın.",
     "imageSourcesLabel": "Resim kaynakları:",
-    "imageSourcesRest": "uygulama içi görsel aramayı ve oluşturmayı etkinleştirmek için Pexels, Flaticon, Leonardo.Ai veya Pollinations.ai API anahtarlarını ekleyin.",
+    "imageSourcesRest": "uygulama içi görsel aramayı ve oluşturmayı etkinleştirmek için Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai veya OpenAI API anahtarlarını ekleyin.",
     "translationLabel": "Çeviri:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq veya OpenAI uyumlu özel bir sağlayıcıyı seçin.",
     "modelBaseUrlLabel": "Model ve temel URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "görüntüler de dahil olmak üzere kart kitaplığının tamamını sıkıştırılmış bir yedek olarak indirir.",
     "exportImageLessLabel": "Görüntüsüz JSON'i dışa aktarın:",
     "exportImageLessRest": "elle düzenleme için resimler olmadan okunabilir JSON'i indirir.",
+    "exportCompleteLabel": "Tamamlanan JSON'u dışa aktar:",
+    "exportCompleteRest": "resimler de dahil olmak üzere tam kart kitaplığıyla birlikte okunabilir JSON'u indirir.",
     "managerPressText1": "Yönetici kart kütüphanesidir. Onay kutularını içeren kartları seçin ve eksik görselleri, metinleri veya verso bağlantılarını bulmak için filtreleri kullanın.",
     "managerPressText2": "Seçilen kartların recto ve verso sayfaları olarak önizlemesini görmek için yazıcı görünümünü açın. Araç çubuğunda PDF düzenini seçin, uyarıları inceleyin, ardından PDF'i indirin ve yazdırın.",
     "apiCredits": "Desteklenen API'ler",

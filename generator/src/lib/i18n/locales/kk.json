@@ -15,6 +15,8 @@
     "exportCompressed": "Export compressed",
     "exportImageLessJson": "JSON кескінсіз экспорттау",
     "file": "Файл",
+    "generate": "Жасау",
+    "generating": "Жасалуда...",
     "import": "Import",
     "manage": "Басқару",
     "newCard": "Жаңа карта",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Сілтемелерді сүзіңіз",
     "generatedCardPreview": "Жасалған картаны алдын ала қарау",
     "imageSearchQuery": "Суретті іздеу сұрауы",
+    "imageGenerationHints": "Кескінді құру туралы қосымша кеңестер",
     "loadingApp": "Toddler Read жүктелуде",
     "manager": "Менеджер",
     "managerTags": "Менеджер тегтері",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} бос жауап қайтарды.",
     "missingProviderTranslations": "{{provider}} қолдануға болатын аудармаларды қайтармады.",
     "missingProviderKey": "Параметрлерде {{provider}} API кілтін қосыңыз.",
+    "exportedComplete": "{{count}} {{unit}} бар толық JSON экспортталды.",
     "exportedCompressed": "{{count}} {{unit}} көмегімен қысылған сақтық көшірме экспортталды.",
     "exportedImageLess": "{{count}} {{unit}} көмегімен экспортталған кескінсіз JSON.",
     "pdfDownloaded": "PDF {{count}} беттерімен жүктелді.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API кілті",
     "baseUrl": "Негізгі URL",
+    "category": "Санат",
     "chooseTag": "Тегті таңдаңыз",
     "code": "Код",
     "cornerLanguages": "Бұрыш тілдері",
@@ -204,9 +209,13 @@
     "help": "Көмек",
     "image": "Кескін",
     "imageGeneration": "Кескінді қалыптастыру",
+    "imageGenerationSources": "Кескінді құру көздері",
     "imageGenerationPromptTemplate": "Кескінді құруға шақыру үлгісі",
+    "imageSearch": "Суретті іздеу",
+    "imageSearchSources": "Суреттерді іздеу көздері",
     "imageSource": "Сурет көзі",
     "imageSources": "Сурет көздері",
+    "imageType": "Сурет түрі",
     "managerAndPress": "Менеджер және баспахана",
     "model": "үлгі",
     "orientation": "Бағдарлау",
@@ -217,6 +226,7 @@
     "rendering": "Рендеринг",
     "settings": "Параметрлер",
     "size": "Өлшем",
+    "sort": "Сұрыптау",
     "tags": "Тегтер",
     "translation": "Аударма",
     "translationPromptTemplate": "Аударма шақыру үлгісі",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai немесе Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai немесе OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai немесе OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay немесе Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay немесе Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Барлық санаттар",
+    "pixabayTypes": {
+      "all": "Барлығы",
+      "photo": "Фото",
+      "illustration": "Иллюстрация",
+      "vector": "Вектор"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Фондар",
+      "fashion": "Сән",
+      "nature": "Табиғат",
+      "science": "Ғылым",
+      "education": "Білім",
+      "feelings": "Сезімдер",
+      "health": "Денсаулық",
+      "people": "Адамдар",
+      "religion": "Дін",
+      "places": "Орындар",
+      "animals": "Жануарлар",
+      "industry": "Өнеркәсіп",
+      "computer": "Компьютер",
+      "food": "Тамақ",
+      "sports": "Спорт",
+      "transportation": "Тасымалдау",
+      "travel": "Саяхат",
+      "buildings": "Ғимараттар",
+      "business": "Бизнес",
+      "music": "Музыка"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Сәйкес",
+      "latest": "Соңғы"
+    }
   },
   "verbs": {
     "has": "бар",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Сәлем",
     "flag": "🇰🇿",
+    "imageGenerationHints": "қосымша стиль, көңіл-күй немесе композиция туралы кеңестер",
     "imageSearch": "алма",
     "languageCode": "kk",
     "pasteHere": "Осы жерге қойыңыз",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Сурет іздеуді жабу",
+      "generateTitle": "Кескінді жасау",
       "title": "Суретті іздеу"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "немесе",
     "cornerLanguagesRestAfter": "және көрсетілген маркерді реттеңіз.",
     "imageSourcesLabel": "Сурет көздері:",
-    "imageSourcesRest": "қолданбада кескін іздеуді және жасауды қосу үшін Pexels, Flaticon, Leonardo.Ai немесе Pollinations.ai API кілттерін қосыңыз.",
+    "imageSourcesRest": "қолданбада кескін іздеуді және жасауды қосу үшін Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai немесе OpenAI API кілттерін қосыңыз.",
     "translationLabel": "Аударма:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq немесе теңшелетін OpenAI-үйлесімді провайдерді таңдаңыз.",
     "modelBaseUrlLabel": "Үлгі және негізгі URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "толық карта кітапханасын, соның ішінде кескіндерді қысылған сақтық көшірме ретінде жүктейді.",
     "exportImageLessLabel": "JSON кескінсіз экспорттау:",
     "exportImageLessRest": "қолмен өңдеу үшін суреттерсіз оқылатын JSON жүктеп алады.",
+    "exportCompleteLabel": "JSON-ны экспорттау аяқталды:",
+    "exportCompleteRest": "суреттерді қоса, толық карта кітапханасы бар оқылатын JSON жүктеп алады.",
     "managerPressText1": "Менеджер – картотека. Құсбелгілері бар карталарды таңдап, жетіспейтін суреттерді, мәтінді немесе сілтемелерді табу үшін сүзгілерді пайдаланыңыз.",
     "managerPressText2": "Таңдалған карталарды тік және қарсы беттер ретінде алдын ала қарау үшін принтер көрінісін ашыңыз. Құралдар тақтасында PDF орналасуын таңдаңыз, кез келген ескертулерді қарап шығыңыз, содан кейін PDF жүктеп алып, басып шығарыңыз.",
     "apiCredits": "Қолдау көрсетілетін API интерфейстері",

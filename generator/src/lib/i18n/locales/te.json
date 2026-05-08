@@ -15,6 +15,8 @@
     "exportCompressed": "ఎగుమతి కంప్రెస్ చేయబడింది",
     "exportImageLessJson": "చిత్రం లేని JSONని ఎగుమతి చేయండి",
     "file": "ఫైల్",
+    "generate": "సృష్టించు",
+    "generating": "ఉత్పత్తి చేస్తోంది...",
     "import": "దిగుమతి",
     "manage": "నిర్వహించండి",
     "newCard": "కొత్త కార్డు",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "వెర్సో లింక్‌లను ఫిల్టర్ చేయండి",
     "generatedCardPreview": "కార్డ్ ప్రివ్యూ రూపొందించబడింది",
     "imageSearchQuery": "చిత్ర శోధన ప్రశ్న",
+    "imageGenerationHints": "అదనపు ఇమేజ్ జనరేషన్ సూచనలు",
     "loadingApp": "Toddler Read లోడ్ అవుతోంది",
     "manager": "మేనేజర్",
     "managerTags": "మేనేజర్ ట్యాగ్‌లు",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ఖాళీ ప్రతిస్పందనను అందించింది.",
     "missingProviderTranslations": "{{provider}} ఉపయోగించదగిన అనువాదాలు ఏవీ అందించబడలేదు.",
     "missingProviderKey": "సెట్టింగ్‌లలో {{provider}} API కీని జోడించండి.",
+    "exportedComplete": "{{count}} {{unit}}తో పూర్తి JSON ఎగుమతి చేయబడింది.",
     "exportedCompressed": "{{count}} {{unit}}తో కంప్రెస్డ్ బ్యాకప్ ఎగుమతి చేయబడింది.",
     "exportedImageLess": "{{count}} {{unit}}తో చిత్రం-తక్కువ JSON ఎగుమతి చేయబడింది.",
     "pdfDownloaded": "{{count}} పేజీలతో PDF డౌన్‌లోడ్ చేయబడింది.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API కీ",
     "baseUrl": "బేస్ URL",
+    "category": "వర్గం",
     "chooseTag": "ట్యాగ్‌ని ఎంచుకోండి",
     "code": "కోడ్",
     "cornerLanguages": "మూల భాషలు",
@@ -204,9 +209,13 @@
     "help": "సహాయం",
     "image": "చిత్రం",
     "imageGeneration": "చిత్రం తరం",
+    "imageGenerationSources": "చిత్రం ఉత్పత్తి మూలాలు",
     "imageGenerationPromptTemplate": "చిత్రం ఉత్పత్తి ప్రాంప్ట్ టెంప్లేట్",
+    "imageSearch": "చిత్ర శోధన",
+    "imageSearchSources": "చిత్ర శోధన మూలాలు",
     "imageSource": "చిత్ర మూలం",
     "imageSources": "చిత్ర మూలాలు",
+    "imageType": "చిత్రం రకం",
     "managerAndPress": "మేనేజర్ మరియు ప్రింటింగ్ ప్రెస్",
     "model": "మోడల్",
     "orientation": "ఓరియంటేషన్",
@@ -217,6 +226,7 @@
     "rendering": "రెండరింగ్",
     "settings": "సెట్టింగ్‌లు",
     "size": "పరిమాణం",
+    "sort": "క్రమబద్ధీకరించు",
     "tags": "ట్యాగ్‌లు",
     "translation": "అనువాదం",
     "translationPromptTemplate": "అనువాద ప్రాంప్ట్ టెంప్లేట్",
@@ -224,8 +234,45 @@
     "verso": "వెర్సో"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, లేదా Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, లేదా OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, లేదా OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay లేదా Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay లేదా Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "అన్ని వర్గాలు",
+    "pixabayTypes": {
+      "all": "అన్నీ",
+      "photo": "ఫోటో",
+      "illustration": "ఇలస్ట్రేషన్",
+      "vector": "వెక్టర్"
+    },
+    "pixabayCategories": {
+      "backgrounds": "నేపథ్యాలు",
+      "fashion": "ఫ్యాషన్",
+      "nature": "ప్రకృతి",
+      "science": "సైన్స్",
+      "education": "విద్య",
+      "feelings": "భావాలు",
+      "health": "ఆరోగ్యం",
+      "people": "ప్రజలు",
+      "religion": "మతం",
+      "places": "స్థలాలు",
+      "animals": "జంతువులు",
+      "industry": "పరిశ్రమ",
+      "computer": "కంప్యూటర్",
+      "food": "ఆహారం",
+      "sports": "క్రీడలు",
+      "transportation": "రవాణా",
+      "travel": "ప్రయాణం",
+      "buildings": "భవనాలు",
+      "business": "వ్యాపారం",
+      "music": "సంగీతం"
+    },
+    "unsplashOrderBy": {
+      "relevant": "సంబంధిత",
+      "latest": "తాజా"
+    }
   },
   "verbs": {
     "has": "కలిగి ఉంది",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "నమస్కారం",
     "flag": "🇮🇳",
+    "imageGenerationHints": "అదనపు శైలి, మానసిక స్థితి లేదా కూర్పు సూచనలు",
     "imageSearch": "ఆపిల్",
     "languageCode": "te",
     "pasteHere": "ఇక్కడ అతికించండి",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "చిత్ర శోధనను మూసివేయండి",
+      "generateTitle": "చిత్రాన్ని రూపొందించండి",
       "title": "చిత్రాన్ని శోధించండి"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "లేదా",
     "cornerLanguagesRestAfter": "మరియు ప్రదర్శించబడిన మార్కర్‌ను సర్దుబాటు చేయండి.",
     "imageSourcesLabel": "చిత్ర మూలాలు:",
-    "imageSourcesRest": "యాప్‌లో చిత్ర శోధన మరియు ఉత్పత్తిని ప్రారంభించడానికి Pexels, Flaticon, Leonardo.Ai లేదా Pollinations.ai API కీలను జోడించండి.",
+    "imageSourcesRest": "యాప్‌లో చిత్ర శోధన మరియు ఉత్పత్తిని ప్రారంభించడానికి Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai లేదా OpenAI API కీలను జోడించండి.",
     "translationLabel": "అనువాదం:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq లేదా అనుకూల OpenAI-అనుకూల ప్రొవైడర్‌ను ఎంచుకోండి.",
     "modelBaseUrlLabel": "మోడల్ మరియు బేస్ URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "చిత్రాలతో సహా పూర్తి కార్డ్ లైబ్రరీని కంప్రెస్డ్ బ్యాకప్‌గా డౌన్‌లోడ్ చేస్తుంది.",
     "exportImageLessLabel": "చిత్రం లేని JSONని ఎగుమతి చేయండి:",
     "exportImageLessRest": "చేతి సవరణ కోసం ఇమేజ్‌లు లేకుండా చదవగలిగే JSONని డౌన్‌లోడ్ చేస్తుంది.",
+    "exportCompleteLabel": "JSON ఎగుమతి పూర్తయింది:",
+    "exportCompleteRest": "చిత్రాలతో సహా పూర్తి కార్డ్ లైబ్రరీతో చదవగలిగే JSONని డౌన్‌లోడ్ చేస్తుంది.",
     "managerPressText1": "మేనేజర్ కార్డ్ లైబ్రరీ. చెక్‌బాక్స్‌లతో కార్డ్‌లను ఎంచుకోండి మరియు తప్పిపోయిన చిత్రాలు, వచనం లేదా వెర్సో లింక్‌లను కనుగొనడానికి ఫిల్టర్‌లను ఉపయోగించండి.",
     "managerPressText2": "ఎంచుకున్న కార్డ్‌లను రెక్టో మరియు వెర్సో పేజీలుగా ప్రివ్యూ చేయడానికి ప్రింటర్ వీక్షణను తెరవండి. టూల్‌బార్‌లో PDF లేఅవుట్‌ని ఎంచుకోండి, ఏవైనా హెచ్చరికలను సమీక్షించండి, ఆపై PDFని డౌన్‌లోడ్ చేసి, ప్రింట్ చేయండి.",
     "apiCredits": "మద్దతు ఉన్న APIలు",

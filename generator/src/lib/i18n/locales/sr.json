@@ -15,6 +15,8 @@
     "exportCompressed": "Извоз компресован",
     "exportImageLessJson": "Извези JSON без слика",
     "file": "Филе",
+    "generate": "Генерате",
+    "generating": "Генерисање...",
     "import": "Увоз",
     "manage": "Управљај",
     "newCard": "Нова картица",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Филтрирајте версо везе",
     "generatedCardPreview": "Генерисани преглед картице",
     "imageSearchQuery": "Упит за претрагу слика",
+    "imageGenerationHints": "Додатни савети за генерисање слика",
     "loadingApp": "Учитавање Toddler Read",
     "manager": "Менаџер",
     "managerTags": "Ознаке менаџера",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} је вратио празан одговор.",
     "missingProviderTranslations": "{{provider}} није вратио ниједан употребљив превод.",
     "missingProviderKey": "Додајте кључ {{provider}} API у Сеттингс.",
+    "exportedComplete": "Извезен је комплетан JSON са {{count}} {{unit}}.",
     "exportedCompressed": "Извезена компримована резервна копија са {{count}} {{unit}}.",
     "exportedImageLess": "Извезен JSON без слике са {{count}} {{unit}}.",
     "pdfDownloaded": "PDF преузет са {{count}} страницама.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Кључ API",
     "baseUrl": "Основни УРЛ",
+    "category": "Категорија",
     "chooseTag": "Изаберите ознаку",
     "code": "Код",
     "cornerLanguages": "Цорнер лангуагес",
@@ -204,9 +209,13 @@
     "help": "Помоћ",
     "image": "Слика",
     "imageGeneration": "Генерисање слике",
+    "imageGenerationSources": "Извори генерисања слика",
     "imageGenerationPromptTemplate": "Шаблон упита за генерисање слике",
+    "imageSearch": "Претрага слика",
+    "imageSearchSources": "Извори претраге слика",
     "imageSource": "Извор слике",
     "imageSources": "Извори слика",
+    "imageType": "Тип слике",
     "managerAndPress": "Менаџер и штампарија",
     "model": "модел",
     "orientation": "Оријентација",
@@ -217,6 +226,7 @@
     "rendering": "Рендеринг",
     "settings": "Подешавања",
     "size": "Величина",
+    "sort": "Сортирај",
     "tags": "Ознаке",
     "translation": "Превод",
     "translationPromptTemplate": "Шаблон упита за превод",
@@ -224,8 +234,45 @@
     "verso": "Версо"
   },
   "providers": {
-    "imageProviderKeys": "Пекелс, Флатицон, Леонардо.Аи или Поллинатионс.аи",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Пекелс, Флатицон, Пикабаи, Унспласх, Леонардо.Аи, Поллинатионс.аи или ОпенАИ",
+    "imageGenerationProviderKeys": "Леонардо.Аи, Поллинатионс.аи или ОпенАИ",
+    "imageSearchProviderKeys": "Пекелс, Флатицон, Пикабаи или Унспласх",
+    "pexelsOrFlaticon": "Пекелс, Флатицон, Пикабаи или Унспласх"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Све категорије",
+    "pixabayTypes": {
+      "all": "Све",
+      "photo": "Пхото",
+      "illustration": "Илустрација",
+      "vector": "Вецтор"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Позадине",
+      "fashion": "Мода",
+      "nature": "Природа",
+      "science": "Наука",
+      "education": "Образовање",
+      "feelings": "Осећања",
+      "health": "Здравље",
+      "people": "Људи",
+      "religion": "Религија",
+      "places": "Места",
+      "animals": "Животиње",
+      "industry": "Индустрија",
+      "computer": "Рачунар",
+      "food": "Храна",
+      "sports": "Спортс",
+      "transportation": "Транспорт",
+      "travel": "Травел",
+      "buildings": "Зграде",
+      "business": "Посао",
+      "music": "Музика"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Релевантно",
+      "latest": "Најновије"
+    }
   },
   "verbs": {
     "has": "има",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Здраво",
     "flag": "🇷🇸",
+    "imageGenerationHints": "додатни наговештаји стила, расположења или композиције",
     "imageSearch": "јабука",
     "languageCode": "sr",
     "pasteHere": "Залепите овде",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Затворите претрагу слика",
+      "generateTitle": "Генеришите слику",
       "title": "Претражи слику"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "или",
     "cornerLanguagesRestAfter": "и подесите приказани маркер.",
     "imageSourcesLabel": "Извори слика:",
-    "imageSourcesRest": "додајте АПИ кључеве Пекелс, Флатицон, Леонардо.Аи или Поллинатионс.аи да бисте омогућили претрагу и генерисање слика у апликацији.",
+    "imageSourcesRest": "додајте Пекелс, Флатицон, Пикабаи, Унспласх, Леонардо.Аи, Поллинатионс.аи или ОпенАИ АПИ кључеве да бисте омогућили претрагу и генерисање слика у апликацији.",
     "translationLabel": "превод:",
     "translationRest": "изаберите Gemini, OpenAI, DeepSeek, Z.AI, Groq или прилагођеног провајдера компатибилног са OpenAI.",
     "modelBaseUrlLabel": "Модел и основна УРЛ адреса:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "преузима пуну библиотеку картица, укључујући слике, као компримовану резервну копију.",
     "exportImageLessLabel": "Извези JSON без слике:",
     "exportImageLessRest": "преузима читљив JSON без слика за ручно уређивање.",
+    "exportCompleteLabel": "Извези комплетан ЈСОН:",
+    "exportCompleteRest": "преузима читљив ЈСОН са комплетном библиотеком картица, укључујући слике.",
     "managerPressText1": "Управник је картотека. Изаберите картице са пољима за потврду и користите филтере да бисте пронашли слике, текст или линкове који недостају.",
     "managerPressText2": "Отворите приказ штампача да бисте прегледали изабране картице као рецто и версо странице. Изаберите PDF изглед на траци са алаткама, прегледајте сва упозорења, а затим преузмите PDF и одштампајте га.",
     "apiCredits": "Подржани АПИ-ји",

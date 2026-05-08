@@ -15,6 +15,8 @@
     "exportCompressed": "સંકુચિત નિકાસ કરો",
     "exportImageLessJson": "ઇમેજ-લેસ JSON નિકાસ કરો",
     "file": "ફાઈલ",
+    "generate": "જનરેટ કરો",
+    "generating": "જનરેટ કરી રહ્યું છે...",
     "import": "આયાત કરો",
     "manage": "વ્યવસ્થા કરો",
     "newCard": "નવું કાર્ડ",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "ફિલ્ટર વર્સો લિંક્સ",
     "generatedCardPreview": "જનરેટ કરેલ કાર્ડ પૂર્વાવલોકન",
     "imageSearchQuery": "છબી શોધ ક્વેરી",
+    "imageGenerationHints": "વધારાની છબી જનરેશન સંકેતો",
     "loadingApp": "Toddler Read લોડ કરી રહ્યું છે",
     "manager": "મેનેજર",
     "managerTags": "મેનેજર ટૅગ્સ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} એ ખાલી પ્રતિસાદ આપ્યો.",
     "missingProviderTranslations": "{{provider}}એ કોઈ ઉપયોગી અનુવાદ પરત કર્યા નથી.",
     "missingProviderKey": "સેટિંગ્સમાં {{provider}} API કી ઉમેરો.",
+    "exportedComplete": "{{count}} {{unit}} સાથે પૂર્ણ JSON ની નિકાસ કરી.",
     "exportedCompressed": "{{count}} {{unit}} સાથે સંકુચિત બેકઅપની નિકાસ.",
     "exportedImageLess": "{{count}} {{unit}} સાથે છબી-લેસ JSON નિકાસ કરી.",
     "pdfDownloaded": "PDF {{count}} પૃષ્ઠો સાથે ડાઉનલોડ કરેલ.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API કી",
     "baseUrl": "આધાર URL",
+    "category": "શ્રેણી",
     "chooseTag": "ટેગ પસંદ કરો",
     "code": "કોડ",
     "cornerLanguages": "કોર્નર ભાષાઓ",
@@ -204,9 +209,13 @@
     "help": "મદદ",
     "image": "છબી",
     "imageGeneration": "છબી જનરેશન",
+    "imageGenerationSources": "છબી જનરેશન સ્ત્રોતો",
     "imageGenerationPromptTemplate": "છબી જનરેશન પ્રોમ્પ્ટ ટેમ્પલેટ",
+    "imageSearch": "છબી શોધ",
+    "imageSearchSources": "છબી શોધ સ્ત્રોતો",
     "imageSource": "છબી સ્ત્રોત",
     "imageSources": "છબી સ્ત્રોતો",
+    "imageType": "છબી પ્રકાર",
     "managerAndPress": "મેનેજર અને પ્રિન્ટીંગ પ્રેસ",
     "model": "મોડેલ",
     "orientation": "ઓરિએન્ટેશન",
@@ -217,6 +226,7 @@
     "rendering": "રેન્ડરીંગ",
     "settings": "સેટિંગ્સ",
     "size": "કદ",
+    "sort": "સૉર્ટ કરો",
     "tags": "ટૅગ્સ",
     "translation": "અનુવાદ",
     "translationPromptTemplate": "અનુવાદ પ્રોમ્પ્ટ ટેમ્પલેટ",
@@ -224,8 +234,45 @@
     "verso": "વર્સો"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, અથવા Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, અથવા OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, અથવા OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, અથવા Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, અથવા Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "બધી શ્રેણીઓ",
+    "pixabayTypes": {
+      "all": "બધા",
+      "photo": "ફોટો",
+      "illustration": "દૃષ્ટાંત",
+      "vector": "વેક્ટર"
+    },
+    "pixabayCategories": {
+      "backgrounds": "પૃષ્ઠભૂમિ",
+      "fashion": "ફેશન",
+      "nature": "કુદરત",
+      "science": "વિજ્ઞાન",
+      "education": "શિક્ષણ",
+      "feelings": "લાગણીઓ",
+      "health": "આરોગ્ય",
+      "people": "લોકો",
+      "religion": "ધર્મ",
+      "places": "સ્થાનો",
+      "animals": "પ્રાણીઓ",
+      "industry": "ઉદ્યોગ",
+      "computer": "કોમ્પ્યુટર",
+      "food": "ખોરાક",
+      "sports": "રમતગમત",
+      "transportation": "પરિવહન",
+      "travel": "પ્રવાસ",
+      "buildings": "ઇમારતો",
+      "business": "વ્યાપાર",
+      "music": "સંગીત"
+    },
+    "unsplashOrderBy": {
+      "relevant": "સંબંધિત",
+      "latest": "નવીનતમ"
+    }
   },
   "verbs": {
     "has": "ધરાવે છે",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "હેલો",
     "flag": "🇮🇳",
+    "imageGenerationHints": "વધારાની શૈલી, મૂડ અથવા રચના સંકેતો",
     "imageSearch": "સફરજન",
     "languageCode": "gu",
     "pasteHere": "અહીં પેસ્ટ કરો",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "છબી શોધ બંધ કરો",
+      "generateTitle": "છબી બનાવો",
       "title": "છબી શોધો"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "અથવા",
     "cornerLanguagesRestAfter": "અને પ્રદર્શિત માર્કરને સમાયોજિત કરો.",
     "imageSourcesLabel": "છબી સ્ત્રોતો:",
-    "imageSourcesRest": "એપ્લિકેશનમાં ઇમેજ શોધ અને જનરેશનને સક્ષમ કરવા માટે Pexels, Flaticon, Leonardo.Ai અથવા Pollinations.ai API કી ઉમેરો.",
+    "imageSourcesRest": "એપ્લિકેશનમાં ઇમેજ શોધ અને જનરેશનને સક્ષમ કરવા માટે Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai અથવા OpenAI API કી ઉમેરો.",
     "translationLabel": "અનુવાદ:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq અથવા કસ્ટમ OpenAI-સુસંગત પ્રદાતા પસંદ કરો.",
     "modelBaseUrlLabel": "મોડલ અને આધાર URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "સંકુચિત બેકઅપ તરીકે છબીઓ સહિત સંપૂર્ણ કાર્ડ લાઇબ્રેરી ડાઉનલોડ કરે છે.",
     "exportImageLessLabel": "છબી-લેસ JSON નિકાસ કરો:",
     "exportImageLessRest": "હેન્ડ એડિટિંગ માટે છબીઓ વિના વાંચી શકાય તેવું JSON ડાઉનલોડ કરે છે.",
+    "exportCompleteLabel": "પૂર્ણ JSON નિકાસ કરો:",
+    "exportCompleteRest": "છબીઓ સહિત સંપૂર્ણ કાર્ડ લાઇબ્રેરી સાથે વાંચી શકાય તેવા JSON ને ડાઉનલોડ કરે છે.",
     "managerPressText1": "મેનેજર એ કાર્ડ લાઇબ્રેરી છે. ચેકબોક્સ સાથે કાર્ડ્સ પસંદ કરો અને ગુમ થયેલ છબીઓ, ટેક્સ્ટ અથવા વર્સો લિંક્સ શોધવા માટે ફિલ્ટર્સનો ઉપયોગ કરો.",
     "managerPressText2": "રેક્ટો અને વર્સો પૃષ્ઠો તરીકે પસંદ કરેલા કાર્ડ્સનું પૂર્વાવલોકન કરવા માટે પ્રિન્ટર વ્યૂ ખોલો. ટૂલબારમાં PDF લેઆઉટ પસંદ કરો, કોઈપણ ચેતવણીઓની સમીક્ષા કરો, પછી PDF ડાઉનલોડ કરો અને તેને છાપો.",
     "apiCredits": "સપોર્ટેડ API",

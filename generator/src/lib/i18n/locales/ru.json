@@ -15,6 +15,8 @@
     "exportCompressed": "Экспорт сжатый",
     "exportImageLessJson": "Экспортировать JSON без изображения",
     "file": "Файл",
+    "generate": "Генерировать",
+    "generating": "Создание...",
     "import": "Импорт",
     "manage": "Управление",
     "newCard": "Новая карта",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Фильтровать ссылки на обратной стороне",
     "generatedCardPreview": "Предварительный просмотр созданной карты",
     "imageSearchQuery": "Поисковый запрос изображения",
+    "imageGenerationHints": "Дополнительные советы по созданию изображений",
     "loadingApp": "Загрузка Toddler Read",
     "manager": "Менеджер",
     "managerTags": "Менеджер тегов",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} вернул пустой ответ.",
     "missingProviderTranslations": "{{provider}} не вернул пригодных для использования переводов.",
     "missingProviderKey": "Добавьте ключ {{provider}} API в настройках.",
+    "exportedComplete": "Экспортирован полный JSON с {{count}} {{unit}}.",
     "exportedCompressed": "Экспортированная сжатая резервная копия с помощью {{count}} {{unit}}.",
     "exportedImageLess": "Экспортирован JSON без изображения с помощью {{count}} {{unit}}.",
     "pdfDownloaded": "PDF загружен со страницами {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Ключ API",
     "baseUrl": "Базовый URL",
+    "category": "Категория",
     "chooseTag": "Выберите тег",
     "code": "Код",
     "cornerLanguages": "Угловые языки",
@@ -204,9 +209,13 @@
     "help": "Помощь",
     "image": "Изображение",
     "imageGeneration": "Генерация изображений",
+    "imageGenerationSources": "Источники генерации изображений",
     "imageGenerationPromptTemplate": "Шаблон запроса на создание изображения",
+    "imageSearch": "Поиск изображений",
+    "imageSearchSources": "Источники поиска изображений",
     "imageSource": "Источник изображения",
     "imageSources": "Источники изображений",
+    "imageType": "Тип изображения",
     "managerAndPress": "Менеджер и типография",
     "model": "модель",
     "orientation": "Ориентация",
@@ -217,6 +226,7 @@
     "rendering": "Рендеринг",
     "settings": "Настройки",
     "size": "Размер",
+    "sort": "Сортировать",
     "tags": "Теги",
     "translation": "Перевод",
     "translationPromptTemplate": "Шаблон приглашения на перевод",
@@ -224,8 +234,45 @@
     "verso": "Версо"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai или Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai или OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai или OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay или Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay или Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Все категории",
+    "pixabayTypes": {
+      "all": "Все",
+      "photo": "Фото",
+      "illustration": "Иллюстрация",
+      "vector": "Вектор"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Фоны",
+      "fashion": "Мода",
+      "nature": "Природа",
+      "science": "Наука",
+      "education": "Образование",
+      "feelings": "Чувства",
+      "health": "Здоровье",
+      "people": "Люди",
+      "religion": "Религия",
+      "places": "Места",
+      "animals": "Животные",
+      "industry": "Промышленность",
+      "computer": "Компьютер",
+      "food": "Еда",
+      "sports": "Спорт",
+      "transportation": "Транспорт",
+      "travel": "Путешествовать",
+      "buildings": "Здания",
+      "business": "Бизнес",
+      "music": "Музыка"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Соответствующий",
+      "latest": "Последний"
+    }
   },
   "verbs": {
     "has": "имеет",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Привет",
     "flag": "🇷🇺",
+    "imageGenerationHints": "дополнительные подсказки по стилю, настроению или композиции",
     "imageSearch": "яблоко",
     "languageCode": "ru",
     "pasteHere": "Вставить сюда",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Закрыть поиск изображений",
+      "generateTitle": "Создать изображение",
       "title": "Поиск изображения"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "или",
     "cornerLanguagesRestAfter": "и отрегулируйте отображаемый маркер.",
     "imageSourcesLabel": "Источники изображений:",
-    "imageSourcesRest": "добавьте ключи API Pexels, Flaticon, Leonardo.Ai или Pollinations.ai, чтобы включить поиск и генерацию изображений в приложении.",
+    "imageSourcesRest": "добавьте ключи API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai или OpenAI, чтобы включить поиск и генерацию изображений в приложении.",
     "translationLabel": "Перевод:",
     "translationRest": "выберите Gemini, OpenAI, DeepSeek, Z.AI, Groq или собственный поставщик, совместимый с OpenAI.",
     "modelBaseUrlLabel": "Модель и базовый URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "загружает полную библиотеку карт, включая изображения, в виде сжатой резервной копии.",
     "exportImageLessLabel": "Экспортировать JSON без изображения:",
     "exportImageLessRest": "загружает читаемый JSON без изображений для ручного редактирования.",
+    "exportCompleteLabel": "Экспортировать полный JSON:",
+    "exportCompleteRest": "загружает читаемый JSON с полной библиотекой карточек, включая изображения.",
     "managerPressText1": "Менеджер – карточная библиотека. Выбирайте карточки с флажками и используйте фильтры, чтобы найти недостающие изображения, текст или ссылки на оборотной стороне.",
     "managerPressText2": "Откройте вид принтера, чтобы просмотреть выбранные карты на лицевой и оборотной сторонах. Выберите макет PDF на панели инструментов, просмотрите все предупреждения, затем загрузите PDF и распечатайте его.",
     "apiCredits": "Поддерживаемые API",

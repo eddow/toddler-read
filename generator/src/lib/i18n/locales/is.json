@@ -15,6 +15,8 @@
     "exportCompressed": "Flytja út þjappað",
     "exportImageLessJson": "Flytja út myndlaus JSON",
     "file": "Skrá",
+    "generate": "Mynda",
+    "generating": "Býr til...",
     "import": "Innflutningur",
     "manage": "Stjórna",
     "newCard": "Nýtt kort",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Sía verso tengla",
     "generatedCardPreview": "Mynduð kortaforskoðun",
     "imageSearchQuery": "Myndaleitarfyrirspurn",
+    "imageGenerationHints": "Viðbótarupplýsingar um myndmyndun",
     "loadingApp": "Hleður Toddler Read",
     "manager": "Framkvæmdastjóri",
     "managerTags": "Framkvæmdastjóramerki",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} skilaði auðu svari.",
     "missingProviderTranslations": "{{provider}} skilaði engum nothæfum þýðingum.",
     "missingProviderKey": "Bættu við {{provider}} API lykli í stillingum.",
+    "exportedComplete": "Flutt út heill JSON með {{count}} {{unit}}.",
     "exportedCompressed": "Flutt út þjappað öryggisafrit með {{count}} {{unit}}.",
     "exportedImageLess": "Útfluttur myndlaus JSON með {{count}} {{unit}}.",
     "pdfDownloaded": "PDF hlaðið niður með {{count}} síðum.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API lykill",
     "baseUrl": "Grunnslóð",
+    "category": "Flokkur",
     "chooseTag": "Veldu merki",
     "code": "Kóði",
     "cornerLanguages": "Hornmál",
@@ -204,9 +209,13 @@
     "help": "Hjálp",
     "image": "Mynd",
     "imageGeneration": "Myndagerð",
+    "imageGenerationSources": "Myndagerðarheimildir",
     "imageGenerationPromptTemplate": "Myndagerð hvetja sniðmát",
+    "imageSearch": "Myndaleit",
+    "imageSearchSources": "Myndaleitarheimildir",
     "imageSource": "Uppruni myndar",
     "imageSources": "Myndaheimildir",
+    "imageType": "Myndgerð",
     "managerAndPress": "Framkvæmdastjóri og prentsmiðja",
     "model": "fyrirmynd",
     "orientation": "Stefna",
@@ -217,6 +226,7 @@
     "rendering": "Rending",
     "settings": "Stillingar",
     "size": "Stærð",
+    "sort": "Raða",
     "tags": "Merki",
     "translation": "Þýðing",
     "translationPromptTemplate": "Sniðmát fyrir þýðingu hvetja",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai eða Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eða OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai eða OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay eða Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay eða Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Allir flokkar",
+    "pixabayTypes": {
+      "all": "Allt",
+      "photo": "Mynd",
+      "illustration": "Myndskreyting",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Bakgrunnur",
+      "fashion": "Tíska",
+      "nature": "Náttúran",
+      "science": "Vísindi",
+      "education": "Menntun",
+      "feelings": "Tilfinningar",
+      "health": "Heilsa",
+      "people": "Fólk",
+      "religion": "Trúarbrögð",
+      "places": "Staðir",
+      "animals": "Dýr",
+      "industry": "Iðnaður",
+      "computer": "Tölva",
+      "food": "Matur",
+      "sports": "Íþróttir",
+      "transportation": "Samgöngur",
+      "travel": "Ferðalög",
+      "buildings": "Byggingar",
+      "business": "Viðskipti",
+      "music": "Tónlist"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Viðeigandi",
+      "latest": "Nýjasta"
+    }
   },
   "verbs": {
     "has": "hefur",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Halló",
     "flag": "🇮🇸",
+    "imageGenerationHints": "auka vísbendingar um stíl, stemningu eða tónsmíðar",
     "imageSearch": "epli",
     "languageCode": "is",
     "pasteHere": "Límdu hér",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Lokaðu myndaleit",
+      "generateTitle": "Búðu til mynd",
       "title": "Leitaðu að mynd"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "eða",
     "cornerLanguagesRestAfter": "og stilltu merkið sem birtist.",
     "imageSourcesLabel": "Myndaheimildir:",
-    "imageSourcesRest": "bættu við Pexels, Flaticon, Leonardo.Ai eða Pollinations.ai API lyklum til að virkja myndaleit og myndun í forriti.",
+    "imageSourcesRest": "Bættu við Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai eða OpenAI API lyklum til að virkja myndaleit og myndun í forriti.",
     "translationLabel": "Þýðing:",
     "translationRest": "veldu Gemini, OpenAI, DeepSeek, Z.AI, Groq eða sérsniðna OpenAI-samhæfðan þjónustuaðila.",
     "modelBaseUrlLabel": "Líkan og grunnslóð:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "hleður niður öllu kortasafninu, þar á meðal myndum, sem þjappað öryggisafrit.",
     "exportImageLessLabel": "Flytja út myndlaus JSON:",
     "exportImageLessRest": "hleður niður læsilegum JSON án mynda til handvinnslu.",
+    "exportCompleteLabel": "Flytja út heill JSON:",
+    "exportCompleteRest": "hleður niður læsilegum JSON með öllu kortasafninu, þar á meðal myndum.",
     "managerPressText1": "Umsjónarmaður er kortasafnið. Veldu spjöld með gátreitunum og notaðu síur til að finna myndir sem vantar, texta eða verso tengla.",
     "managerPressText2": "Opnaðu prentaraskjáinn til að forskoða valin spjöld sem rétta og verso síður. Veldu PDF útlitið á tækjastikunni, skoðaðu allar viðvaranir, halaðu síðan niður PDF og prentaðu hana út.",
     "apiCredits": "Stuðningur API",

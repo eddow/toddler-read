@@ -35,6 +35,13 @@ describe('card QR payloads', () => {
   it('uses default regions for known bare languages', () => {
     expect(markerForLanguage('ro')).toEqual({ marker: '🇷🇴', markerKind: 'flag' });
     expect(markerForLanguage('en')).toEqual({ marker: '🇬🇧', markerKind: 'flag' });
+    expect(markerForLanguage('sv')).toEqual({ marker: '🇸🇪', markerKind: 'flag' });
+  });
+
+  it('uses script markers for languages without a useful default flag', () => {
+    expect(markerForLanguage('ar')).toEqual({ marker: 'ض', markerKind: 'code' });
+    expect(markerForLanguage('zh')).toEqual({ marker: '中', markerKind: 'code' });
+    expect(markerForLanguage('hi')).toEqual({ marker: 'ह', markerKind: 'code' });
   });
 
   it('falls back to language codes for unknown languages', () => {

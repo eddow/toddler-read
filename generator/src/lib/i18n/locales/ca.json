@@ -15,6 +15,8 @@
     "exportCompressed": "Exportació comprimida",
     "exportImageLessJson": "Exporta JSON sense imatges",
     "file": "Fitxer",
+    "generate": "Generar",
+    "generating": "Generant...",
     "import": "Importar",
     "manage": "Gestionar",
     "newCard": "Targeta nova",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtreu els enllaços al revers",
     "generatedCardPreview": "Vista prèvia de la targeta generada",
     "imageSearchQuery": "Consulta de cerca d'imatges",
+    "imageGenerationHints": "Suggeriments addicionals per a la generació d'imatges",
     "loadingApp": "S'està carregant Toddler Read",
     "manager": "Gerent",
     "managerTags": "Etiquetes de gestor",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ha retornat una resposta buida.",
     "missingProviderTranslations": "{{provider}} no ha retornat cap traducció utilitzable.",
     "missingProviderKey": "Afegiu una clau {{provider}} API a Configuració.",
+    "exportedComplete": "S'ha exportat JSON complet amb {{count}} {{unit}}.",
     "exportedCompressed": "Còpia de seguretat comprimida exportada amb {{count}} {{unit}}.",
     "exportedImageLess": "S'ha exportat JSON sense imatge amb {{count}} {{unit}}.",
     "pdfDownloaded": "PDF baixat amb pàgines {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Clau API",
     "baseUrl": "URL base",
+    "category": "Categoria",
     "chooseTag": "Trieu l'etiqueta",
     "code": "Codi",
     "cornerLanguages": "Idiomes de cantonada",
@@ -204,9 +209,13 @@
     "help": "Ajuda",
     "image": "Imatge",
     "imageGeneration": "Generació d'imatges",
+    "imageGenerationSources": "Fonts de generació d'imatges",
     "imageGenerationPromptTemplate": "Plantilla de sol·licitud de generació d'imatges",
+    "imageSearch": "Cerca d'imatges",
+    "imageSearchSources": "Fonts de cerca d'imatges",
     "imageSource": "Font de la imatge",
     "imageSources": "Fonts d'imatge",
+    "imageType": "Tipus d'imatge",
     "managerAndPress": "Gestor i impremta",
     "model": "model",
     "orientation": "Orientació",
@@ -217,6 +226,7 @@
     "rendering": "Renderització",
     "settings": "Configuració",
     "size": "Mida",
+    "sort": "Ordena",
     "tags": "Etiquetes",
     "translation": "Traducció",
     "translationPromptTemplate": "Plantilla de sol·licitud de traducció",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai o Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai o OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai o OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay o Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay o Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Totes les categories",
+    "pixabayTypes": {
+      "all": "Tots",
+      "photo": "Foto",
+      "illustration": "Il·lustració",
+      "vector": "Vector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Fons",
+      "fashion": "Moda",
+      "nature": "Natura",
+      "science": "Ciència",
+      "education": "Educació",
+      "feelings": "Sentiments",
+      "health": "Salut",
+      "people": "Gent",
+      "religion": "Religió",
+      "places": "Llocs",
+      "animals": "Animals",
+      "industry": "Indústria",
+      "computer": "Ordinador",
+      "food": "Menjar",
+      "sports": "Esports",
+      "transportation": "Transport",
+      "travel": "Viatjar",
+      "buildings": "Edificis",
+      "business": "Negocis",
+      "music": "Música"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Rellevant",
+      "latest": "Última"
+    }
   },
   "verbs": {
     "has": "té",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "hola",
     "flag": "🏴",
+    "imageGenerationHints": "consells addicionals d'estil, estat d'ànim o composició",
     "imageSearch": "poma",
     "languageCode": "ca",
     "pasteHere": "Enganxa aquí",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Tanca la cerca d'imatges",
+      "generateTitle": "Generar imatge",
       "title": "Cerca imatge"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "o",
     "cornerLanguagesRestAfter": "i ajusteu el marcador mostrat.",
     "imageSourcesLabel": "Fonts de la imatge:",
-    "imageSourcesRest": "afegiu les claus de l'API Pexels, Flaticon, Leonardo.Ai o Pollinations.ai per habilitar la cerca i la generació d'imatges a l'aplicació.",
+    "imageSourcesRest": "afegiu les claus de l'API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai o OpenAI per permetre la cerca i la generació d'imatges a l'aplicació.",
     "translationLabel": "Traducció:",
     "translationRest": "tria Gemini, OpenAI, DeepSeek, Z.AI, Groq o un proveïdor personalitzat compatible amb OpenAI.",
     "modelBaseUrlLabel": "Model i URL base:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "baixa la biblioteca completa de targetes, incloses les imatges, com a còpia de seguretat comprimida.",
     "exportImageLessLabel": "Exporta JSON sense imatges:",
     "exportImageLessRest": "baixa JSON llegible sense imatges per editar-les manualment.",
+    "exportCompleteLabel": "Exporta JSON complet:",
+    "exportCompleteRest": "descarrega JSON llegible amb la biblioteca de targetes completa, incloses les imatges.",
     "managerPressText1": "El gestor és la biblioteca de targetes. Seleccioneu les targetes amb les caselles de selecció i utilitzeu filtres per trobar imatges, text o enllaços al revers que falten.",
     "managerPressText2": "Obriu la vista de la impressora per previsualitzar les targetes seleccionades com a pàgines recto i revers. Trieu el disseny PDF a la barra d'eines, reviseu els avisos i, a continuació, baixeu el PDF i imprimiu-lo.",
     "apiCredits": "API compatibles",

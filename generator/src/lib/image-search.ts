@@ -1,4 +1,11 @@
-export type ImageSearchProviderId = 'pexels' | 'flaticon' | 'leonardo' | 'pollinations';
+export type ImageSearchProviderId =
+  | 'pexels'
+  | 'flaticon'
+  | 'pixabay'
+  | 'unsplash'
+  | 'leonardo'
+  | 'pollinations'
+  | 'openai';
 
 export type ImageSearchProviderConfig = {
   apiKey: string;
@@ -14,6 +21,16 @@ export type ImageSearchOptions = {
   page: number;
   perPage: number;
   generationContext?: ImageGenerationPromptContext;
+  searchFilters?: ImageSearchFilters;
+};
+
+export type PixabayImageType = 'all' | 'photo' | 'illustration' | 'vector';
+export type UnsplashOrderBy = 'relevant' | 'latest';
+
+export type ImageSearchFilters = {
+  pixabayImageType?: PixabayImageType;
+  pixabayCategory?: string;
+  unsplashOrderBy?: UnsplashOrderBy;
 };
 
 export type ImageGenerationPromptContext = {
@@ -30,6 +47,7 @@ export type ImageSearchResult = {
   author?: string;
   authorUrl?: string;
   creditText?: string;
+  downloadUrl?: string;
 };
 
 export type ImageSearchResponse = {
@@ -47,7 +65,7 @@ export type ImageSearchProvider = {
     options: ImageSearchOptions,
     config: ImageSearchProviderConfig
   ): Promise<ImageSearchResponse>;
-  importResult(result: ImageSearchResult): Promise<string>;
+  importResult(result: ImageSearchResult, config?: ImageSearchProviderConfig): Promise<string>;
 };
 
 type PexelsPhoto = {
@@ -65,6 +83,48 @@ type PexelsSearchResponse = {
   total_results?: number;
   photos?: PexelsPhoto[];
   next_page?: string;
+};
+
+type PixabayImage = {
+  id: number;
+  pageURL?: string;
+  type?: string;
+  tags?: string;
+  previewURL?: string;
+  webformatURL?: string;
+  largeImageURL?: string;
+  imageURL?: string;
+  user?: string;
+  user_id?: number;
+};
+
+type PixabaySearchResponse = {
+  total?: number;
+  totalHits?: number;
+  hits?: PixabayImage[];
+};
+
+type UnsplashPhoto = {
+  id: string;
+  alt_description?: string | null;
+  description?: string | null;
+  urls?: Partial<Record<'thumb' | 'small' | 'regular' | 'full' | 'raw', string>>;
+  links?: {
+    html?: string;
+    download_location?: string;
+  };
+  user?: {
+    name?: string;
+    links?: {
+      html?: string;
+    };
+  };
+};
+
+type UnsplashSearchResponse = {
+  total?: number;
+  total_pages?: number;
+  results?: UnsplashPhoto[];
 };
 
 type FlaticonIcon = {
@@ -120,10 +180,45 @@ type PollinationsImageGenerationResponse = {
   }[];
 };
 
+type OpenAiImageGenerationResponse = {
+  data?: {
+    b64_json?: string;
+    url?: string;
+    revised_prompt?: string;
+  }[];
+};
+
 const DEFAULT_POLLINATIONS_IMAGE_MODEL = 'flux';
+export const DEFAULT_OPENAI_IMAGE_MODEL = 'gpt-image-2';
+
+export const PIXABAY_IMAGE_TYPES = ['all', 'photo', 'illustration', 'vector'] as const;
+export const PIXABAY_CATEGORIES = [
+  '',
+  'backgrounds',
+  'fashion',
+  'nature',
+  'science',
+  'education',
+  'feelings',
+  'health',
+  'people',
+  'religion',
+  'places',
+  'animals',
+  'industry',
+  'computer',
+  'food',
+  'sports',
+  'transportation',
+  'travel',
+  'buildings',
+  'business',
+  'music'
+] as const;
+export const UNSPLASH_ORDER_BY_OPTIONS = ['relevant', 'latest'] as const;
 
 export const DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE = `A friendly picture-card illustration for a toddler reading card.
-The card texts are translations of the same concept. Use this JSON to infer the subject: {{textsJson}}
+Subject hint: {{texts}}
 Extra user hint: {{query}}
 Portrait orientation, simple centered composition, clear silhouette, warm colors, no text, no letters, no watermark.`;
 
@@ -137,12 +232,24 @@ export const IMAGE_SEARCH_PROVIDERS = [
     label: 'Flaticon'
   },
   {
+    id: 'pixabay',
+    label: 'Pixabay'
+  },
+  {
+    id: 'unsplash',
+    label: 'Unsplash'
+  },
+  {
     id: 'leonardo',
     label: 'Leonardo.Ai'
   },
   {
     id: 'pollinations',
     label: 'Pollinations.ai'
+  },
+  {
+    id: 'openai',
+    label: 'OpenAI'
   }
 ] as const;
 
@@ -154,6 +261,12 @@ export function defaultImageSearchProviderConfigs(): ImageSearchProviderConfigs 
     flaticon: {
       apiKey: ''
     },
+    pixabay: {
+      apiKey: ''
+    },
+    unsplash: {
+      apiKey: ''
+    },
     leonardo: {
       apiKey: '',
       model: ''
@@ -161,6 +274,10 @@ export function defaultImageSearchProviderConfigs(): ImageSearchProviderConfigs 
     pollinations: {
       apiKey: '',
       model: DEFAULT_POLLINATIONS_IMAGE_MODEL
+    },
+    openai: {
+      apiKey: '',
+      model: DEFAULT_OPENAI_IMAGE_MODEL
     }
   };
 }
@@ -190,6 +307,8 @@ export function normalizeStoredImageSearchProviderConfigs(value: unknown): Image
       model:
         provider.id === 'pollinations'
           ? normalizePollinationsImageModel(stored.model)
+          : provider.id === 'openai'
+          ? normalizeOpenAiImageModel(stored.model)
           : provider.id === 'leonardo'
           ? normalizeOptionalModel(stored.model)
           : undefined,
@@ -205,8 +324,11 @@ export function normalizeStoredImageSearchProviderConfigs(value: unknown): Image
 export function getImageSearchProvider(providerId: ImageSearchProviderId): ImageSearchProvider {
   if (providerId === 'pexels') return pexelsImageSearchProvider;
   if (providerId === 'flaticon') return flaticonImageSearchProvider;
+  if (providerId === 'pixabay') return pixabayImageSearchProvider;
+  if (providerId === 'unsplash') return unsplashImageSearchProvider;
   if (providerId === 'leonardo') return leonardoImageSearchProvider;
   if (providerId === 'pollinations') return pollinationsImageSearchProvider;
+  if (providerId === 'openai') return openAiImageSearchProvider;
   return pexelsImageSearchProvider;
 }
 
@@ -259,6 +381,114 @@ const pexelsImageSearchProvider: ImageSearchProvider = {
     const blob = await response.blob();
     if (!blob.type.startsWith('image/')) throw new Error('Selected result is not an image.');
     return blobToDataUrl(blob);
+  }
+};
+
+const pixabayImageSearchProvider: ImageSearchProvider = {
+  id: 'pixabay',
+  label: 'Pixabay',
+  async search(query, options, config) {
+    const apiKey = config.apiKey.trim();
+    if (!apiKey) throw new Error('Add a Pixabay API key in Settings.');
+
+    const normalizedQuery = query.trim();
+    if (!normalizedQuery) throw new Error('Enter a search term.');
+
+    const filters = normalizeImageSearchFilters(options.searchFilters);
+    const url = new URL('https://pixabay.com/api/');
+    url.searchParams.set('key', apiKey);
+    url.searchParams.set('q', normalizedQuery);
+    url.searchParams.set('page', String(Math.max(1, options.page)));
+    url.searchParams.set('per_page', String(Math.max(3, Math.min(options.perPage, 200))));
+    url.searchParams.set('image_type', filters.pixabayImageType);
+    url.searchParams.set('orientation', 'all');
+    url.searchParams.set('safesearch', 'true');
+    if (filters.pixabayCategory) url.searchParams.set('category', filters.pixabayCategory);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(await providerErrorMessage(response, 'Pixabay'));
+    }
+
+    const payload = (await response.json()) as PixabaySearchResponse;
+    const totalResults = payload.totalHits ?? payload.total ?? 0;
+    const results = (payload.hits ?? [])
+      .map(mapPixabayImage)
+      .filter((result): result is ImageSearchResult => Boolean(result));
+
+    return {
+      results,
+      page: options.page,
+      totalResults,
+      hasNextPage: options.page * options.perPage < totalResults
+    };
+  },
+  async importResult(result) {
+    const response = await fetch(result.imageUrl);
+    if (!response.ok) {
+      throw new Error(`Could not import image: ${response.status} ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    if (!blob.type.startsWith('image/')) throw new Error('Selected result is not an image.');
+    return blobToDataUrl(blob);
+  }
+};
+
+const unsplashImageSearchProvider: ImageSearchProvider = {
+  id: 'unsplash',
+  label: 'Unsplash',
+  async search(query, options, config) {
+    const apiKey = config.apiKey.trim();
+    if (!apiKey) throw new Error('Add an Unsplash Access Key in Settings.');
+
+    const normalizedQuery = query.trim();
+    if (!normalizedQuery) throw new Error('Enter a search term.');
+
+    const filters = normalizeImageSearchFilters(options.searchFilters);
+    const url = new URL('https://api.unsplash.com/search/photos');
+    url.searchParams.set('query', normalizedQuery);
+    url.searchParams.set('page', String(Math.max(1, options.page)));
+    url.searchParams.set('per_page', String(Math.max(1, Math.min(options.perPage, 30))));
+    url.searchParams.set('order_by', filters.unsplashOrderBy);
+    url.searchParams.set('content_filter', 'high');
+
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Client-ID ${apiKey}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(await providerErrorMessage(response, 'Unsplash'));
+    }
+
+    const payload = (await response.json()) as UnsplashSearchResponse;
+    const page = options.page;
+    const totalResults = payload.total ?? 0;
+    const results = (payload.results ?? [])
+      .map(mapUnsplashPhoto)
+      .filter((result): result is ImageSearchResult => Boolean(result));
+
+    return {
+      results,
+      page,
+      totalResults,
+      hasNextPage: payload.total_pages ? page < payload.total_pages : page * options.perPage < totalResults
+    };
+  },
+  async importResult(result, config) {
+    const apiKey = config?.apiKey.trim() ?? '';
+    if (result.downloadUrl && apiKey) {
+      await fetch(result.downloadUrl, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Client-ID ${apiKey}`
+        }
+      }).catch(() => undefined);
+    }
+    return result.imageUrl;
   }
 };
 
@@ -416,6 +646,55 @@ const pollinationsImageSearchProvider: ImageSearchProvider = {
   }
 };
 
+const openAiImageSearchProvider: ImageSearchProvider = {
+  id: 'openai',
+  label: 'OpenAI',
+  async search(query, options, config) {
+    const apiKey = config.apiKey.trim();
+    if (!apiKey) throw new Error('Add an OpenAI API key in Settings.');
+
+    const normalizedQuery = query.trim();
+    const prompt = buildImageGenerationPrompt(
+      config.promptTemplate,
+      normalizedQuery,
+      options.generationContext
+    );
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: normalizeOpenAiImageModel(config.model),
+        prompt,
+        quality: 'medium',
+        size: '1024x1536'
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(await providerErrorMessage(response, 'OpenAI'));
+    }
+
+    const payload = (await response.json()) as OpenAiImageGenerationResponse;
+    const results = (payload.data ?? [])
+      .map((image, index) => mapOpenAiImage(image, prompt, index))
+      .filter((result): result is ImageSearchResult => Boolean(result));
+
+    return {
+      results,
+      page: 1,
+      totalResults: results.length,
+      hasNextPage: false
+    };
+  },
+  async importResult(result) {
+    return importGeneratedImageResult(result);
+  }
+};
+
 function mapPexelsPhoto(photo: PexelsPhoto): ImageSearchResult | undefined {
   const src = photo.src ?? {};
   const thumbUrl = src.tiny ?? src.small ?? src.medium;
@@ -437,22 +716,100 @@ function mapPexelsPhoto(photo: PexelsPhoto): ImageSearchResult | undefined {
   };
 }
 
-function buildImageGenerationPrompt(
+function mapPixabayImage(image: PixabayImage): ImageSearchResult | undefined {
+  const thumbUrl = image.previewURL ?? image.webformatURL;
+  const imageUrl = image.largeImageURL ?? image.imageURL ?? image.webformatURL;
+  if (!thumbUrl || !imageUrl) return undefined;
+
+  const author = image.user?.trim() || undefined;
+  const authorUrl =
+    author && image.user_id
+      ? `https://pixabay.com/users/${encodeURIComponent(author)}-${image.user_id}/`
+      : undefined;
+
+  return {
+    id: String(image.id),
+    providerId: 'pixabay',
+    thumbUrl,
+    imageUrl,
+    pageUrl: image.pageURL ?? 'https://pixabay.com',
+    alt: image.tags?.trim() || `Pixabay ${image.type ?? 'image'} ${image.id}`,
+    author,
+    authorUrl,
+    creditText: author ? `Image by ${author} on Pixabay` : 'Image from Pixabay'
+  };
+}
+
+function mapUnsplashPhoto(photo: UnsplashPhoto): ImageSearchResult | undefined {
+  const urls = photo.urls ?? {};
+  const thumbUrl = urls.thumb ?? urls.small ?? urls.regular;
+  const imageUrl = urls.regular ?? urls.full ?? urls.small;
+  if (!thumbUrl || !imageUrl) return undefined;
+
+  const author = photo.user?.name?.trim() || undefined;
+  const pageUrl = withUtm(photo.links?.html ?? 'https://unsplash.com');
+  const authorUrl = photo.user?.links?.html ? withUtm(photo.user.links.html) : undefined;
+  const downloadUrl = photo.links?.download_location;
+
+  return {
+    id: photo.id,
+    providerId: 'unsplash',
+    thumbUrl,
+    imageUrl,
+    pageUrl,
+    alt: photo.alt_description?.trim() || photo.description?.trim() || `Unsplash photo ${photo.id}`,
+    author,
+    authorUrl,
+    creditText: author ? `Photo by ${author} on Unsplash` : 'Photo from Unsplash',
+    downloadUrl
+  };
+}
+
+export function buildImageGenerationPrompt(
   promptTemplate: string | undefined,
   query: string,
   context: ImageGenerationPromptContext | undefined
 ): string {
   const template = normalizeImageGenerationPromptTemplate(promptTemplate);
-  const textsJson = JSON.stringify(context?.textsByLanguage ?? {}, null, 2);
+  const texts = formatImageGenerationTexts(context?.textsByLanguage ?? {});
   const prompt = template
     .replace(/\{\{\s*(query|cardText|subject)\s*\}\}/g, query)
-    .replace(/\{\{\s*textsJson\s*\}\}/g, textsJson)
+    .replace(/\{\{\s*texts\s*\}\}/g, texts)
     .trim();
 
-  if (/\{\{\s*textsJson\s*\}\}/.test(template)) return prompt;
+  if (/\{\{\s*texts\s*\}\}/.test(template)) return prompt;
   return `${prompt}
-Card texts JSON. These language-code values are translations of the same concept:
-${textsJson}`;
+Card texts. These language values are translations of the same concept:
+${texts}`;
+}
+
+function formatImageGenerationTexts(textsByLanguage: Record<string, string>): string {
+  const entries = Object.entries(textsByLanguage)
+    .map(([language, text]) => [language.trim(), text.trim()] as const)
+    .filter(([, text]) => text)
+    .sort(([left], [right]) => left.localeCompare(right));
+
+  if (entries.length === 0) return 'No card text was provided.';
+
+  const englishEntry = entries.find(([language]) => language.toLowerCase().split('-')[0] === 'en');
+  if (englishEntry) return englishEntry[1];
+
+  const displayNames = languageDisplayNames();
+  return entries
+    .map(([language, text]) => {
+      const languageName = displayNames?.of(language) ?? language;
+      return `in ${languageName}: "${text}"`;
+    })
+    .join(', ');
+}
+
+function languageDisplayNames(): Intl.DisplayNames | undefined {
+  if (typeof Intl.DisplayNames !== 'function') return undefined;
+  try {
+    return new Intl.DisplayNames(['en'], { type: 'language' });
+  } catch {
+    return undefined;
+  }
 }
 
 async function createLeonardoGeneration(
@@ -568,6 +925,25 @@ function mapPollinationsImage(
   };
 }
 
+function mapOpenAiImage(
+  image: NonNullable<OpenAiImageGenerationResponse['data']>[number],
+  prompt: string,
+  index: number
+): ImageSearchResult | undefined {
+  const imageUrl = image.b64_json ? `data:image/png;base64,${image.b64_json}` : image.url;
+  if (!imageUrl) return undefined;
+
+  return {
+    id: `openai-${Date.now()}-${index}`,
+    providerId: 'openai',
+    thumbUrl: imageUrl,
+    imageUrl,
+    pageUrl: 'https://platform.openai.com/docs/guides/image-generation',
+    alt: image.revised_prompt?.trim() || prompt,
+    creditText: 'Generated with OpenAI'
+  };
+}
+
 function normalizeImageGenerationPromptTemplate(value: unknown): string {
   return typeof value === 'string' && value.trim() ? value : DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE;
 }
@@ -576,8 +952,44 @@ function normalizePollinationsImageModel(value: unknown): string {
   return typeof value === 'string' && value.trim() ? value.trim() : DEFAULT_POLLINATIONS_IMAGE_MODEL;
 }
 
+function normalizeOpenAiImageModel(value: unknown): string {
+  return typeof value === 'string' && value.trim() ? value.trim() : DEFAULT_OPENAI_IMAGE_MODEL;
+}
+
 function normalizeOptionalModel(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+export function normalizeImageSearchFilters(value: unknown): Required<ImageSearchFilters> {
+  const filters = value && typeof value === 'object' ? (value as ImageSearchFilters) : {};
+  return {
+    pixabayImageType: isPixabayImageType(filters.pixabayImageType) ? filters.pixabayImageType : 'all',
+    pixabayCategory: isPixabayCategory(filters.pixabayCategory) ? filters.pixabayCategory : '',
+    unsplashOrderBy: isUnsplashOrderBy(filters.unsplashOrderBy) ? filters.unsplashOrderBy : 'relevant'
+  };
+}
+
+function isPixabayImageType(value: unknown): value is PixabayImageType {
+  return typeof value === 'string' && PIXABAY_IMAGE_TYPES.includes(value as PixabayImageType);
+}
+
+function isPixabayCategory(value: unknown): value is string {
+  return typeof value === 'string' && PIXABAY_CATEGORIES.includes(value as (typeof PIXABAY_CATEGORIES)[number]);
+}
+
+function isUnsplashOrderBy(value: unknown): value is UnsplashOrderBy {
+  return typeof value === 'string' && UNSPLASH_ORDER_BY_OPTIONS.includes(value as UnsplashOrderBy);
+}
+
+function withUtm(url: string): string {
+  try {
+    const nextUrl = new URL(url);
+    nextUrl.searchParams.set('utm_source', 'toddler_read');
+    nextUrl.searchParams.set('utm_medium', 'referral');
+    return nextUrl.toString();
+  } catch {
+    return url;
+  }
 }
 
 async function pollinationsErrorMessage(response: Response): Promise<string> {
@@ -588,7 +1000,7 @@ async function providerErrorMessage(response: Response, provider: string): Promi
   const fallback = `${provider} request failed: ${response.status} ${response.statusText}`;
   try {
     const payload = await response.clone().json();
-    const message = payload?.error?.message ?? payload?.error;
+    const message = payload?.error?.message ?? payload?.error ?? payload?.message;
     if (typeof message === 'string' && message.trim()) return message.trim();
   } catch {
     return fallback;

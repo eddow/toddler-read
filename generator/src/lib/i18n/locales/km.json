@@ -15,6 +15,8 @@
     "exportCompressed": "នាំចេញដែលបានបង្ហាប់",
     "exportImageLessJson": "នាំចេញ JSON ដែលគ្មានរូបភាព",
     "file": "ឯកសារ",
+    "generate": "បង្កើត",
+    "generating": "កំពុង​បង្កើត...",
     "import": "នាំចូល",
     "manage": "គ្រប់គ្រង",
     "newCard": "កាតថ្មី។",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "ត្រង​តំណ​ភ្ជាប់",
     "generatedCardPreview": "ការមើលកាតដែលបានបង្កើតជាមុន",
     "imageSearchQuery": "សំណួរស្វែងរករូបភាព",
+    "imageGenerationHints": "ការណែនាំអំពីការបង្កើតរូបភាពបន្ថែម",
     "loadingApp": "កំពុងផ្ទុក Toddler Read",
     "manager": "អ្នកគ្រប់គ្រង",
     "managerTags": "ស្លាកអ្នកគ្រប់គ្រង",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ត្រឡប់ការឆ្លើយតបទទេ។",
     "missingProviderTranslations": "{{provider}} ត្រឡប់​គ្មាន​ការ​បកប្រែ​ដែល​អាច​ប្រើ​បាន​ទេ។",
     "missingProviderKey": "បន្ថែមសោ {{provider}} API នៅក្នុងការកំណត់។",
+    "exportedComplete": "បាននាំចេញ JSON ពេញលេញជាមួយ {{count}} {{unit}} ។",
     "exportedCompressed": "បាននាំចេញការបម្រុងទុកដែលបានបង្ហាប់ជាមួយ {{count}} {{unit}} ។",
     "exportedImageLess": "បាននាំចេញ JSON ដែលគ្មានរូបភាពជាមួយ {{count}} {{unit}} ។",
     "pdfDownloaded": "PDF បានទាញយកជាមួយទំព័រ {{count}} ។",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "គ្រាប់ចុច API",
     "baseUrl": "URL មូលដ្ឋាន",
+    "category": "ប្រភេទ",
     "chooseTag": "ជ្រើសរើសស្លាក",
     "code": "កូដ",
     "cornerLanguages": "ភាសាជ្រុង",
@@ -204,9 +209,13 @@
     "help": "ជំនួយ",
     "image": "រូបភាព",
     "imageGeneration": "ការបង្កើតរូបភាព",
+    "imageGenerationSources": "ប្រភពនៃការបង្កើតរូបភាព",
     "imageGenerationPromptTemplate": "គំរូជម្រុញការបង្កើតរូបភាព",
+    "imageSearch": "ការស្វែងរករូបភាព",
+    "imageSearchSources": "ប្រភពស្វែងរករូបភាព",
     "imageSource": "ប្រភពរូបភាព",
     "imageSources": "ប្រភពរូបភាព",
+    "imageType": "ប្រភេទរូបភាព",
     "managerAndPress": "អ្នកគ្រប់គ្រង និងសារព័ត៌មានបោះពុម្ព",
     "model": "គំរូ",
     "orientation": "ការតំរង់ទិស",
@@ -217,6 +226,7 @@
     "rendering": "ការបង្ហាញ",
     "settings": "ការកំណត់",
     "size": "ទំហំ",
+    "sort": "តម្រៀប",
     "tags": "ស្លាក",
     "translation": "ការបកប្រែ",
     "translationPromptTemplate": "គំរូប្រអប់បញ្ចូលការបកប្រែ",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai ឬ Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ឬ OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai ឬ OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay ឬ Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay ឬ Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "ប្រភេទទាំងអស់។",
+    "pixabayTypes": {
+      "all": "ទាំងអស់។",
+      "photo": "រូបថត",
+      "illustration": "រូបភាព",
+      "vector": "វ៉ិចទ័រ"
+    },
+    "pixabayCategories": {
+      "backgrounds": "ផ្ទៃខាងក្រោយ",
+      "fashion": "ម៉ូត",
+      "nature": "ធម្មជាតិ",
+      "science": "វិទ្យាសាស្ត្រ",
+      "education": "ការអប់រំ",
+      "feelings": "អារម្មណ៍",
+      "health": "សុខភាព",
+      "people": "មនុស្ស",
+      "religion": "សាសនា",
+      "places": "កន្លែង",
+      "animals": "សត្វ",
+      "industry": "ឧស្សាហកម្ម",
+      "computer": "កុំព្យូទ័រ",
+      "food": "អាហារ",
+      "sports": "កីឡា",
+      "transportation": "ការដឹកជញ្ជូន",
+      "travel": "ការធ្វើដំណើរ",
+      "buildings": "អាគារ",
+      "business": "អាជីវកម្ម",
+      "music": "តន្ត្រី"
+    },
+    "unsplashOrderBy": {
+      "relevant": "ពាក់ព័ន្ធ",
+      "latest": "ចុងក្រោយ"
+    }
   },
   "verbs": {
     "has": "មាន",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "ជំរាបសួរ",
     "flag": "🇰🇭",
+    "imageGenerationHints": "រចនាប័ទ្មបន្ថែម អារម្មណ៍ ឬការណែនាំអំពីសមាសភាព",
     "imageSearch": "ផ្លែប៉ោម",
     "languageCode": "km",
     "pasteHere": "បិទភ្ជាប់នៅទីនេះ",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "បិទការស្វែងរករូបភាព",
+      "generateTitle": "បង្កើតរូបភាព",
       "title": "ស្វែងរករូបភាព"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ឬ",
     "cornerLanguagesRestAfter": "និងកែតម្រូវសញ្ញាសម្គាល់ដែលបានបង្ហាញ។",
     "imageSourcesLabel": "ប្រភពរូបភាព៖",
-    "imageSourcesRest": "បន្ថែមគ្រាប់ចុច Pexels, Flaticon, Leonardo.Ai ឬ Pollinations.ai API ដើម្បីបើកការស្វែងរករូបភាពក្នុងកម្មវិធី និងការបង្កើត។",
+    "imageSourcesRest": "បន្ថែម Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, ឬ OpenAI API keys ដើម្បីបើកការស្វែងរករូបភាពក្នុងកម្មវិធី និងការបង្កើត។",
     "translationLabel": "ការបកប្រែ៖",
     "translationRest": "ជ្រើសរើស Gemini, OpenAI, DeepSeek, Z.AI, Groq ឬអ្នកផ្តល់សេវាដែលត្រូវនឹង OpenAI ផ្ទាល់ខ្លួន។",
     "modelBaseUrlLabel": "គំរូ និង URL មូលដ្ឋាន៖",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ទាញយកបណ្ណាល័យកាតពេញលេញ រួមទាំងរូបភាព ជាការបម្រុងទុកដែលបានបង្ហាប់។",
     "exportImageLessLabel": "នាំចេញរូបភាពតិច JSON៖",
     "exportImageLessRest": "ទាញយក JSON ដែលអាចអានបានដោយគ្មានរូបភាពសម្រាប់ការកែដោយដៃ។",
+    "exportCompleteLabel": "នាំចេញ JSON ពេញលេញ៖",
+    "exportCompleteRest": "ទាញយក JSON ដែលអាចអានបានជាមួយនឹងបណ្ណាល័យកាតពេញលេញ រួមទាំងរូបភាព។",
     "managerPressText1": "អ្នកគ្រប់គ្រងគឺជាបណ្ណាល័យកាត។ ជ្រើសរើសកាតដែលមានប្រអប់ធីក ហើយប្រើតម្រងដើម្បីស្វែងរករូបភាព អត្ថបទ ឬតំណដែលបាត់។",
     "managerPressText2": "បើកទិដ្ឋភាពម៉ាស៊ីនបោះពុម្ព ដើម្បីមើលកាតដែលបានជ្រើសរើសជាមុនជាទំព័រ recto និង verso ។ ជ្រើសរើសប្លង់ PDF នៅក្នុងរបារឧបករណ៍ ពិនិត្យមើលការព្រមានណាមួយ បន្ទាប់មកទាញយក PDF ហើយបោះពុម្ពវា។",
     "apiCredits": "APIs ដែលគាំទ្រ",

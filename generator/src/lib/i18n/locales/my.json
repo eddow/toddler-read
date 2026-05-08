@@ -15,6 +15,8 @@
     "exportCompressed": "ပို့ရန် ဖိသိပ်ထားသည်။",
     "exportImageLessJson": "ပုံမပါသော JSON ကို ထုတ်ယူပါ။",
     "file": "ဖို",
+    "generate": "ထုတ်လုပ်ပါ။",
+    "generating": "ထုတ်လုပ်နေသည်...",
     "import": "သွင်းကုန်",
     "manage": "စီမံပါ။",
     "newCard": "ကတ်အသစ်",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "လင့်ခ်များကို စစ်ထုတ်ပါ။",
     "generatedCardPreview": "ထုတ်ပေးထားသော ကတ်အစမ်းကြည့်ရှုမှု",
     "imageSearchQuery": "ရုပ်ပုံရှာဖွေမှု",
+    "imageGenerationHints": "နောက်ထပ်ပုံမျိုးဆက် အရိပ်အမြွက်",
     "loadingApp": "Toddler Read ကို ဖွင့်နေသည်။",
     "manager": "မန်နေဂျာ",
     "managerTags": "မန်နေဂျာ တက်ဂ်များ",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} သည် အချည်းနှီးသော တုံ့ပြန်မှုကို ပြန်ပေးခဲ့သည်။",
     "missingProviderTranslations": "{{provider}} သည် အသုံးပြု၍မရသော ဘာသာပြန်ချက်များကို ပြန်ပေးခဲ့သည်။",
     "missingProviderKey": "ဆက်တင်များတွင် {{provider}} API သော့ကို ထည့်ပါ။",
+    "exportedComplete": "{{count}} {{unit}} ဖြင့် JSON အပြည့်အစုံကို ထုတ်ယူခဲ့သည်။",
     "exportedCompressed": "{{count}} {{unit}} ဖြင့် ဖိသိပ်ထားသော အရန်ကူးကို ထုတ်ယူသည်။",
     "exportedImageLess": "ပုံမပါသော JSON ကို {{count}} {{unit}} ဖြင့် တင်ပို့ခဲ့သည်။",
     "pdfDownloaded": "PDF ကို {{count}} စာမျက်နှာများဖြင့် ဒေါင်းလုဒ်လုပ်ထားသည်။",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API သော့",
     "baseUrl": "အခြေခံ URL",
+    "category": "အမျိုးအစား",
     "chooseTag": "Tag ကို ရွေးပါ။",
     "code": "ကုတ်",
     "cornerLanguages": "ထောင့်ဘာသာစကားများ",
@@ -204,9 +209,13 @@
     "help": "ကူညီပါ",
     "image": "ပုံ",
     "imageGeneration": "ပုံရိပ်မျိုးဆက်",
+    "imageGenerationSources": "ပုံရိပ်မျိုးဆက် အရင်းအမြစ်များ",
     "imageGenerationPromptTemplate": "ရုပ်ပုံဖန်တီးမှုပုံစံ နမူနာပုံစံ",
+    "imageSearch": "ပုံရှာဖွေမှု",
+    "imageSearchSources": "ပုံရှာဖွေမှု အရင်းအမြစ်များ",
     "imageSource": "ပုံအရင်းအမြစ်",
     "imageSources": "ရုပ်ပုံသတင်းရင်းမြစ်",
+    "imageType": "ပုံအမျိုးအစား",
     "managerAndPress": "မန်နေဂျာနှင့် ပုံနှိပ်တိုက်",
     "model": "မော်ဒယ်",
     "orientation": "တိမ်းညွှတ်မှု",
@@ -217,6 +226,7 @@
     "rendering": "ပုံဖေါ်ခြင်း။",
     "settings": "ဆက်တင်များ",
     "size": "အရွယ်အစား",
+    "sort": "မျိုးတူစု",
     "tags": "တဂ်",
     "translation": "ဘာသာပြန်ခြင်း။",
     "translationPromptTemplate": "ဘာသာပြန်ချက်ပုံစံ နမူနာ",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels၊ Flaticon၊ Leonardo.Ai သို့မဟုတ် Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels၊ Flaticon၊ Pixabay၊ Unsplash၊ Leonardo.Ai၊ Pollinations.ai သို့မဟုတ် OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai၊ Pollinations.ai သို့မဟုတ် OpenAI",
+    "imageSearchProviderKeys": "Pexels၊ Flaticon၊ Pixabay သို့မဟုတ် Unsplash",
+    "pexelsOrFlaticon": "Pexels၊ Flaticon၊ Pixabay သို့မဟုတ် Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "အမျိုးအစားအားလုံး",
+    "pixabayTypes": {
+      "all": "အားလုံး",
+      "photo": "ဓာတ်ပုံ",
+      "illustration": "ပုံဥပမာ",
+      "vector": "အကျုံးဝင်သည်။"
+    },
+    "pixabayCategories": {
+      "backgrounds": "နောက်ခံများ",
+      "fashion": "ဖက်ရှင်",
+      "nature": "သဘာဝတရား",
+      "science": "သိပ္ပံ",
+      "education": "ပညာရေး",
+      "feelings": "ခံစားချက်များ",
+      "health": "ကျန်းမာရေး",
+      "people": "လူတွေ",
+      "religion": "ဘာသာတရား",
+      "places": "နေရာများ",
+      "animals": "တိရစ္ဆာန်များ",
+      "industry": "စက်မှု",
+      "computer": "ကွန်ပျူတာ",
+      "food": "အစားအသောက်",
+      "sports": "အားကစား",
+      "transportation": "လမ်းပန်းဆက်သွယ်ရေး",
+      "travel": "ခရီးသွား",
+      "buildings": "အဆောက်အဦများ",
+      "business": "စီးပွားရေး",
+      "music": "ဂီတ"
+    },
+    "unsplashOrderBy": {
+      "relevant": "သက်ဆိုင်ရာ",
+      "latest": "နောက်ဆုံး"
+    }
   },
   "verbs": {
     "has": "ရှိသည်။",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "မင်္ဂလာပါ။",
     "flag": "🇲🇲",
+    "imageGenerationHints": "အပိုစတိုင်၊ စိတ်ခံစားချက် သို့မဟုတ် ဖွဲ့စည်းမှု အရိပ်အမြွက်များ",
     "imageSearch": "ပန်းသီး",
     "languageCode": "my",
     "pasteHere": "ဒီမှာ ကူးထည့်ပါ။",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "ပုံရှာဖွေမှုကို ပိတ်ပါ။",
+      "generateTitle": "ပုံဖန်တီးပါ။",
       "title": "ပုံရှာပါ။"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "သို့မဟုတ်",
     "cornerLanguagesRestAfter": "ပြသထားသော အမှတ်အသားကို ချိန်ညှိပါ။",
     "imageSourcesLabel": "ပုံအရင်းအမြစ်များ-",
-    "imageSourcesRest": "အက်ပ်အတွင်း ရုပ်ပုံရှာဖွေမှုနှင့် ထုတ်လုပ်ခြင်းကို ဖွင့်ရန်အတွက် Pexels၊ Flaticon၊ Leonardo.Ai သို့မဟုတ် Pollinations.ai API ကီးများကို ထည့်ပါ။",
+    "imageSourcesRest": "အက်ပ်အတွင်း ရုပ်ပုံရှာဖွေမှုနှင့် ထုတ်လုပ်ခြင်းကို ဖွင့်ရန်အတွက် Pexels၊ Flaticon၊ Pixabay၊ Unsplash၊ Leonardo.Ai၊ Pollinations.ai သို့မဟုတ် OpenAI API ကီးများကို ထည့်ပါ။",
     "translationLabel": "ဘာသာပြန်-",
     "translationRest": "Gemini၊ OpenAI၊ DeepSeek၊ Z.AI၊ Groq၊ သို့မဟုတ် စိတ်ကြိုက် OpenAI-သဟဇာတ ဝန်ဆောင်မှုပေးသူကို ရွေးချယ်ပါ။",
     "modelBaseUrlLabel": "မော်ဒယ်နှင့် အခြေခံ URL-",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "ချုံ့ထားသော အရန်အဖြစ် ပုံများ အပါအဝင် ကတ်ဒစ်ဂျစ်တိုက် အပြည့်အစုံကို ဒေါင်းလုဒ်လုပ်သည်။",
     "exportImageLessLabel": "ပုံမပါသော JSON ကို ထုတ်ယူရန်-",
     "exportImageLessRest": "လက်တည်းဖြတ်ရန် ပုံများမပါဘဲ ဖတ်နိုင်သော JSON ကို ဒေါင်းလုဒ်လုပ်ပါ။",
+    "exportCompleteLabel": "ပြီးပြည့်စုံသော JSON ကို ထုတ်ယူရန်-",
+    "exportCompleteRest": "ပုံများအပါအဝင် ကတ်ဒစ်ဂျစ်တိုက်အပြည့်အစုံဖြင့် ဖတ်နိုင်သော JSON ကို ဒေါင်းလုဒ်လုပ်သည်။",
     "managerPressText1": "မန်နေဂျာသည် ကတ်စာကြည့်တိုက်ဖြစ်သည်။ အမှတ်ခြစ်ကွက်များပါရှိသော ကတ်များကို ရွေးချယ်ပြီး ပျောက်ဆုံးနေသော ပုံများ၊ စာသား သို့မဟုတ် လင့်ခ်များကို ရှာဖွေရန် စစ်ထုတ်မှုများကို အသုံးပြုပါ။",
     "managerPressText2": "ရွေးထားသောကတ်များကို recto နှင့် verso စာမျက်နှာများအဖြစ် အစမ်းကြည့်ရှုရန် ပရင်တာမြင်ကွင်းကိုဖွင့်ပါ။ ကိရိယာဘားရှိ PDF အပြင်အဆင်ကို ရွေးပါ၊ သတိပေးချက်များကို ပြန်လည်သုံးသပ်ပါ၊ ထို့နောက် PDF ကို ဒေါင်းလုဒ်လုပ်ပြီး ၎င်းကို ပရင့်ထုတ်ပါ။",
     "apiCredits": "ပံ့ပိုးထားသော API များ",

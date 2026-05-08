@@ -15,6 +15,8 @@
     "exportCompressed": "संकुचित निर्यात करा",
     "exportImageLessJson": "इमेज-लेस JSON निर्यात करा",
     "file": "फाईल",
+    "generate": "निर्माण करा",
+    "generating": "जनरेट करत आहे...",
     "import": "आयात करा",
     "manage": "व्यवस्थापित करा",
     "newCard": "नवीन कार्ड",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "दुवे फिल्टर करा",
     "generatedCardPreview": "व्युत्पन्न कार्ड पूर्वावलोकन",
     "imageSearchQuery": "प्रतिमा शोध क्वेरी",
+    "imageGenerationHints": "अतिरिक्त प्रतिमा निर्मिती संकेत",
     "loadingApp": "Toddler Read लोड करत आहे",
     "manager": "व्यवस्थापक",
     "managerTags": "व्यवस्थापक टॅग",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ने रिक्त प्रतिसाद दिला.",
     "missingProviderTranslations": "{{provider}} ने वापरण्यायोग्य भाषांतरे परत केली नाहीत.",
     "missingProviderKey": "सेटिंग्जमध्ये {{provider}} API की जोडा.",
+    "exportedComplete": "{{count}} {{unit}} सह पूर्ण JSON निर्यात केले.",
     "exportedCompressed": "{{count}} {{unit}} सह संकुचित बॅकअप निर्यात केला.",
     "exportedImageLess": "{{count}} {{unit}} सह इमेज-लेस JSON निर्यात केले.",
     "pdfDownloaded": "PDF {{count}} पृष्ठांसह डाउनलोड केले.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API की",
     "baseUrl": "मूळ URL",
+    "category": "श्रेणी",
     "chooseTag": "टॅग निवडा",
     "code": "कोड",
     "cornerLanguages": "कोपऱ्यातील भाषा",
@@ -204,9 +209,13 @@
     "help": "मदत करा",
     "image": "प्रतिमा",
     "imageGeneration": "प्रतिमा निर्मिती",
+    "imageGenerationSources": "प्रतिमा निर्मिती स्रोत",
     "imageGenerationPromptTemplate": "प्रतिमा निर्मिती प्रॉम्प्ट टेम्पलेट",
+    "imageSearch": "प्रतिमा शोध",
+    "imageSearchSources": "प्रतिमा शोध स्रोत",
     "imageSource": "प्रतिमा स्रोत",
     "imageSources": "प्रतिमा स्रोत",
+    "imageType": "प्रतिमा प्रकार",
     "managerAndPress": "व्यवस्थापक आणि प्रिंटिंग प्रेस",
     "model": "मॉडेल",
     "orientation": "अभिमुखता",
@@ -217,6 +226,7 @@
     "rendering": "प्रस्तुतीकरण",
     "settings": "सेटिंग्ज",
     "size": "आकार",
+    "sort": "क्रमवारी लावा",
     "tags": "टॅग्ज",
     "translation": "भाषांतर",
     "translationPromptTemplate": "भाषांतर प्रॉम्प्ट टेम्पलेट",
@@ -224,8 +234,45 @@
     "verso": "वर्सो"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai किंवा Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, किंवा OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, किंवा OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, किंवा Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, किंवा Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "सर्व श्रेणी",
+    "pixabayTypes": {
+      "all": "सर्व",
+      "photo": "फोटो",
+      "illustration": "चित्रण",
+      "vector": "वेक्टर"
+    },
+    "pixabayCategories": {
+      "backgrounds": "पार्श्वभूमी",
+      "fashion": "फॅशन",
+      "nature": "निसर्ग",
+      "science": "विज्ञान",
+      "education": "शिक्षण",
+      "feelings": "भावना",
+      "health": "आरोग्य",
+      "people": "लोक",
+      "religion": "धर्म",
+      "places": "ठिकाणे",
+      "animals": "प्राणी",
+      "industry": "उद्योग",
+      "computer": "संगणक",
+      "food": "अन्न",
+      "sports": "खेळ",
+      "transportation": "वाहतूक",
+      "travel": "प्रवास",
+      "buildings": "इमारती",
+      "business": "व्यवसाय",
+      "music": "संगीत"
+    },
+    "unsplashOrderBy": {
+      "relevant": "संबंधित",
+      "latest": "नवीनतम"
+    }
   },
   "verbs": {
     "has": "आहे",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "नमस्कार",
     "flag": "🇮🇳",
+    "imageGenerationHints": "अतिरिक्त शैली, मूड किंवा रचना इशारे",
     "imageSearch": "सफरचंद",
     "languageCode": "mr",
     "pasteHere": "येथे पेस्ट करा",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "प्रतिमा शोध बंद करा",
+      "generateTitle": "प्रतिमा निर्माण करा",
       "title": "प्रतिमा शोधा"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "किंवा",
     "cornerLanguagesRestAfter": "आणि प्रदर्शित मार्कर समायोजित करा.",
     "imageSourcesLabel": "प्रतिमा स्रोत:",
-    "imageSourcesRest": "ॲपमधील प्रतिमा शोध आणि निर्मिती सक्षम करण्यासाठी Pexels, Flaticon, Leonardo.Ai किंवा Pollinations.ai API की जोडा.",
+    "imageSourcesRest": "ॲपमधील प्रतिमा शोध आणि जनरेशन सक्षम करण्यासाठी Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai किंवा OpenAI API की जोडा.",
     "translationLabel": "अनुवाद:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq किंवा सानुकूल OpenAI-सुसंगत प्रदाता निवडा.",
     "modelBaseUrlLabel": "मॉडेल आणि मूळ URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "संकुचित बॅकअप म्हणून प्रतिमांसह संपूर्ण कार्ड लायब्ररी डाउनलोड करते.",
     "exportImageLessLabel": "इमेज-लेस JSON निर्यात करा:",
     "exportImageLessRest": "हस्त संपादनासाठी प्रतिमांशिवाय वाचनीय JSON डाउनलोड करते.",
+    "exportCompleteLabel": "पूर्ण JSON निर्यात करा:",
+    "exportCompleteRest": "प्रतिमांसह पूर्ण कार्ड लायब्ररीसह वाचनीय JSON डाउनलोड करते.",
     "managerPressText1": "व्यवस्थापक हे कार्ड लायब्ररी आहे. चेकबॉक्ससह कार्ड निवडा आणि गहाळ प्रतिमा, मजकूर किंवा उलट लिंक शोधण्यासाठी फिल्टर वापरा.",
     "managerPressText2": "रेक्टो आणि व्हर्सो पृष्ठे म्हणून निवडलेल्या कार्डचे पूर्वावलोकन करण्यासाठी प्रिंटर दृश्य उघडा. टूलबारमध्ये PDF लेआउट निवडा, कोणत्याही चेतावणीचे पुनरावलोकन करा, नंतर PDF डाउनलोड करा आणि प्रिंट करा.",
     "apiCredits": "समर्थित API",

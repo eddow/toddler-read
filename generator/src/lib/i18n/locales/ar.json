@@ -15,6 +15,8 @@
     "exportCompressed": "تصدير مضغوط",
     "exportImageLessJson": "تصدير صورة أقل JSON",
     "file": "ملف",
+    "generate": "يولد",
+    "generating": "جارٍ الإنشاء...",
     "import": "استيراد",
     "manage": "إدارة",
     "newCard": "بطاقة جديدة",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "تصفية الروابط العكسية",
     "generatedCardPreview": "معاينة البطاقة التي تم إنشاؤها",
     "imageSearchQuery": "استعلام بحث عن الصور",
+    "imageGenerationHints": "تلميحات إضافية لإنشاء الصور",
     "loadingApp": "جاري تحميل Toddler Read",
     "manager": "مدير",
     "managerTags": "علامات المدير",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "قام {{provider}} بإرجاع استجابة فارغة.",
     "missingProviderTranslations": "لم يُرجع {{provider}} أي ترجمات قابلة للاستخدام.",
     "missingProviderKey": "أضف مفتاح {{provider}} API في الإعدادات.",
+    "exportedComplete": "تم تصدير JSON كاملاً مع {{count}} {{unit}}.",
     "exportedCompressed": "تم تصدير نسخة احتياطية مضغوطة باستخدام {{count}} {{unit}}.",
     "exportedImageLess": "تم تصدير JSON بدون صورة مع {{count}} {{unit}}.",
     "pdfDownloaded": "تم تنزيل PDF مع صفحات {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "مفتاح API",
     "baseUrl": "عنوان URL الأساسي",
+    "category": "فئة",
     "chooseTag": "اختر العلامة",
     "code": "الكود",
     "cornerLanguages": "لغات الزاوية",
@@ -204,9 +209,13 @@
     "help": "مساعدة",
     "image": "صورة",
     "imageGeneration": "توليد الصورة",
+    "imageGenerationSources": "مصادر توليد الصور",
     "imageGenerationPromptTemplate": "قالب موجه لتوليد الصور",
+    "imageSearch": "البحث عن الصور",
+    "imageSearchSources": "مصادر البحث عن الصور",
     "imageSource": "مصدر الصورة",
     "imageSources": "مصادر الصورة",
+    "imageType": "نوع الصورة",
     "managerAndPress": "مدير والمطبعة",
     "model": "نموذج",
     "orientation": "التوجه",
@@ -217,6 +226,7 @@
     "rendering": "التقديم",
     "settings": "الإعدادات",
     "size": "الحجم",
+    "sort": "نوع",
     "tags": "العلامات",
     "translation": "الترجمة",
     "translationPromptTemplate": "قالب طلب الترجمة",
@@ -224,8 +234,45 @@
     "verso": "فيرسو"
   },
   "providers": {
-    "imageProviderKeys": "Pexels أو Flaticon أو Leonardo.Ai أو Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels أو Flaticon أو Pixabay أو Unsplash أو Leonardo.Ai أو Pollinations.ai أو OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai أو Pollinations.ai أو OpenAI",
+    "imageSearchProviderKeys": "Pexels أو Flaticon أو Pixabay أو Unsplash",
+    "pexelsOrFlaticon": "Pexels أو Flaticon أو Pixabay أو Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "جميع الفئات",
+    "pixabayTypes": {
+      "all": "الجميع",
+      "photo": "صورة",
+      "illustration": "توضيح",
+      "vector": "ناقل"
+    },
+    "pixabayCategories": {
+      "backgrounds": "الخلفيات",
+      "fashion": "موضة",
+      "nature": "طبيعة",
+      "science": "علوم",
+      "education": "تعليم",
+      "feelings": "مشاعر",
+      "health": "صحة",
+      "people": "الناس",
+      "religion": "دِين",
+      "places": "الأماكن",
+      "animals": "الحيوانات",
+      "industry": "صناعة",
+      "computer": "حاسوب",
+      "food": "طعام",
+      "sports": "الرياضة",
+      "transportation": "مواصلات",
+      "travel": "يسافر",
+      "buildings": "المباني",
+      "business": "عمل",
+      "music": "موسيقى"
+    },
+    "unsplashOrderBy": {
+      "relevant": "مناسب",
+      "latest": "أحدث"
+    }
   },
   "verbs": {
     "has": "لديه",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "مرحبا",
     "flag": "🇸🇦",
+    "imageGenerationHints": "تلميحات إضافية حول الأسلوب أو الحالة المزاجية أو التكوين",
     "imageSearch": "تفاحة",
     "languageCode": "ar",
     "pasteHere": "الصق هنا",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "إغلاق بحث الصور",
+      "generateTitle": "توليد الصورة",
       "title": "صورة البحث"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "أو",
     "cornerLanguagesRestAfter": "وضبط العلامة المعروضة.",
     "imageSourcesLabel": "مصادر الصورة:",
-    "imageSourcesRest": "أضف مفاتيح Pexels أو Flaticon أو Leonardo.Ai أو Pollinations.ai API لتمكين البحث عن الصور وإنشاءها داخل التطبيق.",
+    "imageSourcesRest": "أضف مفاتيح Pexels أو Flaticon أو Pixabay أو Unsplash أو Leonardo.Ai أو Pollinations.ai أو OpenAI API لتمكين البحث عن الصور داخل التطبيق وإنشائها.",
     "translationLabel": "الترجمة:",
     "translationRest": "اختر Gemini، أو OpenAI، أو DeepSeek، أو Z.AI، أو Groq، أو موفر مخصص متوافق مع OpenAI.",
     "modelBaseUrlLabel": "النموذج وعنوان URL الأساسي:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "يقوم بتنزيل مكتبة البطاقات الكاملة، بما في ذلك الصور، كنسخة احتياطية مضغوطة.",
     "exportImageLessLabel": "تصدير صورة أقل JSON:",
     "exportImageLessRest": "يقوم بتنزيل JSON القابل للقراءة بدون صور للتحرير اليدوي.",
+    "exportCompleteLabel": "تصدير JSON الكامل:",
+    "exportCompleteRest": "يقوم بتنزيل JSON القابل للقراءة مع مكتبة البطاقات الكاملة، بما في ذلك الصور.",
     "managerPressText1": "المدير هو مكتبة البطاقات. حدد البطاقات التي تحتوي على مربعات الاختيار واستخدم المرشحات للعثور على الصور أو النصوص أو الروابط اليسرى المفقودة.",
     "managerPressText2": "افتح عرض الطابعة لمعاينة البطاقات المحددة كصفحات وجه وظهر. اختر تخطيط PDF في شريط الأدوات، وراجع أي تحذيرات، ثم قم بتنزيل PDF وقم بطباعته.",
     "apiCredits": "واجهات برمجة التطبيقات المدعومة",

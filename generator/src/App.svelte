@@ -72,11 +72,15 @@
 	import {
 		DEFAULT_IMAGE_GENERATION_PROMPT_TEMPLATE,
 		IMAGE_SEARCH_PROVIDERS,
+		PIXABAY_CATEGORIES,
+		PIXABAY_IMAGE_TYPES,
+		UNSPLASH_ORDER_BY_OPTIONS,
 		defaultImageSearchProviderConfigs,
 		getImageSearchProvider,
 		isImageSearchProvider,
 		normalizeStoredImageSearchProviderConfigs,
 		type ImageGenerationPromptContext,
+		type ImageSearchFilters,
 		type ImageSearchProviderConfig,
 		type ImageSearchProviderConfigs,
 		type ImageSearchProviderId,
@@ -127,8 +131,8 @@
 	const SHOW_HELP_AT_STARTUP_STORAGE_KEY = 'toddler-read-generator-show-help-at-startup'
 	const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash'
 	const IMAGE_SEARCH_RESULTS_PER_PAGE = 12
-	const IMAGE_SEARCH_PROVIDER_IDS: ImageSearchProviderId[] = ['pexels', 'flaticon']
-	const IMAGE_GENERATION_PROVIDER_IDS: ImageSearchProviderId[] = ['leonardo', 'pollinations']
+	const IMAGE_SEARCH_PROVIDER_IDS: ImageSearchProviderId[] = ['pexels', 'flaticon', 'pixabay', 'unsplash']
+	const IMAGE_GENERATION_PROVIDER_IDS: ImageSearchProviderId[] = ['leonardo', 'pollinations', 'openai']
 	const TRANSLATION_PROVIDERS = [
 		{ value: 'gemini', label: 'Gemini', model: DEFAULT_GEMINI_MODEL, baseUrl: '' },
 		{ value: 'openai', label: 'OpenAI', model: 'gpt-5-mini', baseUrl: 'https://api.openai.com/v1' },
@@ -200,6 +204,16 @@ Do not return unchanged existing text.`
 			label: 'Flaticon',
 			href: 'https://www.flaticon.com/api',
 			badge: 'https://img.shields.io/badge/Flaticon-API-0C9ED9?style=for-the-badge'
+		},
+		{
+			label: 'Pixabay',
+			href: 'https://pixabay.com/api/docs/',
+			badge: 'https://img.shields.io/badge/Pixabay-API-2EC66D?style=for-the-badge&logo=pixabay&logoColor=white'
+		},
+		{
+			label: 'Unsplash',
+			href: 'https://unsplash.com/documentation',
+			badge: 'https://img.shields.io/badge/Unsplash-API-000000?style=for-the-badge&logo=unsplash&logoColor=white'
 		},
 		{
 			label: 'Leonardo.Ai',
@@ -274,6 +288,9 @@ Do not return unchanged existing text.`
 	let imageGenerationHints = ''
 	let showImageSearchPanel = false
 	let imageSearchQuery = ''
+	let pixabayImageType: ImageSearchFilters['pixabayImageType'] = 'all'
+	let pixabayCategory = ''
+	let unsplashOrderBy: ImageSearchFilters['unsplashOrderBy'] = 'relevant'
 	let imageSearchResults: ImageSearchResult[] = []
 	let imageSearchPage = 1
 	let imageSearchTotalResults = 0
@@ -1273,12 +1290,26 @@ Do not return unchanged existing text.`
 	function updateImageSearchProvider(value: string) {
 		if (!isImageSearchProvider(value)) return
 		imageSearchProvider = value
-		resetImageSearchResults()
+		void rerunImageSearchAfterOptionChange()
 	}
 
 	function updateImageGenerationHints(value: string) {
 		imageGenerationHints = value
 		resetImageSearchResults()
+	}
+
+	function refreshImageSearchOptions() {
+		void rerunImageSearchAfterOptionChange()
+	}
+
+	async function rerunImageSearchAfterOptionChange() {
+		resetImageSearchResults()
+		if (!showImageSearchPanel || imageFinderMode !== 'search') return
+		imageSearchQuery = imageSearchQuery.trim() || defaultImageSearchQuery()
+		await tick()
+		if (imageSearchQuery.trim() && activeImageProviders.length > 0) {
+			void searchImages(1)
+		}
 	}
 
 	function updateImageSearchProviderConfig(
@@ -1784,9 +1815,33 @@ Do not return unchanged existing text.`
 		return { textsByLanguage }
 	}
 
+	function buildImageSearchFilters(): ImageSearchFilters {
+		return {
+			pixabayImageType,
+			pixabayCategory,
+			unsplashOrderBy
+		}
+	}
+
+	function pixabayImageTypeLabel(value: string): string {
+		return T.imageSearchFilters?.pixabayTypes?.[value] ?? value
+	}
+
+	function pixabayCategoryLabel(value: string): string {
+		if (!value) return T.imageSearchFilters?.allCategories ?? 'All categories'
+		return T.imageSearchFilters?.pixabayCategories?.[value] ?? value
+	}
+
+	function unsplashOrderByLabel(value: string): string {
+		return T.imageSearchFilters?.unsplashOrderBy?.[value] ?? value
+	}
+
 	function imageSearchProviderSourceUrl(provider: ImageSearchProviderId): string {
+		if (provider === 'openai') return 'https://platform.openai.com/docs/guides/image-generation'
 		if (provider === 'pollinations') return 'https://pollinations.ai'
 		if (provider === 'leonardo') return 'https://app.leonardo.ai'
+		if (provider === 'unsplash') return 'https://unsplash.com'
+		if (provider === 'pixabay') return 'https://pixabay.com'
 		if (provider === 'flaticon') return 'https://www.flaticon.com'
 		return 'https://www.pexels.com'
 	}
@@ -1833,7 +1888,8 @@ Do not return unchanged existing text.`
 				{
 					page,
 					perPage: IMAGE_SEARCH_RESULTS_PER_PAGE,
-					generationContext: buildImageGenerationPromptContext(selectedCard)
+					generationContext: buildImageGenerationPromptContext(selectedCard),
+					searchFilters: buildImageSearchFilters()
 				},
 				{
 					...currentImageSearchProviderConfig,
@@ -1873,7 +1929,10 @@ Do not return unchanged existing text.`
 		imageSearchStatus = ''
 		imageSearchError = ''
 		try {
-			const nextImageDataUrl = await getImageSearchProvider(result.providerId).importResult(result)
+			const nextImageDataUrl = await getImageSearchProvider(result.providerId).importResult(
+				result,
+				imageSearchProviderConfigs[result.providerId]
+			)
 			updateSelectedCard({ imageDataUrl: nextImageDataUrl, imageTransform: undefined })
 			pngStatus = ''
 			imageSearchStatus = T.status.imageAdded
@@ -3465,6 +3524,44 @@ Do not return unchanged existing text.`
 				</button>
 			</form>
 
+			{#if imageFinderMode === 'search' && imageSearchProvider === 'pixabay'}
+				<div class="image-search-filters">
+					<label>
+						<span>{T.labels.imageType}</span>
+						<select
+							bind:value={pixabayImageType}
+							on:change={refreshImageSearchOptions}
+						>
+							{#each PIXABAY_IMAGE_TYPES as type}
+								<option value={type}>{pixabayImageTypeLabel(type)}</option>
+							{/each}
+						</select>
+					</label>
+					<label>
+						<span>{T.labels.category}</span>
+						<select bind:value={pixabayCategory} on:change={refreshImageSearchOptions}>
+							{#each PIXABAY_CATEGORIES as category}
+								<option value={category}>{pixabayCategoryLabel(category)}</option>
+							{/each}
+						</select>
+					</label>
+				</div>
+			{:else if imageFinderMode === 'search' && imageSearchProvider === 'unsplash'}
+				<div class="image-search-filters">
+					<label>
+						<span>{T.labels.sort}</span>
+						<select
+							bind:value={unsplashOrderBy}
+							on:change={refreshImageSearchOptions}
+						>
+							{#each UNSPLASH_ORDER_BY_OPTIONS as orderBy}
+								<option value={orderBy}>{unsplashOrderByLabel(orderBy)}</option>
+							{/each}
+						</select>
+					</label>
+				</div>
+			{/if}
+
 			{#if imageSearchError}
 				<p class="status error">{imageSearchError}</p>
 			{:else if imageSearchStatus}
@@ -3483,6 +3580,9 @@ Do not return unchanged existing text.`
 							on:click={() => importImageSearchResult(result)}
 						>
 							<img src={result.thumbUrl} alt="" />
+							{#if result.creditText}
+								<span>{result.creditText}</span>
+							{/if}
 						</button>
 					{/each}
 				</div>

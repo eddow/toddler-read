@@ -15,6 +15,8 @@
     "exportCompressed": "Eksporto të ngjeshur",
     "exportImageLessJson": "Eksporto JSON pa imazhe",
     "file": "Skedari",
+    "generate": "Gjeneroni",
+    "generating": "Po gjeneron...",
     "import": "Importi",
     "manage": "Menaxhoni",
     "newCard": "Kartë e re",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtro verso lidhjet",
     "generatedCardPreview": "Pamja paraprake e kartës së krijuar",
     "imageSearchQuery": "Pyetja e kërkimit të imazhit",
+    "imageGenerationHints": "Këshilla shtesë për gjenerimin e imazheve",
     "loadingApp": "Toddler Read po ngarkohet",
     "manager": "Menaxheri",
     "managerTags": "Etiketat e menaxherit",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} ktheu një përgjigje boshe.",
     "missingProviderTranslations": "{{provider}} nuk ktheu përkthime të përdorshme.",
     "missingProviderKey": "Shto një çelës {{provider}} API te \"Cilësimet\".",
+    "exportedComplete": "U eksportua JSON i plotë me {{count}} {{unit}}.",
     "exportedCompressed": "Rezervimi i ngjeshur u eksportua me {{count}} {{unit}}.",
     "exportedImageLess": "JSON pa imazhe u eksportua me {{count}} {{unit}}.",
     "pdfDownloaded": "PDF u shkarkua me faqet {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Tasti API",
     "baseUrl": "URL-ja bazë",
+    "category": "Kategoria",
     "chooseTag": "Zgjidhni etiketën",
     "code": "Kodi",
     "cornerLanguages": "Gjuhët e këndit",
@@ -204,9 +209,13 @@
     "help": "Ndihmë",
     "image": "Imazhi",
     "imageGeneration": "Gjenerimi i imazhit",
+    "imageGenerationSources": "Burimet e gjenerimit të imazheve",
     "imageGenerationPromptTemplate": "Modeli i shpejtë i gjenerimit të imazhit",
+    "imageSearch": "Kërkimi i imazhit",
+    "imageSearchSources": "Burimet e kërkimit të imazheve",
     "imageSource": "Burimi i imazhit",
     "imageSources": "Burimet e imazhit",
+    "imageType": "Lloji i imazhit",
     "managerAndPress": "Menaxher dhe shtypshkronjë",
     "model": "model",
     "orientation": "Orientimi",
@@ -217,6 +226,7 @@
     "rendering": "Rendering",
     "settings": "Cilësimet",
     "size": "Madhësia",
+    "sort": "Rendit",
     "tags": "Etiketat",
     "translation": "Përkthimi",
     "translationPromptTemplate": "Modeli i kërkesës së përkthimit",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, ose Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ose OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai ose OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay ose Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay ose Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Të gjitha kategoritë",
+    "pixabayTypes": {
+      "all": "Të gjitha",
+      "photo": "Foto",
+      "illustration": "Ilustrim",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Sfondet",
+      "fashion": "Moda",
+      "nature": "Natyra",
+      "science": "Shkenca",
+      "education": "Arsimi",
+      "feelings": "Ndjenjat",
+      "health": "Shëndeti",
+      "people": "Njerëzit",
+      "religion": "Feja",
+      "places": "Vendet",
+      "animals": "Kafshët",
+      "industry": "Industria",
+      "computer": "Kompjuter",
+      "food": "Ushqimi",
+      "sports": "Sportive",
+      "transportation": "Transporti",
+      "travel": "Udhëtoni",
+      "buildings": "Ndërtesat",
+      "business": "Biznesi",
+      "music": "Muzikë"
+    },
+    "unsplashOrderBy": {
+      "relevant": "relevante",
+      "latest": "E fundit"
+    }
   },
   "verbs": {
     "has": "ka",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "pershendetje",
     "flag": "🇦🇱",
+    "imageGenerationHints": "sugjerime shtesë për stilin, disponimin ose përbërjen",
     "imageSearch": "mollë",
     "languageCode": "sq",
     "pasteHere": "Ngjit këtu",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Mbyll kërkimin e imazhit",
+      "generateTitle": "Krijo imazh",
       "title": "Kërko imazhin"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "ose",
     "cornerLanguagesRestAfter": "dhe rregulloni shënuesin e shfaqur.",
     "imageSourcesLabel": "Burimet e imazhit:",
-    "imageSourcesRest": "shtoni çelësat API Pexels, Flaticon, Leonardo.Ai ose Pollinations.ai për të mundësuar kërkimin dhe gjenerimin e imazheve brenda aplikacionit.",
+    "imageSourcesRest": "shtoni çelësat Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai ose OpenAI API për të mundësuar kërkimin dhe gjenerimin e imazheve brenda aplikacionit.",
     "translationLabel": "Përkthimi:",
     "translationRest": "zgjidhni Gemini, OpenAI, DeepSeek, Z.AI, Groq ose një ofrues të personalizuar të pajtueshëm me OpenAI.",
     "modelBaseUrlLabel": "Modeli dhe URL-ja bazë:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "shkarkon bibliotekën e plotë të kartës, duke përfshirë imazhet, si një kopje rezervë të ngjeshur.",
     "exportImageLessLabel": "Eksporto JSON pa imazhe:",
     "exportImageLessRest": "shkarkon JSON të lexueshëm pa imazhe për modifikim me dorë.",
+    "exportCompleteLabel": "Eksporto JSON të plotë:",
+    "exportCompleteRest": "shkarkon JSON të lexueshëm me bibliotekën e plotë të kartave, duke përfshirë imazhet.",
     "managerPressText1": "Menaxheri është biblioteka e kartave. Zgjidhni kartat me kutitë e kontrollit dhe përdorni filtra për të gjetur imazhet, tekstin ose lidhjet që mungojnë.",
     "managerPressText2": "Hapni pamjen e printerit për të parë paraprakisht kartat e zgjedhura si faqe recto dhe verso. Zgjidhni paraqitjen PDF në shiritin e veglave, rishikoni çdo paralajmërim, më pas shkarkoni PDF dhe printoni atë.",
     "apiCredits": "API të mbështetura",

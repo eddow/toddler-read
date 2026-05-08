@@ -15,6 +15,8 @@
     "exportCompressed": "Експорт у стисненому вигляді",
     "exportImageLessJson": "Експорт JSON без зображення",
     "file": "Файл",
+    "generate": "Генерувати",
+    "generating": "Створення...",
     "import": "Імпорт",
     "manage": "Керувати",
     "newCard": "Нова карта",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Фільтр зворотних посилань",
     "generatedCardPreview": "Попередній перегляд створеної картки",
     "imageSearchQuery": "Запит на пошук зображень",
+    "imageGenerationHints": "Додаткові підказки щодо створення зображень",
     "loadingApp": "Завантаження Toddler Read",
     "manager": "Менеджер",
     "managerTags": "Менеджер тегів",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} повернув порожню відповідь.",
     "missingProviderTranslations": "{{provider}} не повернув придатних перекладів.",
     "missingProviderKey": "Додайте ключ {{provider}} API у налаштуваннях.",
+    "exportedComplete": "Експортовано повний JSON з {{count}} {{unit}}.",
     "exportedCompressed": "Експортовано стиснуту резервну копію за допомогою {{count}} {{unit}}.",
     "exportedImageLess": "Експортовано JSON без зображення з {{count}} {{unit}}.",
     "pdfDownloaded": "PDF завантажено зі сторінками {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Ключ API",
     "baseUrl": "Базовий URL",
+    "category": "Категорія",
     "chooseTag": "Виберіть тег",
     "code": "Код",
     "cornerLanguages": "Кутові мови",
@@ -204,9 +209,13 @@
     "help": "Довідка",
     "image": "Зображення",
     "imageGeneration": "Генерація зображення",
+    "imageGenerationSources": "Джерела формування зображення",
     "imageGenerationPromptTemplate": "Шаблон підказки для створення зображення",
+    "imageSearch": "Пошук зображень",
+    "imageSearchSources": "Джерела пошуку зображень",
     "imageSource": "Джерело зображення",
     "imageSources": "Джерела зображень",
+    "imageType": "Тип зображення",
     "managerAndPress": "Менеджер і друкарня",
     "model": "модель",
     "orientation": "Орієнтація",
@@ -217,6 +226,7 @@
     "rendering": "Візуалізація",
     "settings": "Налаштування",
     "size": "Розмір",
+    "sort": "Сортувати",
     "tags": "Теги",
     "translation": "Переклад",
     "translationPromptTemplate": "Шаблон запиту на переклад",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai або Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai або OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai або OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay або Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay або Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Всі категорії",
+    "pixabayTypes": {
+      "all": "все",
+      "photo": "Фото",
+      "illustration": "Ілюстрація",
+      "vector": "Вектор"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Фони",
+      "fashion": "Мода",
+      "nature": "природа",
+      "science": "Наука",
+      "education": "Освіта",
+      "feelings": "Почуття",
+      "health": "Здоров'я",
+      "people": "Люди",
+      "religion": "Релігія",
+      "places": "Місця",
+      "animals": "Тварини",
+      "industry": "Промисловість",
+      "computer": "комп'ютер",
+      "food": "харчування",
+      "sports": "спорт",
+      "transportation": "Транспорт",
+      "travel": "Подорожі",
+      "buildings": "Будівлі",
+      "business": "Бізнес",
+      "music": "музика"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Релевантний",
+      "latest": "Останній"
+    }
   },
   "verbs": {
     "has": "має",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Привіт",
     "flag": "🇺🇦",
+    "imageGenerationHints": "додаткові підказки щодо стилю, настрою чи композиції",
     "imageSearch": "яблуко",
     "languageCode": "uk",
     "pasteHere": "Вставте сюди",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Закрити пошук зображень",
+      "generateTitle": "Створити зображення",
       "title": "Пошук зображення"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "або",
     "cornerLanguagesRestAfter": "і налаштуйте відображуваний маркер.",
     "imageSourcesLabel": "Джерела зображень:",
-    "imageSourcesRest": "додайте ключі API Pexels, Flaticon, Leonardo.Ai або Pollinations.ai, щоб увімкнути пошук і генерацію зображень у програмі.",
+    "imageSourcesRest": "додайте ключі API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai або OpenAI, щоб увімкнути пошук і генерацію зображень у програмі.",
     "translationLabel": "Переклад:",
     "translationRest": "виберіть Gemini, OpenAI, DeepSeek, Z.AI, Groq або спеціального постачальника, сумісного з OpenAI.",
     "modelBaseUrlLabel": "Модель і базова URL-адреса:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "завантажує повну бібліотеку карток, включаючи зображення, як стиснуту резервну копію.",
     "exportImageLessLabel": "Експорт без зображення JSON:",
     "exportImageLessRest": "завантажує читабельний JSON без зображень для ручного редагування.",
+    "exportCompleteLabel": "Повний експорт JSON:",
+    "exportCompleteRest": "завантажує читабельний JSON із повною бібліотекою карток, включаючи зображення.",
     "managerPressText1": "Завідувач картотекою. Виберіть картки з прапорцями та використовуйте фільтри, щоб знайти відсутні зображення, текст або зворотні посилання.",
     "managerPressText2": "Відкрийте вікно принтера, щоб переглянути вибрані картки як прямі та зворотні сторінки. Виберіть макет PDF на панелі інструментів, перегляньте всі попередження, потім завантажте PDF і роздрукуйте його.",
     "apiCredits": "Підтримувані API",

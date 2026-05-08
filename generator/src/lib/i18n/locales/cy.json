@@ -15,6 +15,8 @@
     "exportCompressed": "Allforio cywasgedig",
     "exportImageLessJson": "Allforio delwedd-llai JSON",
     "file": "Ffeil",
+    "generate": "Cynhyrchu",
+    "generating": "Wrthi'n cynhyrchu...",
     "import": "Mewnforio",
     "manage": "Rheoli",
     "newCard": "Cerdyn newydd",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Hidlo dolenni verso",
     "generatedCardPreview": "Rhagolwg cerdyn wedi'i gynhyrchu",
     "imageSearchQuery": "Ymholiad chwilio delwedd",
+    "imageGenerationHints": "Awgrymiadau cynhyrchu delwedd ychwanegol",
     "loadingApp": "Wrthi'n llwytho Toddler Read",
     "manager": "Rheolwr",
     "managerTags": "Tagiau rheolwr",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "Dychwelodd {{provider}} ymateb gwag.",
     "missingProviderTranslations": "Ni ddychwelodd {{provider}} unrhyw gyfieithiadau defnyddiadwy.",
     "missingProviderKey": "Ychwanegu allwedd {{provider}} API yn y Gosodiadau.",
+    "exportedComplete": "Wedi allforio JSON cyflawn gyda {{count}} {{unit}}.",
     "exportedCompressed": "Wedi'i allforio wrth gefn cywasgedig gyda {{count}} {{unit}}.",
     "exportedImageLess": "Wedi allforio JSON heb ddelwedd gyda {{count}} {{unit}}.",
     "pdfDownloaded": "PDF wedi'i lawrlwytho gyda thudalennau {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Allwedd API",
     "baseUrl": "URL sylfaen",
+    "category": "Categori",
     "chooseTag": "Dewiswch tag",
     "code": "Cod",
     "cornerLanguages": "Ieithoedd cornel",
@@ -204,9 +209,13 @@
     "help": "Help",
     "image": "Delwedd",
     "imageGeneration": "Cynhyrchu delwedd",
+    "imageGenerationSources": "Ffynonellau cynhyrchu delwedd",
     "imageGenerationPromptTemplate": "Templed annog cynhyrchu delwedd",
+    "imageSearch": "Chwiliad delwedd",
+    "imageSearchSources": "Ffynonellau chwilio am ddelweddau",
     "imageSource": "Ffynhonnell delwedd",
     "imageSources": "Ffynonellau delwedd",
+    "imageType": "Math o ddelwedd",
     "managerAndPress": "Rheolwr A Wasg Argraffu",
     "model": "model",
     "orientation": "Cyfeiriadedd",
@@ -217,6 +226,7 @@
     "rendering": "Rendro",
     "settings": "Gosodiadau",
     "size": "Maint",
+    "sort": "Trefnu",
     "tags": "Tagiau",
     "translation": "Cyfieithiad",
     "translationPromptTemplate": "Templed anogwr cyfieithu",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai, neu Peilliadau.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, neu OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai, neu OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay, neu Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay, neu Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Pob categori",
+    "pixabayTypes": {
+      "all": "Pawb",
+      "photo": "Llun",
+      "illustration": "Darlun",
+      "vector": "Fector"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Cefndiroedd",
+      "fashion": "Ffasiwn",
+      "nature": "Natur",
+      "science": "Gwyddoniaeth",
+      "education": "Addysg",
+      "feelings": "Teimladau",
+      "health": "Iechyd",
+      "people": "Pobl",
+      "religion": "Crefydd",
+      "places": "Lleoedd",
+      "animals": "Anifeiliaid",
+      "industry": "Diwydiant",
+      "computer": "Cyfrifiadur",
+      "food": "Bwyd",
+      "sports": "Chwaraeon",
+      "transportation": "Cludiant",
+      "travel": "Teithio",
+      "buildings": "Adeiladau",
+      "business": "Busnes",
+      "music": "Cerddoriaeth"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Perthnasol",
+      "latest": "diweddaraf"
+    }
   },
   "verbs": {
     "has": "wedi",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Helo",
     "flag": "🏴",
+    "imageGenerationHints": "awgrymiadau arddull, naws neu gyfansoddiad ychwanegol",
     "imageSearch": "afal",
     "languageCode": "cy",
     "pasteHere": "Gludwch yma",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Cau chwiliad delwedd",
+      "generateTitle": "Cynhyrchu delwedd",
       "title": "Chwilio delwedd"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "neu",
     "cornerLanguagesRestAfter": "ac addasu'r marciwr sy'n cael ei arddangos.",
     "imageSourcesLabel": "Ffynonellau delwedd:",
-    "imageSourcesRest": "ychwanegu allweddi Pexels, Flaticon, Leonardo.Ai, neu Pollinations.ai API i alluogi chwilio a chynhyrchu delwedd mewn-app.",
+    "imageSourcesRest": "ychwanegu allweddi Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai, neu OpenAI API i alluogi chwilio a chynhyrchu delwedd mewn-app.",
     "translationLabel": "Cyfieithiad:",
     "translationRest": "dewiswch Gemini, OpenAI, DeepSeek, Z.AI, Groq, neu ddarparwr sy'n gydnaws â OpenAI wedi'i deilwra.",
     "modelBaseUrlLabel": "URL model a sylfaen:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "lawrlwytho'r llyfrgell gardiau lawn, gan gynnwys delweddau, fel copi wrth gefn cywasgedig.",
     "exportImageLessLabel": "Allforio JSON heb ddelwedd:",
     "exportImageLessRest": "lawrlwytho JSON darllenadwy heb ddelweddau i'w golygu â llaw.",
+    "exportCompleteLabel": "Allforio JSON cyflawn:",
+    "exportCompleteRest": "lawrlwytho JSON darllenadwy gyda'r llyfrgell gardiau lawn, gan gynnwys delweddau.",
     "managerPressText1": "Y rheolwr yw'r llyfrgell gardiau. Dewiswch gardiau gyda'r blychau ticio a defnyddiwch hidlwyr i ddod o hyd i ddelweddau coll, testun, neu ddolenni verso.",
     "managerPressText2": "Agorwch olwg yr argraffydd i gael rhagolwg o gardiau dethol fel tudalennau recto a verso. Dewiswch y gosodiad PDF yn y bar offer, adolygwch unrhyw rybuddion, yna lawrlwythwch y PDF a'i argraffu.",
     "apiCredits": "APIs a gefnogir",

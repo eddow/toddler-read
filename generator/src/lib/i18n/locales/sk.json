@@ -15,6 +15,8 @@
     "exportCompressed": "Exportovať komprimované",
     "exportImageLessJson": "Exportujte JSON bez obrázkov",
     "file": "Súbor",
+    "generate": "Generovať",
+    "generating": "Generuje sa...",
     "import": "Importovať",
     "manage": "Spravovať",
     "newCard": "Nová karta",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Filtrovať odkazy naopak",
     "generatedCardPreview": "Vygenerovaný náhľad karty",
     "imageSearchQuery": "Dopyt na vyhľadávanie obrázkov",
+    "imageGenerationHints": "Ďalšie tipy na vytváranie obrázkov",
     "loadingApp": "Načítava sa Toddler Read",
     "manager": "manažér",
     "managerTags": "Manažérske značky",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} vrátil prázdnu odpoveď.",
     "missingProviderTranslations": "{{provider}} nevrátil žiadne použiteľné preklady.",
     "missingProviderKey": "Pridajte kľúč {{provider}} API v Nastaveniach.",
+    "exportedComplete": "Bol exportovaný úplný JSON s {{count}} {{unit}}.",
     "exportedCompressed": "Exportovaná komprimovaná záloha pomocou {{count}} {{unit}}.",
     "exportedImageLess": "Exportované JSON bez obrázkov so {{count}} {{unit}}.",
     "pdfDownloaded": "PDF stiahnuté so stránkami {{count}}.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "Kľúč API",
     "baseUrl": "Základná adresa URL",
+    "category": "Kategória",
     "chooseTag": "Vyberte značku",
     "code": "kód",
     "cornerLanguages": "Rohové jazyky",
@@ -204,9 +209,13 @@
     "help": "Pomoc",
     "image": "Obrázok",
     "imageGeneration": "Generovanie obrazu",
+    "imageGenerationSources": "Zdroje generovania obrázkov",
     "imageGenerationPromptTemplate": "Šablóna výzvy na vytvorenie obrázka",
+    "imageSearch": "Vyhľadávanie obrázkov",
+    "imageSearchSources": "Zdroje vyhľadávania obrázkov",
     "imageSource": "Zdroj obrázka",
     "imageSources": "Zdroje obrázkov",
+    "imageType": "Typ obrázka",
     "managerAndPress": "Manažér a Tlačiareň",
     "model": "model",
     "orientation": "Orientácia",
@@ -217,6 +226,7 @@
     "rendering": "Vykresľovanie",
     "settings": "Nastavenia",
     "size": "Veľkosť",
+    "sort": "Triediť",
     "tags": "Tagy",
     "translation": "Preklad",
     "translationPromptTemplate": "Šablóna výzvy na preklad",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai alebo Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai alebo OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai alebo OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay alebo Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay alebo Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Všetky kategórie",
+    "pixabayTypes": {
+      "all": "Všetky",
+      "photo": "Foto",
+      "illustration": "Ilustračné",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Pozadia",
+      "fashion": "Móda",
+      "nature": "Príroda",
+      "science": "Veda",
+      "education": "Vzdelávanie",
+      "feelings": "Pocity",
+      "health": "Zdravie",
+      "people": "Ľudia",
+      "religion": "Náboženstvo",
+      "places": "Miesta",
+      "animals": "Zvieratá",
+      "industry": "priemysel",
+      "computer": "Počítač",
+      "food": "Jedlo",
+      "sports": "Šport",
+      "transportation": "Doprava",
+      "travel": "Cestovanie",
+      "buildings": "Budovy",
+      "business": "Podnikanie",
+      "music": "Hudba"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Relevantné",
+      "latest": "Najnovšie"
+    }
   },
   "verbs": {
     "has": "má",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Dobrý deň",
     "flag": "🇸🇰",
+    "imageGenerationHints": "extra tipy na štýl, náladu alebo zloženie",
     "imageSearch": "jablko",
     "languageCode": "sk",
     "pasteHere": "Prilepte sem",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Zatvorte vyhľadávanie obrázkov",
+      "generateTitle": "Generovať obrázok",
       "title": "Vyhľadať obrázok"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "alebo",
     "cornerLanguagesRestAfter": "a upravte zobrazenú značku.",
     "imageSourcesLabel": "Zdroje obrázkov:",
-    "imageSourcesRest": "pridajte kľúče API Pexels, Flaticon, Leonardo.Ai alebo Pollinations.ai, aby ste umožnili vyhľadávanie a generovanie obrázkov v aplikácii.",
+    "imageSourcesRest": "pridajte kľúče API Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai alebo OpenAI, aby ste umožnili vyhľadávanie a generovanie obrázkov v aplikácii.",
     "translationLabel": "preklad:",
     "translationRest": "vyberte Gemini, OpenAI, DeepSeek, Z.AI, Groq alebo vlastného poskytovateľa kompatibilného so OpenAI.",
     "modelBaseUrlLabel": "Model a základná adresa URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "stiahne celú knižnicu kariet vrátane obrázkov ako komprimovanú zálohu.",
     "exportImageLessLabel": "Exportovať JSON bez obrázkov:",
     "exportImageLessRest": "stiahne čitateľný JSON bez obrázkov na ručnú úpravu.",
+    "exportCompleteLabel": "Exportujte úplný JSON:",
+    "exportCompleteRest": "stiahne čitateľný JSON s úplnou knižnicou kariet vrátane obrázkov.",
     "managerPressText1": "Správcom je knižnica kariet. Vyberte karty pomocou začiarkavacích políčok a pomocou filtrov nájdite chýbajúce obrázky, text alebo spätné odkazy.",
     "managerPressText2": "Otvorte zobrazenie tlačiarne a zobrazte si ukážku vybratých kariet ako strany lícnej a rubovej strany. Vyberte rozloženie PDF na paneli s nástrojmi, skontrolujte všetky upozornenia, potom si stiahnite PDF a vytlačte ho.",
     "apiCredits": "Podporované rozhrania API",

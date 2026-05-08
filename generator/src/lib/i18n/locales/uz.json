@@ -15,6 +15,8 @@
     "exportCompressed": "Siqilgan eksport",
     "exportImageLessJson": "Tasvirsiz JSON eksport qiling",
     "file": "Fayl",
+    "generate": "Yaratish",
+    "generating": "Yaratilmoqda...",
     "import": "Import",
     "manage": "Boshqarish",
     "newCard": "Yangi karta",
@@ -50,6 +52,7 @@
     "filterVersoLinks": "Havolalarni filtrlash",
     "generatedCardPreview": "Yaratilgan kartani oldindan koʻrish",
     "imageSearchQuery": "Rasm qidirish so'rovi",
+    "imageGenerationHints": "Qo'shimcha tasvir yaratish bo'yicha maslahatlar",
     "loadingApp": "Toddler Read yuklanmoqda",
     "manager": "Menejer",
     "managerTags": "Menejer teglari",
@@ -101,6 +104,7 @@
     "emptyProviderResponse": "{{provider}} boʻsh javob qaytardi.",
     "missingProviderTranslations": "{{provider}} hech qanday foydali tarjimalarni qaytarmadi.",
     "missingProviderKey": "Sozlamalarda {{provider}} API kalitini qo‘shing.",
+    "exportedComplete": "{{count}} {{unit}} bilan toʻliq JSON eksport qilindi.",
     "exportedCompressed": "{{count}} {{unit}} bilan siqilgan zaxira nusxasi eksport qilindi.",
     "exportedImageLess": "{{count}} {{unit}} bilan tasvirsiz JSON eksport qilindi.",
     "pdfDownloaded": "PDF {{count}} sahifalari bilan yuklab olindi.",
@@ -193,6 +197,7 @@
   "labels": {
     "apiKey": "API kaliti",
     "baseUrl": "Asosiy URL",
+    "category": "Turkum",
     "chooseTag": "Tegni tanlang",
     "code": "Kod",
     "cornerLanguages": "Burchak tillari",
@@ -204,9 +209,13 @@
     "help": "Yordam",
     "image": "Rasm",
     "imageGeneration": "Tasvir yaratish",
+    "imageGenerationSources": "Rasm yaratish manbalari",
     "imageGenerationPromptTemplate": "Tasvir yaratish uchun shablon",
+    "imageSearch": "Rasm qidirish",
+    "imageSearchSources": "Rasmlarni qidirish manbalari",
     "imageSource": "Rasm manbai",
     "imageSources": "Rasm manbalari",
+    "imageType": "Tasvir turi",
     "managerAndPress": "Menejer va bosmaxona",
     "model": "model",
     "orientation": "Orientatsiya",
@@ -217,6 +226,7 @@
     "rendering": "Renderlash",
     "settings": "Sozlamalar",
     "size": "Hajmi",
+    "sort": "Saralash",
     "tags": "Teglar",
     "translation": "Tarjima",
     "translationPromptTemplate": "Tarjima so'rovi shablon",
@@ -224,8 +234,45 @@
     "verso": "Verso"
   },
   "providers": {
-    "imageProviderKeys": "Pexels, Flaticon, Leonardo.Ai yoki Pollinations.ai",
-    "pexelsOrFlaticon": "Pexels or Flaticon"
+    "imageProviderKeys": "Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai yoki OpenAI",
+    "imageGenerationProviderKeys": "Leonardo.Ai, Pollinations.ai yoki OpenAI",
+    "imageSearchProviderKeys": "Pexels, Flaticon, Pixabay yoki Unsplash",
+    "pexelsOrFlaticon": "Pexels, Flaticon, Pixabay yoki Unsplash"
+  },
+  "imageSearchFilters": {
+    "allCategories": "Barcha toifalar",
+    "pixabayTypes": {
+      "all": "Hammasi",
+      "photo": "Surat",
+      "illustration": "Tasvir",
+      "vector": "Vektor"
+    },
+    "pixabayCategories": {
+      "backgrounds": "Fonlar",
+      "fashion": "Moda",
+      "nature": "Tabiat",
+      "science": "Fan",
+      "education": "Ta'lim",
+      "feelings": "Hissiyotlar",
+      "health": "Salomatlik",
+      "people": "Odamlar",
+      "religion": "Din",
+      "places": "Joylar",
+      "animals": "Hayvonlar",
+      "industry": "Sanoat",
+      "computer": "Kompyuter",
+      "food": "Oziq-ovqat",
+      "sports": "Sport",
+      "transportation": "Transport",
+      "travel": "Sayohat",
+      "buildings": "Binolar",
+      "business": "Biznes",
+      "music": "Musiqa"
+    },
+    "unsplashOrderBy": {
+      "relevant": "Tegishli",
+      "latest": "Oxirgi"
+    }
   },
   "verbs": {
     "has": "ega",
@@ -236,6 +283,7 @@
     "baseUrl": "https://api.example.com/v1",
     "cardText": "Salom",
     "flag": "🇺🇿",
+    "imageGenerationHints": "qo'shimcha uslub, kayfiyat yoki kompozitsiya haqida maslahatlar",
     "imageSearch": "olma",
     "languageCode": "uz",
     "pasteHere": "Bu yerga joylashtiring",
@@ -254,6 +302,7 @@
     },
     "imageSearch": {
       "close": "Rasm qidirishni yoping",
+      "generateTitle": "Tasvir yaratish",
       "title": "Rasmni qidirish"
     },
     "pdf": {
@@ -309,7 +358,7 @@
     "cornerLanguagesExamplesRest": "yoki",
     "cornerLanguagesRestAfter": "va ko'rsatilgan markerni sozlang.",
     "imageSourcesLabel": "Rasm manbalari:",
-    "imageSourcesRest": "ilova ichida tasvir qidirish va yaratish uchun Pexels, Flaticon, Leonardo.Ai yoki Pollinations.ai API kalitlarini qo‘shing.",
+    "imageSourcesRest": "ilova ichida tasvir qidirish va yaratishni yoqish uchun Pexels, Flaticon, Pixabay, Unsplash, Leonardo.Ai, Pollinations.ai yoki OpenAI API kalitlarini qo‘shing.",
     "translationLabel": "Tarjimasi:",
     "translationRest": "Gemini, OpenAI, DeepSeek, Z.AI, Groq yoki maxsus OpenAI-mos keladigan provayderni tanlang.",
     "modelBaseUrlLabel": "Model va asosiy URL:",
@@ -330,6 +379,8 @@
     "exportCompressedRest": "to'liq karta kutubxonasini, jumladan rasmlarni siqilgan zaxira sifatida yuklab oladi.",
     "exportImageLessLabel": "Tasvirsiz JSON eksport qiling:",
     "exportImageLessRest": "qo'lda tahrirlash uchun tasvirlarsiz o'qiladigan JSON-ni yuklab oladi.",
+    "exportCompleteLabel": "Toʻliq JSONni eksport qiling:",
+    "exportCompleteRest": "toʻliq karta kutubxonasi, jumladan tasvirlar bilan oʻqilishi mumkin boʻlgan JSONni yuklab oladi.",
     "managerPressText1": "Menejer - bu kartalar kutubxonasi. Belgilash katakchalari bilan kartalarni tanlang va etishmayotgan rasmlar, matn yoki boshqa havolalarni topish uchun filtrlardan foydalaning.",
     "managerPressText2": "Tanlangan kartalarni recto va verso sahifalar sifatida ko'rish uchun printer ko'rinishini oching. Asboblar panelida PDF tartibini tanlang, barcha ogohlantirishlarni ko‘rib chiqing, so‘ng PDF ni yuklab oling va chop eting.",
     "apiCredits": "Qo'llab-quvvatlanadigan API",
