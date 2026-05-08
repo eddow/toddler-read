@@ -11,6 +11,7 @@
     "delete": "Устгах",
     "downloadApk": "APK татаж авах",
     "downloadPdf": "PDF татаж авах",
+    "exportCompleteJson": "Бүрэн JSON экспортлох",
     "exportCompressed": "Шахсан экспорт",
     "exportImageLessJson": "JSON-г зураггүйгээр экспортлох",
     "file": "Файл",

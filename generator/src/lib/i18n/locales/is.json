@@ -11,6 +11,7 @@
     "delete": "Eyða",
     "downloadApk": "Sækja APK",
     "downloadPdf": "Sækja PDF",
+    "exportCompleteJson": "Flytja út heilt JSON",
     "exportCompressed": "Flytja út þjappað",
     "exportImageLessJson": "Flytja út myndlaus JSON",
     "file": "Skrá",

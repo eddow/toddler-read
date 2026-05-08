@@ -11,6 +11,7 @@
     "delete": "Törölje",
     "downloadApk": "Töltse le a APK-et",
     "downloadPdf": "Töltse le a PDF-et",
+    "exportCompleteJson": "Teljes JSON exportálása",
     "exportCompressed": "Exportálás tömörítve",
     "exportImageLessJson": "Kép nélküli JSON exportálása",
     "file": "Fájl",

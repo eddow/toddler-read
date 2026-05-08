@@ -11,6 +11,7 @@
     "delete": "Kustuta",
     "downloadApk": "Laadige alla APK",
     "downloadPdf": "Laadige alla PDF",
+    "exportCompleteJson": "Ekspordi täielik JSON",
     "exportCompressed": "Ekspordi tihendatud",
     "exportImageLessJson": "Eksportige ilma pildita JSON",
     "file": "Fail",

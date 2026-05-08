@@ -11,6 +11,7 @@
     "delete": "Жок кылуу",
     "downloadApk": "APK жүктөп алыңыз",
     "downloadPdf": "PDF жүктөп алыңыз",
+    "exportCompleteJson": "Толук JSON экспорттоо",
     "exportCompressed": "Экспорт кысылган",
     "exportImageLessJson": "Сүрөтсүз JSON экспорттоо",
     "file": "Файл",

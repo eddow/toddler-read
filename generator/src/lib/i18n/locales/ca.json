@@ -11,6 +11,7 @@
     "delete": "Suprimeix",
     "downloadApk": "Baixeu APK",
     "downloadPdf": "Baixeu PDF",
+    "exportCompleteJson": "Exporta el JSON complet",
     "exportCompressed": "Exportació comprimida",
     "exportImageLessJson": "Exporta JSON sense imatges",
     "file": "Fitxer",

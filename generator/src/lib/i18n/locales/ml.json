@@ -11,6 +11,7 @@
     "delete": "ഇല്ലാതാക്കുക",
     "downloadApk": "APK ഡൗൺലോഡ് ചെയ്യുക",
     "downloadPdf": "PDF ഡൗൺലോഡ് ചെയ്യുക",
+    "exportCompleteJson": "പൂർണ്ണ JSON കയറ്റുമതി ചെയ്യുക",
     "exportCompressed": "കയറ്റുമതി ചുരുക്കി",
     "exportImageLessJson": "ഇമേജ് ഇല്ലാത്ത JSON എക്‌സ്‌പോർട്ടുചെയ്യുക",
     "file": "ഫയൽ",

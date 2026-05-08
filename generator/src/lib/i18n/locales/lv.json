@@ -11,6 +11,7 @@
     "delete": "Dzēst",
     "downloadApk": "Lejupielādēt APK",
     "downloadPdf": "Lejupielādēt PDF",
+    "exportCompleteJson": "Eksportēt pilnu JSON",
     "exportCompressed": "Eksportēt saspiestu",
     "exportImageLessJson": "Eksportējiet bez attēla JSON",
     "file": "Fails",

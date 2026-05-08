@@ -11,6 +11,7 @@
     "delete": "ลบ",
     "downloadApk": "ดาวน์โหลด APK",
     "downloadPdf": "ดาวน์โหลด PDF",
+    "exportCompleteJson": "ส่งออก JSON แบบสมบูรณ์",
     "exportCompressed": "ส่งออกบีบอัด",
     "exportImageLessJson": "ส่งออก JSON ที่ไม่มีรูปภาพ",
     "file": "ไฟล์",

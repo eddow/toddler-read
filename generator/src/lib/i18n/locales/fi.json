@@ -11,6 +11,7 @@
     "delete": "Poista",
     "downloadApk": "Lataa APK",
     "downloadPdf": "Lataa PDF",
+    "exportCompleteJson": "Vie täydellinen JSON",
     "exportCompressed": "Vie pakattu",
     "exportImageLessJson": "Vie ilman kuvia JSON",
     "file": "Tiedosto",

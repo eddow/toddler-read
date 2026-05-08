@@ -11,6 +11,7 @@
     "delete": "წაშლა",
     "downloadApk": "ჩამოტვირთეთ APK",
     "downloadPdf": "ჩამოტვირთეთ PDF",
+    "exportCompleteJson": "სრული JSON-ის ექსპორტი",
     "exportCompressed": "ექსპორტი შეკუმშული",
     "exportImageLessJson": "გამოსახულების გარეშე JSON ექსპორტი",
     "file": "ფაილი",

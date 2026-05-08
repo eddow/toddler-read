@@ -11,6 +11,7 @@
     "delete": "Izbriši",
     "downloadApk": "Preuzmite APK",
     "downloadPdf": "Preuzmite PDF",
+    "exportCompleteJson": "Izvezi kompletan JSON",
     "exportCompressed": "Izvoz komprimiran",
     "exportImageLessJson": "Izvezi JSON bez slike",
     "file": "File",

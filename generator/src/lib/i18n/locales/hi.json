@@ -11,6 +11,7 @@
     "delete": "हटाएँ",
     "downloadApk": "APK डाउनलोड करें",
     "downloadPdf": "PDF डाउनलोड करें",
+    "exportCompleteJson": "पूरा JSON निर्यात करें",
     "exportCompressed": "संपीड़ित निर्यात करें",
     "exportImageLessJson": "छवि-रहित JSON निर्यात करें",
     "file": "फ़ाइल",

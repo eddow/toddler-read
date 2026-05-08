@@ -11,6 +11,7 @@
     "delete": "Tanggalin",
     "downloadApk": "I-download ang APK",
     "downloadPdf": "I-download ang PDF",
+    "exportCompleteJson": "I-export ang kumpletong JSON",
     "exportCompressed": "I-export ang naka-compress",
     "exportImageLessJson": "I-export ang JSON na walang larawan",
     "file": "file",

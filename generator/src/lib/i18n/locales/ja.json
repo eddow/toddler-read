@@ -11,6 +11,7 @@
     "delete": "削除",
     "downloadApk": "ダウンロード",
     "downloadPdf": "ダウンロード",
+    "exportCompleteJson": "完全な JSON をエクスポート",
     "exportCompressed": "圧縮してエクスポートする",
     "exportImageLessJson": "画像なしの JSON をエクスポート",
     "file": "ファイル",

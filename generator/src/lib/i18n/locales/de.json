@@ -11,6 +11,7 @@
     "delete": "Löschen",
     "downloadApk": "Laden Sie APK herunter",
     "downloadPdf": "Laden Sie PDF herunter",
+    "exportCompleteJson": "Vollständiges JSON exportieren",
     "exportCompressed": "Komprimiert exportieren",
     "exportImageLessJson": "Exportieren Sie JSON ohne Bild",
     "file": "Datei",

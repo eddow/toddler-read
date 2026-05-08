@@ -12,6 +12,36 @@ const imageA = 'data:image/png;base64,aaaa';
 const imageB = 'data:image/png;base64,bbbb';
 
 describe('cards transfer exports', () => {
+  it('creates a complete JSON payload with images and transforms', () => {
+    const payload = createCardsExportPayload(
+      [
+        {
+          id: 'local-1',
+          imageDataUrl: imageA,
+          imageTransform: { zoom: 1.5, offsetX: 0.1, offsetY: -0.1 },
+          texts: { en: 'Apple' },
+          tags: ['fruit'],
+          versoCardId: 'local-2'
+        }
+      ],
+      { includeImages: true }
+    );
+
+    expect(payload).toEqual({
+      version: 1,
+      cards: [
+        {
+          id: 'local-1',
+          imageDataUrl: imageA,
+          imageTransform: { zoom: 1.5, offsetX: 0.1, offsetY: -0.1 },
+          texts: { en: 'Apple' },
+          tags: ['fruit'],
+          versoCardId: 'local-2'
+        }
+      ]
+    });
+  });
+
   it('creates an image-less JSON payload while preserving editable card data', () => {
     const payload = createCardsExportPayload(
       [

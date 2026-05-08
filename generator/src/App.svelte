@@ -2322,6 +2322,17 @@
 		libraryError = ''
 	}
 
+	function exportCompleteCards() {
+		const payload = createCardsExportPayload(cards, { includeImages: true })
+		const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
+		downloadBlob(blob, 'toddler-read-cards-complete.json')
+		libraryStatus = format(T.templates.exportedComplete, {
+			count: cards.length,
+			unit: plural(T.units.card, cards.length)
+		})
+		libraryError = ''
+	}
+
 	function downloadBlob(blob: Blob, filename: string) {
 		const url = URL.createObjectURL(blob)
 		const anchor = document.createElement('a')
@@ -2604,6 +2615,18 @@
 					>
 						<Download size={18} aria-hidden="true" />
 						{T.actions.exportImageLessJson}
+					</button>
+					<button
+						type="button"
+						class="secondary"
+						disabled={cards.length === 0}
+						on:click={() => {
+							showFileMenu = false
+							exportCompleteCards()
+						}}
+					>
+						<Download size={18} aria-hidden="true" />
+						{T.actions.exportCompleteJson}
 					</button>
 				</div>
 			</details>
@@ -3444,6 +3467,9 @@
 						</li>
 						<li>
 							<strong>{T.help.exportImageLessLabel}</strong> {T.help.exportImageLessRest}
+						</li>
+						<li>
+							<strong>{T.help.exportCompleteLabel}</strong> {T.help.exportCompleteRest}
 						</li>
 					</ul>
 				</section>

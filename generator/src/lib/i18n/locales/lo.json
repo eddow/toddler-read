@@ -11,6 +11,7 @@
     "delete": "ລຶບ",
     "downloadApk": "ດາວໂຫລດ APK",
     "downloadPdf": "ດາວໂຫລດ PDF",
+    "exportCompleteJson": "ສົ່ງອອກ JSON ທີ່ສົມບູນ",
     "exportCompressed": "ບີບອັດສົ່ງອອກ",
     "exportImageLessJson": "ສົ່ງອອກ JSON ທີ່ບໍ່ມີຮູບພາບ",
     "file": "ໄຟລ໌",

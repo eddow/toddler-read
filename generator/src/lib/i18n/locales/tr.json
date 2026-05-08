@@ -11,6 +11,7 @@
     "delete": "Sil",
     "downloadApk": "APK'i indirin",
     "downloadPdf": "PDF'i indirin",
+    "exportCompleteJson": "Tam JSON’u dışa aktar",
     "exportCompressed": "Sıkıştırılmış dışa aktar",
     "exportImageLessJson": "Resimsiz dışa aktar JSON",
     "file": "Dosya",

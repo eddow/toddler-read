@@ -11,6 +11,7 @@
     "delete": "Ta bort",
     "downloadApk": "Ladda ner APK",
     "downloadPdf": "Ladda ner PDF",
+    "exportCompleteJson": "Exportera komplett JSON",
     "exportCompressed": "Exportera komprimerad",
     "exportImageLessJson": "Exportera bildlös JSON",
     "file": "Arkiv",

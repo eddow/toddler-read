@@ -68,7 +68,10 @@ export async function loadLocale(locale: string): Promise<LocaleCode> {
 	try {
 		const loaded = await loader()
 		if (token !== localeLoadToken) return currentLocale
-		setTranslations(normalizedLocale, loaded.default)
+		const translations =
+			normalizedLocale === FALLBACK_LOCALE ? loaded.default : await withFallbackTranslations(loaded.default)
+		if (token !== localeLoadToken) return currentLocale
+		setTranslations(normalizedLocale, translations)
 		return normalizedLocale
 	} catch {
 		return loadFallbackLocale(token)
@@ -137,6 +140,14 @@ async function loadFallbackLocale(token: number): Promise<LocaleCode> {
 	return FALLBACK_LOCALE
 }
 
+async function withFallbackTranslations(translations: TranslationTree): Promise<TranslationTree> {
+	const loader = localeModules[`./locales/${FALLBACK_LOCALE}.json`]
+	if (!loader) return translations
+
+	const fallback = await loader()
+	return mergeTranslations(fallback.default, translations)
+}
+
 function replaceObject(target: TranslationTree, source: TranslationTree) {
 	for (const key of Object.keys(target)) {
 		delete target[key]
@@ -144,4 +155,22 @@ function replaceObject(target: TranslationTree, source: TranslationTree) {
 	for (const [key, value] of Object.entries(source)) {
 		target[key] = value
 	}
+}
+
+function mergeTranslations(fallback: TranslationTree, translations: TranslationTree): TranslationTree {
+	const merged = cloneTranslations(fallback)
+
+	for (const [key, value] of Object.entries(translations)) {
+		if (isPlainObject(value) && isPlainObject(merged[key])) {
+			merged[key] = mergeTranslations(merged[key], value)
+		} else {
+			merged[key] = value
+		}
+	}
+
+	return merged
+}
+
+function isPlainObject(value: unknown): value is TranslationTree {
+	return Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 }

@@ -11,6 +11,7 @@
     "delete": "Slet",
     "downloadApk": "Download APK",
     "downloadPdf": "Download PDF",
+    "exportCompleteJson": "Eksporter komplet JSON",
     "exportCompressed": "Eksporter komprimeret",
     "exportImageLessJson": "Eksporter billedfri JSON",
     "file": "Fil",

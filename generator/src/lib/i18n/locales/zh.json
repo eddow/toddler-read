@@ -11,6 +11,7 @@
     "delete": "删除",
     "downloadApk": "下载APK",
     "downloadPdf": "下载PDF",
+    "exportCompleteJson": "导出完整 JSON",
     "exportCompressed": "导出压缩",
     "exportImageLessJson": "导出无图像 JSON",
     "file": "文件",

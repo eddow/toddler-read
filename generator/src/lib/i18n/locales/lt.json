@@ -11,6 +11,7 @@
     "delete": "Ištrinti",
     "downloadApk": "Atsisiųskite APK",
     "downloadPdf": "Atsisiųskite PDF",
+    "exportCompleteJson": "Eksportuoti visą JSON",
     "exportCompressed": "Eksportuoti suspaustą",
     "exportImageLessJson": "Eksportuokite be vaizdo JSON",
     "file": "Failas",

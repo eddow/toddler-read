@@ -95,6 +95,6 @@ Locale filenames must be exactly two lowercase letters plus `.json`. Regional or
 
 When a two-letter code covers multiple common variants, use the broadest default for the first translation file and document that choice in the translation change if it matters.
 
-Right-to-left locales currently planned are `ar`, `he`, `fa`, and `ur`. These locale codes activate RTL direction for the generator UI. They should not be considered fully shipped until the UI has been smoke-tested for directionality, alignment, truncation, and modal/table layout.
+Right-to-left support is wired into the usage-language kernel. When one of `ar`, `he`, `fa`, or `ur` exists as a locale file and is loaded as the usage language, the generator UI sets `dir="rtl"` for the document and app shell. A new RTL locale should still be smoke-tested for directionality, alignment, truncation, and modal/table layout before it is considered fully shipped.
 
 Card corner labels describe physical printed corners. They are not reading-direction-relative, so the top-left card slot remains top-left even when the usage language is RTL.

@@ -11,6 +11,7 @@
     "delete": "삭제",
     "downloadApk": "APK 다운로드",
     "downloadPdf": "PDF 다운로드",
+    "exportCompleteJson": "전체 JSON 내보내기",
     "exportCompressed": "압축하여 내보내기",
     "exportImageLessJson": "이미지 없는 JSON 내보내기",
     "file": "파일",
