@@ -1,4 +1,5 @@
 node_modules
+dist
 *.js
 !reader/sw.js
 !generator/public/sw.js
