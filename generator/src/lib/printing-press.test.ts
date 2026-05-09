@@ -11,6 +11,7 @@ import {
 import {
   buildPrintLayout,
   dedupeSelectedRectoIds,
+  hasPrintPageVerso,
   linkVersoCards,
   mirrorSlotIndex,
   normalizeVersoLinks,
@@ -149,6 +150,15 @@ describe('printing press layout', () => {
     const layout = buildPrintLayout(linked, ['a', 'c'], pdfConfig('A4', 'portrait', 2));
 
     expect(layout.pages[0].versoSlots).toEqual([undefined, 'b', undefined, undefined]);
+  });
+
+  it('identifies pages without any verso slots', () => {
+    const linked = linkVersoCards(cards(['a', 'b', 'c']), 'a', 'b');
+    const withVerso = buildPrintLayout(linked, ['a', 'c'], pdfConfig('A4', 'portrait', 2));
+    const withoutVerso = buildPrintLayout(cards(['a', 'b', 'c']), ['a', 'b', 'c'], pdfConfig('A4', 'portrait', 2));
+
+    expect(hasPrintPageVerso(withVerso.pages[0])).toBe(true);
+    expect(hasPrintPageVerso(withoutVerso.pages[0])).toBe(false);
   });
 
   it('mirrors landscape verso slots across the page width', () => {

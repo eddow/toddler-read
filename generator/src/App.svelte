@@ -93,6 +93,7 @@
 	import {
 		buildPrintLayout,
 		dedupeSelectedRectoIds,
+		hasPrintPageVerso,
 		linkVersoCards,
 		normalizeVersoLinks,
 		removeCardAndVersoLinks,
@@ -709,16 +710,18 @@ Do not return unchanged existing text.`
 					)
 				}
 				if (versoCanvas) {
-					await renderLayoutPageToCanvas(
-						{
-							slots: page.versoSlots,
-							cards: nextCards,
-							pdfConfig: nextPdfConfig,
-							reserveQrMargin: nextReserveQrMargin,
-							showQrText: nextShowQrText
-						},
-						versoCanvas
-					)
+					if (hasPrintPageVerso(page)) {
+						await renderLayoutPageToCanvas(
+							{
+								slots: page.versoSlots,
+								cards: nextCards,
+								pdfConfig: nextPdfConfig,
+								reserveQrMargin: nextReserveQrMargin,
+								showQrText: nextShowQrText
+							},
+							versoCanvas
+						)
+					}
 				}
 			}
 		} catch (error) {
@@ -2778,9 +2781,11 @@ Do not return unchanged existing text.`
 				compress: true
 			})
 			let isFirstPage = true
+			let pdfPageCount = 0
 
 			for (const page of printLayout.pages) {
-				for (const slots of [page.rectoSlots, page.versoSlots]) {
+				const pageSlots = hasPrintPageVerso(page) ? [page.rectoSlots, page.versoSlots] : [page.rectoSlots]
+				for (const slots of pageSlots) {
 					await renderLayoutPageToCanvas(
 						{
 							slots,
@@ -2801,6 +2806,7 @@ Do not return unchanged existing text.`
 						pageSize.height
 					)
 					isFirstPage = false
+					pdfPageCount += 1
 				}
 			}
 
@@ -2811,7 +2817,7 @@ Do not return unchanged existing text.`
 			anchor.download = 'toddler-read-print-layout.pdf'
 			anchor.click()
 			URL.revokeObjectURL(url)
-			pressStatus = format(T.templates.pdfDownloaded, { count: printLayout.pages.length * 2 })
+			pressStatus = format(T.templates.pdfDownloaded, { count: pdfPageCount })
 		} catch (error) {
 			pressError = error instanceof Error ? error.message : T.errors.couldNotDownloadPdf
 		}
@@ -3422,7 +3428,7 @@ Do not return unchanged existing text.`
 											<strong>{format(T.templates.page, { page: index + 1 })}</strong>
 											<span>{pdfLayoutLabel}</span>
 										</div>
-										<div class="press-preview-grid">
+										<div class:single-preview={!hasPrintPageVerso(page)} class="press-preview-grid">
 											<div class="press-preview">
 												<span>{T.labels.recto}</span>
 												<canvas
@@ -3431,14 +3437,16 @@ Do not return unchanged existing text.`
 													aria-label={format(T.templates.rectoPage, { page: index + 1 })}
 												></canvas>
 											</div>
-											<div class="press-preview">
-												<span>{T.labels.verso}</span>
-												<canvas
-													bind:this={versoPreviewCanvases[index]}
-													style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
-													aria-label={format(T.templates.versoPage, { page: index + 1 })}
-												></canvas>
-											</div>
+											{#if hasPrintPageVerso(page)}
+												<div class="press-preview">
+													<span>{T.labels.verso}</span>
+													<canvas
+														bind:this={versoPreviewCanvases[index]}
+														style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+														aria-label={format(T.templates.versoPage, { page: index + 1 })}
+													></canvas>
+												</div>
+											{/if}
 										</div>
 									</article>
 								{/each}

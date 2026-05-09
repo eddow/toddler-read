@@ -1880,6 +1880,10 @@ input:not([type=checkbox],[type=radio],[type=range],[type=file]).language-column
   gap: 14px;
 }
 
+.press-preview-grid.single-preview {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .press-preview {
   display: grid;
   gap: 8px;

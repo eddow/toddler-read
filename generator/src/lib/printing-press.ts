@@ -130,6 +130,10 @@ export function mirrorSlotIndex(index: number, columns: number): number {
   return row * columns + (columns - 1 - col);
 }
 
+export function hasPrintPageVerso(page: PrintPage): boolean {
+  return page.versoSlots.some(Boolean);
+}
+
 function clearVersoLinks<T extends VersoLinkCard>(cards: T[], blockedIds: Set<string>): T[] {
   return cards.map((card) => {
     if (!blockedIds.has(card.id) && !blockedIds.has(card.versoCardId ?? '')) return card;
