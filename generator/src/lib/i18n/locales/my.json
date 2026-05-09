@@ -26,6 +26,7 @@
     "openPng": "PNG ကိုဖွင့်ပါ။",
     "openReader": "Reader ကိုဖွင့်ပါ။",
     "previous": "အရင်",
+    "refresh": "ပြန်လည်စတင်ပါ။",
     "remove": "ဖယ်ရှားပါ။",
     "replace": "အစားထိုးပါ။",
     "search": "ရှာရန်",
@@ -154,6 +155,7 @@
     "cardDeleted": "ကတ်ကို ဖျက်လိုက်ပါပြီ။",
     "imageAdded": "ပုံထည့်ထားသည်။",
     "newCardCreated": "ကတ်အသစ် ဖန်တီးထားသည်။",
+    "newVersionAvailable": "ဗားရှင်းအသစ် ရပါပြီ။",
     "noImagesFound": "ပုံများမတွေ့ပါ။",
     "nothingToImport": "တင်သွင်းစရာ ဘာမှမရှိ။",
     "pngOpened": "PNG တဘ်အသစ်တွင် ဖွင့်ထားသည်။"
@@ -386,6 +388,7 @@
     "apiCredits": "ပံ့ပိုးထားသော API များ",
     "links": "လင့်များ",
     "repository": "Repository",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "ရှင်းလင်းချက် ဗီဒီယို"
   }
 }

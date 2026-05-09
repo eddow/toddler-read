@@ -26,6 +26,7 @@
     "openPng": "Atidarykite PNG",
     "openReader": "Atidarykite skaitytuvą",
     "previous": "Ankstesnis",
+    "refresh": "Atnaujinti",
     "remove": "Pašalinti",
     "replace": "Pakeiskite",
     "search": "Ieškoti",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kortelė ištrinta.",
     "imageAdded": "Vaizdas pridėtas.",
     "newCardCreated": "Sukurta nauja kortelė.",
+    "newVersionAvailable": "Galima nauja versija.",
     "noImagesFound": "Nerasta vaizdų.",
     "nothingToImport": "Nėra ką importuoti.",
     "pngOpened": "PNG atidarytas naujame skirtuke."
@@ -386,6 +388,7 @@
     "apiCredits": "Palaikomos API",
     "links": "Nuorodos",
     "repository": "Saugykla",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Paaiškinamas vaizdo įrašas"
   }
 }

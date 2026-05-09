@@ -26,6 +26,7 @@
     "openPng": "Открыть PNG",
     "openReader": "Открыть читалку",
     "previous": "Предыдущий",
+    "refresh": "Обновить",
     "remove": "Удалить",
     "replace": "Заменить",
     "search": "Поиск",
@@ -154,6 +155,7 @@
     "cardDeleted": "Карта удалена.",
     "imageAdded": "Изображение добавлено.",
     "newCardCreated": "Новая карта создана.",
+    "newVersionAvailable": "Доступна новая версия.",
     "noImagesFound": "Изображения не найдены.",
     "nothingToImport": "Нечего импортировать.",
     "pngOpened": "PNG открыт в новой вкладке."
@@ -386,6 +388,7 @@
     "apiCredits": "Поддерживаемые API",
     "links": "Ссылки",
     "repository": "Репозиторий",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Объясняющее видео"
   }
 }

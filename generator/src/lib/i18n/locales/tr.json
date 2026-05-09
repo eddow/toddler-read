@@ -26,6 +26,7 @@
     "openPng": "PNG'i açın",
     "openReader": "Reader'ı aç",
     "previous": "Önceki",
+    "refresh": "Yenile",
     "remove": "Kaldır",
     "replace": "Değiştir",
     "search": "Ara",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kart silindi.",
     "imageAdded": "Resim eklendi.",
     "newCardCreated": "Yeni kart oluşturuldu.",
+    "newVersionAvailable": "Yeni sürüm mevcut.",
     "noImagesFound": "Resim bulunamadı.",
     "nothingToImport": "İthal edilecek bir şey yok.",
     "pngOpened": "PNG yeni bir sekmede açıldı."
@@ -386,6 +388,7 @@
     "apiCredits": "Desteklenen API'ler",
     "links": "Bağlantılar",
     "repository": "Depo",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Açıklayıcı video"
   }
 }

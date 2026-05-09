@@ -26,6 +26,7 @@
     "openPng": "Nyissa meg a PNG-et",
     "openReader": "Nyissa meg a Readert",
     "previous": "Előző",
+    "refresh": "Frissítés",
     "remove": "Távolítsa el",
     "replace": "Cserélje ki",
     "search": "Keresés",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kártya törölve.",
     "imageAdded": "Kép hozzáadva.",
     "newCardCreated": "Új kártya létrehozva.",
+    "newVersionAvailable": "Új verzió elérhető.",
     "noImagesFound": "Nem találhatók képek.",
     "nothingToImport": "Nincs mit importálni.",
     "pngOpened": "A PNG új lapon nyílt meg."
@@ -386,6 +388,7 @@
     "apiCredits": "Támogatott API-k",
     "links": "Linkek",
     "repository": "Adattár",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Magyarázó videó"
   }
 }

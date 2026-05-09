@@ -26,6 +26,7 @@
     "openPng": "פתח את PNG",
     "openReader": "פתח את Reader",
     "previous": "הקודם",
+    "refresh": "לְרַעֲנֵן",
     "remove": "הסר",
     "replace": "החלף",
     "search": "חפש",
@@ -154,6 +155,7 @@
     "cardDeleted": "הכרטיס נמחק.",
     "imageAdded": "תמונה נוספה.",
     "newCardCreated": "נוצר כרטיס חדש.",
+    "newVersionAvailable": "גרסה חדשה זמינה.",
     "noImagesFound": "לא נמצאו תמונות.",
     "nothingToImport": "אין מה לייבא.",
     "pngOpened": "PNG נפתח בכרטיסייה חדשה."
@@ -386,6 +388,7 @@
     "apiCredits": "ממשקי API נתמכים",
     "links": "קישורים",
     "repository": "מאגר",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "סרטון הסבר"
   }
 }

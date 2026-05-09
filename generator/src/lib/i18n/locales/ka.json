@@ -26,6 +26,7 @@
     "openPng": "გახსენით PNG",
     "openReader": "გახსენით Reader",
     "previous": "წინა",
+    "refresh": "განაახლეთ",
     "remove": "ამოღება",
     "replace": "ჩანაცვლება",
     "search": "ძიება",
@@ -154,6 +155,7 @@
     "cardDeleted": "ბარათი წაიშალა.",
     "imageAdded": "სურათი დამატებულია.",
     "newCardCreated": "შეიქმნა ახალი ბარათი.",
+    "newVersionAvailable": "ხელმისაწვდომია ახალი ვერსია.",
     "noImagesFound": "სურათები არ მოიძებნა.",
     "nothingToImport": "არაფერია იმპორტირებული.",
     "pngOpened": "PNG გაიხსნა ახალ ჩანართში."
@@ -386,6 +388,7 @@
     "apiCredits": "მხარდაჭერილი API-ები",
     "links": "ბმულები",
     "repository": "საცავი",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "განმარტებითი ვიდეო"
   }
 }

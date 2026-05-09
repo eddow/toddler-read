@@ -26,6 +26,7 @@
     "openPng": "Отворете PNG",
     "openReader": "Отворете Reader",
     "previous": "Предишен",
+    "refresh": "Опресняване",
     "remove": "Премахнете",
     "replace": "Сменете",
     "search": "Търсене",
@@ -154,6 +155,7 @@
     "cardDeleted": "Картата е изтрита.",
     "imageAdded": "Изображението е добавено.",
     "newCardCreated": "Създадена е нова карта.",
+    "newVersionAvailable": "Налична е нова версия.",
     "noImagesFound": "Няма намерени изображения.",
     "nothingToImport": "Нищо за импортиране.",
     "pngOpened": "PNG се отвори в нов раздел."
@@ -386,6 +388,7 @@
     "apiCredits": "Поддържани API",
     "links": "Връзки",
     "repository": "Хранилище",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Обяснително видео"
   }
 }

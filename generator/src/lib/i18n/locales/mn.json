@@ -26,6 +26,7 @@
     "openPng": "PNG-г нээнэ үү",
     "openReader": "Уншигчийг нээх",
     "previous": "Өмнөх",
+    "refresh": "Сэргээх",
     "remove": "Устгах",
     "replace": "Солих",
     "search": "Хайх",
@@ -154,6 +155,7 @@
     "cardDeleted": "Картыг устгасан.",
     "imageAdded": "Зураг нэмсэн.",
     "newCardCreated": "Шинэ карт үүсгэсэн.",
+    "newVersionAvailable": "Шинэ хувилбар боломжтой.",
     "noImagesFound": "Зураг олдсонгүй.",
     "nothingToImport": "Импортлох зүйл байхгүй.",
     "pngOpened": "PNG шинэ таб дээр нээгдсэн."
@@ -386,6 +388,7 @@
     "apiCredits": "Дэмжигдсэн API",
     "links": "Холбоосууд",
     "repository": "Хадгалах газар",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Тайлбар видео"
   }
 }

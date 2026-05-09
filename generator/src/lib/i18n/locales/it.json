@@ -26,6 +26,7 @@
     "openPng": "Apri PNG",
     "openReader": "Apri Lettore",
     "previous": "Precedente",
+    "refresh": "Aggiorna",
     "remove": "Rimuovi",
     "replace": "Sostituisci",
     "search": "Cerca",
@@ -154,6 +155,7 @@
     "cardDeleted": "Carta cancellata.",
     "imageAdded": "Immagine aggiunta.",
     "newCardCreated": "Nuova carta creata.",
+    "newVersionAvailable": "Nuova versione disponibile.",
     "noImagesFound": "Nessuna immagine trovata.",
     "nothingToImport": "Niente da importare.",
     "pngOpened": "PNG aperto in una nuova scheda."
@@ -386,6 +388,7 @@
     "apiCredits": "API supportate",
     "links": "Collegamenti",
     "repository": "Deposito",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Video esplicativo"
   }
 }

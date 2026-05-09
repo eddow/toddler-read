@@ -26,6 +26,7 @@
     "openPng": "Buksan ang PNG",
     "openReader": "Buksan ang Reader",
     "previous": "Nakaraang",
+    "refresh": "I-refresh",
     "remove": "Alisin",
     "replace": "Palitan",
     "search": "Maghanap",
@@ -154,6 +155,7 @@
     "cardDeleted": "Na-delete ang card.",
     "imageAdded": "Idinagdag ang larawan.",
     "newCardCreated": "Nagawa ang bagong card.",
+    "newVersionAvailable": "Available ang bagong bersyon.",
     "noImagesFound": "Walang nakitang mga larawan.",
     "nothingToImport": "Walang i-import.",
     "pngOpened": "Binuksan ang PNG sa isang bagong tab."
@@ -386,6 +388,7 @@
     "apiCredits": "Mga suportadong API",
     "links": "Mga link",
     "repository": "Imbakan",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Video ng paliwanag"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "PNG-i açın",
     "openReader": "Oxucunu açın",
     "previous": "Əvvəlki",
+    "refresh": "Yeniləyin",
     "remove": "Sil",
     "replace": "Əvəz edin",
     "search": "Axtar",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kart silindi.",
     "imageAdded": "Şəkil əlavə edildi.",
     "newCardCreated": "Yeni kart yaradıldı.",
+    "newVersionAvailable": "Yeni versiya mövcuddur.",
     "noImagesFound": "Şəkil tapılmadı.",
     "nothingToImport": "İdxal etmək üçün heç bir şey yoxdur.",
     "pngOpened": "PNG yeni tabda açıldı."
@@ -386,6 +388,7 @@
     "apiCredits": "Dəstəklənən API-lər",
     "links": "Bağlantılar",
     "repository": "Repository",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Anlatıcı video"
   }
 }

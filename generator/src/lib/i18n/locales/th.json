@@ -26,6 +26,7 @@
     "openPng": "เปิด PNG",
     "openReader": "เปิดโปรแกรมอ่าน",
     "previous": "ก่อนหน้า",
+    "refresh": "รีเฟรช",
     "remove": "ลบ",
     "replace": "แทนที่",
     "search": "ค้นหา",
@@ -154,6 +155,7 @@
     "cardDeleted": "ลบการ์ดแล้ว",
     "imageAdded": "เพิ่มรูปภาพแล้ว",
     "newCardCreated": "สร้างการ์ดใหม่แล้ว",
+    "newVersionAvailable": "มีเวอร์ชันใหม่แล้ว",
     "noImagesFound": "ไม่พบภาพ",
     "nothingToImport": "ไม่มีอะไรจะนำเข้า",
     "pngOpened": "PNG เปิดในแท็บใหม่"
@@ -386,6 +388,7 @@
     "apiCredits": "API ที่รองรับ",
     "links": "ลิงค์",
     "repository": "พื้นที่เก็บข้อมูล",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "วิดีโออธิบาย"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "PNG ખોલો",
     "openReader": "રીડર ખોલો",
     "previous": "ગત",
+    "refresh": "તાજું કરો",
     "remove": "દૂર કરો",
     "replace": "બદલો",
     "search": "શોધો",
@@ -154,6 +155,7 @@
     "cardDeleted": "કાર્ડ કાઢી નાખ્યું.",
     "imageAdded": "છબી ઉમેરી.",
     "newCardCreated": "નવું કાર્ડ બનાવ્યું.",
+    "newVersionAvailable": "નવું સંસ્કરણ ઉપલબ્ધ છે.",
     "noImagesFound": "કોઈ છબીઓ મળી નથી.",
     "nothingToImport": "આયાત કરવા માટે કંઈ નથી.",
     "pngOpened": "PNG નવા ટેબમાં ખુલ્યું."
@@ -386,6 +388,7 @@
     "apiCredits": "સપોર્ટેડ API",
     "links": "લિંક્સ",
     "repository": "ભંડાર",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "સમજાવનાર વિડિઓ"
   }
 }

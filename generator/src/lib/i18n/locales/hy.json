@@ -26,6 +26,7 @@
     "openPng": "Բացեք PNG",
     "openReader": "Բացեք Reader-ը",
     "previous": "Նախորդ",
+    "refresh": "Թարմացնել",
     "remove": "Հեռացնել",
     "replace": "Փոխարինել",
     "search": "Որոնում",
@@ -154,6 +155,7 @@
     "cardDeleted": "Քարտը ջնջված է։",
     "imageAdded": "Պատկերն ավելացված է:",
     "newCardCreated": "Ստեղծվել է նոր քարտ:",
+    "newVersionAvailable": "Նոր տարբերակը հասանելի է։",
     "noImagesFound": "Պատկերներ չեն գտնվել:",
     "nothingToImport": "Ներմուծելու ոչինչ չկա։",
     "pngOpened": "PNG-ը բացվել է նոր ներդիրում:"
@@ -386,6 +388,7 @@
     "apiCredits": "Աջակցվող API-ներ",
     "links": "Հղումներ",
     "repository": "Պահեստարան",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Բացատրող տեսանյութ"
   }
 }

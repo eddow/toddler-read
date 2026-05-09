@@ -26,6 +26,7 @@
     "openPng": "Oscail PNG",
     "openReader": "Léitheoir Oscailte",
     "previous": "Roimhe Seo",
+    "refresh": "Athnuaigh",
     "remove": "Bain",
     "replace": "Ionadaigh",
     "search": "Cuardach",
@@ -154,6 +155,7 @@
     "cardDeleted": "Cárta scriosta.",
     "imageAdded": "Íomhá curtha leis.",
     "newCardCreated": "Cárta nua cruthaithe.",
+    "newVersionAvailable": "Leagan nua ar fáil.",
     "noImagesFound": "Níor aimsíodh aon íomhánna.",
     "nothingToImport": "Ní dhéanfaidh aon ní a allmhairiú.",
     "pngOpened": "Osclaíodh PNG i gcluaisín nua."
@@ -386,6 +388,7 @@
     "apiCredits": "APIanna tacaithe",
     "links": "Naisc",
     "repository": "Stór",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Físeán míniúcháin"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "PNG کھولیں۔",
     "openReader": "ریڈر کھولیں۔",
     "previous": "پچھلا",
+    "refresh": "ریفریش کریں۔",
     "remove": "ہٹا دیں۔",
     "replace": "بدل دیں۔",
     "search": "تلاش کریں۔",
@@ -154,6 +155,7 @@
     "cardDeleted": "کارڈ حذف کر دیا گیا۔",
     "imageAdded": "تصویر شامل کی گئی۔",
     "newCardCreated": "نیا کارڈ بنایا گیا۔",
+    "newVersionAvailable": "نیا ورژن دستیاب ہے۔",
     "noImagesFound": "کوئی تصویر نہیں ملی۔",
     "nothingToImport": "درآمد کرنے کے لیے کچھ نہیں ہے۔",
     "pngOpened": "PNG ایک نئے ٹیب میں کھلا ہے۔"
@@ -386,6 +388,7 @@
     "apiCredits": "تعاون یافتہ APIs",
     "links": "لنکس",
     "repository": "مخزن",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "وضاحتی ویڈیو"
   }
 }

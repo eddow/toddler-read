@@ -26,6 +26,7 @@
     "openPng": "Otevřete PNG",
     "openReader": "Otevřete aplikaci Reader",
     "previous": "Předchozí",
+    "refresh": "Obnovit",
     "remove": "Odebrat",
     "replace": "Vyměňte",
     "search": "Hledat",
@@ -154,6 +155,7 @@
     "cardDeleted": "Karta smazána.",
     "imageAdded": "Obrázek přidán.",
     "newCardCreated": "Byla vytvořena nová karta.",
+    "newVersionAvailable": "K dispozici nová verze.",
     "noImagesFound": "Nebyly nalezeny žádné obrázky.",
     "nothingToImport": "Nic k importu.",
     "pngOpened": "PNG otevřeno na nové kartě."
@@ -386,6 +388,7 @@
     "apiCredits": "Podporovaná rozhraní API",
     "links": "Odkazy",
     "repository": "Úložiště",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Vysvětlující video"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "Ireki PNG",
     "openReader": "Ireki Reader",
     "previous": "Aurrekoa",
+    "refresh": "Freskatu",
     "remove": "Kendu",
     "replace": "Ordezkatu",
     "search": "Bilatu",
@@ -154,6 +155,7 @@
     "cardDeleted": "Txartela ezabatu da.",
     "imageAdded": "Irudia gehitu da.",
     "newCardCreated": "Txartel berria sortu da.",
+    "newVersionAvailable": "Bertsio berria eskuragarri.",
     "noImagesFound": "Ez da irudirik aurkitu.",
     "nothingToImport": "Ezer inportatzeko.",
     "pngOpened": "PNG fitxa berri batean ireki da."
@@ -386,6 +388,7 @@
     "apiCredits": "Onartutako APIak",
     "links": "Estekak",
     "repository": "Biltegia",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Azalpen bideoa"
   }
 }

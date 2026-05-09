@@ -26,6 +26,7 @@
     "openPng": "Buka PNG",
     "openReader": "Buka Pembaca",
     "previous": "Sebelumnya",
+    "refresh": "Menyegarkan",
     "remove": "Hapus",
     "replace": "Ganti",
     "search": "Cari",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kartu dihapus.",
     "imageAdded": "Gambar ditambahkan.",
     "newCardCreated": "Kartu baru dibuat.",
+    "newVersionAvailable": "Versi baru tersedia.",
     "noImagesFound": "Tidak ada gambar yang ditemukan.",
     "nothingToImport": "Tidak ada yang perlu diimpor.",
     "pngOpened": "PNG dibuka di tab baru."
@@ -386,6 +388,7 @@
     "apiCredits": "API yang didukung",
     "links": "Tautan",
     "repository": "Gudang",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Video penjelasan"
   }
 }

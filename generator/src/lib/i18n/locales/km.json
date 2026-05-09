@@ -26,6 +26,7 @@
     "openPng": "បើក PNG",
     "openReader": "បើកកម្មវិធីអាន",
     "previous": "មុន",
+    "refresh": "ធ្វើឱ្យស្រស់",
     "remove": "ដកចេញ",
     "replace": "ជំនួស",
     "search": "ស្វែងរក",
@@ -154,6 +155,7 @@
     "cardDeleted": "បានលុបកាត។",
     "imageAdded": "បានបន្ថែមរូបភាព។",
     "newCardCreated": "កាតថ្មីត្រូវបានបង្កើតឡើង។",
+    "newVersionAvailable": "មានកំណែថ្មី",
     "noImagesFound": "រកមិនឃើញរូបភាពទេ។",
     "nothingToImport": "គ្មានអ្វីដែលត្រូវនាំចូលទេ។",
     "pngOpened": "PNG បានបើកនៅក្នុងផ្ទាំងថ្មី។"
@@ -386,6 +388,7 @@
     "apiCredits": "APIs ដែលគាំទ្រ",
     "links": "តំណភ្ជាប់",
     "repository": "ឃ្លាំង",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "វីដេអូពន្យល់"
   }
 }

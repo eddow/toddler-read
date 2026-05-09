@@ -26,6 +26,7 @@
     "openPng": "افتح PNG",
     "openReader": "افتح القارئ",
     "previous": "السابق",
+    "refresh": "ينعش",
     "remove": "إزالة",
     "replace": "استبدال",
     "search": "بحث",
@@ -154,6 +155,7 @@
     "cardDeleted": "تم حذف البطاقة.",
     "imageAdded": "تمت إضافة الصورة.",
     "newCardCreated": "تم إنشاء بطاقة جديدة.",
+    "newVersionAvailable": "الإصدار الجديد متاح.",
     "noImagesFound": "لم يتم العثور على صور.",
     "nothingToImport": "لا شيء للاستيراد.",
     "pngOpened": "تم فتح PNG في علامة تبويب جديدة."
@@ -386,6 +388,7 @@
     "apiCredits": "واجهات برمجة التطبيقات المدعومة",
     "links": "روابط",
     "repository": "مستودع",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "فيديو توضيحي"
   }
 }

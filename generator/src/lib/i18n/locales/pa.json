@@ -26,6 +26,7 @@
     "openPng": "PNG ਖੋਲ੍ਹੋ",
     "openReader": "ਰੀਡਰ ਖੋਲ੍ਹੋ",
     "previous": "ਪਿਛਲਾ",
+    "refresh": "ਤਾਜ਼ਾ ਕਰੋ",
     "remove": "ਹਟਾਓ",
     "replace": "ਬਦਲੋ",
     "search": "ਖੋਜ",
@@ -154,6 +155,7 @@
     "cardDeleted": "ਕਾਰਡ ਮਿਟਾਇਆ ਗਿਆ।",
     "imageAdded": "ਚਿੱਤਰ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ।",
     "newCardCreated": "ਨਵਾਂ ਕਾਰਡ ਬਣਾਇਆ ਗਿਆ।",
+    "newVersionAvailable": "ਨਵਾਂ ਸੰਸਕਰਣ ਉਪਲਬਧ ਹੈ।",
     "noImagesFound": "ਕੋਈ ਚਿੱਤਰ ਨਹੀਂ ਮਿਲੇ।",
     "nothingToImport": "ਆਯਾਤ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ।",
     "pngOpened": "PNG ਇੱਕ ਨਵੀਂ ਟੈਬ ਵਿੱਚ ਖੋਲ੍ਹਿਆ ਗਿਆ।"
@@ -386,6 +388,7 @@
     "apiCredits": "ਸਮਰਥਿਤ APIs",
     "links": "ਲਿੰਕ",
     "repository": "ਰਿਪੋਜ਼ਟਰੀ",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "ਵਿਆਖਿਆਕਾਰ ਵੀਡੀਓ"
   }
 }

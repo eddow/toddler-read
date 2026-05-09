@@ -26,6 +26,7 @@
     "openPng": "PNG を開く",
     "openReader": "リーダーを開く",
     "previous": "前へ",
+    "refresh": "リフレッシュ",
     "remove": "削除",
     "replace": "交換する",
     "search": "検索",
@@ -154,6 +155,7 @@
     "cardDeleted": "カードが削除されました。",
     "imageAdded": "画像を追加しました。",
     "newCardCreated": "新しいカードが作成されました。",
+    "newVersionAvailable": "新しいバージョンが利用可能です。",
     "noImagesFound": "画像が見つかりませんでした。",
     "nothingToImport": "インポートするものは何もありません。",
     "pngOpened": "PNG 新しいタブで開きます。"
@@ -386,6 +388,7 @@
     "apiCredits": "サポートされている API",
     "links": "リンク",
     "repository": "リポジトリ",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "解説ビデオ"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "Atveriet PNG",
     "openReader": "Atveriet programmu Reader",
     "previous": "Iepriekšējais",
+    "refresh": "Atsvaidzināt",
     "remove": "Noņemt",
     "replace": "Aizstāt",
     "search": "Meklēt",
@@ -154,6 +155,7 @@
     "cardDeleted": "Karte izdzēsta.",
     "imageAdded": "Attēls pievienots.",
     "newCardCreated": "Izveidota jauna karte.",
+    "newVersionAvailable": "Pieejama jauna versija.",
     "noImagesFound": "Nav atrasts neviens attēls.",
     "nothingToImport": "Nav ko importēt.",
     "pngOpened": "PNG tika atvērts jaunā cilnē."
@@ -386,6 +388,7 @@
     "apiCredits": "Atbalstītās API",
     "links": "Saites",
     "repository": "Repozitorijs",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Izskaidrojošs video"
   }
 }

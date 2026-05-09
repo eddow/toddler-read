@@ -26,6 +26,7 @@
     "openPng": "PNG را باز کنید",
     "openReader": "Reader را باز کنید",
     "previous": "قبلی",
+    "refresh": "تازه کردن",
     "remove": "حذف کنید",
     "replace": "جایگزین کنید",
     "search": "جستجو کنید",
@@ -154,6 +155,7 @@
     "cardDeleted": "کارت حذف شد",
     "imageAdded": "تصویر اضافه شد",
     "newCardCreated": "کارت جدید ایجاد شد.",
+    "newVersionAvailable": "نسخه جدید موجود است.",
     "noImagesFound": "هیچ تصویری یافت نشد",
     "nothingToImport": "چیزی برای واردات نیست",
     "pngOpened": "PNG در یک برگه جدید باز شد."
@@ -386,6 +388,7 @@
     "apiCredits": "API های پشتیبانی شده",
     "links": "پیوندها",
     "repository": "مخزن",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "ویدیوی توضیح دهنده"
   }
 }

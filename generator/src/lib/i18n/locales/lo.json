@@ -26,6 +26,7 @@
     "openPng": "ເປີດ PNG",
     "openReader": "ເປີດ Reader",
     "previous": "ທີ່ຜ່ານມາ",
+    "refresh": "ໂຫຼດຂໍ້ມູນຄືນໃໝ່",
     "remove": "ເອົາອອກ",
     "replace": "ແທນທີ່",
     "search": "ຊອກຫາ",
@@ -154,6 +155,7 @@
     "cardDeleted": "ລຶບບັດແລ້ວ.",
     "imageAdded": "ເພີ່ມຮູບພາບ.",
     "newCardCreated": "ສ້າງບັດໃໝ່.",
+    "newVersionAvailable": "ລຸ້ນໃໝ່ມີໃຫ້.",
     "noImagesFound": "ບໍ່ພົບຮູບພາບ.",
     "nothingToImport": "ບໍ່ມີຫຍັງທີ່ຈະນໍາເຂົ້າ.",
     "pngOpened": "PNG ເປີດໃນແຖບໃໝ່."
@@ -386,6 +388,7 @@
     "apiCredits": "API ທີ່ຮອງຮັບ",
     "links": "ລິ້ງຄ໌",
     "repository": "ຄັງເກັບມ້ຽນ",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "ວິດີໂອອະທິບາຍ"
   }
 }

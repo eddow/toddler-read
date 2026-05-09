@@ -26,6 +26,7 @@
     "openPng": "Åpne PNG",
     "openReader": "Åpne Reader",
     "previous": "Forrige",
+    "refresh": "Forfriske",
     "remove": "Fjern",
     "replace": "Bytt ut",
     "search": "Søk",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kort slettet.",
     "imageAdded": "Bilde lagt til.",
     "newCardCreated": "Nytt kort opprettet.",
+    "newVersionAvailable": "Ny versjon tilgjengelig.",
     "noImagesFound": "Ingen bilder funnet.",
     "nothingToImport": "Ingenting å importere.",
     "pngOpened": "PNG åpnet i en ny fane."
@@ -386,6 +388,7 @@
     "apiCredits": "Støttede APIer",
     "links": "Linker",
     "repository": "Depot",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Forklaringsvideo"
   }
 }

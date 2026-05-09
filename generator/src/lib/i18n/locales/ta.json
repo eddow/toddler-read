@@ -26,6 +26,7 @@
     "openPng": "PNGஐத் திறக்கவும்",
     "openReader": "ரீடரைத் திறக்கவும்",
     "previous": "முந்தைய",
+    "refresh": "புதுப்பிக்கவும்",
     "remove": "அகற்று",
     "replace": "மாற்றவும்",
     "search": "தேடு",
@@ -154,6 +155,7 @@
     "cardDeleted": "கார்டு நீக்கப்பட்டது.",
     "imageAdded": "படம் சேர்க்கப்பட்டது.",
     "newCardCreated": "புதிய அட்டை உருவாக்கப்பட்டது.",
+    "newVersionAvailable": "புதிய பதிப்பு கிடைக்கிறது.",
     "noImagesFound": "படங்கள் எதுவும் இல்லை.",
     "nothingToImport": "இறக்குமதி செய்ய எதுவும் இல்லை.",
     "pngOpened": "PNG புதிய தாவலில் திறக்கப்பட்டது."
@@ -386,6 +388,7 @@
     "apiCredits": "ஆதரிக்கப்படும் APIகள்",
     "links": "இணைப்புகள்",
     "repository": "களஞ்சியம்",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "விளக்கமான காணொளி"
   }
 }

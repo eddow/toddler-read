@@ -26,6 +26,7 @@
     "openPng": "打开PNG",
     "openReader": "打开阅读器",
     "previous": "上一页",
+    "refresh": "刷新",
     "remove": "删除",
     "replace": "更换",
     "search": "搜索",
@@ -154,6 +155,7 @@
     "cardDeleted": "卡已删除。",
     "imageAdded": "图像已添加。",
     "newCardCreated": "新卡已创建。",
+    "newVersionAvailable": "新版本可用。",
     "noImagesFound": "没有找到图像。",
     "nothingToImport": "没有什么可导入的。",
     "pngOpened": "PNG 在新选项卡中打开。"
@@ -386,6 +388,7 @@
     "apiCredits": "支持的API",
     "links": "友情链接",
     "repository": "存储库",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "讲解视频"
   }
 }

@@ -5,9 +5,12 @@
 		ArrowDownRight,
 		ArrowUpLeft,
 		ArrowUpRight,
+		CirclePlay,
 		Columns2,
+		Coffee,
 		Download,
 		ExternalLink,
+		GitFork,
 		Info,
 		Image as ImageIcon,
 		ImagePlus,
@@ -171,6 +174,7 @@ For each target with empty text, return a short natural translation suitable for
 Do not return unchanged existing text.`
 	const REPOSITORY_URL = 'https://github.com/eddow/toddler-read'
 	const KO_FI_URL = 'https://ko-fi.com/emedware'
+	const EXPLAINER_VIDEO_URL = 'https://youtu.be/zYcPHeafJ38'
 	const API_CREDIT_LINKS = [
 		{
 			label: 'Gemini',
@@ -3937,12 +3941,16 @@ Do not return unchanged existing text.`
 					<h3>{T.help.links}</h3>
 					<div class="help-links">
 						<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
-							<ExternalLink size={16} aria-hidden="true" />
+							<GitFork size={16} aria-hidden="true" />
 							{T.help.repository}
 						</a>
 						<a href={KO_FI_URL} target="_blank" rel="noreferrer">
-							<ExternalLink size={16} aria-hidden="true" />
+							<Coffee size={16} aria-hidden="true" />
 							{T.help.kofi}
+						</a>
+						<a href={EXPLAINER_VIDEO_URL} target="_blank" rel="noreferrer">
+							<CirclePlay size={16} aria-hidden="true" />
+							{T.help.explainerVideo}
 						</a>
 					</div>
 					<h3>{T.help.apiCredits}</h3>

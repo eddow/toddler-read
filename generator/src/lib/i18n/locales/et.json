@@ -26,6 +26,7 @@
     "openPng": "Avage PNG",
     "openReader": "Avage Reader",
     "previous": "Eelmine",
+    "refresh": "Värskenda",
     "remove": "Eemalda",
     "replace": "Asenda",
     "search": "Otsi",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kaart kustutatud.",
     "imageAdded": "Pilt lisatud.",
     "newCardCreated": "Uus kaart loodud.",
+    "newVersionAvailable": "Uus versioon saadaval.",
     "noImagesFound": "Pilte ei leitud.",
     "nothingToImport": "Pole midagi importida.",
     "pngOpened": "PNG avati uuel vahelehel."
@@ -386,6 +388,7 @@
     "apiCredits": "Toetatud API-d",
     "links": "Lingid",
     "repository": "Hoidla",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Selgitav video"
   }
 }

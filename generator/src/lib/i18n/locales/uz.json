@@ -26,6 +26,7 @@
     "openPng": "PNG-ni oching",
     "openReader": "Reader dasturini oching",
     "previous": "Oldingi",
+    "refresh": "Yangilash",
     "remove": "O'chirish",
     "replace": "O'zgartiring",
     "search": "Qidiruv",
@@ -154,6 +155,7 @@
     "cardDeleted": "Karta oʻchirildi.",
     "imageAdded": "Rasm qo'shildi.",
     "newCardCreated": "Yangi karta yaratildi.",
+    "newVersionAvailable": "Yangi versiya mavjud.",
     "noImagesFound": "Hech qanday rasm topilmadi.",
     "nothingToImport": "Import qilish uchun hech narsa yo'q.",
     "pngOpened": "PNG yangi varaqda ochildi."
@@ -386,6 +388,7 @@
     "apiCredits": "Qo'llab-quvvatlanadigan API",
     "links": "Havolalar",
     "repository": "Repozitariy",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Tushuntiruvchi video"
   }
 }

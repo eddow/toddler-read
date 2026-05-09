@@ -26,6 +26,7 @@
     "openPng": "PNG उघडा",
     "openReader": "वाचक उघडा",
     "previous": "मागील",
+    "refresh": "रिफ्रेश करा",
     "remove": "काढा",
     "replace": "बदला",
     "search": "शोधा",
@@ -154,6 +155,7 @@
     "cardDeleted": "कार्ड हटवले.",
     "imageAdded": "प्रतिमा जोडली.",
     "newCardCreated": "नवीन कार्ड तयार केले.",
+    "newVersionAvailable": "नवीन आवृत्ती उपलब्ध.",
     "noImagesFound": "कोणत्याही प्रतिमा आढळल्या नाहीत.",
     "nothingToImport": "आयात करण्यासाठी काहीही नाही.",
     "pngOpened": "PNG नवीन टॅबमध्ये उघडले."
@@ -386,6 +388,7 @@
     "apiCredits": "समर्थित API",
     "links": "दुवे",
     "repository": "भांडार",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "स्पष्टीकरण करणारा व्हिडिओ"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "PNGని తెరవండి",
     "openReader": "రీడర్‌ని తెరవండి",
     "previous": "మునుపటి",
+    "refresh": "రిఫ్రెష్ చేయండి",
     "remove": "తొలగించు",
     "replace": "భర్తీ చేయండి",
     "search": "శోధించండి",
@@ -154,6 +155,7 @@
     "cardDeleted": "కార్డ్ తొలగించబడింది.",
     "imageAdded": "చిత్రం జోడించబడింది.",
     "newCardCreated": "కొత్త కార్డ్ సృష్టించబడింది.",
+    "newVersionAvailable": "కొత్త వెర్షన్ అందుబాటులో ఉంది.",
     "noImagesFound": "చిత్రాలు ఏవీ కనుగొనబడలేదు.",
     "nothingToImport": "దిగుమతి చేసుకోవడానికి ఏమీ లేదు.",
     "pngOpened": "PNG కొత్త ట్యాబ్‌లో తెరవబడింది."
@@ -386,6 +388,7 @@
     "apiCredits": "మద్దతు ఉన్న APIలు",
     "links": "లింకులు",
     "repository": "రిపోజిటరీ",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "వివరణాత్మక వీడియో"
   }
 }

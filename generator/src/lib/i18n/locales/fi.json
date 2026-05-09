@@ -26,6 +26,7 @@
     "openPng": "Avaa PNG",
     "openReader": "Avaa Reader",
     "previous": "Edellinen",
+    "refresh": "Päivitä",
     "remove": "Poista",
     "replace": "Vaihda",
     "search": "Etsi",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kortti poistettu.",
     "imageAdded": "Kuva lisätty.",
     "newCardCreated": "Uusi kortti luotu.",
+    "newVersionAvailable": "Uusi versio saatavilla.",
     "noImagesFound": "Kuvia ei löytynyt.",
     "nothingToImport": "Ei mitään tuotavaa.",
     "pngOpened": "PNG avattiin uudessa välilehdessä."
@@ -386,6 +388,7 @@
     "apiCredits": "Tuetut API:t",
     "links": "Linkit",
     "repository": "Arkisto",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Selittävä video"
   }
 }

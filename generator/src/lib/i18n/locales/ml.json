@@ -26,6 +26,7 @@
     "openPng": "PNG തുറക്കുക",
     "openReader": "ഓപ്പൺ റീഡർ",
     "previous": "മുമ്പത്തെ",
+    "refresh": "പുതുക്കുക",
     "remove": "നീക്കം ചെയ്യുക",
     "replace": "മാറ്റിസ്ഥാപിക്കുക",
     "search": "തിരയുക",
@@ -154,6 +155,7 @@
     "cardDeleted": "കാർഡ് ഇല്ലാതാക്കി.",
     "imageAdded": "ചിത്രം ചേർത്തു.",
     "newCardCreated": "പുതിയ കാർഡ് സൃഷ്ടിച്ചു.",
+    "newVersionAvailable": "പുതിയ പതിപ്പ് ലഭ്യമാണ്.",
     "noImagesFound": "ചിത്രങ്ങളൊന്നും കണ്ടെത്തിയില്ല.",
     "nothingToImport": "ഇറക്കുമതി ചെയ്യാൻ ഒന്നുമില്ല.",
     "pngOpened": "PNG ഒരു പുതിയ ടാബിൽ തുറന്നു."
@@ -386,6 +388,7 @@
     "apiCredits": "പിന്തുണയ്ക്കുന്ന API-കൾ",
     "links": "ലിങ്കുകൾ",
     "repository": "ശേഖരം",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "വിശദീകരണ വീഡിയോ"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "Open PNG",
     "openReader": "Lezer openen",
     "previous": "Vorige",
+    "refresh": "Vernieuwen",
     "remove": "Verwijderen",
     "replace": "Vervangen",
     "search": "Zoeken",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kaart verwijderd.",
     "imageAdded": "Afbeelding toegevoegd.",
     "newCardCreated": "Nieuwe kaart gemaakt.",
+    "newVersionAvailable": "Nieuwe versie beschikbaar.",
     "noImagesFound": "Geen afbeeldingen gevonden.",
     "nothingToImport": "Niets om te importeren.",
     "pngOpened": "PNG geopend in een nieuw tabblad."
@@ -386,6 +388,7 @@
     "apiCredits": "Ondersteunde API's",
     "links": "Koppelingen",
     "repository": "Bewaarplaats",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Uitleg video"
   }
 }

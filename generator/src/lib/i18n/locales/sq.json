@@ -26,6 +26,7 @@
     "openPng": "Hap PNG",
     "openReader": "Hapni lexuesin",
     "previous": "E mëparshme",
+    "refresh": "Rifresko",
     "remove": "Hiq",
     "replace": "Zëvendësoni",
     "search": "Kërko",
@@ -154,6 +155,7 @@
     "cardDeleted": "Karta u fshi.",
     "imageAdded": "Imazhi u shtua.",
     "newCardCreated": "U krijua një kartë e re.",
+    "newVersionAvailable": "Versioni i ri në dispozicion.",
     "noImagesFound": "Nuk u gjetën imazhe.",
     "nothingToImport": "Asgjë për të importuar.",
     "pngOpened": "PNG u hap në një skedë të re."
@@ -386,6 +388,7 @@
     "apiCredits": "API të mbështetura",
     "links": "Lidhjet",
     "repository": "Depoja",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Video shpjeguese"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "Відкрийте PNG",
     "openReader": "Відкрийте Reader",
     "previous": "Попередній",
+    "refresh": "Оновити",
     "remove": "видалити",
     "replace": "Замінити",
     "search": "Пошук",
@@ -154,6 +155,7 @@
     "cardDeleted": "Картку видалено.",
     "imageAdded": "Зображення додано.",
     "newCardCreated": "Створено нову картку.",
+    "newVersionAvailable": "Доступна нова версія.",
     "noImagesFound": "Зображення не знайдено.",
     "nothingToImport": "Нічого для імпорту.",
     "pngOpened": "PNG відкрито в новій вкладці."
@@ -386,6 +388,7 @@
     "apiCredits": "Підтримувані API",
     "links": "Посилання",
     "repository": "Репозиторій",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Пояснювальне відео"
   }
 }

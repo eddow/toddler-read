@@ -26,6 +26,7 @@
     "openPng": "PNG විවෘත කරන්න",
     "openReader": "කියවන්නා විවෘත කරන්න",
     "previous": "පෙර",
+    "refresh": "නැවුම් කරන්න",
     "remove": "ඉවත් කරන්න",
     "replace": "ආදේශ කරන්න",
     "search": "සොයන්න",
@@ -154,6 +155,7 @@
     "cardDeleted": "කාඩ්පත මකා ඇත.",
     "imageAdded": "පින්තූරය එකතු කරන ලදී.",
     "newCardCreated": "නව කාඩ්පතක් සාදන ලදී.",
+    "newVersionAvailable": "නව අනුවාදය තිබේ.",
     "noImagesFound": "පින්තූර හමු නොවිණි.",
     "nothingToImport": "ආනයනය කිරීමට කිසිවක් නැත.",
     "pngOpened": "PNG නව ටැබයක විවෘත කරන ලදී."
@@ -386,6 +388,7 @@
     "apiCredits": "සහය දක්වන API",
     "links": "සබැඳි",
     "repository": "ගබඩාව",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "පැහැදිලි කිරීමේ වීඩියෝව"
   }
 }

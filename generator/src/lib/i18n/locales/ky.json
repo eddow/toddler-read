@@ -26,6 +26,7 @@
     "openPng": "PNG ачыңыз",
     "openReader": "Open Reader",
     "previous": "Мурунку",
+    "refresh": "Жаңылоо",
     "remove": "Алып салуу",
     "replace": "алмаштыруу",
     "search": "Издөө",
@@ -154,6 +155,7 @@
     "cardDeleted": "Карта жок кылынды.",
     "imageAdded": "Сүрөт кошулду.",
     "newCardCreated": "Жаңы карта түзүлдү.",
+    "newVersionAvailable": "Жаңы версия жеткиликтүү.",
     "noImagesFound": "Сүрөт табылган жок.",
     "nothingToImport": "Импорттоого эч нерсе жок.",
     "pngOpened": "PNG жаңы өтмөктө ачылды."
@@ -386,6 +388,7 @@
     "apiCredits": "Колдоого алынган API'лер",
     "links": "Шилтемелер",
     "repository": "Репозиторий",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Түшүндүрүүчү видео"
   }
 }

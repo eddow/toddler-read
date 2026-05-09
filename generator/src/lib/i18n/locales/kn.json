@@ -26,6 +26,7 @@
     "openPng": "PNG ತೆರೆಯಿರಿ",
     "openReader": "ರೀಡರ್ ತೆರೆಯಿರಿ",
     "previous": "ಹಿಂದಿನ",
+    "refresh": "ರಿಫ್ರೆಶ್ ಮಾಡಿ",
     "remove": "ತೆಗೆದುಹಾಕಿ",
     "replace": "ಬದಲಾಯಿಸಿ",
     "search": "ಹುಡುಕು",
@@ -154,6 +155,7 @@
     "cardDeleted": "ಕಾರ್ಡ್ ಅಳಿಸಲಾಗಿದೆ.",
     "imageAdded": "ಚಿತ್ರವನ್ನು ಸೇರಿಸಲಾಗಿದೆ.",
     "newCardCreated": "ಹೊಸ ಕಾರ್ಡ್ ರಚಿಸಲಾಗಿದೆ.",
+    "newVersionAvailable": "ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ.",
     "noImagesFound": "ಯಾವುದೇ ಚಿತ್ರಗಳು ಕಂಡುಬಂದಿಲ್ಲ.",
     "nothingToImport": "ಆಮದು ಮಾಡಿಕೊಳ್ಳಲು ಏನೂ ಇಲ್ಲ.",
     "pngOpened": "PNG ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಲಾಗಿದೆ."
@@ -386,6 +388,7 @@
     "apiCredits": "ಬೆಂಬಲಿತ API ಗಳು",
     "links": "ಲಿಂಕ್‌ಗಳು",
     "repository": "ಭಂಡಾರ",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "ವಿವರಿಸುವ ವೀಡಿಯೊ"
   }
 }

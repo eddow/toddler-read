@@ -26,6 +26,7 @@
     "openPng": "Obre PNG",
     "openReader": "Lector obert",
     "previous": "Anterior",
+    "refresh": "Actualitza",
     "remove": "Eliminar",
     "replace": "Substitueix",
     "search": "Cerca",
@@ -154,6 +155,7 @@
     "cardDeleted": "S'ha suprimit la targeta.",
     "imageAdded": "Imatge afegida.",
     "newCardCreated": "S'ha creat una nova targeta.",
+    "newVersionAvailable": "Nova versió disponible.",
     "noImagesFound": "No s'han trobat imatges.",
     "nothingToImport": "Res a importar.",
     "pngOpened": "PNG s'ha obert en una pestanya nova."
@@ -386,6 +388,7 @@
     "apiCredits": "API compatibles",
     "links": "Enllaços",
     "repository": "Repositori",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Vídeo explicatiu"
   }
 }

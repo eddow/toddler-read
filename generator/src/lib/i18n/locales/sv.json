@@ -26,6 +26,7 @@
     "openPng": "Öppna PNG",
     "openReader": "Öppna Reader",
     "previous": "Föregående",
+    "refresh": "Uppdatera",
     "remove": "Ta bort",
     "replace": "Byt ut",
     "search": "Sök",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kortet raderat.",
     "imageAdded": "Bild tillagd.",
     "newCardCreated": "Nytt kort skapat.",
+    "newVersionAvailable": "Ny version tillgänglig.",
     "noImagesFound": "Inga bilder hittades.",
     "nothingToImport": "Inget att importera.",
     "pngOpened": "PNG öppnades i en ny flik."
@@ -386,6 +388,7 @@
     "apiCredits": "API:er som stöds",
     "links": "Länkar",
     "repository": "Förvar",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Förklaringsvideo"
   }
 }

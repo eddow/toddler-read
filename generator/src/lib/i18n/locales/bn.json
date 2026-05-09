@@ -26,6 +26,7 @@
     "openPng": "PNG খুলুন",
     "openReader": "রিডার খুলুন",
     "previous": "আগের",
+    "refresh": "রিফ্রেশ",
     "remove": "সরান",
     "replace": "প্রতিস্থাপন করুন",
     "search": "অনুসন্ধান করুন",
@@ -154,6 +155,7 @@
     "cardDeleted": "কার্ড মুছে ফেলা হয়েছে।",
     "imageAdded": "ছবি যোগ করা হয়েছে।",
     "newCardCreated": "নতুন কার্ড তৈরি হয়েছে।",
+    "newVersionAvailable": "নতুন সংস্করণ উপলব্ধ।",
     "noImagesFound": "কোন ছবি পাওয়া যায়নি.",
     "nothingToImport": "আমদানি করার মতো কিছুই নেই।",
     "pngOpened": "PNG একটি নতুন ট্যাবে খোলা হয়েছে৷"
@@ -386,6 +388,7 @@
     "apiCredits": "সমর্থিত API",
     "links": "লিঙ্ক",
     "repository": "ভান্ডার",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "ব্যাখ্যাকারী ভিডিও"
   }
 }

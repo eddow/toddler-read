@@ -26,6 +26,7 @@
     "openPng": "Ανοίξτε το PNG",
     "openReader": "Ανοίξτε το πρόγραμμα ανάγνωσης",
     "previous": "Προηγούμενο",
+    "refresh": "Φρεσκάρω",
     "remove": "Αφαίρεση",
     "replace": "Αντικαταστήστε",
     "search": "Αναζήτηση",
@@ -154,6 +155,7 @@
     "cardDeleted": "Η κάρτα διαγράφηκε.",
     "imageAdded": "Προστέθηκε εικόνα.",
     "newCardCreated": "Δημιουργήθηκε νέα κάρτα.",
+    "newVersionAvailable": "Νέα έκδοση διαθέσιμη.",
     "noImagesFound": "Δεν βρέθηκαν εικόνες.",
     "nothingToImport": "Δεν υπάρχει τίποτα για εισαγωγή.",
     "pngOpened": "Το PNG άνοιξε σε νέα καρτέλα."
@@ -386,6 +388,7 @@
     "apiCredits": "Υποστηριζόμενα API",
     "links": "Σύνδεσμοι",
     "repository": "Αποθετήριο",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Επεξηγητικό βίντεο"
   }
 }

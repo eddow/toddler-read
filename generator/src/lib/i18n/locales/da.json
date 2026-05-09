@@ -26,6 +26,7 @@
     "openPng": "Åbn PNG",
     "openReader": "Åbn Reader",
     "previous": "Forrige",
+    "refresh": "Opfriske",
     "remove": "Fjern",
     "replace": "Udskift",
     "search": "Søg",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kort slettet.",
     "imageAdded": "Billede tilføjet.",
     "newCardCreated": "Nyt kort oprettet.",
+    "newVersionAvailable": "Ny version tilgængelig.",
     "noImagesFound": "Ingen billeder fundet.",
     "nothingToImport": "Intet at importere.",
     "pngOpened": "PNG åbnede i en ny fane."
@@ -386,6 +388,7 @@
     "apiCredits": "Understøttede API'er",
     "links": "Links",
     "repository": "Depot",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Forklarende video"
   }
 }

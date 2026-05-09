@@ -26,6 +26,7 @@
     "openPng": "PNG खोल्नुहोस्",
     "openReader": "रिडर खोल्नुहोस्",
     "previous": "अघिल्लो",
+    "refresh": "रिफ्रेस गर्नुहोस्",
     "remove": "हटाउनुहोस्",
     "replace": "प्रतिस्थापन गर्नुहोस्",
     "search": "खोज्नुहोस्",
@@ -154,6 +155,7 @@
     "cardDeleted": "कार्ड मेटाइयो।",
     "imageAdded": "छवि थपियो।",
     "newCardCreated": "नयाँ कार्ड सिर्जना गरियो।",
+    "newVersionAvailable": "नयाँ संस्करण उपलब्ध छ।",
     "noImagesFound": "कुनै छवि भेटिएन।",
     "nothingToImport": "आयात गर्न केहि छैन।",
     "pngOpened": "PNG नयाँ ट्याबमा खोलियो।"
@@ -386,6 +388,7 @@
     "apiCredits": "समर्थित API हरू",
     "links": "लिङ्कहरू",
     "repository": "भण्डार",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "व्याख्याकर्ता भिडियो"
   }
 }

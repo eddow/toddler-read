@@ -26,6 +26,7 @@
     "openPng": "Otvorte PNG",
     "openReader": "Otvorte aplikáciu Reader",
     "previous": "Predchádzajúce",
+    "refresh": "Obnoviť",
     "remove": "Odstrániť",
     "replace": "Nahradiť",
     "search": "Hľadať",
@@ -154,6 +155,7 @@
     "cardDeleted": "Karta bola odstránená.",
     "imageAdded": "Obrázok bol pridaný.",
     "newCardCreated": "Bola vytvorená nová karta.",
+    "newVersionAvailable": "K dispozícii je nová verzia.",
     "noImagesFound": "Nenašli sa žiadne obrázky.",
     "nothingToImport": "Nič na import.",
     "pngOpened": "PNG sa otvorilo na novej karte."
@@ -386,6 +388,7 @@
     "apiCredits": "Podporované rozhrania API",
     "links": "Odkazy",
     "repository": "Úložisko",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Vysvetľujúce video"
   }
 }

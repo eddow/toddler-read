@@ -26,6 +26,7 @@
     "openPng": "Agor PNG",
     "openReader": "Darllenydd Agored",
     "previous": "Blaenorol",
+    "refresh": "Adnewyddu",
     "remove": "Dileu",
     "replace": "Amnewid",
     "search": "Chwiliwch",
@@ -154,6 +155,7 @@
     "cardDeleted": "Cerdyn wedi'i ddileu.",
     "imageAdded": "Ychwanegwyd delwedd.",
     "newCardCreated": "Cerdyn newydd wedi'i greu.",
+    "newVersionAvailable": "Fersiwn newydd ar gael.",
     "noImagesFound": "Ni chanfuwyd unrhyw ddelweddau.",
     "nothingToImport": "Dim byd i fewnforio.",
     "pngOpened": "Agorodd PNG mewn tab newydd."
@@ -386,6 +388,7 @@
     "apiCredits": "APIs a gefnogir",
     "links": "Cysylltiadau",
     "repository": "Ystorfa",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Fideo esboniadol"
   }
 }

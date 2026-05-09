@@ -26,6 +26,7 @@
     "openPng": "Otvorite PNG",
     "openReader": "Otvorite Reader",
     "previous": "Prethodno",
+    "refresh": "Osvježiti",
     "remove": "Ukloniti",
     "replace": "zamijeniti",
     "search": "Traži",
@@ -154,6 +155,7 @@
     "cardDeleted": "Kartica izbrisana.",
     "imageAdded": "Dodana slika.",
     "newCardCreated": "Stvorena je nova kartica.",
+    "newVersionAvailable": "Nova verzija dostupna.",
     "noImagesFound": "Nema pronađenih slika.",
     "nothingToImport": "Ništa za uvoz.",
     "pngOpened": "PNG otvoren je u novoj kartici."
@@ -386,6 +388,7 @@
     "apiCredits": "Podržani API-ji",
     "links": "Linkovi",
     "repository": "Spremište",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Video s objašnjenjem"
   }
 }

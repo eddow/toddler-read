@@ -26,6 +26,7 @@
     "openPng": "Адкрыйце PNG",
     "openReader": "Адкрыйце Reader",
     "previous": "Папярэдні",
+    "refresh": "Абнавіць",
     "remove": "Выдаліць",
     "replace": "Замяніць",
     "search": "Пошук",
@@ -154,6 +155,7 @@
     "cardDeleted": "Картка выдалена.",
     "imageAdded": "Відарыс дададзены.",
     "newCardCreated": "Новая карта створана.",
+    "newVersionAvailable": "Даступная новая версія.",
     "noImagesFound": "Выяў не знойдзена.",
     "nothingToImport": "Няма чаго імпартаваць.",
     "pngOpened": "PNG адкрыты ў новай укладцы."
@@ -386,6 +388,7 @@
     "apiCredits": "Падтрымліваюцца API",
     "links": "Спасылкі",
     "repository": "Сховішча",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Відэа з тлумачэннем"
   }
 }

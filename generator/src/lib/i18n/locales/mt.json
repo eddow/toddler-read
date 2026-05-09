@@ -26,6 +26,7 @@
     "openPng": "Iftaħ PNG",
     "openReader": "Open Reader",
     "previous": "Preċedenti",
+    "refresh": "Aġġorna",
     "remove": "Neħħi",
     "replace": "Ibdel",
     "search": "Fittex",
@@ -154,6 +155,7 @@
     "cardDeleted": "Karta mħassra.",
     "imageAdded": "Immaġini miżjuda.",
     "newCardCreated": "Karta ġdida maħluqa.",
+    "newVersionAvailable": "Verżjoni ġdida disponibbli.",
     "noImagesFound": "Ma nstabet l-ebda immaġini.",
     "nothingToImport": "Xejn li jimporta.",
     "pngOpened": "PNG fetaħ f'tab ġdida."
@@ -386,6 +388,7 @@
     "apiCredits": "APIs appoġġjati",
     "links": "Links",
     "repository": "Repożitorju",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Vidjow ta' spjegazzjoni"
   }
 }

@@ -26,6 +26,7 @@
     "openPng": "Deschideți PNG",
     "openReader": "Deschideți Reader",
     "previous": "Anterior",
+    "refresh": "Reîmprospăta",
     "remove": "Eliminați",
     "replace": "Înlocuiește",
     "search": "Caută",
@@ -154,6 +155,7 @@
     "cardDeleted": "Cardul a fost șters.",
     "imageAdded": "Imagine adăugată.",
     "newCardCreated": "Card nou creat.",
+    "newVersionAvailable": "Versiune nouă disponibilă.",
     "noImagesFound": "Nu au fost găsite imagini.",
     "nothingToImport": "Nimic de importat.",
     "pngOpened": "PNG a fost deschis într-o filă nouă."
@@ -386,6 +388,7 @@
     "apiCredits": "API-uri acceptate",
     "links": "Legături",
     "repository": "Depozitul",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Video explicativ"
   }
 }

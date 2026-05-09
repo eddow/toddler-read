@@ -26,6 +26,7 @@
     "openPng": "Opnaðu PNG",
     "openReader": "Opnaðu Reader",
     "previous": "Fyrri",
+    "refresh": "Endurnýja",
     "remove": "Fjarlægja",
     "replace": "Skipta um",
     "search": "Leita",
@@ -154,6 +155,7 @@
     "cardDeleted": "Korti eytt.",
     "imageAdded": "Mynd bætt við.",
     "newCardCreated": "Nýtt kort búið til.",
+    "newVersionAvailable": "Ný útgáfa í boði.",
     "noImagesFound": "Engar myndir fundust.",
     "nothingToImport": "Ekkert að flytja inn.",
     "pngOpened": "PNG opnaði í nýjum flipa."
@@ -386,6 +388,7 @@
     "apiCredits": "Stuðningur API",
     "links": "Tenglar",
     "repository": "Geymsla",
-    "kofi": "Ko-fi"
+    "kofi": "Ko-fi",
+    "explainerVideo": "Útskýringarmyndband"
   }
 }
