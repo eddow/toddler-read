@@ -36,11 +36,13 @@ if ('serviceWorker' in navigator) {
         const activeVersion = await getWorkerVersion(navigator.serviceWorker.controller);
         const waitingVersion = await getWorkerVersion(worker);
 
+        // If we can't get either version, do nothing (edge case)
         if (!activeVersion || !waitingVersion) return;
-        if (activeVersion === waitingVersion) {
-          worker.postMessage({ type: 'SKIP_WAITING' });
-          return;
-        }
+
+        // Same version — let the browser lifecycle handle it naturally.
+        // We must NOT activate (SKIP_WAITING) because that can cause an
+        // unwanted page reload or service worker disruption.
+        if (activeVersion === waitingVersion) return;
 
         window.dispatchEvent(
           new CustomEvent('toddler-read-sw-update-available', {

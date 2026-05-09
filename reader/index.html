@@ -1217,14 +1217,16 @@
 				const activeVersion = await getWorkerVersion(activeWorker);
 				const waitingVersion = await getWorkerVersion(worker);
 
-				// If we can't get either version, don't show prompt and don't activate (edge case, likely incognito or fresh install)
+				// If we can't get either version, don't show prompt (edge case, likely incognito or fresh install)
 				if (!activeVersion || !waitingVersion) {
 					return;
 				}
 
-				// Same version - activate silently
+				// Same version - do nothing, let browser lifecycle handle it naturally.
+				// We must NOT activate (SKIP_WAITING) because that triggers
+				// controllerchange → window.location.reload(), which disrupts the
+				// toddler mid-play.
 				if (activeVersion === waitingVersion) {
-					activateWorkerWithoutPrompt(worker);
 					return;
 				}
 
