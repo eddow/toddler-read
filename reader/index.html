@@ -1193,7 +1193,7 @@
 					const hadControllerAtLoad = Boolean(navigator.serviceWorker.controller);
 					navigator.serviceWorker.register('sw.js').then((registration) => {
 						const notifyWaitingWorker = () => {
-							if (registration.waiting && navigator.serviceWorker.controller) {
+							if (hadControllerAtLoad && registration.waiting) {
 								showUpdatePrompt(registration.waiting);
 							}
 						};
@@ -1212,7 +1212,7 @@
 								if (
 									installingWorker.state === 'installed' &&
 									registration.waiting === installingWorker &&
-									navigator.serviceWorker.controller
+									hadControllerAtLoad
 								) {
 									showUpdatePrompt(installingWorker);
 								}
