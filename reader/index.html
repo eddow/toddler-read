@@ -341,6 +341,7 @@
 		}
 
 		.hidden { display: none; }
+		#updatePrompt.hidden { display: none; }
 	</style>
 </head>
 <body>
@@ -1183,7 +1184,51 @@
 				waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
 			});
 
-			function showUpdatePrompt(worker) {
+			function activateWorkerWithoutPrompt(worker) {
+				waitingServiceWorker = worker;
+				updatePrompt.classList.add('hidden');
+				worker.postMessage({ type: 'SKIP_WAITING' });
+			}
+
+			async function getWorkerVersion(worker) {
+				if (!worker) return null;
+				const messageChannel = new MessageChannel();
+				let resolved = false;
+				const versionPromise = new Promise((resolve) => {
+					messageChannel.port1.onmessage = (event) => {
+						if (!resolved) {
+							resolved = true;
+							resolve(event.data?.version || null);
+						}
+					};
+					setTimeout(() => {
+						if (!resolved) {
+							resolved = true;
+							resolve(null);
+						}
+					}, 2000);
+				});
+				worker.postMessage({ type: 'GET_VERSION' }, [messageChannel.port2]);
+				return versionPromise;
+			}
+
+			async function handleWaitingWorker(worker) {
+				const activeWorker = navigator.serviceWorker.controller;
+				const activeVersion = await getWorkerVersion(activeWorker);
+				const waitingVersion = await getWorkerVersion(worker);
+
+				// If we can't get either version, don't show prompt and don't activate (edge case, likely incognito or fresh install)
+				if (!activeVersion || !waitingVersion) {
+					return;
+				}
+
+				// Same version - activate silently
+				if (activeVersion === waitingVersion) {
+					activateWorkerWithoutPrompt(worker);
+					return;
+				}
+
+				// Different versions - show update prompt
 				waitingServiceWorker = worker;
 				updatePrompt.classList.remove('hidden');
 			}
@@ -1194,11 +1239,16 @@
 					navigator.serviceWorker.register('sw.js').then((registration) => {
 						const notifyWaitingWorker = () => {
 							if (hadControllerAtLoad && registration.waiting) {
-								showUpdatePrompt(registration.waiting);
+								handleWaitingWorker(registration.waiting);
 							}
 						};
 						const checkForUpdate = () => {
-							registration.update().catch(() => {});
+							registration.update().catch(() => {}).then(() => {
+								// After checking for updates, check if there's a waiting worker
+								if (hadControllerAtLoad && registration.waiting) {
+									handleWaitingWorker(registration.waiting);
+								}
+							});
 						};
 
 						notifyWaitingWorker();
@@ -1214,7 +1264,7 @@
 									registration.waiting === installingWorker &&
 									hadControllerAtLoad
 								) {
-									showUpdatePrompt(installingWorker);
+									handleWaitingWorker(installingWorker);
 								}
 							});
 						});

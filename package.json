@@ -18,7 +18,8 @@
     "adb:install": "$ANDROID_HOME/platform-tools/adb install -r android/app/build/outputs/apk/debug/app-debug.apk",
     "adb:logs": "$ANDROID_HOME/platform-tools/adb logcat -c && $ANDROID_HOME/platform-tools/adb logcat AndroidRuntime:E Capacitor:D chromium:E ToddlerReader:D '*:S'",
     "adb:launch": "$ANDROID_HOME/platform-tools/adb shell monkey -p com.emw.toddlerreader 1",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:reader",
+    "test:reader": "node scripts/test-reader-update-prompt.js"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,5 @@
-const CACHE_NAME = 'toddler-reader-v11';
+const APP_VERSION = 'v12';
+const CACHE_NAME = `toddler-reader-${APP_VERSION}`;
 const CACHE_PREFIX = 'toddler-reader-';
 const APP_SHELL = [
   './',
@@ -31,6 +32,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('message', (event) => {
+  if (event.data?.type === 'GET_VERSION') {
+    event.ports?.[0]?.postMessage({ version: APP_VERSION });
+    return;
+  }
+
   if (event.data?.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
