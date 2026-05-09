@@ -470,6 +470,11 @@
 			let waitingServiceWorker = null;
 			let reloadingForUpdate = false;
 			const CAMERA_START_TIMEOUT_MS = 12000;
+			const CAMERA_FRAME_STALE_MS = 3500;
+			const SCANNER_POLL_MS = 500;
+			let lastVideoFrameAt = 0;
+			let lastVideoTime = 0;
+			let videoFrameWatcherId = 0;
 
 			// ---- Screen switching ----
 			function showScanner() {
@@ -968,6 +973,51 @@
 				});
 			}
 
+			function markVideoFrame() {
+				lastVideoFrameAt = Date.now();
+				lastVideoTime = video.currentTime || lastVideoTime;
+			}
+
+			function startVideoFrameWatcher() {
+				videoFrameWatcherId++;
+				markVideoFrame();
+
+				if (!video.requestVideoFrameCallback) return;
+
+				const watcherId = videoFrameWatcherId;
+				const watch = () => {
+					if (watcherId !== videoFrameWatcherId || !scanning || !video.srcObject) return;
+
+					markVideoFrame();
+					video.requestVideoFrameCallback(watch);
+				};
+
+				video.requestVideoFrameCallback(watch);
+			}
+
+			function stopVideoFrameWatcher() {
+				videoFrameWatcherId++;
+				lastVideoFrameAt = 0;
+				lastVideoTime = 0;
+			}
+
+			function isCameraStreamHealthy() {
+				if (!stream || !video.srcObject) return false;
+
+				const [track] = stream.getVideoTracks();
+				if (!track || track.readyState === 'ended' || track.muted) return false;
+				if (video.paused || video.ended || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return false;
+
+				if (!video.requestVideoFrameCallback) {
+					const currentTime = video.currentTime || 0;
+					if (currentTime !== lastVideoTime) {
+						markVideoFrame();
+					}
+				}
+
+				return Date.now() - lastVideoFrameAt <= CAMERA_FRAME_STALE_MS;
+			}
+
 			async function getQrScanner() {
 				if ('BarcodeDetector' in window) {
 					if (BarcodeDetector.getSupportedFormats) {
@@ -1035,6 +1085,7 @@
 					stream = nextStream;
 					video.srcObject = stream;
 					await withTimeout(video.play(), CAMERA_START_TIMEOUT_MS, 'Camera preview did not start. Tap stop, then try again.');
+					startVideoFrameWatcher();
 
 					if (startId !== scanStartId || !shouldScannerRun()) {
 						stopScanning();
@@ -1051,6 +1102,10 @@
 
 					// Poll for QR codes
 					scanTimer = setInterval(async () => {
+						if (!isCameraStreamHealthy()) {
+							restartScannerIfVisible();
+							return;
+						}
 						if (scanInFlight) return;
 						scanInFlight = true;
 
@@ -1068,7 +1123,7 @@
 						} finally {
 							scanInFlight = false;
 						}
-					}, 500);
+					}, SCANNER_POLL_MS);
 
 				} catch (err) {
 					setScanMessage('Camera error: ' + err.message);
@@ -1081,6 +1136,7 @@
 				scanning = false;
 				scannerScreen.classList.remove('is-scanning');
 				if (scanTimer) { clearInterval(scanTimer); scanTimer = null; }
+				stopVideoFrameWatcher();
 				if (stream) {
 					stream.getTracks().forEach(t => t.stop());
 					stream = null;
@@ -1118,8 +1174,12 @@
 			});
 
 			updateRefreshBtn.addEventListener('click', () => {
-				if (!waitingServiceWorker) return;
 				reloadingForUpdate = true;
+				updatePrompt.classList.add('hidden');
+				window.setTimeout(() => {
+					if (reloadingForUpdate) window.location.reload();
+				}, 1800);
+				if (!waitingServiceWorker) return;
 				waitingServiceWorker.postMessage({ type: 'SKIP_WAITING' });
 			});
 
@@ -1130,6 +1190,7 @@
 
 			if ('serviceWorker' in navigator) {
 				window.addEventListener('load', () => {
+					const hadControllerAtLoad = Boolean(navigator.serviceWorker.controller);
 					navigator.serviceWorker.register('sw.js').then((registration) => {
 						const notifyWaitingWorker = () => {
 							if (registration.waiting && navigator.serviceWorker.controller) {
@@ -1150,6 +1211,7 @@
 							installingWorker.addEventListener('statechange', () => {
 								if (
 									installingWorker.state === 'installed' &&
+									registration.waiting === installingWorker &&
 									navigator.serviceWorker.controller
 								) {
 									showUpdatePrompt(installingWorker);
@@ -1163,7 +1225,8 @@
 						});
 					}).catch(() => {});
 					navigator.serviceWorker.addEventListener('controllerchange', () => {
-						if (!reloadingForUpdate) return;
+						if (!reloadingForUpdate && !hadControllerAtLoad) return;
+						reloadingForUpdate = false;
 						window.location.reload();
 					});
 				});

@@ -136,8 +136,17 @@
 	const SHOW_HELP_AT_STARTUP_STORAGE_KEY = 'toddler-read-generator-show-help-at-startup'
 	const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash'
 	const IMAGE_SEARCH_RESULTS_PER_PAGE = 12
-	const IMAGE_SEARCH_PROVIDER_IDS: ImageSearchProviderId[] = ['pexels', 'flaticon', 'pixabay', 'unsplash']
-	const IMAGE_GENERATION_PROVIDER_IDS: ImageSearchProviderId[] = ['leonardo', 'pollinations', 'openai']
+	const IMAGE_SEARCH_PROVIDER_IDS: ImageSearchProviderId[] = [
+		'pexels',
+		'flaticon',
+		'pixabay',
+		'unsplash'
+	]
+	const IMAGE_GENERATION_PROVIDER_IDS: ImageSearchProviderId[] = [
+		'leonardo',
+		'pollinations',
+		'openai'
+	]
 	const TRANSLATION_PROVIDERS = [
 		{ value: 'gemini', label: 'Gemini', model: DEFAULT_GEMINI_MODEL, baseUrl: '' },
 		{ value: 'openai', label: 'OpenAI', model: 'gpt-5-mini', baseUrl: 'https://api.openai.com/v1' },
@@ -174,17 +183,19 @@ For each target with empty text, return a short natural translation suitable for
 Do not return unchanged existing text.`
 	const REPOSITORY_URL = 'https://github.com/eddow/toddler-read'
 	const KO_FI_URL = 'https://ko-fi.com/emedware'
-	const EXPLAINER_VIDEO_URL = 'https://youtu.be/zYcPHeafJ38'
+	const EXPLAINER_VIDEO_URL = 'https://youtu.be/BSRwl2uo2o8'
 	const API_CREDIT_LINKS = [
 		{
 			label: 'Gemini',
 			href: 'https://ai.google.dev/gemini-api',
-			badge: 'https://img.shields.io/badge/Gemini-API-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white'
+			badge:
+				'https://img.shields.io/badge/Gemini-API-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white'
 		},
 		{
 			label: 'OpenAI',
 			href: 'https://platform.openai.com',
-			badge: 'https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai&logoColor=white'
+			badge:
+				'https://img.shields.io/badge/OpenAI-API-412991?style=for-the-badge&logo=openai&logoColor=white'
 		},
 		{
 			label: 'DeepSeek',
@@ -199,12 +210,14 @@ Do not return unchanged existing text.`
 		{
 			label: 'Groq',
 			href: 'https://console.groq.com',
-			badge: 'https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white'
+			badge:
+				'https://img.shields.io/badge/Groq-API-F55036?style=for-the-badge&logo=groq&logoColor=white'
 		},
 		{
 			label: 'Pexels',
 			href: 'https://www.pexels.com/api/',
-			badge: 'https://img.shields.io/badge/Pexels-API-05A081?style=for-the-badge&logo=pexels&logoColor=white'
+			badge:
+				'https://img.shields.io/badge/Pexels-API-05A081?style=for-the-badge&logo=pexels&logoColor=white'
 		},
 		{
 			label: 'Flaticon',
@@ -214,12 +227,14 @@ Do not return unchanged existing text.`
 		{
 			label: 'Pixabay',
 			href: 'https://pixabay.com/api/docs/',
-			badge: 'https://img.shields.io/badge/Pixabay-API-2EC66D?style=for-the-badge&logo=pixabay&logoColor=white'
+			badge:
+				'https://img.shields.io/badge/Pixabay-API-2EC66D?style=for-the-badge&logo=pixabay&logoColor=white'
 		},
 		{
 			label: 'Unsplash',
 			href: 'https://unsplash.com/documentation',
-			badge: 'https://img.shields.io/badge/Unsplash-API-000000?style=for-the-badge&logo=unsplash&logoColor=white'
+			badge:
+				'https://img.shields.io/badge/Unsplash-API-000000?style=for-the-badge&logo=unsplash&logoColor=white'
 		},
 		{
 			label: 'Leonardo.Ai',
@@ -480,11 +495,17 @@ Do not return unchanged existing text.`
 		1,
 		Math.ceil(imageSearchTotalResults / IMAGE_SEARCH_RESULTS_PER_PAGE)
 	)
-	$: if (availableImageSearchProviders.length > 0 && !availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)) {
+	$: if (
+		availableImageSearchProviders.length > 0 &&
+		!availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)
+	) {
 		imageSearchProvider = availableImageSearchProviders[0].id
 		resetImageSearchResults()
 	}
-	$: if (availableImageGenerationProviders.length > 0 && !availableImageGenerationProviders.some((provider) => provider.id === imageGenerationProvider)) {
+	$: if (
+		availableImageGenerationProviders.length > 0 &&
+		!availableImageGenerationProviders.some((provider) => provider.id === imageGenerationProvider)
+	) {
 		imageGenerationProvider = availableImageGenerationProviders[0].id
 		resetImageGenerationResults()
 	}
@@ -1554,7 +1575,9 @@ Do not return unchanged existing text.`
 		const json = await response.json()
 		const content = extractOpenAiCompatibleContent(json)
 		if (!content) {
-			throw new Error(format(T.templates.emptyProviderResponse, { provider: providerLabel(provider) }))
+			throw new Error(
+				format(T.templates.emptyProviderResponse, { provider: providerLabel(provider) })
+			)
 		}
 		return content
 	}
@@ -1769,7 +1792,10 @@ Do not return unchanged existing text.`
 	}
 
 	function openImageSearch() {
-		if (availableImageSearchProviders.length > 0 && !availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)) {
+		if (
+			availableImageSearchProviders.length > 0 &&
+			!availableImageSearchProviders.some((provider) => provider.id === imageSearchProvider)
+		) {
 			imageSearchProvider = availableImageSearchProviders[0].id
 		}
 		imageSearchQuery = imageSearchQuery.trim() || defaultImageSearchQuery()
@@ -1788,7 +1814,10 @@ Do not return unchanged existing text.`
 	}
 
 	function openImageGeneration() {
-		if (availableImageGenerationProviders.length > 0 && !availableImageGenerationProviders.some((provider) => provider.id === imageGenerationProvider)) {
+		if (
+			availableImageGenerationProviders.length > 0 &&
+			!availableImageGenerationProviders.some((provider) => provider.id === imageGenerationProvider)
+		) {
 			imageGenerationProvider = availableImageGenerationProviders[0].id
 		}
 		showImageGenerationPanel = true
@@ -1859,7 +1888,9 @@ Do not return unchanged existing text.`
 		)
 	}
 
-	function buildImageGenerationPromptContext(card: StoredCard | undefined): ImageGenerationPromptContext {
+	function buildImageGenerationPromptContext(
+		card: StoredCard | undefined
+	): ImageGenerationPromptContext {
 		const textsByLanguage: Record<string, string> = {}
 		if (!card) return { textsByLanguage }
 
@@ -2481,8 +2512,7 @@ Do not return unchanged existing text.`
 			await Promise.all(changedCards.map((card) => putCard(card)))
 			if (remainingCards.length === 0) await putCard(fallbackCard)
 		} catch (error) {
-			libraryError =
-				error instanceof Error ? error.message : T.errors.couldNotDeleteSelectedCards
+			libraryError = error instanceof Error ? error.message : T.errors.couldNotDeleteSelectedCards
 			cards = await getAllCards()
 			selectedPrintCardIds = selectedPrintCardIds.filter((id) =>
 				cards.some((card) => card.id === id)
@@ -2493,10 +2523,7 @@ Do not return unchanged existing text.`
 	}
 
 	function chooseImportFile(mode: ImportMode = 'merge') {
-		if (
-			mode === 'replace' &&
-			!window.confirm(T.errors.replaceConfirm)
-		) {
+		if (mode === 'replace' && !window.confirm(T.errors.replaceConfirm)) {
 			return
 		}
 
@@ -2794,7 +2821,7 @@ Do not return unchanged existing text.`
 		return new Promise((resolve, reject) => {
 			canvas.toBlob((blob) => {
 				if (blob) resolve(blob)
-			else reject(new Error(T.errors.couldNotCreatePng))
+				else reject(new Error(T.errors.couldNotCreatePng))
 			}, 'image/png')
 		})
 	}
@@ -2811,1305 +2838,1359 @@ Do not return unchanged existing text.`
 		<img src="/app-icon.png" alt="" />
 	</main>
 {:else}
-{#key usageLocale}
-<main class="app-shell" dir={usageDirection}>
-	<header class="app-header library-header">
-		<div class="brand-block">
-			<button
-				type="button"
-				class="app-logo-button"
-				aria-label={T.aria.openHelp}
-				title={T.labels.help}
-				on:click={() => (showHelpPanel = true)}
-			>
-				<img src="/app-icon.png" alt="" />
-				<Info size={15} aria-hidden="true" />
-			</button>
-			<div class="title-block">
-				<p class="eyebrow">{T.app.brand}</p>
-				<h1>{T.app.title}</h1>
-			</div>
-		</div>
-		<div class="library-top-actions">
-			<div
-				class="segmented-control"
-				class:mobile-workspace={isMobileWorkspace}
-				aria-label={T.aria.workspaceView}
-			>
-				<button
-					type="button"
-					class:active={workspaceView === 'manager'}
-					aria-label={T.aria.manager}
-					title={T.aria.manager}
-					on:click={() => (workspaceView = 'manager')}
-				>
-					<List size={18} aria-hidden="true" />
-				</button>
-				{#if !isMobileWorkspace}
+	{#key usageLocale}
+		<main class="app-shell" dir={usageDirection}>
+			<header class="app-header library-header">
+				<div class="brand-block">
 					<button
 						type="button"
-						class:active={workspaceView === 'split'}
-						aria-label={T.aria.split}
-						title={T.aria.split}
-						on:click={() => (workspaceView = 'split')}
+						class="app-logo-button"
+						aria-label={T.aria.openHelp}
+						title={T.labels.help}
+						on:click={() => (showHelpPanel = true)}
 					>
-						<Columns2 size={18} aria-hidden="true" />
+						<img src="/app-icon.png" alt="" />
+						<Info size={15} aria-hidden="true" />
 					</button>
-				{/if}
-				<button
-					type="button"
-					class:active={workspaceView === 'editor'}
-					aria-label={T.labels.editor}
-					title={T.labels.editor}
-					on:click={() => (workspaceView = 'editor')}
-				>
-					<Pencil size={18} aria-hidden="true" />
-				</button>
-				<button
-					type="button"
-					class:active={workspaceView === 'press'}
-					aria-label={T.aria.press}
-					title={T.aria.press}
-					on:click={() => (workspaceView = 'press')}
-				>
-					<Printer size={18} aria-hidden="true" />
-				</button>
-			</div>
-			<div class="pdf-config-control" title={format(T.templates.pdfLayout, { layout: pdfLayoutLabel })}>
-				<span>{pdfLayoutLabel}</span>
-				<button
-					type="button"
-					aria-label={T.aria.pdfConfiguration}
-					title={T.aria.pdfConfiguration}
-					on:click={() => (showPdfConfigPanel = true)}
-				>
-					<span aria-hidden="true">📄</span>
-				</button>
-			</div>
-			{#if managerLanguages.length > 0}
-				<label class="main-language-control toolbar-language-control">
-					<Languages size={18} aria-hidden="true" />
-					<select
-						value={mainLanguage}
-						aria-label={T.aria.referenceLanguage}
-						title={format(T.templates.referenceLanguage, { language: mainLanguage })}
-						on:change={(event) => updateMainLanguage(event.currentTarget.value)}
-					>
-						{#each managerLanguages as language}
-							<option value={language}>{configuredMarkerForLanguage(language)}</option>
-						{/each}
-					</select>
-				</label>
-			{/if}
-			<IconButton ariaLabel={T.labels.settings} onclick={() => (showSettingsPanel = !showSettingsPanel)}>
-				<Settings size={18} aria-hidden="true" />
-			</IconButton>
-			<button type="button" on:click={createNewCard}>
-				<Plus size={18} aria-hidden="true" />
-				{T.actions.newCard}
-			</button>
-			<details class="file-menu" bind:open={showFileMenu}>
-				<summary class="secondary" aria-label={T.aria.fileActions}>{T.actions.file}</summary>
-				<div class="file-menu-panel">
-					<button
-						type="button"
-						class="secondary"
-						on:click={() => {
-							showFileMenu = false
-							chooseImportFile('merge')
-						}}
-					>
-						<Upload size={18} aria-hidden="true" />
-						{T.actions.import}
-					</button>
-					<button
-						type="button"
-						class="secondary"
-						on:click={() => {
-							showFileMenu = false
-							chooseImportFile('replace')
-						}}
-					>
-						<Upload size={18} aria-hidden="true" />
-						{T.actions.replace}
-					</button>
-					<button
-						type="button"
-						class="secondary"
-						disabled={cards.length === 0}
-						on:click={async () => {
-							showFileMenu = false
-							await exportCompressedCards()
-						}}
-					>
-						<Download size={18} aria-hidden="true" />
-						{T.actions.exportCompressed}
-					</button>
-					<button
-						type="button"
-						class="secondary"
-						disabled={cards.length === 0}
-						on:click={() => {
-							showFileMenu = false
-							exportImageLessCards()
-						}}
-					>
-						<Download size={18} aria-hidden="true" />
-						{T.actions.exportImageLessJson}
-					</button>
-					<button
-						type="button"
-						class="secondary"
-						disabled={cards.length === 0}
-						on:click={() => {
-							showFileMenu = false
-							exportCompleteCards()
-						}}
-					>
-						<Download size={18} aria-hidden="true" />
-						{T.actions.exportCompleteJson}
-					</button>
+					<div class="title-block">
+						<p class="eyebrow">{T.app.brand}</p>
+						<h1>{T.app.title}</h1>
+					</div>
 				</div>
-			</details>
-			{#if readerQrDataUrl}
-				<button
-					type="button"
-					class="apk-qr"
-					aria-label={T.aria.showPwaReaderQr}
-					title={T.aria.showPwaReaderQr}
-					on:click={() => (showReaderInstallPanel = true)}
-				>
-					<span class="apk-qr-icon" aria-hidden="true">
-						<Smartphone size={15} aria-hidden="true" />
-					</span>
-					<img src={readerQrDataUrl} alt="" />
-				</button>
-			{/if}
-			{#if apkQrDataUrl}
-				<button
-					type="button"
-					class="apk-qr"
-					aria-label={T.aria.showAndroidApkQr}
-					title={T.aria.showAndroidApkQr}
-					on:click={() => (showApkPanel = true)}
-				>
-					<span class="apk-qr-icon apk-qr-icon-android" aria-hidden="true">
-						<svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-							<path
-								d="M7.1 4.3 5.5 2.7 4.6 3.6 6.2 5.2a6.9 6.9 0 0 0-2.1 5h15.8a6.9 6.9 0 0 0-2.1-5l1.6-1.6-.9-.9-1.6 1.6A7.6 7.6 0 0 0 12 2.6a7.6 7.6 0 0 0-4.9 1.7Z"
-							/>
-							<path d="M4.1 11.6h15.8v6.2c0 1.2-1 2.2-2.2 2.2H6.3c-1.2 0-2.2-1-2.2-2.2v-6.2Z" />
-							<path
-								d="M1.8 12.1h1.4v6.4H1.8c-.8 0-1.4-.6-1.4-1.4v-3.6c0-.8.6-1.4 1.4-1.4ZM20.8 12.1h1.4c.8 0 1.4.6 1.4 1.4v3.6c0 .8-.6 1.4-1.4 1.4h-1.4v-6.4ZM7.1 20.9h2.1v2.4H7.1v-2.4ZM14.8 20.9h2.1v2.4h-2.1v-2.4Z"
-							/>
-							<circle cx="8.8" cy="7.8" r="0.8" fill="#ffffff" />
-							<circle cx="15.2" cy="7.8" r="0.8" fill="#ffffff" />
-						</svg>
-					</span>
-					<img src={apkQrDataUrl} alt="" />
-				</button>
-			{/if}
-		</div>
-	</header>
-
-	{#if showUpdatePrompt}
-		<div class="update-banner" role="status" aria-live="polite">
-			<span>{T.status.newVersionAvailable}</span>
-			<button type="button" on:click={refreshForUpdate}>
-				<RefreshCw size={18} aria-hidden="true" />
-				{T.actions.refresh}
-			</button>
-		</div>
-	{/if}
-
-	<input
-		bind:this={fileInput}
-		class="visually-hidden"
-		type="file"
-		accept="image/*"
-		on:change={onFileSelected}
-	/>
-	<input
-		bind:this={importInput}
-		class="visually-hidden"
-		type="file"
-		accept="application/json,.json,.json.gz,application/gzip"
-		on:change={onImportFileSelected}
-	/>
-
-	{#if libraryError}
-		<p class="status error">{libraryError}</p>
-	{:else if libraryStatus}
-		<p class="status">{libraryStatus}</p>
-	{/if}
-
-	<section
-		class:workspace-manager={workspaceView === 'manager'}
-		class:workspace-editor={workspaceView === 'editor'}
-		class:workspace-press={workspaceView === 'press'}
-		class:workspace-split={workspaceView === 'split'}
-		class="workspace library-workspace"
-		aria-label={T.aria.cardGenerator}
-	>
-		{#if showManager}
-			<section class="manager-pane" aria-label={T.aria.cardsManager}>
-				<div class="manager-tag-toolbar" aria-label={T.aria.managerTags}>
-					<table class="manager-tag-table">
-						<tbody>
-							{#each managerTagRows as row (row.id)}
-								{@const rowTag = normalizeTag(row.tagInput)}
-								<tr>
-									<td>
-										<label class="tag-combobox manager-tag-picker">
-											<input
-												value={row.tagInput}
-												list="manager-tag-options"
-												placeholder={T.labels.chooseTag}
-												aria-label={T.labels.chooseTag}
-												on:input={(event) =>
-													updateManagerTagRowInput(row.id, event.currentTarget.value)}
-												on:blur={normalizeManagerTagRows}
-											/>
-										</label>
-									</td>
-									<td>
-										<div class="manager-tag-actions" aria-label={T.aria.selectedCardsTagActions}>
-											<button
-												type="button"
-												class="secondary"
-												disabled={!canAddManagerTag(row, managerSelectedCards)}
-												on:click={() => addManagerTagToSelection(row)}
-											>
-												<Plus size={16} aria-hidden="true" />
-												{T.actions.add}
-											</button>
-											<button
-												type="button"
-												class="secondary"
-												disabled={!canRemoveManagerTag(row, managerSelectedCards)}
-												on:click={() => removeManagerTagFromSelection(row)}
-											>
-												<X size={16} aria-hidden="true" />
-												{T.actions.remove}
-											</button>
-										</div>
-									</td>
-									<td>
-										<PresenceFilterGroup
-											value={row.presenceFilter}
-											disabled={!rowTag}
-											ariaLabel={format(T.templates.filterTableByTag, { tag: rowTag || 'tag' })}
-											name={`manager-tag-presence-filter-${row.id}`}
-											onValueChange={(value) => updateManagerTagRowPresence(row.id, value)}
-										/>
-									</td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-					<datalist id="manager-tag-options">
-						{#each usedTags as tag}
-							<option value={tag}></option>
-						{/each}
-					</datalist>
-				</div>
-				<div class="card-table-wrap">
-					<table class="card-table">
-						<thead>
-							<tr>
-								<th aria-label={T.aria.printSelection}>
-									<input
-										class="header-checkbox"
-										type="checkbox"
-										checked={allDisplayedSelected}
-										disabled={displayedManagerCards.length === 0}
-										use:setIndeterminate={someDisplayedSelected && !allDisplayedSelected}
-										aria-label={T.aria.selectDisplayedCards}
-										on:change={toggleDisplayedPrintSelection}
-									/>
-								</th>
-								<th title={T.manager.image}>
-									<div class="image-column-header">
-										<span class="column-title">
-											<ImageIcon size={17} aria-hidden="true" />
-											{#if duplicateColumnKeys.has('image')}
-												<DuplicateFocusButton
-													active={duplicateFocus === 'image'}
-													ariaLabel={T.aria.showDuplicateImages}
-													onclick={() => toggleDuplicateFocus('image')}
-												/>
-											{/if}
-										</span>
-										<PresenceFilterGroup
-											bind:value={imagePresenceFilter}
-											ariaLabel={T.aria.filterImages}
-											name="image-presence-filter"
-										/>
-									</div>
-								</th>
-								<th title={mainLanguage}>
-									<div class="language-column-header">
-										<span class="column-title">
-											<span>{configuredMarkerForLanguage(mainLanguage)}</span>
-											{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(mainLanguage))}
-												<DuplicateFocusButton
-													active={duplicateFocus === duplicateColumnKeyForLanguage(mainLanguage)}
-													ariaLabel={format(T.templates.showDuplicateLanguageValues, {
-														language: mainLanguage
-													})}
-													onclick={() =>
-														toggleDuplicateFocus(duplicateColumnKeyForLanguage(mainLanguage))}
-												/>
-											{/if}
-										</span>
-										<input
-											class="language-column-filter"
-											value={languageFilters[mainLanguage] ?? ''}
-											aria-label={format(T.templates.filterLanguage, { language: mainLanguage })}
-											on:click|stopPropagation
-											on:input={(event) =>
-												updateLanguageFilter(mainLanguage, event.currentTarget.value)}
-										/>
-									</div>
-								</th>
-								{#if !isMobileWorkspace}
-									<th>
-										<div class="verso-column-header">
-											<span class="column-title" title={T.labels.verso}>
-												<Link2 size={17} aria-hidden="true" />
-											</span>
-											<PresenceFilterGroup
-												bind:value={versoPresenceFilter}
-												ariaLabel={T.aria.filterVersoLinks}
-												name="verso-presence-filter"
-											/>
-										</div>
-									</th>
-								{/if}
-								{#if workspaceView === 'manager'}
-									<th class="manager-tags-column">{T.labels.tags}</th>
-								{/if}
-								<th aria-label={T.aria.deleteCheckedCards}>
-									{#if deletingCheckedCardsArmed}
-										<div class="delete-checked-confirm" aria-live="assertive">
-											<button type="button" class="danger" on:click={confirmDeleteCheckedCards}>
-												{T.actions.yes}
-											</button>
-											<strong>{format(T.templates.deleteCount, { count: selectedDeleteCardIds.length })}</strong>
-											<button
-												type="button"
-												class="secondary"
-												on:click={() => (deletingCheckedCardsArmed = false)}
-											>
-												{T.actions.no}
-											</button>
-										</div>
-									{:else}
-										<IconButton
-											ariaLabel={T.aria.deleteCheckedCards}
-											title={T.aria.deleteCheckedCards}
-											className="delete-checked-button"
-											variant="danger"
-											size={16}
-											disabled={selectedDeleteCardIds.length === 0}
-											onclick={() => (deletingCheckedCardsArmed = true)}
-										>
-											<Trash2 size={16} aria-hidden="true" />
-										</IconButton>
-									{/if}
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each displayedManagerCards as card (card.id)}
-								<tr
-									class:selected={card.id === selectedCardId}
-									on:click={() => openManagerCard(card.id)}
-								>
-									<td class="select-cell">
-										<label class="row-checkbox" title={T.manager.selectForPress}>
-											<input
-												type="checkbox"
-												checked={selectedPrintCardIds.includes(card.id)}
-												on:click|stopPropagation
-												on:change={() => togglePrintCard(card.id)}
-											/>
-										</label>
-									</td>
-									<td>
-										{#if card.imageDataUrl}
-											<img class="manager-thumb" src={card.imageDataUrl} alt="" />
-										{:else}
-											<div class="manager-thumb empty-thumb" aria-label={T.aria.noImage}></div>
-										{/if}
-									</td>
-									<td>{card.texts[mainLanguage] || ''}</td>
-									{#if !isMobileWorkspace}
-										<td class="verso-cell">
-											{#if pairingCardId === card.id}
-												<select
-													aria-label={T.aria.chooseVersoCard}
-													value={card.versoCardId ?? ''}
-													on:click|stopPropagation
-													on:change={(event) => updateVersoLink(card.id, event.currentTarget.value)}
-												>
-													<option value="">{T.manager.noVerso}</option>
-													{#each candidateCardsFor(card) as candidate}
-														<option value={candidate.id}>
-															{cardLabel(candidate)}
-														</option>
-													{/each}
-												</select>
-											{:else}
-												<button
-													type="button"
-													class="secondary verso-link-button"
-													title={T.manager.chooseVerso}
-													on:click|stopPropagation={() => (pairingCardId = card.id)}
-												>
-													<Link2 size={15} aria-hidden="true" />
-													<span>{linkedCardLabel(card)}</span>
-												</button>
-												{#if card.versoCardId}
-													<IconButton
-														ariaLabel={T.manager.unlinkVerso}
-														title={T.manager.unlinkVerso}
-														className="delete-icon-button"
-														size={15}
-														stopPropagation
-														onclick={() => clearVersoLink(card.id)}
-													>
-														<Link2Off size={15} aria-hidden="true" />
-													</IconButton>
-												{/if}
-											{/if}
-										</td>
-									{/if}
-									{#if workspaceView === 'manager'}
-										<td class="manager-tags-cell">
-											{#if card.tags?.length}
-												<div class="manager-table-tags" aria-label={T.aria.tags}>
-													{#each card.tags as tag}
-														<span>{tag}</span>
-													{/each}
-												</div>
-											{/if}
-										</td>
-									{/if}
-									<td class="delete-cell">
-										{#if deletingCardId === card.id}
-											<span>{T.manager.deleteQuestion}</span>
-											<button
-												type="button"
-												class="danger-text"
-												on:click|stopPropagation={() => confirmDeleteCard(card.id)}>{T.actions.yesLower}</button
-											>
-											<button
-												type="button"
-												class="plain-text"
-												on:click|stopPropagation={() => (deletingCardId = '')}>{T.actions.noLower}</button
-											>
-										{:else}
-											<IconButton
-												ariaLabel={T.aria.deleteCard}
-												title={T.aria.deleteCard}
-												className="delete-icon-button"
-												size={16}
-												stopPropagation
-												onclick={() => (deletingCardId = card.id)}
-											>
-												<Trash2 size={16} aria-hidden="true" />
-											</IconButton>
-										{/if}
-									</td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-			</section>
-		{/if}
-
-		{#if showPress}
-			<section class="press-pane" aria-label={T.aria.press}>
-				<div class="pane-header">
-					<div class="press-actions">
-						<button type="button" class="secondary" on:click={() => (workspaceView = 'manager')}>
+				<div class="library-top-actions">
+					<div
+						class="segmented-control"
+						class:mobile-workspace={isMobileWorkspace}
+						aria-label={T.aria.workspaceView}
+					>
+						<button
+							type="button"
+							class:active={workspaceView === 'manager'}
+							aria-label={T.aria.manager}
+							title={T.aria.manager}
+							on:click={() => (workspaceView = 'manager')}
+						>
 							<List size={18} aria-hidden="true" />
-							{T.actions.manage}
+						</button>
+						{#if !isMobileWorkspace}
+							<button
+								type="button"
+								class:active={workspaceView === 'split'}
+								aria-label={T.aria.split}
+								title={T.aria.split}
+								on:click={() => (workspaceView = 'split')}
+							>
+								<Columns2 size={18} aria-hidden="true" />
+							</button>
+						{/if}
+						<button
+							type="button"
+							class:active={workspaceView === 'editor'}
+							aria-label={T.labels.editor}
+							title={T.labels.editor}
+							on:click={() => (workspaceView = 'editor')}
+						>
+							<Pencil size={18} aria-hidden="true" />
 						</button>
 						<button
 							type="button"
-							disabled={printLayout.pages.length === 0}
-							on:click={downloadLayoutPdf}
+							class:active={workspaceView === 'press'}
+							aria-label={T.aria.press}
+							title={T.aria.press}
+							on:click={() => (workspaceView = 'press')}
 						>
-							<Download size={18} aria-hidden="true" />
-							{T.actions.downloadPdf}
+							<Printer size={18} aria-hidden="true" />
 						</button>
 					</div>
-				</div>
-
-				{#if printWarnings.length > 0}
-					<div class="press-warnings">
-						{#each printWarnings as warning}
-							<p>{warning}</p>
-						{/each}
-					</div>
-				{/if}
-
-				{#if selectedPrintCardIds.length === 0}
-					<div class="empty-press">
-						<button type="button" on:click={() => (workspaceView = 'manager')}>
-							<List size={18} aria-hidden="true" />
-							{T.actions.selectCards}
+					<div
+						class="pdf-config-control"
+						title={format(T.templates.pdfLayout, { layout: pdfLayoutLabel })}
+					>
+						<span>{pdfLayoutLabel}</span>
+						<button
+							type="button"
+							aria-label={T.aria.pdfConfiguration}
+							title={T.aria.pdfConfiguration}
+							on:click={() => (showPdfConfigPanel = true)}
+						>
+							<span aria-hidden="true">📄</span>
 						</button>
 					</div>
-				{:else}
-					<div class="press-pages">
-						{#each printLayout.pages as page, index}
-							<article class="press-page-pair">
-								<div class="press-page-header">
-									<strong>{format(T.templates.page, { page: index + 1 })}</strong>
-									<span>{pdfLayoutLabel}</span>
-								</div>
-								<div class="press-preview-grid">
-									<div class="press-preview">
-										<span>{T.labels.recto}</span>
-										<canvas
-											bind:this={rectoPreviewCanvases[index]}
-											style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
-											aria-label={format(T.templates.rectoPage, { page: index + 1 })}
-										></canvas>
-									</div>
-									<div class="press-preview">
-										<span>{T.labels.verso}</span>
-										<canvas
-											bind:this={versoPreviewCanvases[index]}
-											style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
-											aria-label={format(T.templates.versoPage, { page: index + 1 })}
-										></canvas>
-									</div>
-								</div>
-							</article>
-						{/each}
-					</div>
-				{/if}
-
-				{#if pressError}
-					<p class="status error">{pressError}</p>
-				{:else if pressStatus}
-					<p class="status">{pressStatus}</p>
-				{/if}
-			</section>
-		{/if}
-
-		{#if showEditor}
-			<section class="editor-workspace" aria-label={T.aria.cardEditor}>
-				<div class="editor-pane">
-					<div class="language-header">
-						<div class="language-actions">
-							<span title={translateButtonTitle}>
-								<button
-									type="button"
-									disabled={!canTranslate}
-									title={translateButtonTitle}
-									on:click={translateProducedTexts}
-								>
-									<Languages size={18} aria-hidden="true" />
-									{isTranslating ? T.actions.translating : T.actions.translate}
-								</button>
-							</span>
-							{#if editorDeleteArmed}
-								<button type="button" class="secondary" on:click={() => (editorDeleteArmed = false)}
-									>{T.actions.cancel}</button
-								>
-								<button
-									type="button"
-									class="danger"
-									on:click={() => selectedCard && confirmDeleteCard(selectedCard.id)}
-								>
-									{T.actions.delete}
-								</button>
-							{:else}
-								<IconButton ariaLabel={T.aria.deleteCard} onclick={() => (editorDeleteArmed = true)}>
-									<Trash2 size={18} aria-hidden="true" />
-								</IconButton>
-							{/if}
-						</div>
-					</div>
-
-					<div class="language-list">
-						{#each editorEntries(entries) as { entry, index } (entry.id)}
-							<article class="language-row">
-								<div class="language-tools">
-									<div
-										class="readonly-marker"
-										aria-label={entry.lang ? format(T.templates.flag, { language: entry.lang }) : T.aria.noLanguageFlag}
-									>
-										{entry.marker}
-									</div>
-								</div>
-								<label
-									class="text-field"
-									aria-label={format(T.templates.languageText, { language: entry.lang })}
-								>
-									<input
-										value={entry.text}
-										placeholder={T.placeholders.cardText}
-										disabled={!entry.lang.trim()}
-										on:input={(event) => updateCardText(index, event.currentTarget.value)}
-									/>
-								</label>
-							</article>
-						{/each}
-					</div>
-
-					<div class="image-panel">
-						<div class="image-panel-header">
-							<p class="eyebrow">{T.labels.image}</p>
-							{#if imageDataUrl}
-								<IconButton ariaLabel={T.aria.clearImage} onclick={clearImage}>
-									<X size={18} aria-hidden="true" />
-								</IconButton>
-							{/if}
-						</div>
-						<div class="image-actions">
-							<input
-								class="paste-target"
-								readonly
-								aria-label={T.aria.pasteImageHere}
-								placeholder={T.placeholders.pasteHere}
-								on:paste={handleImagePaste}
-								on:keydown={(event) => {
-									if (event.ctrlKey || event.metaKey) return
-									if (
-										event.key.length === 1 ||
-										event.key === 'Backspace' ||
-										event.key === 'Delete'
-									) {
-										event.preventDefault()
-									}
+					{#if managerLanguages.length > 0}
+						<label class="main-language-control toolbar-language-control">
+							<Languages size={18} aria-hidden="true" />
+							<select
+								value={mainLanguage}
+								aria-label={T.aria.referenceLanguage}
+								title={format(T.templates.referenceLanguage, { language: mainLanguage })}
+								on:change={(event) => updateMainLanguage(event.currentTarget.value)}
+							>
+								{#each managerLanguages as language}
+									<option value={language}>{configuredMarkerForLanguage(language)}</option>
+								{/each}
+							</select>
+						</label>
+					{/if}
+					<IconButton
+						ariaLabel={T.labels.settings}
+						onclick={() => (showSettingsPanel = !showSettingsPanel)}
+					>
+						<Settings size={18} aria-hidden="true" />
+					</IconButton>
+					<button type="button" on:click={createNewCard}>
+						<Plus size={18} aria-hidden="true" />
+						{T.actions.newCard}
+					</button>
+					<details class="file-menu" bind:open={showFileMenu}>
+						<summary class="secondary" aria-label={T.aria.fileActions}>{T.actions.file}</summary>
+						<div class="file-menu-panel">
+							<button
+								type="button"
+								class="secondary"
+								on:click={() => {
+									showFileMenu = false
+									chooseImportFile('merge')
 								}}
-							/>
-							<button type="button" class="secondary" on:click={chooseImage}>
-								<ImagePlus size={18} aria-hidden="true" />
-								{T.actions.choose}
+							>
+								<Upload size={18} aria-hidden="true" />
+								{T.actions.import}
 							</button>
 							<button
 								type="button"
 								class="secondary"
-								disabled={availableImageSearchProviders.length === 0}
-								on:click={openImageSearch}
+								on:click={() => {
+									showFileMenu = false
+									chooseImportFile('replace')
+								}}
 							>
-								<Search size={18} aria-hidden="true" />
-								{T.actions.search}
+								<Upload size={18} aria-hidden="true" />
+								{T.actions.replace}
 							</button>
 							<button
 								type="button"
 								class="secondary"
-								disabled={availableImageGenerationProviders.length === 0}
-								on:click={openImageGeneration}
+								disabled={cards.length === 0}
+								on:click={async () => {
+									showFileMenu = false
+									await exportCompressedCards()
+								}}
 							>
-								<ImageIcon size={18} aria-hidden="true" />
-								{T.actions.generate}
+								<Download size={18} aria-hidden="true" />
+								{T.actions.exportCompressed}
+							</button>
+							<button
+								type="button"
+								class="secondary"
+								disabled={cards.length === 0}
+								on:click={() => {
+									showFileMenu = false
+									exportImageLessCards()
+								}}
+							>
+								<Download size={18} aria-hidden="true" />
+								{T.actions.exportImageLessJson}
+							</button>
+							<button
+								type="button"
+								class="secondary"
+								disabled={cards.length === 0}
+								on:click={() => {
+									showFileMenu = false
+									exportCompleteCards()
+								}}
+							>
+								<Download size={18} aria-hidden="true" />
+								{T.actions.exportCompleteJson}
 							</button>
 						</div>
-						{#if imageDataUrl && !isMobileWorkspace}
-							<div class="image-adjustments">
-								<label>
-									<span><Maximize2 size={16} aria-hidden="true" /> {T.labels.size}</span>
-									<input
-										type="range"
-										min="0.5"
-										max="3"
-										step="0.01"
-										value={imageTransform?.zoom ?? 1}
-										on:input={(event) =>
-											updateImageTransform({ zoom: Number(event.currentTarget.value) })}
+					</details>
+					{#if readerQrDataUrl}
+						<button
+							type="button"
+							class="apk-qr"
+							aria-label={T.aria.showPwaReaderQr}
+							title={T.aria.showPwaReaderQr}
+							on:click={() => (showReaderInstallPanel = true)}
+						>
+							<span class="apk-qr-icon" aria-hidden="true">
+								<Smartphone size={15} aria-hidden="true" />
+							</span>
+							<img src={readerQrDataUrl} alt="" />
+						</button>
+					{/if}
+					{#if apkQrDataUrl}
+						<button
+							type="button"
+							class="apk-qr"
+							aria-label={T.aria.showAndroidApkQr}
+							title={T.aria.showAndroidApkQr}
+							on:click={() => (showApkPanel = true)}
+						>
+							<span class="apk-qr-icon apk-qr-icon-android" aria-hidden="true">
+								<svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+									<path
+										d="M7.1 4.3 5.5 2.7 4.6 3.6 6.2 5.2a6.9 6.9 0 0 0-2.1 5h15.8a6.9 6.9 0 0 0-2.1-5l1.6-1.6-.9-.9-1.6 1.6A7.6 7.6 0 0 0 12 2.6a7.6 7.6 0 0 0-4.9 1.7Z"
 									/>
-								</label>
+									<path d="M4.1 11.6h15.8v6.2c0 1.2-1 2.2-2.2 2.2H6.3c-1.2 0-2.2-1-2.2-2.2v-6.2Z" />
+									<path
+										d="M1.8 12.1h1.4v6.4H1.8c-.8 0-1.4-.6-1.4-1.4v-3.6c0-.8.6-1.4 1.4-1.4ZM20.8 12.1h1.4c.8 0 1.4.6 1.4 1.4v3.6c0 .8-.6 1.4-1.4 1.4h-1.4v-6.4ZM7.1 20.9h2.1v2.4H7.1v-2.4ZM14.8 20.9h2.1v2.4h-2.1v-2.4Z"
+									/>
+									<circle cx="8.8" cy="7.8" r="0.8" fill="#ffffff" />
+									<circle cx="15.2" cy="7.8" r="0.8" fill="#ffffff" />
+								</svg>
+							</span>
+							<img src={apkQrDataUrl} alt="" />
+						</button>
+					{/if}
+				</div>
+			</header>
+
+			{#if showUpdatePrompt}
+				<div class="update-banner" role="status" aria-live="polite">
+					<span>{T.status.newVersionAvailable}</span>
+					<button type="button" on:click={refreshForUpdate}>
+						<RefreshCw size={18} aria-hidden="true" />
+						{T.actions.refresh}
+					</button>
+				</div>
+			{/if}
+
+			<input
+				bind:this={fileInput}
+				class="visually-hidden"
+				type="file"
+				accept="image/*"
+				on:change={onFileSelected}
+			/>
+			<input
+				bind:this={importInput}
+				class="visually-hidden"
+				type="file"
+				accept="application/json,.json,.json.gz,application/gzip"
+				on:change={onImportFileSelected}
+			/>
+
+			{#if libraryError}
+				<p class="status error">{libraryError}</p>
+			{:else if libraryStatus}
+				<p class="status">{libraryStatus}</p>
+			{/if}
+
+			<section
+				class:workspace-manager={workspaceView === 'manager'}
+				class:workspace-editor={workspaceView === 'editor'}
+				class:workspace-press={workspaceView === 'press'}
+				class:workspace-split={workspaceView === 'split'}
+				class="workspace library-workspace"
+				aria-label={T.aria.cardGenerator}
+			>
+				{#if showManager}
+					<section class="manager-pane" aria-label={T.aria.cardsManager}>
+						<div class="manager-tag-toolbar" aria-label={T.aria.managerTags}>
+							<table class="manager-tag-table">
+								<tbody>
+									{#each managerTagRows as row (row.id)}
+										{@const rowTag = normalizeTag(row.tagInput)}
+										<tr>
+											<td>
+												<label class="tag-combobox manager-tag-picker">
+													<input
+														value={row.tagInput}
+														list="manager-tag-options"
+														placeholder={T.labels.chooseTag}
+														aria-label={T.labels.chooseTag}
+														on:input={(event) =>
+															updateManagerTagRowInput(row.id, event.currentTarget.value)}
+														on:blur={normalizeManagerTagRows}
+													/>
+												</label>
+											</td>
+											<td>
+												<div
+													class="manager-tag-actions"
+													aria-label={T.aria.selectedCardsTagActions}
+												>
+													<button
+														type="button"
+														class="secondary"
+														disabled={!canAddManagerTag(row, managerSelectedCards)}
+														on:click={() => addManagerTagToSelection(row)}
+													>
+														<Plus size={16} aria-hidden="true" />
+														{T.actions.add}
+													</button>
+													<button
+														type="button"
+														class="secondary"
+														disabled={!canRemoveManagerTag(row, managerSelectedCards)}
+														on:click={() => removeManagerTagFromSelection(row)}
+													>
+														<X size={16} aria-hidden="true" />
+														{T.actions.remove}
+													</button>
+												</div>
+											</td>
+											<td>
+												<PresenceFilterGroup
+													value={row.presenceFilter}
+													disabled={!rowTag}
+													ariaLabel={format(T.templates.filterTableByTag, { tag: rowTag || 'tag' })}
+													name={`manager-tag-presence-filter-${row.id}`}
+													onValueChange={(value) => updateManagerTagRowPresence(row.id, value)}
+												/>
+											</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+							<datalist id="manager-tag-options">
+								{#each usedTags as tag}
+									<option value={tag}></option>
+								{/each}
+							</datalist>
+						</div>
+						<div class="card-table-wrap">
+							<table class="card-table">
+								<thead>
+									<tr>
+										<th aria-label={T.aria.printSelection}>
+											<input
+												class="header-checkbox"
+												type="checkbox"
+												checked={allDisplayedSelected}
+												disabled={displayedManagerCards.length === 0}
+												use:setIndeterminate={someDisplayedSelected && !allDisplayedSelected}
+												aria-label={T.aria.selectDisplayedCards}
+												on:change={toggleDisplayedPrintSelection}
+											/>
+										</th>
+										<th title={T.manager.image}>
+											<div class="image-column-header">
+												<span class="column-title">
+													<ImageIcon size={17} aria-hidden="true" />
+													{#if duplicateColumnKeys.has('image')}
+														<DuplicateFocusButton
+															active={duplicateFocus === 'image'}
+															ariaLabel={T.aria.showDuplicateImages}
+															onclick={() => toggleDuplicateFocus('image')}
+														/>
+													{/if}
+												</span>
+												<PresenceFilterGroup
+													bind:value={imagePresenceFilter}
+													ariaLabel={T.aria.filterImages}
+													name="image-presence-filter"
+												/>
+											</div>
+										</th>
+										<th title={mainLanguage}>
+											<div class="language-column-header">
+												<span class="column-title">
+													<span>{configuredMarkerForLanguage(mainLanguage)}</span>
+													{#if duplicateColumnKeys.has(duplicateColumnKeyForLanguage(mainLanguage))}
+														<DuplicateFocusButton
+															active={duplicateFocus ===
+																duplicateColumnKeyForLanguage(mainLanguage)}
+															ariaLabel={format(T.templates.showDuplicateLanguageValues, {
+																language: mainLanguage
+															})}
+															onclick={() =>
+																toggleDuplicateFocus(duplicateColumnKeyForLanguage(mainLanguage))}
+														/>
+													{/if}
+												</span>
+												<input
+													class="language-column-filter"
+													value={languageFilters[mainLanguage] ?? ''}
+													aria-label={format(T.templates.filterLanguage, {
+														language: mainLanguage
+													})}
+													on:click|stopPropagation
+													on:input={(event) =>
+														updateLanguageFilter(mainLanguage, event.currentTarget.value)}
+												/>
+											</div>
+										</th>
+										{#if !isMobileWorkspace}
+											<th>
+												<div class="verso-column-header">
+													<span class="column-title" title={T.labels.verso}>
+														<Link2 size={17} aria-hidden="true" />
+													</span>
+													<PresenceFilterGroup
+														bind:value={versoPresenceFilter}
+														ariaLabel={T.aria.filterVersoLinks}
+														name="verso-presence-filter"
+													/>
+												</div>
+											</th>
+										{/if}
+										{#if workspaceView === 'manager'}
+											<th class="manager-tags-column">{T.labels.tags}</th>
+										{/if}
+										<th aria-label={T.aria.deleteCheckedCards}>
+											{#if deletingCheckedCardsArmed}
+												<div class="delete-checked-confirm" aria-live="assertive">
+													<button type="button" class="danger" on:click={confirmDeleteCheckedCards}>
+														{T.actions.yes}
+													</button>
+													<strong
+														>{format(T.templates.deleteCount, {
+															count: selectedDeleteCardIds.length
+														})}</strong
+													>
+													<button
+														type="button"
+														class="secondary"
+														on:click={() => (deletingCheckedCardsArmed = false)}
+													>
+														{T.actions.no}
+													</button>
+												</div>
+											{:else}
+												<IconButton
+													ariaLabel={T.aria.deleteCheckedCards}
+													title={T.aria.deleteCheckedCards}
+													className="delete-checked-button"
+													variant="danger"
+													size={16}
+													disabled={selectedDeleteCardIds.length === 0}
+													onclick={() => (deletingCheckedCardsArmed = true)}
+												>
+													<Trash2 size={16} aria-hidden="true" />
+												</IconButton>
+											{/if}
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{#each displayedManagerCards as card (card.id)}
+										<tr
+											class:selected={card.id === selectedCardId}
+											on:click={() => openManagerCard(card.id)}
+										>
+											<td class="select-cell">
+												<label class="row-checkbox" title={T.manager.selectForPress}>
+													<input
+														type="checkbox"
+														checked={selectedPrintCardIds.includes(card.id)}
+														on:click|stopPropagation
+														on:change={() => togglePrintCard(card.id)}
+													/>
+												</label>
+											</td>
+											<td>
+												{#if card.imageDataUrl}
+													<img class="manager-thumb" src={card.imageDataUrl} alt="" />
+												{:else}
+													<div class="manager-thumb empty-thumb" aria-label={T.aria.noImage}></div>
+												{/if}
+											</td>
+											<td>{card.texts[mainLanguage] || ''}</td>
+											{#if !isMobileWorkspace}
+												<td class="verso-cell">
+													{#if pairingCardId === card.id}
+														<select
+															aria-label={T.aria.chooseVersoCard}
+															value={card.versoCardId ?? ''}
+															on:click|stopPropagation
+															on:change={(event) =>
+																updateVersoLink(card.id, event.currentTarget.value)}
+														>
+															<option value="">{T.manager.noVerso}</option>
+															{#each candidateCardsFor(card) as candidate}
+																<option value={candidate.id}>
+																	{cardLabel(candidate)}
+																</option>
+															{/each}
+														</select>
+													{:else}
+														<button
+															type="button"
+															class="secondary verso-link-button"
+															title={T.manager.chooseVerso}
+															on:click|stopPropagation={() => (pairingCardId = card.id)}
+														>
+															<Link2 size={15} aria-hidden="true" />
+															<span>{linkedCardLabel(card)}</span>
+														</button>
+														{#if card.versoCardId}
+															<IconButton
+																ariaLabel={T.manager.unlinkVerso}
+																title={T.manager.unlinkVerso}
+																className="delete-icon-button"
+																size={15}
+																stopPropagation
+																onclick={() => clearVersoLink(card.id)}
+															>
+																<Link2Off size={15} aria-hidden="true" />
+															</IconButton>
+														{/if}
+													{/if}
+												</td>
+											{/if}
+											{#if workspaceView === 'manager'}
+												<td class="manager-tags-cell">
+													{#if card.tags?.length}
+														<div class="manager-table-tags" aria-label={T.aria.tags}>
+															{#each card.tags as tag}
+																<span>{tag}</span>
+															{/each}
+														</div>
+													{/if}
+												</td>
+											{/if}
+											<td class="delete-cell">
+												{#if deletingCardId === card.id}
+													<span>{T.manager.deleteQuestion}</span>
+													<button
+														type="button"
+														class="danger-text"
+														on:click|stopPropagation={() => confirmDeleteCard(card.id)}
+														>{T.actions.yesLower}</button
+													>
+													<button
+														type="button"
+														class="plain-text"
+														on:click|stopPropagation={() => (deletingCardId = '')}
+														>{T.actions.noLower}</button
+													>
+												{:else}
+													<IconButton
+														ariaLabel={T.aria.deleteCard}
+														title={T.aria.deleteCard}
+														className="delete-icon-button"
+														size={16}
+														stopPropagation
+														onclick={() => (deletingCardId = card.id)}
+													>
+														<Trash2 size={16} aria-hidden="true" />
+													</IconButton>
+												{/if}
+											</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					</section>
+				{/if}
+
+				{#if showPress}
+					<section class="press-pane" aria-label={T.aria.press}>
+						<div class="pane-header">
+							<div class="press-actions">
+								<button
+									type="button"
+									class="secondary"
+									on:click={() => (workspaceView = 'manager')}
+								>
+									<List size={18} aria-hidden="true" />
+									{T.actions.manage}
+								</button>
+								<button
+									type="button"
+									disabled={printLayout.pages.length === 0}
+									on:click={downloadLayoutPdf}
+								>
+									<Download size={18} aria-hidden="true" />
+									{T.actions.downloadPdf}
+								</button>
+							</div>
+						</div>
+
+						{#if printWarnings.length > 0}
+							<div class="press-warnings">
+								{#each printWarnings as warning}
+									<p>{warning}</p>
+								{/each}
 							</div>
 						{/if}
-					</div>
 
-					{#if selectedCard}
-						<div class="verso-panel">
-							<div class="verso-panel-header">
-								<p class="eyebrow">{T.labels.verso}</p>
-								{#if selectedCard.versoCardId}
-									<IconButton
-										ariaLabel={T.manager.unlinkVerso}
-										title={T.manager.unlinkVerso}
-										onclick={() => clearVersoLink(selectedCard.id)}
+						{#if selectedPrintCardIds.length === 0}
+							<div class="empty-press">
+								<button type="button" on:click={() => (workspaceView = 'manager')}>
+									<List size={18} aria-hidden="true" />
+									{T.actions.selectCards}
+								</button>
+							</div>
+						{:else}
+							<div class="press-pages">
+								{#each printLayout.pages as page, index}
+									<article class="press-page-pair">
+										<div class="press-page-header">
+											<strong>{format(T.templates.page, { page: index + 1 })}</strong>
+											<span>{pdfLayoutLabel}</span>
+										</div>
+										<div class="press-preview-grid">
+											<div class="press-preview">
+												<span>{T.labels.recto}</span>
+												<canvas
+													bind:this={rectoPreviewCanvases[index]}
+													style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+													aria-label={format(T.templates.rectoPage, { page: index + 1 })}
+												></canvas>
+											</div>
+											<div class="press-preview">
+												<span>{T.labels.verso}</span>
+												<canvas
+													bind:this={versoPreviewCanvases[index]}
+													style={`aspect-ratio: ${pdfPageSize.width} / ${pdfPageSize.height}`}
+													aria-label={format(T.templates.versoPage, { page: index + 1 })}
+												></canvas>
+											</div>
+										</div>
+									</article>
+								{/each}
+							</div>
+						{/if}
+
+						{#if pressError}
+							<p class="status error">{pressError}</p>
+						{:else if pressStatus}
+							<p class="status">{pressStatus}</p>
+						{/if}
+					</section>
+				{/if}
+
+				{#if showEditor}
+					<section class="editor-workspace" aria-label={T.aria.cardEditor}>
+						<div class="editor-pane">
+							<div class="language-header">
+								<div class="language-actions">
+									<span title={translateButtonTitle}>
+										<button
+											type="button"
+											disabled={!canTranslate}
+											title={translateButtonTitle}
+											on:click={translateProducedTexts}
+										>
+											<Languages size={18} aria-hidden="true" />
+											{isTranslating ? T.actions.translating : T.actions.translate}
+										</button>
+									</span>
+									{#if editorDeleteArmed}
+										<button
+											type="button"
+											class="secondary"
+											on:click={() => (editorDeleteArmed = false)}>{T.actions.cancel}</button
+										>
+										<button
+											type="button"
+											class="danger"
+											on:click={() => selectedCard && confirmDeleteCard(selectedCard.id)}
+										>
+											{T.actions.delete}
+										</button>
+									{:else}
+										<IconButton
+											ariaLabel={T.aria.deleteCard}
+											onclick={() => (editorDeleteArmed = true)}
+										>
+											<Trash2 size={18} aria-hidden="true" />
+										</IconButton>
+									{/if}
+								</div>
+							</div>
+
+							<div class="language-list">
+								{#each editorEntries(entries) as { entry, index } (entry.id)}
+									<article class="language-row">
+										<div class="language-tools">
+											<div
+												class="readonly-marker"
+												aria-label={entry.lang
+													? format(T.templates.flag, { language: entry.lang })
+													: T.aria.noLanguageFlag}
+											>
+												{entry.marker}
+											</div>
+										</div>
+										<label
+											class="text-field"
+											aria-label={format(T.templates.languageText, { language: entry.lang })}
+										>
+											<input
+												value={entry.text}
+												placeholder={T.placeholders.cardText}
+												disabled={!entry.lang.trim()}
+												on:input={(event) => updateCardText(index, event.currentTarget.value)}
+											/>
+										</label>
+									</article>
+								{/each}
+							</div>
+
+							<div class="image-panel">
+								<div class="image-panel-header">
+									<p class="eyebrow">{T.labels.image}</p>
+									{#if imageDataUrl}
+										<IconButton ariaLabel={T.aria.clearImage} onclick={clearImage}>
+											<X size={18} aria-hidden="true" />
+										</IconButton>
+									{/if}
+								</div>
+								<div class="image-actions">
+									<input
+										class="paste-target"
+										readonly
+										aria-label={T.aria.pasteImageHere}
+										placeholder={T.placeholders.pasteHere}
+										on:paste={handleImagePaste}
+										on:keydown={(event) => {
+											if (event.ctrlKey || event.metaKey) return
+											if (
+												event.key.length === 1 ||
+												event.key === 'Backspace' ||
+												event.key === 'Delete'
+											) {
+												event.preventDefault()
+											}
+										}}
+									/>
+									<button type="button" class="secondary" on:click={chooseImage}>
+										<ImagePlus size={18} aria-hidden="true" />
+										{T.actions.choose}
+									</button>
+									<button
+										type="button"
+										class="secondary"
+										disabled={availableImageSearchProviders.length === 0}
+										on:click={openImageSearch}
 									>
-										<Link2Off size={18} aria-hidden="true" />
-									</IconButton>
+										<Search size={18} aria-hidden="true" />
+										{T.actions.search}
+									</button>
+									<button
+										type="button"
+										class="secondary"
+										disabled={availableImageGenerationProviders.length === 0}
+										on:click={openImageGeneration}
+									>
+										<ImageIcon size={18} aria-hidden="true" />
+										{T.actions.generate}
+									</button>
+								</div>
+								{#if imageDataUrl && !isMobileWorkspace}
+									<div class="image-adjustments">
+										<label>
+											<span><Maximize2 size={16} aria-hidden="true" /> {T.labels.size}</span>
+											<input
+												type="range"
+												min="0.5"
+												max="3"
+												step="0.01"
+												value={imageTransform?.zoom ?? 1}
+												on:input={(event) =>
+													updateImageTransform({ zoom: Number(event.currentTarget.value) })}
+											/>
+										</label>
+									</div>
 								{/if}
 							</div>
-							<label class="verso-select-field">
-								<Link2 size={18} aria-hidden="true" />
-								<select
-									aria-label={T.aria.chooseVersoCard}
-									value={selectedCard.versoCardId ?? ''}
-									on:change={(event) => updateVersoLink(selectedCard.id, event.currentTarget.value)}
+
+							{#if selectedCard}
+								<div class="verso-panel">
+									<div class="verso-panel-header">
+										<p class="eyebrow">{T.labels.verso}</p>
+										{#if selectedCard.versoCardId}
+											<IconButton
+												ariaLabel={T.manager.unlinkVerso}
+												title={T.manager.unlinkVerso}
+												onclick={() => clearVersoLink(selectedCard.id)}
+											>
+												<Link2Off size={18} aria-hidden="true" />
+											</IconButton>
+										{/if}
+									</div>
+									<label class="verso-select-field">
+										<Link2 size={18} aria-hidden="true" />
+										<select
+											aria-label={T.aria.chooseVersoCard}
+											value={selectedCard.versoCardId ?? ''}
+											on:change={(event) =>
+												updateVersoLink(selectedCard.id, event.currentTarget.value)}
+										>
+											<option value="">{T.manager.noVerso}</option>
+											{#each candidateCardsFor(selectedCard) as candidate}
+												<option value={candidate.id}>{cardLabel(candidate)}</option>
+											{/each}
+										</select>
+									</label>
+								</div>
+							{/if}
+
+							<TagInput
+								bind:value={tagInput}
+								tags={selectedCardTags}
+								suggestions={tagSuggestions}
+								listId="card-tag-options"
+								onAdd={addSelectedTag}
+								onRemove={removeSelectedTag}
+							/>
+
+							{#if translationError}
+								<p class="status error">{translationError}</p>
+							{:else if translationStatus}
+								<p class="status">{translationStatus}</p>
+							{/if}
+						</div>
+
+						<div class="preview-pane">
+							<div class="preview-toolbar">
+								<div class="preview-actions">
+									<button type="button" disabled={!canExport} on:click={openPngPreview}>
+										<ExternalLink size={18} aria-hidden="true" />
+										{T.actions.openPng}
+									</button>
+								</div>
+							</div>
+
+							<CardPreviewCanvas
+								bind:canvas={previewCanvas}
+								dragging={isDragging}
+								canPan={Boolean(imageDataUrl)}
+								onDragenter={() => (isDragging = true)}
+								onDragover={() => (isDragging = true)}
+								onDragleave={() => (isDragging = false)}
+								{onDrop}
+								onPointerdown={startImageGesture}
+								onPointermove={moveImageGesture}
+								onPointerup={stopImageGesture}
+								onPointercancel={stopImageGesture}
+							/>
+
+							{#if renderError}
+								<p class="status error">{renderError}</p>
+							{:else if pngStatus}
+								<p class="status">{pngStatus}</p>
+							{/if}
+						</div>
+					</section>
+				{/if}
+			</section>
+
+			<canvas bind:this={exportCanvas} class="export-canvas" aria-hidden="true"></canvas>
+			<canvas bind:this={pdfCanvas} class="export-canvas" aria-hidden="true"></canvas>
+
+			{#if showImageSearchPanel}
+				<PanelModal
+					title={T.modal.imageSearch.title}
+					titleId="image-search-title"
+					eyebrow={T.labels.imageSearch}
+					closeLabel={T.modal.imageSearch.close}
+					modalClass="image-search-modal"
+					onClose={closeImageSearch}
+				>
+					{#if availableImageSearchProviders.length > 0}
+						<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
+							{#each availableImageSearchProviders as provider}
+								<button
+									type="button"
+									class:active={provider.id === imageSearchProvider}
+									class="secondary"
+									on:click={() => updateImageSearchProvider(provider.id)}
 								>
-									<option value="">{T.manager.noVerso}</option>
-									{#each candidateCardsFor(selectedCard) as candidate}
-										<option value={candidate.id}>{cardLabel(candidate)}</option>
+									{provider.label}
+								</button>
+							{/each}
+						</div>
+					{/if}
+
+					<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
+						<input
+							value={imageSearchQuery}
+							placeholder={T.placeholders.imageSearch}
+							aria-label={T.aria.imageSearchQuery}
+							spellcheck="false"
+							on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
+						/>
+						<button
+							type="submit"
+							disabled={isSearchingImages || availableImageSearchProviders.length === 0}
+						>
+							<Search size={18} aria-hidden="true" />
+							{isSearchingImages ? T.actions.searching : T.actions.search}
+						</button>
+					</form>
+
+					{#if imageSearchProvider === 'pixabay'}
+						<div class="image-search-filters">
+							<label>
+								<span>{T.labels.imageType}</span>
+								<select bind:value={pixabayImageType} on:change={refreshImageSearchOptions}>
+									{#each PIXABAY_IMAGE_TYPES as type}
+										<option value={type}>{pixabayImageTypeLabel(type)}</option>
+									{/each}
+								</select>
+							</label>
+							<label>
+								<span>{T.labels.category}</span>
+								<select bind:value={pixabayCategory} on:change={refreshImageSearchOptions}>
+									{#each PIXABAY_CATEGORIES as category}
+										<option value={category}>{pixabayCategoryLabel(category)}</option>
+									{/each}
+								</select>
+							</label>
+						</div>
+					{:else if imageSearchProvider === 'unsplash'}
+						<div class="image-search-filters">
+							<label>
+								<span>{T.labels.sort}</span>
+								<select bind:value={unsplashOrderBy} on:change={refreshImageSearchOptions}>
+									{#each UNSPLASH_ORDER_BY_OPTIONS as orderBy}
+										<option value={orderBy}>{unsplashOrderByLabel(orderBy)}</option>
 									{/each}
 								</select>
 							</label>
 						</div>
 					{/if}
 
-					<TagInput
-						bind:value={tagInput}
-						tags={selectedCardTags}
-						suggestions={tagSuggestions}
-						listId="card-tag-options"
-						onAdd={addSelectedTag}
-						onRemove={removeSelectedTag}
+					{#if imageSearchError}
+						<p class="status error">{imageSearchError}</p>
+					{:else if imageSearchStatus}
+						<p class="status">{imageSearchStatus}</p>
+					{/if}
+
+					<ImageResultGrid
+						results={imageSearchResults}
+						{importingImageResultId}
+						onSelect={importImageSearchResult}
 					/>
 
-					{#if translationError}
-						<p class="status error">{translationError}</p>
-					{:else if translationStatus}
-						<p class="status">{translationStatus}</p>
-					{/if}
-				</div>
-
-				<div class="preview-pane">
-					<div class="preview-toolbar">
-						<div class="preview-actions">
-							<button type="button" disabled={!canExport} on:click={openPngPreview}>
-								<ExternalLink size={18} aria-hidden="true" />
-								{T.actions.openPng}
+					<div class="image-search-footer">
+						<a
+							href={imageSearchProviderSourceUrl(imageSearchProvider)}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{format(T.templates.resultsFrom, { provider: imageSearchProviderInstance.label })}
+						</a>
+						<div class="image-search-pages">
+							<button
+								type="button"
+								class="secondary"
+								disabled={imageSearchPage <= 1 || isSearchingImages}
+								on:click={() => searchImages(imageSearchPage - 1)}
+							>
+								{T.actions.previous}
+							</button>
+							<span
+								>{format(T.templates.pageOf, {
+									page: imageSearchPage,
+									total: imageSearchTotalPages
+								})}</span
+							>
+							<button
+								type="button"
+								class="secondary"
+								disabled={!imageSearchHasNextPage || isSearchingImages}
+								on:click={() => searchImages(imageSearchPage + 1)}
+							>
+								{T.actions.next}
 							</button>
 						</div>
 					</div>
+				</PanelModal>
+			{/if}
 
-					<CardPreviewCanvas
-						bind:canvas={previewCanvas}
-						dragging={isDragging}
-						canPan={Boolean(imageDataUrl)}
-						onDragenter={() => (isDragging = true)}
-						onDragover={() => (isDragging = true)}
-						onDragleave={() => (isDragging = false)}
-						onDrop={onDrop}
-						onPointerdown={startImageGesture}
-						onPointermove={moveImageGesture}
-						onPointerup={stopImageGesture}
-						onPointercancel={stopImageGesture}
-					/>
-
-					{#if renderError}
-						<p class="status error">{renderError}</p>
-					{:else if pngStatus}
-						<p class="status">{pngStatus}</p>
+			{#if showImageGenerationPanel}
+				<PanelModal
+					title={T.modal.imageSearch.generateTitle}
+					titleId="image-generation-title"
+					eyebrow={T.labels.imageGeneration}
+					closeLabel={T.modal.imageSearch.close}
+					modalClass="image-search-modal"
+					onClose={closeImageGeneration}
+				>
+					{#if availableImageGenerationProviders.length > 0}
+						<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
+							{#each availableImageGenerationProviders as provider}
+								<button
+									type="button"
+									class:active={provider.id === imageGenerationProvider}
+									class="secondary"
+									on:click={() => updateImageGenerationProvider(provider.id)}
+								>
+									{provider.label}
+								</button>
+							{/each}
+						</div>
 					{/if}
-				</div>
-			</section>
-		{/if}
-	</section>
 
-	<canvas bind:this={exportCanvas} class="export-canvas" aria-hidden="true"></canvas>
-	<canvas bind:this={pdfCanvas} class="export-canvas" aria-hidden="true"></canvas>
-
-	{#if showImageSearchPanel}
-		<PanelModal
-			title={T.modal.imageSearch.title}
-			titleId="image-search-title"
-			eyebrow={T.labels.imageSearch}
-			closeLabel={T.modal.imageSearch.close}
-			modalClass="image-search-modal"
-			onClose={closeImageSearch}
-		>
-			{#if availableImageSearchProviders.length > 0}
-				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
-					{#each availableImageSearchProviders as provider}
+					<form class="image-search-form" on:submit|preventDefault={generateImages}>
+						<input
+							value={imageGenerationHints}
+							placeholder={T.placeholders.imageGenerationHints}
+							aria-label={T.aria.imageGenerationHints}
+							spellcheck="false"
+							on:input={(event) => updateImageGenerationHints(event.currentTarget.value)}
+						/>
 						<button
-							type="button"
-							class:active={provider.id === imageSearchProvider}
-							class="secondary"
-							on:click={() => updateImageSearchProvider(provider.id)}
+							type="submit"
+							disabled={isGeneratingImages || availableImageGenerationProviders.length === 0}
 						>
-							{provider.label}
+							<ImageIcon size={18} aria-hidden="true" />
+							{isGeneratingImages ? T.actions.generating : T.actions.generate}
 						</button>
-					{/each}
-				</div>
-			{/if}
+					</form>
 
-			<form class="image-search-form" on:submit|preventDefault={() => searchImages(1)}>
-				<input
-					value={imageSearchQuery}
-					placeholder={T.placeholders.imageSearch}
-					aria-label={T.aria.imageSearchQuery}
-					spellcheck="false"
-					on:input={(event) => (imageSearchQuery = event.currentTarget.value)}
-				/>
-				<button
-					type="submit"
-					disabled={isSearchingImages || availableImageSearchProviders.length === 0}
-				>
-					<Search size={18} aria-hidden="true" />
-					{isSearchingImages ? T.actions.searching : T.actions.search}
-				</button>
-			</form>
+					{#if imageGenerationError}
+						<p class="status error">{imageGenerationError}</p>
+					{:else if imageGenerationStatus}
+						<p class="status">{imageGenerationStatus}</p>
+					{/if}
 
-			{#if imageSearchProvider === 'pixabay'}
-				<div class="image-search-filters">
-					<label>
-						<span>{T.labels.imageType}</span>
-						<select
-							bind:value={pixabayImageType}
-							on:change={refreshImageSearchOptions}
-						>
-							{#each PIXABAY_IMAGE_TYPES as type}
-								<option value={type}>{pixabayImageTypeLabel(type)}</option>
-							{/each}
-						</select>
-					</label>
-					<label>
-						<span>{T.labels.category}</span>
-						<select bind:value={pixabayCategory} on:change={refreshImageSearchOptions}>
-							{#each PIXABAY_CATEGORIES as category}
-								<option value={category}>{pixabayCategoryLabel(category)}</option>
-							{/each}
-						</select>
-					</label>
-				</div>
-			{:else if imageSearchProvider === 'unsplash'}
-				<div class="image-search-filters">
-					<label>
-						<span>{T.labels.sort}</span>
-						<select
-							bind:value={unsplashOrderBy}
-							on:change={refreshImageSearchOptions}
-						>
-							{#each UNSPLASH_ORDER_BY_OPTIONS as orderBy}
-								<option value={orderBy}>{unsplashOrderByLabel(orderBy)}</option>
-							{/each}
-						</select>
-					</label>
-				</div>
-			{/if}
-
-			{#if imageSearchError}
-				<p class="status error">{imageSearchError}</p>
-			{:else if imageSearchStatus}
-				<p class="status">{imageSearchStatus}</p>
-			{/if}
-
-			<ImageResultGrid
-				results={imageSearchResults}
-				{importingImageResultId}
-				onSelect={importImageSearchResult}
-			/>
-
-			<div class="image-search-footer">
-				<a
-					href={imageSearchProviderSourceUrl(imageSearchProvider)}
-					target="_blank"
-					rel="noreferrer"
-				>
-					{format(T.templates.resultsFrom, { provider: imageSearchProviderInstance.label })}
-				</a>
-				<div class="image-search-pages">
-					<button
-						type="button"
-						class="secondary"
-						disabled={imageSearchPage <= 1 || isSearchingImages}
-						on:click={() => searchImages(imageSearchPage - 1)}
-					>
-						{T.actions.previous}
-					</button>
-					<span>{format(T.templates.pageOf, { page: imageSearchPage, total: imageSearchTotalPages })}</span>
-					<button
-						type="button"
-						class="secondary"
-						disabled={!imageSearchHasNextPage || isSearchingImages}
-						on:click={() => searchImages(imageSearchPage + 1)}
-					>
-						{T.actions.next}
-					</button>
-				</div>
-			</div>
-		</PanelModal>
-	{/if}
-
-	{#if showImageGenerationPanel}
-		<PanelModal
-			title={T.modal.imageSearch.generateTitle}
-			titleId="image-generation-title"
-			eyebrow={T.labels.imageGeneration}
-			closeLabel={T.modal.imageSearch.close}
-			modalClass="image-search-modal"
-			onClose={closeImageGeneration}
-		>
-			{#if availableImageGenerationProviders.length > 0}
-				<div class="image-provider-tabs" aria-label={T.labels.imageSource}>
-					{#each availableImageGenerationProviders as provider}
-						<button
-							type="button"
-							class:active={provider.id === imageGenerationProvider}
-							class="secondary"
-							on:click={() => updateImageGenerationProvider(provider.id)}
-						>
-							{provider.label}
-						</button>
-					{/each}
-				</div>
-			{/if}
-
-			<form class="image-search-form" on:submit|preventDefault={generateImages}>
-				<input
-					value={imageGenerationHints}
-					placeholder={T.placeholders.imageGenerationHints}
-					aria-label={T.aria.imageGenerationHints}
-					spellcheck="false"
-					on:input={(event) => updateImageGenerationHints(event.currentTarget.value)}
-				/>
-				<button
-					type="submit"
-					disabled={isGeneratingImages || availableImageGenerationProviders.length === 0}
-				>
-					<ImageIcon size={18} aria-hidden="true" />
-					{isGeneratingImages ? T.actions.generating : T.actions.generate}
-				</button>
-			</form>
-
-			{#if imageGenerationError}
-				<p class="status error">{imageGenerationError}</p>
-			{:else if imageGenerationStatus}
-				<p class="status">{imageGenerationStatus}</p>
-			{/if}
-
-			<ImageResultGrid
-				results={imageGenerationResults}
-				{importingImageResultId}
-				onSelect={importImageSearchResult}
-			/>
-
-			<div class="image-search-footer">
-				<a
-					href={imageSearchProviderSourceUrl(imageGenerationProvider)}
-					target="_blank"
-					rel="noreferrer"
-				>
-					{format(T.templates.resultsFrom, { provider: imageGenerationProviderInstance.label })}
-				</a>
-			</div>
-		</PanelModal>
-	{/if}
-
-	{#if showReaderInstallPanel}
-		<QRInstallPanel
-			title={T.modal.reader.title}
-			titleId="reader-install-title"
-			eyebrow={T.modal.reader.eyebrow}
-			closeLabel={T.modal.reader.close}
-			qrDataUrl={readerQrDataUrl}
-			qrAlt={T.modal.reader.qrAlt}
-			href={readerUrl}
-			linkLabel={T.actions.openReader}
-			linkTarget="_blank"
-			note={T.modal.reader.note}
-			onClose={() => (showReaderInstallPanel = false)}
-		/>
-	{/if}
-
-	{#if showApkPanel}
-		<QRInstallPanel
-			title={T.modal.apk.title}
-			titleId="apk-install-title"
-			eyebrow={T.modal.apk.eyebrow}
-			closeLabel={T.modal.apk.close}
-			qrDataUrl={apkQrDataUrl}
-			qrAlt={T.modal.apk.qrAlt}
-			href={apkUrl}
-			linkLabel={T.actions.downloadApk}
-			action="download"
-			onClose={() => (showApkPanel = false)}
-		/>
-	{/if}
-
-	{#if showHelpPanel}
-		<PanelModal
-			title={T.modal.help.title}
-			titleId="help-title"
-			closeLabel={T.modal.help.close}
-			modalClass="help-modal"
-			showCloseButton={false}
-			onClose={() => (showHelpPanel = false)}
-		>
-			<div slot="header" class="settings-header">
-				<div class="help-title-row">
-					<img src="/app-icon.png" alt="" />
-					<div>
-						<p class="eyebrow">{T.app.brand}</p>
-						<h2 id="help-title">{T.labels.help}</h2>
-					</div>
-				</div>
-			</div>
-
-			<div class="help-content">
-				<section>
-					<h3>{T.help.localDataTitle}</h3>
-					<p>{T.help.localDataText1}</p>
-					<p>{T.help.localDataText2}</p>
-				</section>
-
-				<section>
-					<h3>{T.help.editingCards}</h3>
-					<p>
-						{T.help.editingCardsIntro} <strong>{T.help.editingCardsIntroAction}</strong>
-						{T.help.editingCardsIntroRest}
-					</p>
-					<ul>
-						{#each T.help.editingCardsItems.slice(0, 3) as item}
-							<li>{item}</li>
-						{/each}
-						<li>
-							{T.help.enableQrMarginIntro} <strong>{T.help.enableQrMarginLabel}</strong>
-							{T.help.enableQrMarginRest}
-						</li>
-						<li>
-							{T.help.enableQrTextIntro} <strong>{T.help.enableQrTextLabel}</strong>
-							{T.help.enableQrTextRest}
-						</li>
-						<li>{T.help.editingCardsItems[3]}</li>
-					</ul>
-				</section>
-
-				<section>
-					<h3>{T.labels.settings}</h3>
-					<p>{T.help.settingsIntro}</p>
-					<ul>
-						<li>
-							<strong>{T.help.cornerLanguagesLabel}</strong> {T.help.cornerLanguagesRest}
-							<code>en</code>, <code>fr</code>, {T.help.cornerLanguagesExamplesRest}
-							<code>ro</code>, {T.help.cornerLanguagesRestAfter}
-						</li>
-						<li>
-							<strong>{T.help.imageSourcesLabel}</strong> {T.help.imageSourcesRest}
-						</li>
-						<li>
-							<strong>{T.help.translationLabel}</strong> {T.help.translationRest}
-						</li>
-						<li>
-							<strong>{T.help.modelBaseUrlLabel}</strong> {T.help.modelBaseUrlRest}
-						</li>
-						<li>
-							<strong>{T.help.promptTemplateLabel}</strong> {T.help.promptTemplateRest}
-						</li>
-					</ul>
-				</section>
-
-				<section>
-					<h3>{T.help.apiKeysTitle}</h3>
-					<p>{T.help.apiKeysText}</p>
-				</section>
-
-				<section>
-					<h3>{T.labels.fileMenu}</h3>
-					<ul>
-						<li>
-							<strong>{T.help.importLabel}</strong> {T.help.importRest}
-						</li>
-						<li>
-							<strong>{T.help.replaceLabel}</strong> {T.help.replaceRest}
-						</li>
-						<li>
-							<strong>{T.help.exportCompressedLabel}</strong> {T.help.exportCompressedRest}
-						</li>
-						<li>
-							<strong>{T.help.exportImageLessLabel}</strong> {T.help.exportImageLessRest}
-						</li>
-						<li>
-							<strong>{T.help.exportCompleteLabel}</strong> {T.help.exportCompleteRest}
-						</li>
-					</ul>
-				</section>
-
-				<section>
-					<h3>{T.labels.managerAndPress}</h3>
-					<p>{T.help.managerPressText1}</p>
-					<p>{T.help.managerPressText2}</p>
-				</section>
-
-				<section>
-					<h3>{T.help.links}</h3>
-					<div class="help-links">
-						<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
-							<GitFork size={16} aria-hidden="true" />
-							{T.help.repository}
-						</a>
-						<a href={KO_FI_URL} target="_blank" rel="noreferrer">
-							<Coffee size={16} aria-hidden="true" />
-							{T.help.kofi}
-						</a>
-						<a href={EXPLAINER_VIDEO_URL} target="_blank" rel="noreferrer">
-							<CirclePlay size={16} aria-hidden="true" />
-							{T.help.explainerVideo}
-						</a>
-					</div>
-					<h3>{T.help.apiCredits}</h3>
-					<div class="api-credit-links">
-						{#each API_CREDIT_LINKS as provider}
-							<a href={provider.href} target="_blank" rel="noreferrer" aria-label={provider.label}>
-								<img src={provider.badge} alt={provider.label} loading="lazy" />
-							</a>
-						{/each}
-					</div>
-				</section>
-			</div>
-
-			<div class="help-footer">
-				<label class="startup-help-toggle">
-					<input
-						type="checkbox"
-						checked={showHelpAtStartup}
-						on:change={updateShowHelpAtStartup}
+					<ImageResultGrid
+						results={imageGenerationResults}
+						{importingImageResultId}
+						onSelect={importImageSearchResult}
 					/>
-					<span>{T.help.showHelpAtStartup}</span>
-				</label>
-				<button type="button" on:click={() => (showHelpPanel = false)}>{T.actions.ok}</button>
-			</div>
-		</PanelModal>
-	{/if}
 
-	{#if showPdfConfigPanel}
-		<PanelModal
-			title={T.labels.pdfLayout}
-			titleId="pdf-config-title"
-			eyebrow={T.labels.print}
-			closeLabel={T.modal.pdf.close}
-			onClose={() => (showPdfConfigPanel = false)}
-		>
-			<div class="pdf-config-summary">
-				<span>{pdfLayoutLabel}</span>
-			</div>
-			<div class="pdf-config-fields">
-				<label>
-					{T.labels.format}
-					<select value={pageFormat} aria-label={T.aria.pdfPageFormat} on:change={updatePageFormat}>
-						{#each PDF_PAGE_FORMAT_OPTIONS as option}
-							<option value={option}>{option}</option>
-						{/each}
-					</select>
-				</label>
-				<label>
-					{T.labels.orientation}
-					<select
-						value={pageOrientation}
-						aria-label={T.aria.pdfPageOrientation}
-						on:change={updatePageOrientation}
-					>
-						{#each PDF_PAGE_ORIENTATION_OPTIONS as option}
-							<option value={option}>{option}</option>
-						{/each}
-					</select>
-				</label>
-				<label>
-					{T.labels.size}
-					<select value={gridSize} aria-label={T.aria.pdfGridSize} on:change={updateGridSize}>
-						{#each GRID_SIZE_OPTIONS as option}
-							<option value={option}>{option}</option>
-						{/each}
-					</select>
-				</label>
-			</div>
-			<p class="pdf-config-note">
-				{T.modal.pdf.note}
-			</p>
-		</PanelModal>
-	{/if}
+					<div class="image-search-footer">
+						<a
+							href={imageSearchProviderSourceUrl(imageGenerationProvider)}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{format(T.templates.resultsFrom, { provider: imageGenerationProviderInstance.label })}
+						</a>
+					</div>
+				</PanelModal>
+			{/if}
 
-	{#if showSettingsPanel}
-		<PanelModal
-			title={T.labels.cornerLanguages}
-			titleId="settings-title"
-			eyebrow={T.labels.settings}
-			closeLabel={T.modal.settings.close}
-			modalClass="settings-modal settings-modal-grid"
-			onClose={() => (showSettingsPanel = false)}
-		>
-			<div class="settings-language-list">
-				{#each languageSetups as setup, index (setup.id)}
-					{@const corner = cornerSpecForIndex(index)}
-					<article class="settings-language-row">
-						<div class="corner-field">
-							<div
-								class="readonly-corner-icon"
-								role="img"
-								aria-label={cornerLabelForIndex(index)}
-								title={cornerLabelForIndex(index)}
-							>
-								<svelte:component this={corner.icon} size={18} aria-hidden="true" />
+			{#if showReaderInstallPanel}
+				<QRInstallPanel
+					title={T.modal.reader.title}
+					titleId="reader-install-title"
+					eyebrow={T.modal.reader.eyebrow}
+					closeLabel={T.modal.reader.close}
+					qrDataUrl={readerQrDataUrl}
+					qrAlt={T.modal.reader.qrAlt}
+					href={readerUrl}
+					linkLabel={T.actions.openReader}
+					linkTarget="_blank"
+					note={T.modal.reader.note}
+					onClose={() => (showReaderInstallPanel = false)}
+				/>
+			{/if}
+
+			{#if showApkPanel}
+				<QRInstallPanel
+					title={T.modal.apk.title}
+					titleId="apk-install-title"
+					eyebrow={T.modal.apk.eyebrow}
+					closeLabel={T.modal.apk.close}
+					qrDataUrl={apkQrDataUrl}
+					qrAlt={T.modal.apk.qrAlt}
+					href={apkUrl}
+					linkLabel={T.actions.downloadApk}
+					action="download"
+					onClose={() => (showApkPanel = false)}
+				/>
+			{/if}
+
+			{#if showHelpPanel}
+				<PanelModal
+					title={T.modal.help.title}
+					titleId="help-title"
+					closeLabel={T.modal.help.close}
+					modalClass="help-modal"
+					showCloseButton={false}
+					onClose={() => (showHelpPanel = false)}
+				>
+					<div slot="header" class="settings-header">
+						<div class="help-title-row">
+							<img src="/app-icon.png" alt="" />
+							<div>
+								<p class="eyebrow">{T.app.brand}</p>
+								<h2 id="help-title">{T.labels.help}</h2>
 							</div>
 						</div>
+					</div>
+
+					<div class="help-content">
+						<section>
+							<h3>{T.help.localDataTitle}</h3>
+							<p>{T.help.localDataText1}</p>
+							<p>{T.help.localDataText2}</p>
+						</section>
+
+						<section>
+							<h3>{T.help.editingCards}</h3>
+							<p>
+								{T.help.editingCardsIntro} <strong>{T.help.editingCardsIntroAction}</strong>
+								{T.help.editingCardsIntroRest}
+							</p>
+							<ul>
+								{#each T.help.editingCardsItems.slice(0, 3) as item}
+									<li>{item}</li>
+								{/each}
+								<li>
+									{T.help.enableQrMarginIntro} <strong>{T.help.enableQrMarginLabel}</strong>
+									{T.help.enableQrMarginRest}
+								</li>
+								<li>
+									{T.help.enableQrTextIntro} <strong>{T.help.enableQrTextLabel}</strong>
+									{T.help.enableQrTextRest}
+								</li>
+								<li>{T.help.editingCardsItems[3]}</li>
+							</ul>
+						</section>
+
+						<section>
+							<h3>{T.labels.settings}</h3>
+							<p>{T.help.settingsIntro}</p>
+							<ul>
+								<li>
+									<strong>{T.help.cornerLanguagesLabel}</strong>
+									{T.help.cornerLanguagesRest}
+									<code>en</code>, <code>fr</code>, {T.help.cornerLanguagesExamplesRest}
+									<code>ro</code>, {T.help.cornerLanguagesRestAfter}
+								</li>
+								<li>
+									<strong>{T.help.imageSourcesLabel}</strong>
+									{T.help.imageSourcesRest}
+								</li>
+								<li>
+									<strong>{T.help.translationLabel}</strong>
+									{T.help.translationRest}
+								</li>
+								<li>
+									<strong>{T.help.modelBaseUrlLabel}</strong>
+									{T.help.modelBaseUrlRest}
+								</li>
+								<li>
+									<strong>{T.help.promptTemplateLabel}</strong>
+									{T.help.promptTemplateRest}
+								</li>
+							</ul>
+						</section>
+
+						<section>
+							<h3>{T.help.apiKeysTitle}</h3>
+							<p>{T.help.apiKeysText}</p>
+						</section>
+
+						<section>
+							<h3>{T.labels.fileMenu}</h3>
+							<ul>
+								<li>
+									<strong>{T.help.importLabel}</strong>
+									{T.help.importRest}
+								</li>
+								<li>
+									<strong>{T.help.replaceLabel}</strong>
+									{T.help.replaceRest}
+								</li>
+								<li>
+									<strong>{T.help.exportCompressedLabel}</strong>
+									{T.help.exportCompressedRest}
+								</li>
+								<li>
+									<strong>{T.help.exportImageLessLabel}</strong>
+									{T.help.exportImageLessRest}
+								</li>
+								<li>
+									<strong>{T.help.exportCompleteLabel}</strong>
+									{T.help.exportCompleteRest}
+								</li>
+							</ul>
+						</section>
+
+						<section>
+							<h3>{T.labels.managerAndPress}</h3>
+							<p>{T.help.managerPressText1}</p>
+							<p>{T.help.managerPressText2}</p>
+						</section>
+
+						<section>
+							<h3>{T.help.links}</h3>
+							<div class="help-links">
+								<a href={REPOSITORY_URL} target="_blank" rel="noreferrer">
+									<GitFork size={16} aria-hidden="true" />
+									{T.help.repository}
+								</a>
+								<a href={KO_FI_URL} target="_blank" rel="noreferrer">
+									<Coffee size={16} aria-hidden="true" />
+									{T.help.kofi}
+								</a>
+								<a href={EXPLAINER_VIDEO_URL} target="_blank" rel="noreferrer">
+									<CirclePlay size={16} aria-hidden="true" />
+									{T.help.explainerVideo}
+								</a>
+							</div>
+							<h3>{T.help.apiCredits}</h3>
+							<div class="api-credit-links">
+								{#each API_CREDIT_LINKS as provider}
+									<a
+										href={provider.href}
+										target="_blank"
+										rel="noreferrer"
+										aria-label={provider.label}
+									>
+										<img src={provider.badge} alt={provider.label} loading="lazy" />
+									</a>
+								{/each}
+							</div>
+						</section>
+					</div>
+
+					<div class="help-footer">
+						<label class="startup-help-toggle">
+							<input
+								type="checkbox"
+								checked={showHelpAtStartup}
+								on:change={updateShowHelpAtStartup}
+							/>
+							<span>{T.help.showHelpAtStartup}</span>
+						</label>
+						<button type="button" on:click={() => (showHelpPanel = false)}>{T.actions.ok}</button>
+					</div>
+				</PanelModal>
+			{/if}
+
+			{#if showPdfConfigPanel}
+				<PanelModal
+					title={T.labels.pdfLayout}
+					titleId="pdf-config-title"
+					eyebrow={T.labels.print}
+					closeLabel={T.modal.pdf.close}
+					onClose={() => (showPdfConfigPanel = false)}
+				>
+					<div class="pdf-config-summary">
+						<span>{pdfLayoutLabel}</span>
+					</div>
+					<div class="pdf-config-fields">
 						<label>
-							{T.labels.code}
-							<input
-								value={setup.lang}
-								maxlength="16"
-								placeholder={T.placeholders.languageCode}
-								spellcheck="false"
-								on:input={(event) =>
-									updateLanguageSetup(setup.id, { lang: event.currentTarget.value })}
-							/>
+							{T.labels.format}
+							<select
+								value={pageFormat}
+								aria-label={T.aria.pdfPageFormat}
+								on:change={updatePageFormat}
+							>
+								{#each PDF_PAGE_FORMAT_OPTIONS as option}
+									<option value={option}>{option}</option>
+								{/each}
+							</select>
 						</label>
-						<label class="marker-field">
-							{T.labels.flag}
-							<input
-								value={setup.marker}
-								maxlength="4"
-								placeholder={T.placeholders.flag}
-								spellcheck="false"
-								on:input={(event) =>
-									updateLanguageSetup(setup.id, { marker: event.currentTarget.value })}
-							/>
+						<label>
+							{T.labels.orientation}
+							<select
+								value={pageOrientation}
+								aria-label={T.aria.pdfPageOrientation}
+								on:change={updatePageOrientation}
+							>
+								{#each PDF_PAGE_ORIENTATION_OPTIONS as option}
+									<option value={option}>{option}</option>
+								{/each}
+							</select>
 						</label>
-					</article>
-				{/each}
-			</div>
-			<section class="settings-section">
-				<h3>{T.labels.rendering}</h3>
-				<div class="settings-toggle-list">
-					<label class="settings-toggle">
-						<input type="checkbox" checked={reserveQrMargin} on:change={updateReserveQrMargin} />
-						<span>{T.help.enableQrMarginLabel}</span>
-					</label>
-					<label class="settings-toggle">
-						<input type="checkbox" checked={showQrText} on:change={updateShowQrText} />
-						<span>{T.help.enableQrTextLabel}</span>
-					</label>
-				</div>
-			</section>
-			<ProviderConfigFields
-				imageProviders={IMAGE_SEARCH_PROVIDERS}
-				imageProviderConfigs={imageSearchProviderConfigs}
-				translationProviders={TRANSLATION_PROVIDERS}
-				{translationProvider}
-				translationProviderLabel={providerLabel(translationProvider)}
-				translationConfig={currentTranslationProviderConfig}
-				showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
-				{imageGenerationPromptTemplate}
-				{translationPromptTemplate}
-				onImageConfigChange={(change) =>
-					updateImageSearchProviderConfig(
-						change.provider as ImageSearchProviderId,
-						change.field,
-						change.value
-					)}
-				onImageGenerationPromptTemplateChange={(value) => (imageGenerationPromptTemplate = value)}
-				onTranslationProviderChange={(value) => updateTranslationProvider(value)}
-				onTranslationConfigChange={(change) =>
-					updateTranslationProviderConfig(change.field, change.value)}
-				onTranslationPromptTemplateChange={(value) => (translationPromptTemplate = value)}
-			/>
-		</PanelModal>
-	{/if}
-</main>
-{/key}
+						<label>
+							{T.labels.size}
+							<select value={gridSize} aria-label={T.aria.pdfGridSize} on:change={updateGridSize}>
+								{#each GRID_SIZE_OPTIONS as option}
+									<option value={option}>{option}</option>
+								{/each}
+							</select>
+						</label>
+					</div>
+					<p class="pdf-config-note">
+						{T.modal.pdf.note}
+					</p>
+				</PanelModal>
+			{/if}
+
+			{#if showSettingsPanel}
+				<PanelModal
+					title={T.labels.cornerLanguages}
+					titleId="settings-title"
+					eyebrow={T.labels.settings}
+					closeLabel={T.modal.settings.close}
+					modalClass="settings-modal settings-modal-grid"
+					onClose={() => (showSettingsPanel = false)}
+				>
+					<div class="settings-language-list">
+						{#each languageSetups as setup, index (setup.id)}
+							{@const corner = cornerSpecForIndex(index)}
+							<article class="settings-language-row">
+								<div class="corner-field">
+									<div
+										class="readonly-corner-icon"
+										role="img"
+										aria-label={cornerLabelForIndex(index)}
+										title={cornerLabelForIndex(index)}
+									>
+										<svelte:component this={corner.icon} size={18} aria-hidden="true" />
+									</div>
+								</div>
+								<label>
+									{T.labels.code}
+									<input
+										value={setup.lang}
+										maxlength="16"
+										placeholder={T.placeholders.languageCode}
+										spellcheck="false"
+										on:input={(event) =>
+											updateLanguageSetup(setup.id, { lang: event.currentTarget.value })}
+									/>
+								</label>
+								<label class="marker-field">
+									{T.labels.flag}
+									<input
+										value={setup.marker}
+										maxlength="4"
+										placeholder={T.placeholders.flag}
+										spellcheck="false"
+										on:input={(event) =>
+											updateLanguageSetup(setup.id, { marker: event.currentTarget.value })}
+									/>
+								</label>
+							</article>
+						{/each}
+					</div>
+					<section class="settings-section">
+						<h3>{T.labels.rendering}</h3>
+						<div class="settings-toggle-list">
+							<label class="settings-toggle">
+								<input
+									type="checkbox"
+									checked={reserveQrMargin}
+									on:change={updateReserveQrMargin}
+								/>
+								<span>{T.help.enableQrMarginLabel}</span>
+							</label>
+							<label class="settings-toggle">
+								<input type="checkbox" checked={showQrText} on:change={updateShowQrText} />
+								<span>{T.help.enableQrTextLabel}</span>
+							</label>
+						</div>
+					</section>
+					<ProviderConfigFields
+						imageProviders={IMAGE_SEARCH_PROVIDERS}
+						imageProviderConfigs={imageSearchProviderConfigs}
+						translationProviders={TRANSLATION_PROVIDERS}
+						{translationProvider}
+						translationProviderLabel={providerLabel(translationProvider)}
+						translationConfig={currentTranslationProviderConfig}
+						showBaseUrl={isOpenAiCompatibleProvider(translationProvider)}
+						{imageGenerationPromptTemplate}
+						{translationPromptTemplate}
+						onImageConfigChange={(change) =>
+							updateImageSearchProviderConfig(
+								change.provider as ImageSearchProviderId,
+								change.field,
+								change.value
+							)}
+						onImageGenerationPromptTemplateChange={(value) =>
+							(imageGenerationPromptTemplate = value)}
+						onTranslationProviderChange={(value) => updateTranslationProvider(value)}
+						onTranslationConfigChange={(change) =>
+							updateTranslationProviderConfig(change.field, change.value)}
+						onTranslationPromptTemplateChange={(value) => (translationPromptTemplate = value)}
+					/>
+				</PanelModal>
+			{/if}
+		</main>
+	{/key}
 {/if}
