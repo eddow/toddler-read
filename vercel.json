@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npm --prefix generator ci",
-  "buildCommand": "npm --prefix generator run build:web",
+  "installCommand": "cd generator && npm ci",
+  "buildCommand": "cd generator && npm run build:web",
   "outputDirectory": "generator/dist",
   "rewrites": [{ "source": "/privacy", "destination": "/privacy.html" }, { "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
