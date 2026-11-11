@@ -11,7 +11,7 @@ publishes the reader as a PWA at `/reader/` and can expose the generated APK as
 
 ## Links
 
-[![Open App](https://img.shields.io/badge/Open_App-toddler--read.netlify.app-00ad9f?style=for-the-badge&logo=netlify&logoColor=white)](https://toddler-read.netlify.app/)
+[![Open App](https://img.shields.io/badge/Open_App-toddler--read.netlify.app-00ad9f?style=for-the-badge&logo=netlify&logoColor=white)](https://toddler-read.emedware.dev/)
 [![Support on Ko-fi](https://img.shields.io/badge/Support-Ko--fi-ff5e5b?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/emedware)
 
 ## Repository Layout
