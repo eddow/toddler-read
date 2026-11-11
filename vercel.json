@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cd generator && npm ci",
-  "buildCommand": "cd generator && npm run build:web",
-  "outputDirectory": "generator/dist",
+  "installCommand": "if [ -f generator/package-lock.json ]; then (cd generator && npm ci); else npm ci; fi",
+  "buildCommand": "if [ -f generator/package.json ] && grep -q '\"build:web\"' generator/package.json; then (cd generator && npm run build:web); else npm run build:web; fi",
+  "outputDirectory": "dist",
   "rewrites": [{ "source": "/privacy", "destination": "/privacy.html" }, { "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
