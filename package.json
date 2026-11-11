@@ -9,6 +9,8 @@
     "android:open": "cap open android",
     "android:build": "npm run android:sync && cd android && ./gradlew assembleDebug",
     "build:all": "npm --prefix generator ci && npm --prefix generator run build",
+    "build": "npm --prefix generator ci && npm --prefix generator run build:web",
+    "build:vercel": "npm --prefix generator ci && npm --prefix generator run build:web",
     "build:netlify": "npm --prefix generator ci && npm --prefix generator run build:web",
     "buld:all": "npm run build:all",
     "android:install": "npm run android:sync && cd android && ./gradlew installDebug",
@@ -33,6 +35,9 @@
     "url": "https://github.com/eddow/toddler-read/issues"
   },
   "homepage": "https://github.com/eddow/toddler-read#readme",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@capacitor/android": "^8.3.1",
     "@capacitor/cli": "^8.3.1",

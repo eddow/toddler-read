@@ -14,7 +14,7 @@
   "dependencies": {
     "@google/genai": "^1.51.0",
     "@picocss/pico": "^2.1.1",
-    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "jspdf": "^4.2.1",
     "lucide-svelte": "^0.468.0",
     "qrcode": "^1.5.4",
